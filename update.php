@@ -1,5 +1,7 @@
 <?php
 
+exec('/usr/bin/php8.0 composer.phar update');
+
 include 'vendor/autoload.php';
 
 // get the latest
