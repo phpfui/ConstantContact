@@ -1,0 +1,7 @@
+# no binary files in this repo and store all files with LF line endings.
+
+# for windows do the following:
+# git config --global core.eol native
+# git config --global core.autocrlf true
+
+* text=auto

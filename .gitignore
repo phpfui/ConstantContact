@@ -1,0 +1,14 @@
+vendor/
+.idea/
+bin/
+src/PHPFUI/PHPUnitSyntaxCoverage
+src/PHPFUI/MySQLSlowQuery
+src/PHPFUI/HTMLUnitTester
+src/PHPFUI/InstaDoc
+src/PHPFUI/PayPal/PayPal.md
+src/PHPFUI/README.md
+composer.lock
+.php-cs-fixer.cache
+.phpunit.result.cache
+phpunit.xml
+
