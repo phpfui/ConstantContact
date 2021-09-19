@@ -49,6 +49,8 @@ tags:
 - name: "Technology Partners"
   description: "Use partner endpoints to manage client Constant Contact accounts under\
     \ your partner account."
+- name: "My Library"
+  description: "Use the MyLibrary methods to manage images in a Constant Contact account"
 schemes:
 - "https"
 consumes:
@@ -3470,6 +3472,54 @@ paths:
           description: "Request successful."
           schema:
             $ref: "#/definitions/EmailSendHistory"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "The requested resource was not found."
+        "429":
+          description: "Too many requests. You exceeded the request rate limit."
+        "500":
+          description: "There was a problem with our internal service."
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      - api_key: []
+      x-authorization-privileges:
+      - "campaign:read"
+  /emails/activities/{campaign_activity_id}/non_opener_resends:
+    get:
+      tags:
+      - "Email Campaigns"
+      summary: "GET Details for a Resend to Non-openers Campaign Activity"
+      description: "Get details about a resend to non-openers campaign activity. If\
+        \ a resend activity does not exist for the specified `campaign_activity_id`,\
+        \ an empty list is returned in the results. You can only create one resend\
+        \ activity per  email campaign."
+      operationId: "retrieveResendToNonOpenersUsingGET"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "campaign_activity_id"
+        in: "path"
+        description: "The unique ID for the primary email campaign activity."
+        required: true
+        type: "string"
+        x-example: "91569d46-00e4-4a4d-9a4c-d17d98740d04"
+      responses:
+        "200":
+          description: "Request successful."
+          schema:
+            $ref: "#/definitions/ResendToNonOpeners"
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
@@ -9161,6 +9211,50 @@ definitions:
           - 10
           - 11
           - 12
+  ResendToNonOpeners:
+    type: "array"
+    items:
+      type: "object"
+      properties:
+        resend_subject:
+          type: "string"
+          example: "Our Big Sale is Coming Soon!"
+          description: "The subject line used when resending the email campaign activity."
+        delay_days:
+          type: "integer"
+          format: "int32"
+          example: 3
+          description: "The number of days to wait before another email is sent. This\
+            \ value is only returned in the response results if the resend activity\
+            \ was created with <code>delay_days</code> or the <code>delay_minutes</code>\
+            \ equal to an exact day value. Valid values are 1 to 10."
+        delay_minutes:
+          type: "integer"
+          format: "int32"
+          example: 1000
+          description: "The number of minutes before Constant Contact resends the\
+            \ email. The range of valid values includes 720 to 14,400. There are 1,440\
+            \ minutes in a day."
+        resend_date:
+          type: "string"
+          format: "date-time"
+          description: "The system generated date and time (in ISO-8601 format) that\
+            \ the email campaign activity was resent to non-openers (only included\
+            \ in the response results for sent resend activities)."
+          readOnly: true
+        resend_request_id:
+          type: "string"
+          example: "DRAFT"
+          description: "For scheduled email campaign resend activities, the system\
+            \ generates an ID that identifies the resend. For draft email campaign\
+            \ resend activities, the system returns <code>DRAFT</code>."
+        resend_status:
+          type: "string"
+          example: "DRAFT"
+          description: "The status of the resend to non-openers campaign activity.\
+            \ The <code>resend_status</code> is only returned in the response results\
+            \ if the campaign activity is either scheduled to be sent or was already\
+            \ sent.\n"
   ContactTrackingActivitiesPage:
     type: "object"
     properties:
@@ -10830,6 +10924,214 @@ definitions:
         description: "A description of what the topic is and when Constant Contact\
           \ notifies you concerning it. When you use the test send API method, Constant\
           \ Contact will immediately send a test event to you."
+  MyLibraryFileCollection:
+    type: "array"
+    items:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "Identifies the MyLibrary file."
+        name:
+          type: "string"
+          description: "The file name."
+        height:
+          type: "integer"
+          description: "The image height."
+        width:
+          type: "integer"
+          description: "The image width."
+        size:
+          type: "integer"
+          description: "The image size."
+        url:
+          type: "string"
+          description: "The image URL."
+        description:
+          type: "string"
+          description: "The image description."
+        folder:
+          type: "string"
+          description: "The image folder"
+        source:
+          type: "string"
+          description: "The application that uploaded this image."
+          enum:
+          - "MyComputer"
+          - "StockImage"
+          - "Facebook"
+          - "Instagram"
+          - "Bigstock"
+          - "Mobile"
+          - "Artwork"
+          - "Canva"
+        type:
+          type: "string"
+          description: "The image format."
+          enum:
+          - "GIF"
+          - "JPG"
+          - "PDF"
+          - "PNG"
+          - "DOC"
+          - "DOCX"
+          - "XLS"
+          - "XLSX"
+          - "PPT"
+          - "PPTX"
+        status:
+          type: "string"
+          description: "The image status."
+          enum:
+          - "Active"
+          - "Processing"
+          - "VirusFound"
+          - "Deleted"
+          - "Purged"
+          - "Failed"
+        thumbnail:
+          type: "object"
+          properties:
+            width:
+              type: "integer"
+              format: "int32"
+              description: "Thumbnail width."
+            height:
+              type: "integer"
+              format: "int32"
+              description: "Thumbnail height."
+            url:
+              type: "string"
+              description: "Thumbnail url."
+        image:
+          type: "boolean"
+          description: "Boolean indicating if this file is an image."
+        folder_id:
+          type: "integer"
+          format: "int32"
+          description: "Identifies a folder in MyLibrary."
+        external_url:
+          type: "string"
+          description: "The external url for the file."
+        modified_date:
+          type: "string"
+          description: "Identifies the time a user last modified the file."
+        added_date:
+          type: "string"
+          description: "Identifies the time a user originally added the file to MyLibrary."
+        external_file_id:
+          type: "string"
+          description: "External identifier for the file."
+  FileObject:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Identifies the MyLibrary file."
+      name:
+        type: "string"
+        description: "The file name."
+      height:
+        type: "integer"
+        description: "The image height."
+      width:
+        type: "integer"
+        description: "The image width."
+      size:
+        type: "integer"
+        description: "The image size."
+      url:
+        type: "string"
+        description: "The image URL."
+      description:
+        type: "string"
+        description: "The image description."
+      folder:
+        type: "string"
+        description: "The image folder"
+      source:
+        type: "string"
+        description: "The application that uploaded this image."
+        enum:
+        - "MyComputer"
+        - "StockImage"
+        - "Facebook"
+        - "Instagram"
+        - "Bigstock"
+        - "Mobile"
+        - "Artwork"
+        - "Canva"
+      type:
+        type: "string"
+        description: "The image format."
+        enum:
+        - "GIF"
+        - "JPG"
+        - "PDF"
+        - "PNG"
+        - "DOC"
+        - "DOCX"
+        - "XLS"
+        - "XLSX"
+        - "PPT"
+        - "PPTX"
+      status:
+        type: "string"
+        description: "THe image status."
+        enum:
+        - "Active"
+        - "Processing"
+        - "VirusFound"
+        - "Deleted"
+        - "Purged"
+        - "Failed"
+      thumbnail:
+        type: "object"
+        properties:
+          width:
+            type: "integer"
+            format: "int32"
+            description: "Thumbnail width."
+          height:
+            type: "integer"
+            format: "int32"
+            description: "Thumbnail height."
+          url:
+            type: "string"
+            description: "Thumbnail url."
+      image:
+        type: "boolean"
+        description: "Boolean indicating if this file is an image."
+      folder_id:
+        type: "integer"
+        format: "int32"
+        description: "Identifies a folder in MyLibrary."
+      external_url:
+        type: "string"
+        description: "The external url for the file."
+      modified_date:
+        type: "string"
+        description: "Identifies the time a user last modified the file."
+      added_date:
+        type: "string"
+        description: "Identifies the time a user originally added the file to MyLibrary."
+      external_file_id:
+        type: "string"
+        description: "External identifier for the file."
+  FileStatusArray:
+    type: "array"
+    items:
+      type: "object"
+      properties:
+        status:
+          type: "string"
+          description: "The upload status."
+        description:
+          type: "string"
+          description: "File description."
+        file_id:
+          type: "integer"
+          description: "Identifies the file in MyLibrary."
   AuthToken:
     required:
     - "token"
