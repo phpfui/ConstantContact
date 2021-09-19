@@ -1,4 +1,4 @@
-# ConstantContact [![Build Status](https://api.travis-ci.com/phpfui/constantcontact.png?branch=master)](https://api.travis-ci.com/phpfui/constantcontact) [![Latest Packagist release](https://img.shields.io/packagist/v/phpfui/constantcontact.svg)](https://packagist.org/packages/phpfui/phpfui)
+# ConstantContact [![Build Status](https://api.travis-ci.com/phpfui/constantcontact.png?branch=main)](https://api.travis-ci.com/phpfui/constantcontact) [![Latest Packagist release](https://img.shields.io/packagist/v/phpfui/constantcontact.svg)](https://packagist.org/packages/phpfui/constantcontact)
 
 PHP Object Oriented wrapper for the Constant Contact V3 API.
 
@@ -67,7 +67,7 @@ You should now be authorized to use the API.  Make sure you save and restore the
 Since the [Constant Contact API](https://v3.developer.constantcontact.com/api_guide/index.html) is constantly being updated, this library will track all updates on a calendar based versioning schema. The major version will be the last two digits of the year the update was released. The minor version will be the month it was released. Any bug fixes will be a patch version.  So V21.8.0 would be the first August 2021 version, and V21.8.1 would be a bug fix to V21.8.  All bug fixes will be included in subsequent versions, so V21.9.0 would include all fixes from the V21.8 version. YAML changes are tracked nightly and a new version will be generated automatically. Multiple YAML changes in a month will be tracked as patch versions.
 
 ## Documentation
-Via [PHPFUI/InstaDoc](http://www.phpfui.com/?PHPFUI\ConstantContact)
+Via [PHPFUI/InstaDoc](http://www.phpfui.com/?n=PHPFUI%5CConstantContact)
 
 ## License
 **PHPFUI/ConstantContact** is distributed under the MIT License.
