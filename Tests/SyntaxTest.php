@@ -13,6 +13,7 @@ class SyntaxTest extends \PHPFUI\PHPUnitSyntaxCoverage\Extensions
 	{
 	public function testDirectory() : void
 		{
+		$this->skipNamespaceTesting();
 		$this->assertValidPHPDirectory(PROJECT_ROOT . '/src', 'src directory has an error');
 		$this->assertValidPHPDirectory(PROJECT_ROOT . '/Tools', 'Tools directory has an error');
 		}
