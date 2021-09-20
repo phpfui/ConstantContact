@@ -45,11 +45,11 @@ foreach ($tags as $tag)
 	$number = 0;
 	foreach ($parts as $index => $part)
 		{
-		$number *= 100 + (int)$part;
+		$number = $number * 100 + (int)$part;
 		}
 	$highest = max($number, $highest);
 	}
-if ($highest > $proposed)
+if ($highest >= $proposed)
 	{
 	$proposed = $highest + 1;
 	}
@@ -59,7 +59,8 @@ $version = str_replace('.0', '.', $version);
 
 // commit and tag it with version number
 $date = date('Y-m-d');
-$repo->run('commit', ['-m', "'{$version} - {$date}'"]);
+echo "{$version} - {$date}";
+$repo->run('commit', ['-m', "{$version} - {$date}"]);
 $repo->run('tag', ['-a', $version, '-m', "'Auto generated on {$date}'"]);
 
 // push and publish
