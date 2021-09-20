@@ -1,5 +1,6 @@
 <?php
 
+exec('/usr/bin/php8.0 composer.phar self-update');
 exec('/usr/bin/php8.0 composer.phar update');
 
 include 'vendor/autoload.php';
@@ -59,11 +60,8 @@ $version = str_replace('.0', '.', $version);
 
 // commit and tag it with version number
 $date = date('Y-m-d');
-echo "{$version} - {$date}";
 $repo->run('commit', ['-m', "{$version} - {$date}"]);
-$repo->run('tag', ['-a', $version, '-m', "'Auto generated on {$date}'"]);
+$repo->run('tag', ['-a', $version, '-m', "Auto generated on {$date}"]);
 
 // push and publish
 $repo->run('push');
-
-
