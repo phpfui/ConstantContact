@@ -37,9 +37,9 @@ class ContactsJsonImport extends \PHPFUI\ConstantContact\Base
 	 * the request body exceeds 4 MB, this method only imports the first 4
 	 * MB and drops the remaining data.
 	 *
-	 * @param PHPFUI\ConstantContact\Definition\ContactsJsonImport $body The JSON request payload that contains the contact data and contact lists for the import.
+	 * @param \PHPFUI\ConstantContact\Definition\ContactsJsonImport $body The JSON request payload that contains the contact data and contact lists for the import.
 	 */
-	public function post(PHPFUI\ConstantContact\Definition\ContactsJsonImport $body) : array
+	public function post(\PHPFUI\ConstantContact\Definition\ContactsJsonImport $body) : array
 		{
 		return $this->doPost(['body' => $body, ]);
 		}

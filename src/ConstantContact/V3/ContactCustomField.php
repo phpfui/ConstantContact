@@ -32,9 +32,9 @@ class ContactCustomField extends \PHPFUI\ConstantContact\Base
 	 * This PUT request updates an existing `custom_field` object.
 	 *
 	 * @param string $custom_field_id Unique ID of the `custom_field` on which to operate.
-	 * @param PHPFUI\ConstantContact\Definition\CustomFieldInput $body The JSON payload used to update an existing custom field. Any properties omitted in the PUT request are overwritten with a null value.
+	 * @param \PHPFUI\ConstantContact\Definition\CustomFieldInput $body The JSON payload used to update an existing custom field. Any properties omitted in the PUT request are overwritten with a null value.
 	 */
-	public function put(string $custom_field_id, PHPFUI\ConstantContact\Definition\CustomFieldInput $body) : array
+	public function put(string $custom_field_id, \PHPFUI\ConstantContact\Definition\CustomFieldInput $body) : array
 		{
 		return $this->doPut(['custom_field_id' => $custom_field_id, 'body' => $body, ]);
 		}

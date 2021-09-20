@@ -76,9 +76,9 @@ class Contacts extends \PHPFUI\ConstantContact\Base
 	 * a new contact: `first_name`, `last_name`, or `email_address` (`email_address`
 	 * must be unique for each contact).
 	 *
-	 * @param PHPFUI\ConstantContact\Definition\ContactPostRequest $body The JSON payload defining the contact
+	 * @param \PHPFUI\ConstantContact\Definition\ContactPostRequest $body The JSON payload defining the contact
 	 */
-	public function post(PHPFUI\ConstantContact\Definition\ContactPostRequest $body) : array
+	public function post(\PHPFUI\ConstantContact\Definition\ContactPostRequest $body) : array
 		{
 		return $this->doPost(['body' => $body, ]);
 		}

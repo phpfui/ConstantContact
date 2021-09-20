@@ -64,9 +64,9 @@ class Activities extends \PHPFUI\ConstantContact\Base
 	 * 
 	 *
 	 * @param string $campaign_activity_id The unique ID for the email campaign activity you are updating.
-	 * @param PHPFUI\ConstantContact\Definition\EmailCampaignActivity $body A request body payload that contains the complete email campaign activity with your changes.
+	 * @param \PHPFUI\ConstantContact\Definition\EmailCampaignActivity $body A request body payload that contains the complete email campaign activity with your changes.
 	 */
-	public function put(string $campaign_activity_id, PHPFUI\ConstantContact\Definition\EmailCampaignActivity $body) : array
+	public function put(string $campaign_activity_id, \PHPFUI\ConstantContact\Definition\EmailCampaignActivity $body) : array
 		{
 		return $this->doPut(['campaign_activity_id' => $campaign_activity_id, 'body' => $body, ]);
 		}

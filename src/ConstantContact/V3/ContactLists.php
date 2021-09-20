@@ -45,9 +45,9 @@ class ContactLists extends \PHPFUI\ConstantContact\Base
 	 *
 	 * Create a new contact list resource
 	 *
-	 * @param PHPFUI\ConstantContact\Definition\ListInput $body JSON payload defining the new contact list
+	 * @param \PHPFUI\ConstantContact\Definition\ListInput $body JSON payload defining the new contact list
 	 */
-	public function post(PHPFUI\ConstantContact\Definition\ListInput $body) : array
+	public function post(\PHPFUI\ConstantContact\Definition\ListInput $body) : array
 		{
 		return $this->doPost(['body' => $body, ]);
 		}

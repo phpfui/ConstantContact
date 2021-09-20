@@ -71,9 +71,9 @@ class Emails extends \PHPFUI\ConstantContact\Base
 	 * in the API guide.
 	 * 
 	 *
-	 * @param PHPFUI\ConstantContact\Definition\AccountEmailInput $body A JSON request payload containing the new email address you want to add to the Constant Contact account.
+	 * @param \PHPFUI\ConstantContact\Definition\AccountEmailInput $body A JSON request payload containing the new email address you want to add to the Constant Contact account.
 	 */
-	public function post(PHPFUI\ConstantContact\Definition\AccountEmailInput $body) : array
+	public function post(\PHPFUI\ConstantContact\Definition\AccountEmailInput $body) : array
 		{
 		return $this->doPost(['body' => $body, ]);
 		}

@@ -46,9 +46,9 @@ class ContactTags extends \PHPFUI\ConstantContact\Base
 	 * to identify the contacts to tag in the request body. [Learn more](https://v3.developer.constantcontact.com/api_guide/tags_create.html).
 	 *
 	 *
-	 * @param PHPFUI\ConstantContact\Definition\TagPost $body The JSON payload to use to create a new tag.
+	 * @param \PHPFUI\ConstantContact\Definition\TagPost $body The JSON payload to use to create a new tag.
 	 */
-	public function post(PHPFUI\ConstantContact\Definition\TagPost $body) : array
+	public function post(\PHPFUI\ConstantContact\Definition\TagPost $body) : array
 		{
 		return $this->doPost(['body' => $body, ]);
 		}

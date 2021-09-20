@@ -30,9 +30,9 @@ class ContactsTaggingsRemove extends \PHPFUI\ConstantContact\Base
 	 *
 	 * 
 	 *
-	 * @param PHPFUI\ConstantContact\Definition\TagAddRemoveContacts $body The JSON payload used to create an asynchronous activity that removes tags from contacts meeting your specified contact filtering criteria.
+	 * @param \PHPFUI\ConstantContact\Definition\TagAddRemoveContacts $body The JSON payload used to create an asynchronous activity that removes tags from contacts meeting your specified contact filtering criteria.
 	 */
-	public function post(PHPFUI\ConstantContact\Definition\TagAddRemoveContacts $body) : array
+	public function post(\PHPFUI\ConstantContact\Definition\TagAddRemoveContacts $body) : array
 		{
 		return $this->doPost(['body' => $body, ]);
 		}

@@ -57,9 +57,9 @@ class Accounts extends \PHPFUI\ConstantContact\Base
 	 * For more use case information, see [Create a new Partner Client Account](https://v3.developer.constantcontact.com/api_guide/partners_accts_create.html)
 	 * in the API guide.
 	 *
-	 * @param PHPFUI\ConstantContact\Definition\Provision $provision Create a new Constant Contact client account under your partner account. All required properties must be included in the JSON payload request.
+	 * @param \PHPFUI\ConstantContact\Definition\Provision $provision Create a new Constant Contact client account under your partner account. All required properties must be included in the JSON payload request.
 	 */
-	public function post(PHPFUI\ConstantContact\Definition\Provision $provision) : array
+	public function post(\PHPFUI\ConstantContact\Definition\Provision $provision) : array
 		{
 		return $this->doPost(['provision' => $provision, ]);
 		}

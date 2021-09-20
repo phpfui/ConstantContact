@@ -34,9 +34,9 @@ class Cancel extends \PHPFUI\ConstantContact\Base
 	 * in the API guide."
 	 *
 	 * @param string $encoded_account_id The system generated ID that uniquely identifies the client account.
-	 * @param PHPFUI\ConstantContact\Definition\AccountCancellation $body By default, the current date and time is automatically used as the cancellation date. However, you can specify a future date and time to cancel the account (`effective_date`) in the request body in ISO format. You can also enter the client's cancellation reason (`reason_id`).
+	 * @param \PHPFUI\ConstantContact\Definition\AccountCancellation $body By default, the current date and time is automatically used as the cancellation date. However, you can specify a future date and time to cancel the account (`effective_date`) in the request body in ISO format. You can also enter the client's cancellation reason (`reason_id`).
 	 */
-	public function put(string $encoded_account_id, ?PHPFUI\ConstantContact\Definition\AccountCancellation $body = null) : array
+	public function put(string $encoded_account_id, ?\PHPFUI\ConstantContact\Definition\AccountCancellation $body = null) : array
 		{
 		return $this->doPut(['encoded_account_id' => $encoded_account_id, 'body' => $body, ]);
 		}

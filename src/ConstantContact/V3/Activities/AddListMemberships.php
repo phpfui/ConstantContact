@@ -22,9 +22,9 @@ class AddListMemberships extends \PHPFUI\ConstantContact\Base
 	 * Use the `list_ids` array to specify which lists you want to add your
 	 * source contacts to.
 	 *
-	 * @param PHPFUI\ConstantContact\Definition\ListActivityAddContacts $body The JSON payload used to create the 'add contacts to lists' activity
+	 * @param \PHPFUI\ConstantContact\Definition\ListActivityAddContacts $body The JSON payload used to create the 'add contacts to lists' activity
 	 */
-	public function post(PHPFUI\ConstantContact\Definition\ListActivityAddContacts $body) : array
+	public function post(\PHPFUI\ConstantContact\Definition\ListActivityAddContacts $body) : array
 		{
 		return $this->doPost(['body' => $body, ]);
 		}

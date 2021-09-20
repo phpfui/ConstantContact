@@ -42,9 +42,9 @@ class PhysicalAddress extends \PHPFUI\ConstantContact\Base
 	 * You must have the role of Account Owner assigned to update account level
 	 * details.
 	 *
-	 * @param PHPFUI\ConstantContact\Definition\AccountPhysicalAddress $body Include all `AccountPhysicalAddress` properties required for the specified `country_code` and then update only those properties that you want to change. Excluding a non-read only field from the request body removes it from the physical address.
+	 * @param \PHPFUI\ConstantContact\Definition\AccountPhysicalAddress $body Include all `AccountPhysicalAddress` properties required for the specified `country_code` and then update only those properties that you want to change. Excluding a non-read only field from the request body removes it from the physical address.
 	 */
-	public function put(PHPFUI\ConstantContact\Definition\AccountPhysicalAddress $body) : array
+	public function put(\PHPFUI\ConstantContact\Definition\AccountPhysicalAddress $body) : array
 		{
 		return $this->doPut(['body' => $body, ]);
 		}

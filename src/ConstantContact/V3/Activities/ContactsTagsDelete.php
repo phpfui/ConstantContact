@@ -21,9 +21,9 @@ class ContactsTagsDelete extends \PHPFUI\ConstantContact\Base
 	 * Use the `tag_ids` array of string values in the request body to specify
 	 * which tags to delete.
 	 *
-	 * @param PHPFUI\ConstantContact\Definition\TagIdList500Limit $body An array of string values (`tag_id`s) to delete.
+	 * @param \PHPFUI\ConstantContact\Definition\TagIdList500Limit $body An array of string values (`tag_id`s) to delete.
 	 */
-	public function post(PHPFUI\ConstantContact\Definition\TagIdList500Limit $body) : array
+	public function post(\PHPFUI\ConstantContact\Definition\TagIdList500Limit $body) : array
 		{
 		return $this->doPost(['body' => $body, ]);
 		}

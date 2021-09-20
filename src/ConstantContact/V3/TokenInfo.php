@@ -23,9 +23,9 @@ class TokenInfo extends \PHPFUI\ConstantContact\Base
 	 *
 	 * 
 	 *
-	 * @param PHPFUI\ConstantContact\Definition\AuthToken $auth_token A JSON request payload containing a valid OAuth2.0 access token.
+	 * @param \PHPFUI\ConstantContact\Definition\AuthToken $auth_token A JSON request payload containing a valid OAuth2.0 access token.
 	 */
-	public function post(PHPFUI\ConstantContact\Definition\AuthToken $auth_token) : array
+	public function post(\PHPFUI\ConstantContact\Definition\AuthToken $auth_token) : array
 		{
 		return $this->doPost(['auth_token' => $auth_token, ]);
 		}

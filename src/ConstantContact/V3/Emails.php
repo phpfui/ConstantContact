@@ -53,9 +53,9 @@ class Emails extends \PHPFUI\ConstantContact\Base
 	 *
 	 * 
 	 *
-	 * @param PHPFUI\ConstantContact\Definition\EmailCampaignComplete $body A JSON request body that contains the email content.
+	 * @param \PHPFUI\ConstantContact\Definition\EmailCampaignComplete $body A JSON request body that contains the email content.
 	 */
-	public function post(PHPFUI\ConstantContact\Definition\EmailCampaignComplete $body) : array
+	public function post(\PHPFUI\ConstantContact\Definition\EmailCampaignComplete $body) : array
 		{
 		return $this->doPost(['body' => $body, ]);
 		}

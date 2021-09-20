@@ -22,9 +22,9 @@ class RemoveListMemberships extends \PHPFUI\ConstantContact\Base
 	 * the lists from which you want to remove the source contacts.
 	 * 
 	 *
-	 * @param PHPFUI\ConstantContact\Definition\ListActivityRemoveContacts $body The JSON payload used to create the 'remove contacts from lists' activity
+	 * @param \PHPFUI\ConstantContact\Definition\ListActivityRemoveContacts $body The JSON payload used to create the 'remove contacts from lists' activity
 	 */
-	public function post(PHPFUI\ConstantContact\Definition\ListActivityRemoveContacts $body) : array
+	public function post(\PHPFUI\ConstantContact\Definition\ListActivityRemoveContacts $body) : array
 		{
 		return $this->doPost(['body' => $body, ]);
 		}

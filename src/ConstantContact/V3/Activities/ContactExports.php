@@ -20,9 +20,9 @@ class ContactExports extends \PHPFUI\ConstantContact\Base
 	 * file. After Constant Contact finishes processing the activity, use the
 	 * `results` link in the response body to retrieve the CSV file.
 	 *
-	 * @param PHPFUI\ConstantContact\Definition\ContactsExport $body A JSON payload that specifies the contacts (rows in the CSV file) and contact properties (columns in the CSV file) you want to export.
+	 * @param \PHPFUI\ConstantContact\Definition\ContactsExport $body A JSON payload that specifies the contacts (rows in the CSV file) and contact properties (columns in the CSV file) you want to export.
 	 */
-	public function post(PHPFUI\ConstantContact\Definition\ContactsExport $body) : array
+	public function post(\PHPFUI\ConstantContact\Definition\ContactsExport $body) : array
 		{
 		return $this->doPost(['body' => $body, ]);
 		}

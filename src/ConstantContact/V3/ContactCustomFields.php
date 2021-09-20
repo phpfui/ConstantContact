@@ -36,9 +36,9 @@ class ContactCustomFields extends \PHPFUI\ConstantContact\Base
 	 * This POST request adds a new `custom_field` to the user's account. A
 	 * user can configure up to 100 `custom_fields` in their account.
 	 *
-	 * @param PHPFUI\ConstantContact\Definition\CustomFieldInput $body The JSON payload required to create a new `custom_field`
+	 * @param \PHPFUI\ConstantContact\Definition\CustomFieldInput $body The JSON payload required to create a new `custom_field`
 	 */
-	public function post(PHPFUI\ConstantContact\Definition\CustomFieldInput $body) : array
+	public function post(\PHPFUI\ConstantContact\Definition\CustomFieldInput $body) : array
 		{
 		return $this->doPost(['body' => $body, ]);
 		}

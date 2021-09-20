@@ -60,9 +60,9 @@ class Subscription extends \PHPFUI\ConstantContact\Base
 	 * at 1 minute intervals for up to an hour.
 	 *
 	 * @param string $topic_id Identifies a webhook topic.
-	 * @param PHPFUI\ConstantContact\Definition\WebhooksSubscriptionBody $body A JSON payload containing a callback URI. Constant Contact uses this callback URI to notify you about your chosen topic.
+	 * @param \PHPFUI\ConstantContact\Definition\WebhooksSubscriptionBody $body A JSON payload containing a callback URI. Constant Contact uses this callback URI to notify you about your chosen topic.
 	 */
-	public function put(string $topic_id, PHPFUI\ConstantContact\Definition\WebhooksSubscriptionBody $body) : array
+	public function put(string $topic_id, \PHPFUI\ConstantContact\Definition\WebhooksSubscriptionBody $body) : array
 		{
 		return $this->doPut(['topic_id' => $topic_id, 'body' => $body, ]);
 		}

@@ -44,9 +44,9 @@ class Segment extends \PHPFUI\ConstantContact\Base
 	 * in the API guide.
 	 *
 	 * @param int $segment_id The system generated ID that uniquely identifies the segment that you want to modify.
-	 * @param PHPFUI\ConstantContact\Definition\SegmentData $body Include both the `name` and `segment_criteria` (single-string escaped JSON) in the body request, then make updates to either or both.
+	 * @param \PHPFUI\ConstantContact\Definition\SegmentData $body Include both the `name` and `segment_criteria` (single-string escaped JSON) in the body request, then make updates to either or both.
 	 */
-	public function put(int $segment_id, PHPFUI\ConstantContact\Definition\SegmentData $body) : array
+	public function put(int $segment_id, \PHPFUI\ConstantContact\Definition\SegmentData $body) : array
 		{
 		return $this->doPut(['segment_id' => $segment_id, 'body' => $body, ]);
 		}

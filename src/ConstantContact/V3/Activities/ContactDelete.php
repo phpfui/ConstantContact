@@ -24,9 +24,9 @@ class ContactDelete extends \PHPFUI\ConstantContact\Base
 	 * be added back to an account. [Learn how to revive deleted contacts](https://v3.developer.constantcontact.com/api_guide/contacts_delete.html#revive).
 	 *
 	 *
-	 * @param PHPFUI\ConstantContact\Definition\ContactDelete $body The request body contains an array of contact_ids <em>or</em> list_ids. All contact_ids provided are deleted, or all members of each specified list_id are deleted.
+	 * @param \PHPFUI\ConstantContact\Definition\ContactDelete $body The request body contains an array of contact_ids <em>or</em> list_ids. All contact_ids provided are deleted, or all members of each specified list_id are deleted.
 	 */
-	public function post(PHPFUI\ConstantContact\Definition\ContactDelete $body) : array
+	public function post(\PHPFUI\ConstantContact\Definition\ContactDelete $body) : array
 		{
 		return $this->doPost(['body' => $body, ]);
 		}

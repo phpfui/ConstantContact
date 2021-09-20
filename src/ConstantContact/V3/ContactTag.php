@@ -40,9 +40,9 @@ class ContactTag extends \PHPFUI\ConstantContact\Base
 	 *
 	 *
 	 * @param string $tag_id The system generated ID used to uniquely identify the tag that you want to rename (UUID format).
-	 * @param PHPFUI\ConstantContact\Definition\TagPut $body The JSON payload used to update the tag name (`name`).
+	 * @param \PHPFUI\ConstantContact\Definition\TagPut $body The JSON payload used to update the tag name (`name`).
 	 */
-	public function put(string $tag_id, PHPFUI\ConstantContact\Definition\TagPut $body) : array
+	public function put(string $tag_id, \PHPFUI\ConstantContact\Definition\TagPut $body) : array
 		{
 		return $this->doPut(['tag_id' => $tag_id, 'body' => $body, ]);
 		}

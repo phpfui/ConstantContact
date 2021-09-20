@@ -60,9 +60,9 @@ class Segments extends \PHPFUI\ConstantContact\Base
 	 * For more use case information, see the [Segments Overview](https://v3.developer.constantcontact.com/api_guide/segments_overview.html)
 	 * in the API guide.
 	 *
-	 * @param PHPFUI\ConstantContact\Definition\SegmentData $body The segment `name` and `segment_criteria` (requires single-string escaped JSON).
+	 * @param \PHPFUI\ConstantContact\Definition\SegmentData $body The segment `name` and `segment_criteria` (requires single-string escaped JSON).
 	 */
-	public function post(PHPFUI\ConstantContact\Definition\SegmentData $body) : array
+	public function post(\PHPFUI\ConstantContact\Definition\SegmentData $body) : array
 		{
 		return $this->doPost(['body' => $body, ]);
 		}

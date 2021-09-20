@@ -41,9 +41,9 @@ class ContactList extends \PHPFUI\ConstantContact\Base
 	 * Updates an existing contact list resource, specified by `list_id`
 	 *
 	 * @param string $list_id Unique ID of the contact list to update
-	 * @param PHPFUI\ConstantContact\Definition\ListInput $JSON_PUT_body JSON payload containing updates to the specified contact list
+	 * @param \PHPFUI\ConstantContact\Definition\ListInput $JSON_PUT_body JSON payload containing updates to the specified contact list
 	 */
-	public function put(string $list_id, PHPFUI\ConstantContact\Definition\ListInput $JSON_PUT_body) : array
+	public function put(string $list_id, \PHPFUI\ConstantContact\Definition\ListInput $JSON_PUT_body) : array
 		{
 		return $this->doPut(['list_id' => $list_id, 'JSON_PUT_body' => $JSON_PUT_body, ]);
 		}

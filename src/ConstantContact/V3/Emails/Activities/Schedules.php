@@ -52,9 +52,9 @@ class Schedules extends \PHPFUI\ConstantContact\Base
 	 * 
 	 *
 	 * @param string $campaign_activity_id The unique ID for an email campaign activity. You can only schedule email campaign activities that have the `primary_email` role.
-	 * @param PHPFUI\ConstantContact\Definition\EmailScheduleInput $body A request body payload that contains the date that you want Constant Contact to send your email campaign activity on. Use `"0"` as the date to have Constant Contact immediately send the email campaign activity.
+	 * @param \PHPFUI\ConstantContact\Definition\EmailScheduleInput $body A request body payload that contains the date that you want Constant Contact to send your email campaign activity on. Use `"0"` as the date to have Constant Contact immediately send the email campaign activity.
 	 */
-	public function post(string $campaign_activity_id, PHPFUI\ConstantContact\Definition\EmailScheduleInput $body) : array
+	public function post(string $campaign_activity_id, \PHPFUI\ConstantContact\Definition\EmailScheduleInput $body) : array
 		{
 		return $this->doPost(['campaign_activity_id' => $campaign_activity_id, 'body' => $body, ]);
 		}

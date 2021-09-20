@@ -54,9 +54,9 @@ class Email extends \PHPFUI\ConstantContact\Base
 	 * You cannot rename email campaigns that have a `Removed` status.
 	 *
 	 * @param string $campaign_id The unique identifier for an email campaign.
-	 * @param PHPFUI\ConstantContact\Definition\EmailCampaignName $body A JSON payload that contains the new email campaign name.
+	 * @param \PHPFUI\ConstantContact\Definition\EmailCampaignName $body A JSON payload that contains the new email campaign name.
 	 */
-	public function patch(string $campaign_id, PHPFUI\ConstantContact\Definition\EmailCampaignName $body) : array
+	public function patch(string $campaign_id, \PHPFUI\ConstantContact\Definition\EmailCampaignName $body) : array
 		{
 		return $this->doPatch(['campaign_id' => $campaign_id, 'body' => $body, ]);
 		}

@@ -22,9 +22,9 @@ class Name extends \PHPFUI\ConstantContact\Base
 	 * in the API guide.
 	 *
 	 * @param int $segment_id The system generated ID that uniquely identifies the segment that you want to modify.
-	 * @param PHPFUI\ConstantContact\Definition\SegmentName $body Include the existing segment `name` in the body request, then rename the segment using a unique new name.
+	 * @param \PHPFUI\ConstantContact\Definition\SegmentName $body Include the existing segment `name` in the body request, then rename the segment using a unique new name.
 	 */
-	public function patch(int $segment_id, PHPFUI\ConstantContact\Definition\SegmentName $body) : array
+	public function patch(int $segment_id, \PHPFUI\ConstantContact\Definition\SegmentName $body) : array
 		{
 		return $this->doPatch(['segment_id' => $segment_id, 'body' => $body, ]);
 		}
