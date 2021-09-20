@@ -23,7 +23,7 @@ class Base
 		return $this->client->getBody();
 		}
 
-	protected function doDelete(array $parameters) : array
+	protected function doDelete(array $parameters) : bool
 		{
 		$url = $this->getUrl($parameters);
 
