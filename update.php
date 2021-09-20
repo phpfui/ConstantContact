@@ -64,4 +64,4 @@ $repo->run('commit', ['-m', "{$version} - {$date}"]);
 $repo->run('tag', ['-a', $version, '-m', "Auto generated on {$date}"]);
 
 // push and publish
-$repo->run('push');
+$repo->run('push', ['--follow-tags']);
