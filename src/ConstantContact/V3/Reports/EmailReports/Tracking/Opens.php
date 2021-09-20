@@ -21,7 +21,7 @@ class Opens extends \PHPFUI\ConstantContact\Base
 	 * contact's email address and unique ID, the date and time they opened
 	 * the email campaign activity, and the type of device they used to open
 	 * it. This report lists the most recent activity first. For more use case
-	 * information, see [Get an Opens report for an Email Campaign Activity](/api_guide/email_summary_opens_report.html)
+	 * information, see [Get an Opens report for an Email Campaign Activity](https://v3.developer.constantcontact.com/api_guide/email_summary_opens_report.html)
 	 * in the API guide.
 	 *
 	 * @param string $campaign_activity_id The unique ID for an email campaign activity to use for this report.

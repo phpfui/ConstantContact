@@ -18,7 +18,8 @@ class Name extends \PHPFUI\ConstantContact\Base
 	 *
 	 * Use this method to update an existing segment `name` with a new unique
 	 * name in the request body. For more use case information, see [Rename
-	 * a Segment](/api_guide/segment_rename.html) in the API guide.
+	 * a Segment](https://v3.developer.constantcontact.com/api_guide/segment_rename.html)
+	 * in the API guide.
 	 *
 	 * @param int $segment_id The system generated ID that uniquely identifies the segment that you want to modify.
 	 * @param PHPFUI\ConstantContact\Definition\SegmentName $body Include the existing segment `name` in the body request, then rename the segment using a unique new name.

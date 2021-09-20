@@ -21,7 +21,8 @@ class Plan extends \PHPFUI\ConstantContact\Base
 	 * Only technology partners can access partner endpoints and partner endpoints
 	 * cannot be tested using the API reference tester.
 	 * For more use case information, see [Get Billing Plan Details for a Client
-	 * Account](/api_guide/partners_plans_get.html) in the API guide.
+	 * Account](https://v3.developer.constantcontact.com/api_guide/partners_plans_get.html)
+	 * in the API guide.
 	 *
 	 * @param string $encoded_account_id Specify the client's unique `encoded_account_id`.
 	 */
@@ -58,7 +59,8 @@ class Plan extends \PHPFUI\ConstantContact\Base
 	 * cannot be tested using the API reference tester.
 	 * 
 	 * For more use case information, see [PUT Billing Plan Details for a Client
-	 * Account](/api_guide/partners_plans_update.html) in the API guide.
+	 * Account](https://v3.developer.constantcontact.com/api_guide/partners_plans_update.html)
+	 * in the API guide.
 	 *
 	 * @param string $encoded_account_id Specify the client's unique `encoded_account_id`.
 	 * @param PHPFUI\ConstantContact\Definition\PlanInfo $body Update the billing plan (`plan_type`) for an existing Constant Contact client account. Options include:

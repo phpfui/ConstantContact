@@ -19,7 +19,7 @@ class Segments extends \PHPFUI\ConstantContact\Base
 	 * Use this method to get a list of all segments associated with the account.
 	 * You can sort segment results and limit the number of segments that display
 	 * per page. Deleted segments are excluded from the results. For more use
-	 * case information, see [Get All Segments](/api_guide/segment_get_all.html)
+	 * case information, see [Get All Segments](https://v3.developer.constantcontact.com/api_guide/segment_get_all.html)
 	 * in the API guide.
 	 *
 	 * @param string $limit The number of segments to return on a page.
@@ -57,7 +57,7 @@ class Segments extends \PHPFUI\ConstantContact\Base
 	 * than 500 email campaigns or a date range greater than 1825 days (5 years)
 	 * be evaluated.
 	 * 
-	 * For more use case information, see the [Segments Overview](/api_guide/segments_overview.html)
+	 * For more use case information, see the [Segments Overview](https://v3.developer.constantcontact.com/api_guide/segments_overview.html)
 	 * in the API guide.
 	 *
 	 * @param PHPFUI\ConstantContact\Definition\SegmentData $body The segment `name` and `segment_criteria` (requires single-string escaped JSON).

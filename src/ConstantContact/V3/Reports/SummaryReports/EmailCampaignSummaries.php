@@ -28,7 +28,7 @@ class EmailCampaignSummaries extends \PHPFUI\ConstantContact\Base
 	 * 
 	 * 
 	 * 
-	 * For more use case information, see "[Get an Email Campaign Summary Report](/api_guide/email_bulk_campaign_summary_report.html)"
+	 * For more use case information, see "[Get an Email Campaign Summary Report](https://v3.developer.constantcontact.com/api_guide/email_bulk_campaign_summary_report.html)"
 	 *
 	 *
 	 * @param string $limit Use the `limit` query parameter to limit the number of email campaign summaries to return on a single page. The default is `50` and the maximum is `500` per page.

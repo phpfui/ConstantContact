@@ -21,7 +21,7 @@ class ContactDelete extends \PHPFUI\ConstantContact\Base
 	 * 50 lists); all contacts that are members of the list_ids are deleted.
 	 * Deleted contacts won’t receive email from you, and they don’t count
 	 * as active contacts. Unlike unsubscribed contacts, deleted contacts can
-	 * be added back to an account. [Learn how to revive deleted contacts](/api_guide/contacts_delete.html#revive).
+	 * be added back to an account. [Learn how to revive deleted contacts](https://v3.developer.constantcontact.com/api_guide/contacts_delete.html#revive).
 	 *
 	 *
 	 * @param PHPFUI\ConstantContact\Definition\ContactDelete $body The request body contains an array of contact_ids <em>or</em> list_ids. All contact_ids provided are deleted, or all members of each specified list_id are deleted.

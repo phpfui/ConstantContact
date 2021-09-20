@@ -28,7 +28,7 @@ class ListIdXrefs extends \PHPFUI\ConstantContact\Base
 	 * integration, and are migrating their users to a new V3 API integration.
 	 * The V2 and V3 APIs use different resource ID formats. Use the `sequence_ids`
 	 * query parameter to specify a set of comma delimited V2 list ids to cross-reference.
-	 * See [Migrating Apps and Data to V3](/api_guide/migration_overview.html)
+	 * See [Migrating Apps and Data to V3](https://v3.developer.constantcontact.com/api_guide/migration_overview.html)
 	 * to learn more."
 	 * 
 	 *

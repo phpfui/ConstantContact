@@ -27,8 +27,8 @@ class CampaignIdXrefs extends \PHPFUI\ConstantContact\Base
 	 * query parameter, this method returns the corresponding V3 `campaign_id`
 	 * and V3 `campaign_activity_id` UUID value. For more information on the
 	 * changes to the email campaign resource model, see [V3 Email Campaign
-	 * Resource Changes](/api_guide/v3_v2_email_campaign_deltas.html) in the
-	 * API guide.
+	 * Resource Changes](https://v3.developer.constantcontact.com/api_guide/v3_v2_email_campaign_deltas.html)
+	 * in the API guide.
 	 * 
 	 *
 	 * @param string $v2_email_campaign_ids Comma separated list of V2 API `campaignId` values. You can enter up to 50 V2 `campaignId` values in each request.

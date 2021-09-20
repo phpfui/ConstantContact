@@ -30,7 +30,8 @@ class Cancel extends \PHPFUI\ConstantContact\Base
 	 * cannot be tested using the API reference tester.
 	 * 
 	 * For more use case information, see [Cancel the Billing Plan for a Client
-	 * Account](/api_guide/partners_plans_cancel.html) in the API guide."
+	 * Account](https://v3.developer.constantcontact.com/api_guide/partners_plans_cancel.html)
+	 * in the API guide."
 	 *
 	 * @param string $encoded_account_id The system generated ID that uniquely identifies the client account.
 	 * @param PHPFUI\ConstantContact\Definition\AccountCancellation $body By default, the current date and time is automatically used as the cancellation date. However, you can specify a future date and time to cancel the account (`effective_date`) in the request body in ISO format. You can also enter the client's cancellation reason (`reason_id`).

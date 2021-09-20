@@ -19,7 +19,7 @@ class Summary extends \PHPFUI\ConstantContact\Base
 	 * Get account related details for a Constant Contact user account. Use
 	 * the `extra_fields` query parameter to include the `company_logo` and/or
 	 * `physical_address` details in the response body. For more details, see
-	 * [Get Account Summary Details](/api_guide/account_details_get.html).
+	 * [Get Account Summary Details](https://v3.developer.constantcontact.com/api_guide/account_details_get.html).
 	 *
 	 *
 	 * @param string $extra_fields Use the `extra_fields` query parameter to include the `physical_address` and/or `company_logo` details in the response body. Use a comma separated list to include both (physical_address, company logo).
@@ -48,7 +48,7 @@ class Summary extends \PHPFUI\ConstantContact\Base
 	 * such as the email address or phone number. This PUT method provides
 	 * a partial update where only valid properties that you include in the
 	 * request body are updated and excluded properties are not overwritten.
-	 * For more details, see [Put (update) Account Summary Details](/api_guide/account_details_put.html).
+	 * For more details, see [Put (update) Account Summary Details](https://v3.developer.constantcontact.com/api_guide/account_details_put.html).
 	 *
 	 *
 	 * @param PHPFUI\ConstantContact\Definition\CustomerPut $body In the request body, specify changes to account details by including and modifying all or select `CustomerPut` properties. Changes to read-only fields (`encoded_account_id`) are ignored.

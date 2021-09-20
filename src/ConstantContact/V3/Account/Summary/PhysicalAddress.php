@@ -38,7 +38,7 @@ class PhysicalAddress extends \PHPFUI\ConstantContact\Base
 	 * resides determines whether you use the <code>state_code</code> to specify
 	 * United States (<code>US</code>) and Canada (<code>CA</code>) addresses,
 	 * or use the <code>state_name</code> to specify all other countries. For
-	 * more details, see [Put (update) the Physical Address for the Account](/api_guide/account_address_put.html).
+	 * more details, see [Put (update) the Physical Address for the Account](https://v3.developer.constantcontact.com/api_guide/account_address_put.html).
 	 * You must have the role of Account Owner assigned to update account level
 	 * details.
 	 *

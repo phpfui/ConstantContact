@@ -20,7 +20,7 @@ class Links extends \PHPFUI\ConstantContact\Base
 	 * each link in an email campaign activity and the type of action associated
 	 * with clicking each link. You can return reporting data for `primary_email`
 	 * and `resend` role email campaign activities. For more use case information,
-	 * see [Get an Email Links Report](/api_guide/email_links_report.html)
+	 * see [Get an Email Links Report](https://v3.developer.constantcontact.com/api_guide/email_links_report.html)
 	 * in the API guide.
 	 *
 	 * @param string $campaign_activity_id The unique ID for an email campaign activity.

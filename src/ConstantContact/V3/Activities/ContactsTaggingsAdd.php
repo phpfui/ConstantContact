@@ -26,7 +26,7 @@ class ContactsTaggingsAdd extends \PHPFUI\ConstantContact\Base
 	 * Use the activity link in the results to check the status of your request.
 	 *
 	 * 
-	 * For more use case information, see "[Add Tags to Contacts](/api_guide/add_tagging_activity.html)"
+	 * For more use case information, see "[Add Tags to Contacts](https://v3.developer.constantcontact.com/api_guide/add_tagging_activity.html)"
 	 *
 	 * 
 	 *

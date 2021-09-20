@@ -21,7 +21,7 @@ class Sends extends \PHPFUI\ConstantContact\Base
 	 * date and time that the email campaign activity was sent to a contact's
 	 * email address, the contact's first and last name, and unique ID. This
 	 * report lists the most recent activity first. For more use case information,
-	 * see [Get an Sends report for an Email Campaign Activity](/api_guide/email_summary_sends_report.html)
+	 * see [Get an Sends report for an Email Campaign Activity](https://v3.developer.constantcontact.com/api_guide/email_summary_sends_report.html)
 	 * in the API guide.
 	 *
 	 * @param string $campaign_activity_id The unique ID for an email campaign activity to use for this report.

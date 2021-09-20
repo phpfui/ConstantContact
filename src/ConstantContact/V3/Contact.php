@@ -67,7 +67,7 @@ class Contact extends \PHPFUI\ConstantContact\Base
 	 * Deletes the contact identified by the contact_id path parameter. Deleted
 	 * contacts won't receive email from you, and they don't count as active
 	 * contacts. Unlike unsubscribed contacts, deleted contacts can be revived,
-	 * or added back to an account. Learn how to [revive deleted contacts](/api_guide/contacts_delete.html#revive).
+	 * or added back to an account. Learn how to [revive deleted contacts](https://v3.developer.constantcontact.com/api_guide/contacts_delete.html#revive).
 	 *
 	 *
 	 * @param string $contact_id Unique ID of contact to DELETE

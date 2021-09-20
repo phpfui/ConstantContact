@@ -19,8 +19,8 @@ class Segment extends \PHPFUI\ConstantContact\Base
 	 * Use this method to get details about a segment, including the segment
 	 * criteria. If you know the `segment_id` You can also use this method
 	 * to get details about a deleted segment. For more use case information,
-	 * see [Get a Segment's Details](/api_guide/segment_get.html) in the API
-	 * guide.
+	 * see [Get a Segment's Details](https://v3.developer.constantcontact.com/api_guide/segment_get.html)
+	 * in the API guide.
 	 *
 	 * @param int $segment_id The system-generated unique ID that identifies a segment.
 	 */
@@ -40,7 +40,8 @@ class Segment extends \PHPFUI\ConstantContact\Base
 	 * a 400 error response, when specifying the `segment_criteria` do not
 	 * request more than 500 email campaigns or a date range greater than 1825
 	 * days (5 years) be evaluated. For more use case information, see [Update
-	 * Segment Details](/api_guide/segment_update.html) in the API guide.
+	 * Segment Details](https://v3.developer.constantcontact.com/api_guide/segment_update.html)
+	 * in the API guide.
 	 *
 	 * @param int $segment_id The system generated ID that uniquely identifies the segment that you want to modify.
 	 * @param PHPFUI\ConstantContact\Definition\SegmentData $body Include both the `name` and `segment_criteria` (single-string escaped JSON) in the body request, then make updates to either or both.
@@ -62,8 +63,8 @@ class Segment extends \PHPFUI\ConstantContact\Base
 	 * endpoint to view the deleted segment's details. A segment's details
 	 * are preserved for external reference purposes, such as displaying the
 	 * segment name in a campaign's history. For more use case information,
-	 * see [Delete a Segment](/api_guide/segment_delete.html) in the API guide.
-	 *
+	 * see [Delete a Segment](https://v3.developer.constantcontact.com/api_guide/segment_delete.html)
+	 * in the API guide.
 	 *
 	 * @param int $segment_id The system generated ID that uniquely identifies the segment.
 	 */

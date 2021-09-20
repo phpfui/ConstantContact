@@ -26,7 +26,7 @@ class ContactsTaggingsRemove extends \PHPFUI\ConstantContact\Base
 	 * specified contacts by `contact_id`. Use the activity link in the results
 	 * to check the status of your request."
 	 * 
-	 * For more use case information, see "[Remove Tags from Contacts](/api_guide/remove_tagging_activity.html)"
+	 * For more use case information, see "[Remove Tags from Contacts](https://v3.developer.constantcontact.com/api_guide/remove_tagging_activity.html)"
 	 *
 	 * 
 	 *

@@ -67,7 +67,7 @@ class Emails extends \PHPFUI\ConstantContact\Base
 	 * clicks that link, the account email status changes from `UNCONFIRMED`
 	 * to `CONFIRMED`. You can use confirmed account email addresses in the
 	 * email campaign `from_email` and `reply_to_email` headers. For more use
-	 * case information, see [Add an Account Email Address](/api_guide/account_post_emails.html)
+	 * case information, see [Add an Account Email Address](https://v3.developer.constantcontact.com/api_guide/account_post_emails.html)
 	 * in the API guide.
 	 * 
 	 *

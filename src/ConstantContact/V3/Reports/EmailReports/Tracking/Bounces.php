@@ -24,8 +24,8 @@ class Bounces extends \PHPFUI\ConstantContact\Base
 	 * bounce data to return.
 	 * 
 	 * For more use case information, see [Get a Bounces Report for an Email
-	 * Campaign Activity](/api_guide/email_summary_bounces_report.html) in
-	 * the API guide.
+	 * Campaign Activity](https://v3.developer.constantcontact.com/api_guide/email_summary_bounces_report.html)
+	 * in the API guide.
 	 *
 	 * @param string $campaign_activity_id The ID that uniquely identifies the email campaign activity to use for this report.
 	 * @param array $bounce_code To return results for a specific bounce code, select the `bounce_code` from the drop-down list. To return results for multiple codes, repeat the bounce code parameter for each. For example, to return results for bounce codes `B` and `D` use `bounce_code=B&bounce_code=D`.

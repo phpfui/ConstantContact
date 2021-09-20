@@ -22,7 +22,7 @@ class Optouts extends \PHPFUI\ConstantContact\Base
 	 * contact information, such as the contact's email address, unique ID,
 	 * and the opt-out date and time. Opt-out report data is sorted with the
 	 * most recent activity listed first. For more use case information, see
-	 * [Get an Email Opt-outs Report](/api_guide/email_summary_optouts_report.html)
+	 * [Get an Email Opt-outs Report](https://v3.developer.constantcontact.com/api_guide/email_summary_optouts_report.html)
 	 * in the API guide.
 	 *
 	 * @param string $campaign_activity_id The ID that uniquely identifies the email campaign activity to use for this report.

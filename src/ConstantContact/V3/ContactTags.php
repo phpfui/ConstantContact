@@ -26,7 +26,8 @@ class ContactTags extends \PHPFUI\ConstantContact\Base
 	 * 
 	 * <p><code>/v3/contact_tags?limit=1&cursor=</code></p><p><code>bGltaXQ9MSZuZXh0PTJjZDgwMjdhLTc4YzAtMTFlOS1iZmQwLWZhMTYzZTZiMDFjMQ=</code></p>
 	 *
-	 * To learn more, see [Get Tags](/api_guide/tags_get.html).
+	 * To learn more, see [Get Tags](https://v3.developer.constantcontact.com/api_guide/tags_get.html).
+	 *
 	 *
 	 * @param int $limit Use to specify the number of tag results (up to `500`) to display per page of output. The default is `50`.
 	 * @param bool $include_count Returns the total number of contacts (`contacts_count`) to which a tag applies.
@@ -42,7 +43,7 @@ class ContactTags extends \PHPFUI\ConstantContact\Base
 	 * Use this method to create a new tag. The tag `name` is required and
 	 * must be unique and can include most common keyboard symbols. Optionally,
 	 * when creating a new tag you can specify the source (`tag_source`) used
-	 * to identify the contacts to tag in the request body. [Learn more](/api_guide/tags_create.html).
+	 * to identify the contacts to tag in the request body. [Learn more](https://v3.developer.constantcontact.com/api_guide/tags_create.html).
 	 *
 	 *
 	 * @param PHPFUI\ConstantContact\Definition\TagPost $body The JSON payload to use to create a new tag.

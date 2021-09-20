@@ -21,7 +21,7 @@ class Didnotopens extends \PHPFUI\ConstantContact\Base
 	 * lists contact information such as the contact's email address and unique
 	 * ID, and the date and time that the email campaign activity was sent.
 	 * This report lists the most recent activity first. For more use case
-	 * information, see [Get a Did Not Opens Report for an Email Campaign Activity](/api_guide/email_summary_non_opens_report.html)
+	 * information, see [Get a Did Not Opens Report for an Email Campaign Activity](https://v3.developer.constantcontact.com/api_guide/email_summary_non_opens_report.html)
 	 * in the API guide.
 	 *
 	 * @param string $campaign_activity_id The ID that uniquely identifies the email campaign activity to use for this report.

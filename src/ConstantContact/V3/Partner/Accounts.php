@@ -21,7 +21,7 @@ class Accounts extends \PHPFUI\ConstantContact\Base
 	 * accounts to return on each results page.
 	 * Only technology partners can access partner endpoints and partner endpoints
 	 * cannot be tested using the API reference tester.
-	 * For more use case information, see [Get all Partner Client Accounts](/api_guide/partners_accts_get.html)
+	 * For more use case information, see [Get all Partner Client Accounts](https://v3.developer.constantcontact.com/api_guide/partners_accts_get.html)
 	 * in the API guide.
 	 *
 	 * @param string $offset Depending on the `limit` you specify, the system determines the `offset` parameter to use (number of records to skip) and includes it in the link used to get the next page of results
@@ -54,7 +54,7 @@ class Accounts extends \PHPFUI\ConstantContact\Base
 	 * Some client account features will be supported in future releases, such
 	 * as Single Sign On (SSO).
 	 * 
-	 * For more use case information, see [Create a new Partner Client Account](/api_guide/partners_accts_create.html)
+	 * For more use case information, see [Create a new Partner Client Account](https://v3.developer.constantcontact.com/api_guide/partners_accts_create.html)
 	 * in the API guide.
 	 *
 	 * @param PHPFUI\ConstantContact\Definition\Provision $provision Create a new Constant Contact client account under your partner account. All required properties must be included in the JSON payload request.

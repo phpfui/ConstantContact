@@ -22,7 +22,7 @@ class Forwards extends \PHPFUI\ConstantContact\Base
 	 * email address and unique ID, and the date and time that the email campaign
 	 * activity was forwarded. Forwards report data is sorted with the most
 	 * recent activity listed first. For more use case information, see [Get
-	 * an Email Forwards Report](/api_guide/email_summary_forwards_report.html)
+	 * an Email Forwards Report](https://v3.developer.constantcontact.com/api_guide/email_summary_forwards_report.html)
 	 * in the API guide.
 	 *
 	 * @param string $campaign_activity_id The ID that uniquely identifies the email campaign activity to use for this report.
