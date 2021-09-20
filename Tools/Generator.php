@@ -207,7 +207,7 @@ class Generator
 				if (isset($parameter['schema']))
 					{
 					$parts = \explode('/', $parameter['schema']['$ref']);
-					$type = $this->definitionNamespace . '\\' . \array_pop($parts);
+					$type = '\\' . $this->definitionNamespace . '\\' . \array_pop($parts);
 					}
 				else
 					{
