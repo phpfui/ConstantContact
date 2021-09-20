@@ -176,6 +176,7 @@ class Generator
         // description: "The contact phone number to associate with the client account."
 				if (isset($details['description']))
 					{
+					$details['description'] = str_replace('(/api_guide/', '(https://v3.developer.constantcontact.com/api_guide/', $details['description']);
 					if (is_array($type))
 						{
 						$type = $originalType;
@@ -381,6 +382,7 @@ PHP;
 
 	private function formatDescription(string $description) : string
 		{
+		$description = str_replace('(/api_guide/', '(https://v3.developer.constantcontact.com/api_guide/', $description);
 		$lines = \explode("\n", $description);
 		$blocks = [];
 
