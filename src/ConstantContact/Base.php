@@ -23,7 +23,17 @@ class Base
 		return $this->client->getBody();
 		}
 
-	protected function doDelete(array $parameters) : bool
+	/**
+	 * If the endpoint is paginated, you can call next() to retrieve the next set of data.  If no next is provided, an empty array is returned.
+	 *
+	 * @return array filled with next part of the response from the endpoint, or empty if no next.
+	 */
+	public function next() : array
+		{
+		return $this->client->next();
+		}
+
+	protected function doDelete(array $parameters) : array
 		{
 		$url = $this->getUrl($parameters);
 

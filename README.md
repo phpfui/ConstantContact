@@ -28,7 +28,10 @@ $client->refreshToken();
 // $client is now ready to use
 $listEndPoint = new \PHPFUI\ConstantContact\V3\ContactLists($client);
 $lists = $listEndPoint->get();
-print_r($lists);
+do {
+  print_r($lists);
+  $lists = $listEndPoint->next();
+} while ($lists);
 ```
 
 ## Constant Contact Setup

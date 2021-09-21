@@ -22,6 +22,8 @@ class Client
 
   private array $validScopes = ['account_read', 'account_update', 'contact_data', 'campaign_data', ];
 
+	private string $next = '';
+
 	/**
 	 * Construct a client.
 	 *
@@ -38,6 +40,19 @@ class Client
 	public function getBody() : string
 		{
 		return $this->body;
+		}
+
+	public function next() : array
+		{
+		if (! $this->next)
+			{
+			return [];
+			}
+
+		$guzzle = new \GuzzleHttp\Client(['headers' => $this->getHeaders()]);
+		$response = $guzzle->request('GET', 'https://api.cc.email' . $this->next);
+
+		return $this->process($response);
 		}
 
 	public function setHost(string $host) : self
@@ -256,6 +271,7 @@ class Client
 		$this->statusCode = $response->getStatusCode();
 		$this->body = $response->getBody();
 		$data = \json_decode($this->body, true);
+		$this->next = $data['_links']['next']['href'] ?? '';
 
 		if (null !== $data)
 			{
