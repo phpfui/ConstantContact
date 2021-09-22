@@ -382,7 +382,10 @@ PHP;
 
 	private function formatDescription(string $description) : string
 		{
-		$description = str_replace('(/api_guide/', '(https://v3.developer.constantcontact.com/api_guide/', $description);
+		// fix issues in documentation
+		$description = str_replace(['(/api_guide/', '<a/>', 'href="/api_guide/'],
+															 ['(https://v3.developer.constantcontact.com/api_guide/', '</a>', 'href="https://v3.developer.constantcontact.com/api_guide/'],
+															 $description);
 		$lines = \explode("\n", $description);
 		$blocks = [];
 
