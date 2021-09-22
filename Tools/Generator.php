@@ -176,13 +176,13 @@ class Generator
         // description: "The contact phone number to associate with the client account."
 				if (isset($details['description']))
 					{
-					$details['description'] = str_replace('(/api_guide/', '(https://v3.developer.constantcontact.com/api_guide/', $details['description']);
+					$description = $this->cleanDescription($details['description']);
 					if (is_array($type))
 						{
 						$type = $originalType;
 						}
 					$type = str_replace('\\\\', '\\', $type);
-					$docBlock[] = "{$type} {$dollar}{$name} {$details['description']}";
+					$docBlock[] = "{$type} {$dollar}{$name} {$description}";
 					}
 				}
 			$this->generateFromTemplate($class, ['fields' => $fields, 'minLength' => $minLength, 'maxLength' => $maxLength, ], $docBlock);
@@ -380,12 +380,17 @@ PHP;
 		return \trim($className, '\\');
 		}
 
-	private function formatDescription(string $description) : string
+	private function cleanDescription(string $description) : string
 		{
 		// fix issues in documentation
-		$description = str_replace(['(/api_guide/', '<a/>', 'href="/api_guide/'],
-															 ['(https://v3.developer.constantcontact.com/api_guide/', '</a>', 'href="https://v3.developer.constantcontact.com/api_guide/'],
-															 $description);
+		return str_replace(['(/api_guide/', '<a/>', 'href="/api_guide/'],
+											 ['(https://v3.developer.constantcontact.com/api_guide/', '</a>', 'href="https://v3.developer.constantcontact.com/api_guide/'],
+											 $description);
+		}
+
+	private function formatDescription(string $description) : string
+		{
+		$description = $this->cleanDescription($description);
 		$lines = \explode("\n", $description);
 		$blocks = [];
 

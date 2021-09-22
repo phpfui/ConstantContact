@@ -18,7 +18,7 @@ class Emails extends \PHPFUI\ConstantContact\Base
 	 *
 	 * Use this method to return a collection of email addresses for the account
 	 * associated with your access token. When you <a href="https://v3.developer.constantcontact.com/api_reference/index.html#!/Email_Campaigns/createEmailCampaignUsingPOST"
-	 * target="_blank">Create an Email Campaign<a/>, you must use an account
+	 * target="_blank">Create an Email Campaign</a>, you must use an account
 	 * email address with a `CONFIRMED` status in the email campaign `from_email`
 	 * and `reply_to_email` headers.
 	 * 
