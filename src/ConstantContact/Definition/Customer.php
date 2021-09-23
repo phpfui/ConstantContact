@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class Customer extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var string $contact_email Email addresses that are associated with the Constant Contact account owner.
 	 * @var string $contact_phone The account owner's contact phone number (up to 25 characters in length).
@@ -18,6 +16,9 @@ class Customer extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var string $website The organization's website URL.
 	 * @var PHPFUI\ConstantContact\Definition\CompanyLogo $company_logo Used to include an existing company logo in the response body. If a company logo does not exist, nothing is returned in the response body. This property is optional.
 	 */
+
+class Customer extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'contact_email' => 'string',

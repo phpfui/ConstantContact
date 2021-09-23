@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class Source extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var array $contact_ids An array of contacts IDs.
 	 * @var array $list_ids An array of list IDs ( <code>list_id</code> ).
@@ -11,6 +9,9 @@ class Source extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var bool $all_active_contacts Use to identify contacts with an active status.
 	 * @var bool $new_subscriber Use to identify newly subscribed contacts.
 	 */
+
+class Source extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'contact_ids' => 'array',

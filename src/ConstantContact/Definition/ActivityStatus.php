@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class ActivityStatus extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var int $items_total_count The total number of items to be processed.
 	 * @var int $items_completed_count The number of items processed in the activity request.
@@ -13,6 +11,9 @@ class ActivityStatus extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var int $cannot_add_to_list_count The number of contacts that cannot be added to a list because they were previously unsubscribed, valid for contacts_file_ or json_import requests.
 	 * @var int $list_count The number of lists processed in an add_ or remove_list_membership activity request.
 	 */
+
+class ActivityStatus extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'items_total_count' => 'int',

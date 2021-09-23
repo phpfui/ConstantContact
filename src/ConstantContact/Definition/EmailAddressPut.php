@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class EmailAddressPut extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var string $address The email address of the contact. The email address must be unique for each contact.
 	 * @var string $permission_to_send Identifies the type of permission that the Constant Contact account has to send email to the contact. Types of permission: explicit, implicit, not_set, pending_confirmation, temp_hold, unsubscribed.
@@ -15,6 +13,9 @@ class EmailAddressPut extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var string $opt_out_reason The reason, as provided by the contact, that they unsubscribed/opted-out of receiving email campaigns.
 	 * @var string $confirm_status Indicates if the contact confirmed their email address after they subscribed to receive emails. Possible values: pending, confirmed, off.
 	 */
+
+class EmailAddressPut extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'address' => 'string',

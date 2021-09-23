@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class StatsEmail extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var int $em_bounces Number of unique email bounces.
 	 * @var int $em_clicks Number of unique recipients who clicked any link in the email.
@@ -25,6 +23,9 @@ class StatsEmail extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var int $em_optouts Number of unique recipients who unsubscribed due to this email.
 	 * @var int $em_sends Number of unique email sends.
 	 */
+
+class StatsEmail extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'em_bounces' => 'int',

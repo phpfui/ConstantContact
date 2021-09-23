@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class ActivityReference extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var string $campaign_activity_id The ID (UUID) that uniquely identifies a campaign activity.
 	 * @var string $role The purpose of the individual campaign activity in the larger email campaign effort. Valid values are: <ul>
@@ -12,6 +10,9 @@ class ActivityReference extends \PHPFUI\ConstantContact\Definition\Base
   <li>resend — An email campaign that you resend to contacts that did not open the email campaign.</li>
 </ul> Constant Contact creates a <code>primary_email</code> and a <code>permalink</code> role campaign activity when you create an email campaign.
 	 */
+
+class ActivityReference extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'campaign_activity_id' => 'string',

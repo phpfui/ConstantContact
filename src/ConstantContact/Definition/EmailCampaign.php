@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class EmailCampaign extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var array $campaign_activities Lists the role and unique activity ID of each campaign activity that is associated with an Email Campaign.
 	 * @var string $campaign_id The unique ID used to identify the email campaign (UUID format).
@@ -41,6 +39,9 @@ class EmailCampaign extends \PHPFUI\ConstantContact\Definition\Base
 </ul>
 	 * @var DateTime $updated_at The system generated date and time showing when the campaign was last updated. This string is read only and is in ISO-8601 format.
 	 */
+
+class EmailCampaign extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'campaign_activities' => 'array',

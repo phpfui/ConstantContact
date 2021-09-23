@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class UniqueEmailCounts extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var int $sends The total number of unique sends.
 	 * @var int $opens The total number of unique opens.
@@ -14,6 +12,9 @@ class UniqueEmailCounts extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var int $bounces The total number of unique bounce count.
 	 * @var int $not_opened The total number of unique non-opens
 	 */
+
+class UniqueEmailCounts extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'sends' => 'int',

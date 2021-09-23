@@ -2,11 +2,12 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class ContactListArray extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var int $lists_count The total number of contact lists.
 	 */
+
+class ContactListArray extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'lists' => 'array',

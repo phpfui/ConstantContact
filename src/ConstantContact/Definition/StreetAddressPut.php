@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class StreetAddressPut extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var string $kind Describes the type of address; valid values are home, work, or other.
 	 * @var string $street Number and street of the address.
@@ -12,6 +10,9 @@ class StreetAddressPut extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var string $postal_code The zip or postal code of the contact.
 	 * @var string $country The name of the country where the contact lives.
 	 */
+
+class StreetAddressPut extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'kind' => ['home', 'work', 'other'],

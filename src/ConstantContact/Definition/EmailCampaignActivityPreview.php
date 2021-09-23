@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class EmailCampaignActivityPreview extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var string $campaign_activity_id The unique ID for an email campaign activity.
 	 * @var string $from_email The "from email" email header for the email campaign activity.
@@ -14,6 +12,9 @@ class EmailCampaignActivityPreview extends \PHPFUI\ConstantContact\Definition\Ba
 	 * @var string $reply_to_email The email "Reply To Email" field for the email campaign activity.
 	 * @var string $subject The email "Subject" field for the email campaign activity.
 	 */
+
+class EmailCampaignActivityPreview extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'campaign_activity_id' => 'string',

@@ -2,12 +2,13 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class StatsError extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var string $error_key The unique error key.
 	 * @var string $error_message A error description.
 	 */
+
+class StatsError extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'error_key' => 'string',

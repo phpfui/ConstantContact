@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class EmailCampaignActivity extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var string $campaign_activity_id Identifies a campaign activity in the V3 API.
 	 * @var string $campaign_id Identifies a campaign in the V3 API.
@@ -40,6 +38,9 @@ class EmailCampaignActivity extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var PHPFUI\ConstantContact\Definition\EmailPhysicalAddress $physical_address_in_footer The physical address of the organization that is sending the email campaign. Constant Contact displays this information to contacts in the email message footer.
 	 * @var PHPFUI\ConstantContact\Definition\DocumentProperties $document_properties An object that contains optional properties for legacy format type emails (<code>format_type</code> 1 and 2). If you attempt to add a property that does apply to the email <code>format_type</code>, the API will ignore the property.
 	 */
+
+class EmailCampaignActivity extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'campaign_activity_id' => 'string',

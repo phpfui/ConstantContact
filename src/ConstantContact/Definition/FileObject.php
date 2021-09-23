@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class FileObject extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var int $id Identifies the MyLibrary file.
 	 * @var string $name The file name.
@@ -23,6 +21,9 @@ class FileObject extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var string $added_date Identifies the time a user originally added the file to MyLibrary.
 	 * @var string $external_file_id External identifier for the file.
 	 */
+
+class FileObject extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'id' => 'int',

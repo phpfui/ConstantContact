@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class ContactPostRequest extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var string $first_name The first name of the contact.
 	 * @var string $last_name The last name of the contact.
@@ -20,6 +18,9 @@ class ContactPostRequest extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var array $taggings Array of tags (<code>tag_id</code>) assigned to the contact, up to a maximum of 50.
 	 * @var array $notes An array of notes about the contact.
 	 */
+
+class ContactPostRequest extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'email_address' => 'PHPFUI\\ConstantContact\\Definition\\EmailAddressPost',

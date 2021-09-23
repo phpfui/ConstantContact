@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class JsonImportContact extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var string $email The email address of the contact. This method identifies each unique contact using their email address.
 	 * @var string $first_name The first name of the contact.
@@ -22,6 +20,9 @@ class JsonImportContact extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var string $country The name of the country where the contact lives.
 	 * @var string $cf:custom_field_name The name of this property is dynamic based on the custom fields you want to import. Use a key-value pair where the key is an existing custom field name prefixed with <code>cf:</code>, and the value is a custom field string value. For example, if you have a custom field named <code>first_name</code> you can use <code>"cf:first_name":"Joe"</code>. Each contact can contain up to 25 different custom fields.
 	 */
+
+class JsonImportContact extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'email' => 'string',

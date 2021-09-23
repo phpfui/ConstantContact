@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class ContactList2 extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var PHPFUI\ConstantContact\UUID $list_id Unique ID for the contact list
 	 * @var string $name The name given to the contact list
@@ -13,6 +11,9 @@ class ContactList2 extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var DateTime $updated_at Date and time that the list was last updated, in ISO-8601 format. System generated.
 	 * @var int $membership_count The number of contacts in the contact list.
 	 */
+
+class ContactList2 extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'list_id' => 'PHPFUI\ConstantContact\UUID',

@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class EmailLinkClickCount extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var string $link_url The URL of a link in an email campaign activity. This URL is not normalized and appears the same as the URL in the email campaign activity.
 	 * @var string $url_id The ID for a unique link URL in an email campaign activity.
@@ -12,6 +10,9 @@ class EmailLinkClickCount extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var PHPFUI\ConstantContact\UUID $list_id If the link uses the click segmentation feature, this property contains the contact list linked with the <code>list_action</code> property.
 	 * @var string $link_tag Link tags are not currently available in email campaigns. By default, this method combines results for duplicate link URLs. Link tags will allow users to get a separate link click report for each unique <code>link_tag</code> value they use, even if URLs are not unique.
 	 */
+
+class EmailLinkClickCount extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'link_url' => 'string',

@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class AccountCancellation extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var int $reason_id Specifies the reason that the client is canceling their Constant Contact account as follows:
   <ul>
@@ -19,6 +17,9 @@ class AccountCancellation extends \PHPFUI\ConstantContact\Definition\Base
   </ul>
 	 * @var DateTime $effective_date The client account cancellation date and time in ISO-8601 format.
 	 */
+
+class AccountCancellation extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'reason_id' => [1, 2, 3, 11, 12, 14, 21, 27, 30],

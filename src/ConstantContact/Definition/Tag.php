@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class Tag extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var PHPFUI\ConstantContact\UUID $tag_id The ID that uniquely identifies a tag (UUID format)
 	 * @var string $name The unique tag name.
@@ -12,6 +10,9 @@ class Tag extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var DateTime $updated_at The system generated date and time when the tag was last updated (ISO-8601 format).
 	 * @var string $tag_source The source used to tag contacts.
 	 */
+
+class Tag extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'tag_id' => 'PHPFUI\ConstantContact\UUID',

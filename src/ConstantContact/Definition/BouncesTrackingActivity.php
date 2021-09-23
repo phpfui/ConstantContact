@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class BouncesTrackingActivity extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var PHPFUI\ConstantContact\UUID $contact_id The ID that uniquely identifies a contact.
 	 * @var PHPFUI\ConstantContact\UUID $campaign_activity_id The ID that uniquely identifies the email campaign activity.
@@ -30,6 +28,9 @@ class BouncesTrackingActivity extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var DateTime $created_time The date and time that the email bounce tracking activity occurred.
 	 * @var PHPFUI\ConstantContact\Date $deleted_at If applicable, the date when the contact was deleted.
 	 */
+
+class BouncesTrackingActivity extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'contact_id' => 'PHPFUI\ConstantContact\UUID',

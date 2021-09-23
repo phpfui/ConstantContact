@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class TierObject extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var string $usage_type Identifies the tier usage type that is associated with the billing plan.
 	 * @var float $current_usage The number of active contacts (default) used within the current tier.
@@ -17,6 +15,9 @@ class TierObject extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var float $price The billing price set for the tier used to bill the client account each month.
 	 * @var string $currency_code The currency (ISO currency code) used to price the tier for a client account.
 	 */
+
+class TierObject extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'usage_type' => 'string',

@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class ActivityGeneric extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var string $activity_id The ID that uniquely identifies the activity.
 	 * @var string $state The processing state for the activity.
@@ -12,6 +10,9 @@ class ActivityGeneric extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var int $percent_done The percentage complete for the specified activity.
 	 * @var array $activity_errors An array of error messages if errors occurred for a specified activity. The system returns an empty array if no errors occur.
 	 */
+
+class ActivityGeneric extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'activity_id' => 'string',

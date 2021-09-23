@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class PhysicalAddress extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var string $address_line1 Line 1 of the organization's street address.
 	 * @var string $address_line2 Line 2 of the organization's street address.
@@ -14,6 +12,9 @@ class PhysicalAddress extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var string $postal_code The postal code address (ZIP code) of the organization. This property is required if the <code>state_code</code> is <code>US</code> or <code>CA</code>, otherwise exclude this property from the request body.
 	 * @var string $country_code The two letter <a href='https://en.wikipedia.org/wiki/ISO_3166-1' target='_blank'>ISO 3166-1 code</a> for the organization's country.
 	 */
+
+class PhysicalAddress extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'address_line1' => 'string',

@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class EmailPhysicalAddress extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var string $address_line1 Line 1 of the organization's street address.
 	 * @var string $address_line2 Line 2 of the organization's street address.
@@ -18,6 +16,9 @@ class EmailPhysicalAddress extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var string $state_name The full state name for a <code>state_code</code> that is inside the United States. Automatically generated using the <code>state_code</code>.
 	 * @var string $state_non_us_name The full state name for a <code>state_code</code> that is outside the United States. This property is not read only.
 	 */
+
+class EmailPhysicalAddress extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'address_line1' => 'string',

@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class CustomerPut extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var string $contact_email The confirmed email address that is associated with the account owner.
 	 * @var string $contact_phone The account owner's contact phone number (up to 25 characters in length).
@@ -17,6 +15,9 @@ class CustomerPut extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var string $time_zone_id The time zone to use for the account; as defined in the IANA time-zone database (see http://www.iana.org/time-zones).
 	 * @var string $website The organization's website URL.
 	 */
+
+class CustomerPut extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'contact_email' => 'string',

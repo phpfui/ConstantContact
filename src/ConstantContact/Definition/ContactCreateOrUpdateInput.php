@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class ContactCreateOrUpdateInput extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var string $email_address The email address for the contact. This method identifies each unique contact using their email address. If the email address exists in the account, this method updates the contact. If the email address is new, this method creates a new contact.
 	 * @var string $first_name The first name of the contact.
@@ -17,6 +15,9 @@ class ContactCreateOrUpdateInput extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var int $birthday_month The month value for the contact's birthday. Valid values are from 1 through 12. The <code>birthday_month</code> property is required if you use <code>birthday_day</code>.
 	 * @var int $birthday_day The day value for the contact's birthday. Valid values are from 1 through 31. The <code>birthday_day</code> property is required if you use <code>birthday_month</code>.
 	 */
+
+class ContactCreateOrUpdateInput extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'email_address' => 'string',

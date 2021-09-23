@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class PercentsEmail extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var int $bounce Percentage of emails sent to unique recipients that bounced.
 	 * @var int $click Percentage of recipients who opened the email who also clicked one or more links in it.
@@ -15,6 +13,9 @@ class PercentsEmail extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var int $open Percentage of recipients that received the email (did not bounce) and opened it.
 	 * @var int $unsubscribe Percentage of recipients that received the email (did not bounce) and chose to unsubscribe.
 	 */
+
+class PercentsEmail extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'bounce' => 'int',

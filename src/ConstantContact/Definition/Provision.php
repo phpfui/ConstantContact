@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class Provision extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var string $contact_email A valid email address to associate with the client account.
 	 * @var string $contact_phone The contact phone number to associate with the client account.
@@ -25,6 +23,9 @@ class Provision extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var string $external_id The ID used to uniquely identify the client account for the external authenticator. Do not use the <code>password</code> property when using an external authenticator.
 	 * @var string $external_provider The name of the provider who externally authenticates this customer. For example, PayPal or Yahoo. Do not use the <code>password</code> property when using an external authenticator.
 	 */
+
+class Provision extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'contact_email' => 'string',

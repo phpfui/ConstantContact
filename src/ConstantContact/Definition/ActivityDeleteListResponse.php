@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class ActivityDeleteListResponse extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var PHPFUI\ConstantContact\UUID $activity_id Unique ID for the delete list batch job
 	 * @var string $state The state of the delete list request: processing - request is being processed completed - job completed cancelled - request was cancelled failed - job failed to complete timed_out - the request timed out before completing
@@ -12,6 +10,9 @@ class ActivityDeleteListResponse extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var int $percent_done Job completion percentage
 	 * @var array $activity_errors Array of messages describing the errors that occurred.
 	 */
+
+class ActivityDeleteListResponse extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'activity_id' => 'PHPFUI\ConstantContact\UUID',

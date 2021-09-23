@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class SendsTrackingActivity extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var PHPFUI\ConstantContact\UUID $contact_id The ID that uniquely identifies a contact.
 	 * @var PHPFUI\ConstantContact\UUID $campaign_activity_id The ID that uniquely identifies an email campaign activity.
@@ -14,6 +12,9 @@ class SendsTrackingActivity extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var DateTime $created_time The date and time that you sent the email campaign to the contact.
 	 * @var PHPFUI\ConstantContact\Date $deleted_at If applicable, displays the date that the contact was deleted.
 	 */
+
+class SendsTrackingActivity extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'contact_id' => 'PHPFUI\ConstantContact\UUID',

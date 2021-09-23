@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class DocumentProperties extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var string $style_content Contains style sheet elements for XHTML letter format emails. This property applies only to <code>format_type</code> 1.
 	 * @var string $letter_format Email message format. Valid values are <code>HTML</code> and <code>XHTML</code>. By default, the value is <code>HTML</code>. For more information, see the <a href="http://www.constantcontact.com/display_media.jsp?id=87" target="_blank">Advanced Editor User's Guide</a>. This property applies only to <code>format_type</code> 1. You cannot change this property after you create an email.
@@ -21,6 +19,9 @@ class DocumentProperties extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var string $forward_email_link_enabled If <code>true</code>, when the user forwards an email message the footer includes a link for subscribing to the list. If <code>false</code>, when a user forwards an email message the footer does not include a link for subscribing to the list. By default, the value is <code>false</code>. This property applies to <code>format_type</code> 1 and 2.
 	 * @var string $forward_email_link_name The text displayed as the name for the forward email link in the footer when a user forwards an email. This property applies to <code>format_type</code> 1 and 2.
 	 */
+
+class DocumentProperties extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'style_content' => 'string',

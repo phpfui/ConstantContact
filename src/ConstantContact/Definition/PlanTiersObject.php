@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class PlanTiersObject extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var string $plan_type The billing plan that is associated with a client's Constant Contact account. The billing plan determines which Constant Contact product features that the client account can access. <ul>
   <li><code>TRIAL</code>: A non-billed account with an expiration date that allows clients to try limited Constant Contact product features.</li>
@@ -22,6 +20,9 @@ class PlanTiersObject extends \PHPFUI\ConstantContact\Definition\Base
   </ul>
 	 * @var int $billing_day_of_month This property is required when an account is not set up to use single billing. For trial accounts, the value is intially set to <code>null</code>. The value can only be changed when changing the <code>plan_type</code> from a trial account to a different type of plan, otherwise the value you enter is ignored. You can choose to enter a specific day of month or except the default value, which is the day that the <code>plan_type</code> value changes from a trial account plan to a different plan. Valid <code>billing_day_of_month</code> values include <code>1</code> through and including <code>31</code>.
 	 */
+
+class PlanTiersObject extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'plan_type' => ['TRIAL', 'GOOD', 'BETTER', 'BEST', 'LITE'],

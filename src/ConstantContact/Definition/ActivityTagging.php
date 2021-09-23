@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class ActivityTagging extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var string $activity_id The system assigned UUID that uniquely identifies an activity.
 	 * @var string $state The activity processing state.
@@ -14,6 +12,9 @@ class ActivityTagging extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var int $percent_done The processing percent complete for the activity.
 	 * @var array $activity_errors An array of error message strings describing the errors that occurred.
 	 */
+
+class ActivityTagging extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'activity_id' => 'string',

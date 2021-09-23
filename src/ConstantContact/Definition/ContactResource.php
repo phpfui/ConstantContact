@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class ContactResource extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var PHPFUI\ConstantContact\UUID $contact_id Unique ID for each contact resource
 	 * @var string $first_name The first name of the contact.
@@ -25,6 +23,9 @@ class ContactResource extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var array $taggings Array of tags (<code>tag_id</code>) assigned to the contact, up to a maximum of 50.
 	 * @var array $notes An array of up to 150 notes about the contact.
 	 */
+
+class ContactResource extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'contact_id' => 'PHPFUI\ConstantContact\UUID',

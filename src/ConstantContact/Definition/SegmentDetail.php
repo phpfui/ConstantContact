@@ -2,8 +2,6 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class SegmentDetail extends \PHPFUI\ConstantContact\Definition\Base
-	{
 	/**
 	 * @var string $name The segment's unique descriptive name.
 	 * @var string $segment_criteria The segment's contact selection criteria formatted as single-string escaped JSON.
@@ -11,6 +9,9 @@ class SegmentDetail extends \PHPFUI\ConstantContact\Definition\Base
 	 * @var DateTime $created_at The system generated date and time (ISO-8601) that the segment was created.
 	 * @var DateTime $edited_at The system generated date and time (ISO-8601) that the segment's <code>name</code> or <code> segment_criteria</code> was last updated.
 	 */
+
+class SegmentDetail extends \PHPFUI\ConstantContact\Definition\Base
+	{
 
 	protected static array $fields = [
 		'name' => 'string',
