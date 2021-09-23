@@ -423,8 +423,6 @@ PHP;
 
 namespace {$this->definitionNamespace};
 
-class ~class~ extends {$backSlash}{$this->definitionNamespace}\Base
-	{
 	/**
 
 PHP;
@@ -435,7 +433,11 @@ PHP;
 			$template .= "\t * @var {$docBlock}\n";
 			}
 
-		$template .= "\t */\n";
+		$template .= "\t */
+
+class ~class~ extends {$backSlash}{$this->definitionNamespace}\Base
+	{
+";
 
 		foreach ($properties as $fields => $values)
 			{
