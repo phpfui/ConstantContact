@@ -28,6 +28,6 @@ class ContactDelete extends \PHPFUI\ConstantContact\Base
 	 */
 	public function post(\PHPFUI\ConstantContact\Definition\ContactDelete $body) : array
 		{
-		return $this->doPost(['body' => $body, ]);
+		return $this->doPost(['body' => $body->getData(), ]);
 		}
 	}

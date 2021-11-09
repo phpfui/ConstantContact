@@ -49,6 +49,6 @@ class ContactLists extends \PHPFUI\ConstantContact\Base
 	 */
 	public function post(\PHPFUI\ConstantContact\Definition\ListInput $body) : array
 		{
-		return $this->doPost(['body' => $body, ]);
+		return $this->doPost(['body' => $body->getData(), ]);
 		}
 	}

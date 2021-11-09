@@ -58,6 +58,6 @@ class Email extends \PHPFUI\ConstantContact\Base
 	 */
 	public function patch(string $campaign_id, \PHPFUI\ConstantContact\Definition\EmailCampaignName $body) : array
 		{
-		return $this->doPatch(['campaign_id' => $campaign_id, 'body' => $body, ]);
+		return $this->doPatch(['campaign_id' => $campaign_id, 'body' => $body->getData(), ]);
 		}
 	}

@@ -61,6 +61,6 @@ class Accounts extends \PHPFUI\ConstantContact\Base
 	 */
 	public function post(\PHPFUI\ConstantContact\Definition\Provision $provision) : array
 		{
-		return $this->doPost(['provision' => $provision, ]);
+		return $this->doPost(['provision' => $provision->getData(), ]);
 		}
 	}

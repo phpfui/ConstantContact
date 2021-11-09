@@ -36,7 +36,7 @@ class ContactCustomField extends \PHPFUI\ConstantContact\Base
 	 */
 	public function put(string $custom_field_id, \PHPFUI\ConstantContact\Definition\CustomFieldInput $body) : array
 		{
-		return $this->doPut(['custom_field_id' => $custom_field_id, 'body' => $body, ]);
+		return $this->doPut(['custom_field_id' => $custom_field_id, 'body' => $body->getData(), ]);
 		}
 
 	/**

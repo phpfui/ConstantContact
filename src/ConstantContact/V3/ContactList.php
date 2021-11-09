@@ -45,7 +45,7 @@ class ContactList extends \PHPFUI\ConstantContact\Base
 	 */
 	public function put(string $list_id, \PHPFUI\ConstantContact\Definition\ListInput $JSON_PUT_body) : array
 		{
-		return $this->doPut(['list_id' => $list_id, 'JSON_PUT_body' => $JSON_PUT_body, ]);
+		return $this->doPut(['list_id' => $list_id, 'JSON_PUT_body' => $JSON_PUT_body->getData(), ]);
 		}
 
 	/**

@@ -27,6 +27,6 @@ class TokenInfo extends \PHPFUI\ConstantContact\Base
 	 */
 	public function post(\PHPFUI\ConstantContact\Definition\AuthToken $auth_token) : array
 		{
-		return $this->doPost(['auth_token' => $auth_token, ]);
+		return $this->doPost(['auth_token' => $auth_token->getData(), ]);
 		}
 	}

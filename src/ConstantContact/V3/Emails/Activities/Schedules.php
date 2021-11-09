@@ -56,7 +56,7 @@ class Schedules extends \PHPFUI\ConstantContact\Base
 	 */
 	public function post(string $campaign_activity_id, \PHPFUI\ConstantContact\Definition\EmailScheduleInput $body) : array
 		{
-		return $this->doPost(['campaign_activity_id' => $campaign_activity_id, 'body' => $body, ]);
+		return $this->doPost(['campaign_activity_id' => $campaign_activity_id, 'body' => $body->getData(), ]);
 		}
 
 	/**

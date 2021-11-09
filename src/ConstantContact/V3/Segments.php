@@ -64,6 +64,6 @@ class Segments extends \PHPFUI\ConstantContact\Base
 	 */
 	public function post(\PHPFUI\ConstantContact\Definition\SegmentData $body) : array
 		{
-		return $this->doPost(['body' => $body, ]);
+		return $this->doPost(['body' => $body->getData(), ]);
 		}
 	}

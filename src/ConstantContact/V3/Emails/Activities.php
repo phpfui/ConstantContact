@@ -68,6 +68,6 @@ class Activities extends \PHPFUI\ConstantContact\Base
 	 */
 	public function put(string $campaign_activity_id, \PHPFUI\ConstantContact\Definition\EmailCampaignActivity $body) : array
 		{
-		return $this->doPut(['campaign_activity_id' => $campaign_activity_id, 'body' => $body, ]);
+		return $this->doPut(['campaign_activity_id' => $campaign_activity_id, 'body' => $body->getData(), ]);
 		}
 	}

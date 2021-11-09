@@ -35,6 +35,6 @@ class Tests extends \PHPFUI\ConstantContact\Base
 	 */
 	public function post(string $campaign_activity_id, \PHPFUI\ConstantContact\Definition\EmailTestSendInput $email_test_send_input) : array
 		{
-		return $this->doPost(['campaign_activity_id' => $campaign_activity_id, 'email_test_send_input' => $email_test_send_input, ]);
+		return $this->doPost(['campaign_activity_id' => $campaign_activity_id, 'email_test_send_input' => $email_test_send_input->getData(), ]);
 		}
 	}

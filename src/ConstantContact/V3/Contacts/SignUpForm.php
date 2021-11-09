@@ -57,6 +57,6 @@ class SignUpForm extends \PHPFUI\ConstantContact\Base
 	 */
 	public function post(\PHPFUI\ConstantContact\Definition\ContactCreateOrUpdateInput $body) : array
 		{
-		return $this->doPost(['body' => $body, ]);
+		return $this->doPost(['body' => $body->getData(), ]);
 		}
 	}

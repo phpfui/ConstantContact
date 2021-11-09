@@ -48,7 +48,7 @@ class Segment extends \PHPFUI\ConstantContact\Base
 	 */
 	public function put(int $segment_id, \PHPFUI\ConstantContact\Definition\SegmentData $body) : array
 		{
-		return $this->doPut(['segment_id' => $segment_id, 'body' => $body, ]);
+		return $this->doPut(['segment_id' => $segment_id, 'body' => $body->getData(), ]);
 		}
 
 	/**

@@ -44,7 +44,7 @@ class ContactTag extends \PHPFUI\ConstantContact\Base
 	 */
 	public function put(string $tag_id, \PHPFUI\ConstantContact\Definition\TagPut $body) : array
 		{
-		return $this->doPut(['tag_id' => $tag_id, 'body' => $body, ]);
+		return $this->doPut(['tag_id' => $tag_id, 'body' => $body->getData(), ]);
 		}
 
 	/**

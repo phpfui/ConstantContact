@@ -58,7 +58,7 @@ class Contact extends \PHPFUI\ConstantContact\Base
 	 */
 	public function put(string $contact_id, \PHPFUI\ConstantContact\Definition\ContactPutRequest $body) : array
 		{
-		return $this->doPut(['contact_id' => $contact_id, 'body' => $body, ]);
+		return $this->doPut(['contact_id' => $contact_id, 'body' => $body->getData(), ]);
 		}
 
 	/**

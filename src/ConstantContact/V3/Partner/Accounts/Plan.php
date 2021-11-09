@@ -79,6 +79,6 @@ If updating from a `TRIAL` plan (`plan_type`) to another type of billing plan, y
 	 */
 	public function put(string $encoded_account_id, ?\PHPFUI\ConstantContact\Definition\PlanInfo $body = null) : array
 		{
-		return $this->doPut(['encoded_account_id' => $encoded_account_id, 'body' => $body, ]);
+		return $this->doPut(['encoded_account_id' => $encoded_account_id, 'body' => $body->getData(), ]);
 		}
 	}

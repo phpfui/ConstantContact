@@ -46,6 +46,6 @@ class PhysicalAddress extends \PHPFUI\ConstantContact\Base
 	 */
 	public function put(\PHPFUI\ConstantContact\Definition\AccountPhysicalAddress $body) : array
 		{
-		return $this->doPut(['body' => $body, ]);
+		return $this->doPut(['body' => $body->getData(), ]);
 		}
 	}

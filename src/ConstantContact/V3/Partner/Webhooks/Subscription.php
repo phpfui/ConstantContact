@@ -64,7 +64,7 @@ class Subscription extends \PHPFUI\ConstantContact\Base
 	 */
 	public function put(string $topic_id, \PHPFUI\ConstantContact\Definition\WebhooksSubscriptionBody $body) : array
 		{
-		return $this->doPut(['topic_id' => $topic_id, 'body' => $body, ]);
+		return $this->doPut(['topic_id' => $topic_id, 'body' => $body->getData(), ]);
 		}
 
 	/**

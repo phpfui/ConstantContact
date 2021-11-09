@@ -55,6 +55,6 @@ class Summary extends \PHPFUI\ConstantContact\Base
 	 */
 	public function put(\PHPFUI\ConstantContact\Definition\CustomerPut $body) : array
 		{
-		return $this->doPut(['body' => $body, ]);
+		return $this->doPut(['body' => $body->getData(), ]);
 		}
 	}

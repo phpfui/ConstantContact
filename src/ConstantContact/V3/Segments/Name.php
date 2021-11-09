@@ -26,6 +26,6 @@ class Name extends \PHPFUI\ConstantContact\Base
 	 */
 	public function patch(int $segment_id, \PHPFUI\ConstantContact\Definition\SegmentName $body) : array
 		{
-		return $this->doPatch(['segment_id' => $segment_id, 'body' => $body, ]);
+		return $this->doPatch(['segment_id' => $segment_id, 'body' => $body->getData(), ]);
 		}
 	}

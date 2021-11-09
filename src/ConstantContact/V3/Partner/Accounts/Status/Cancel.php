@@ -38,6 +38,6 @@ class Cancel extends \PHPFUI\ConstantContact\Base
 	 */
 	public function put(string $encoded_account_id, ?\PHPFUI\ConstantContact\Definition\AccountCancellation $body = null) : array
 		{
-		return $this->doPut(['encoded_account_id' => $encoded_account_id, 'body' => $body, ]);
+		return $this->doPut(['encoded_account_id' => $encoded_account_id, 'body' => $body->getData(), ]);
 		}
 	}
