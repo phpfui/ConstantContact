@@ -291,9 +291,10 @@ CODE;
 
 			$parameterArray = '[';
 
-			foreach ($parameters as $name => $junk)
+			foreach ($parameters as $name => $definition)
 				{
-				$parameterArray .= "'{$name}' => {$dollar}{$name}, ";
+				$getData = str_contains($definition, "\\Definition\\") ? '->getData()' : '';
+				$parameterArray .= "'{$name}' => {$dollar}{$name}{$getData}, ";
 				}
 			$parameterArray .= ']';
 			$code .= <<<ACTION
