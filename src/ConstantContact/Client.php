@@ -174,45 +174,86 @@ class Client
 
 	public function put(string $url, array $parameters, string $method = 'PUT') : array
 		{
-		$json = \json_encode($parameters);
-		$guzzle = new \GuzzleHttp\Client(['headers' => $this->getHeaders([
-			'Connection' => 'keep-alive',
-			'Content-Length' => \strlen($json),
-			'Accept-Encoding' => 'gzip, deflate',
-			'Host' => $this->host,
-			'Accept' => '*/*']),
-			'body' => $json, ]);
-																		 ;
-		$response = $guzzle->request($method, $url);
+		try
+			{
+			$json = \json_encode($parameters['body'], JSON_PRETTY_PRINT);
+			$guzzle = new \GuzzleHttp\Client(['headers' => $this->getHeaders([
+				'Connection' => 'keep-alive',
+				'Content-Length' => \strlen($json),
+				'Accept-Encoding' => 'gzip, deflate',
+				'Host' => $this->host,
+				'Accept' => '*/*']),
+				'body' => $json, ]);
+																			 ;
+			$response = $guzzle->request($method, $url);
 
-		return $this->process($response);
+			return $this->process($response);
+			}
+		catch (\GuzzleHttp\Exception\RequestException $e)
+			{
+			$this->lastError = $e->getMessage();
+			$this->statusCode = $e->getResponse()->getStatusCode();
+			}
+
+		return [];
 		}
 
 	public function delete(string $url) : bool
 		{
-		$guzzle = new \GuzzleHttp\Client(['headers' => $this->getHeaders()]);
-		$response = $guzzle->request('DELETE', $url);
+		try
+			{
+			$guzzle = new \GuzzleHttp\Client(['headers' => $this->getHeaders()]);
+			$response = $guzzle->request('DELETE', $url);
 
-		$this->process($response);
+			$this->process($response);
 
-		return 204 == $this->statusCode;
+			return 204 == $this->statusCode;
+			}
+		catch (\GuzzleHttp\Exception\RequestException $e)
+			{
+			$this->lastError = $e->getMessage();
+			$this->statusCode = $e->getResponse()->getStatusCode();
+			}
+
+		return false;
 		}
 
 	public function get(string $url, array $parameters) : array
 		{
-		$guzzle = new \GuzzleHttp\Client(['headers' => $this->getHeaders()]);
-		$response = $guzzle->request('GET', $url);
+		try
+			{
+			$guzzle = new \GuzzleHttp\Client(['headers' => $this->getHeaders()]);
+			$response = $guzzle->request('GET', $url);
 
-		return $this->process($response);
+			return $this->process($response);
+			}
+		catch (\GuzzleHttp\Exception\RequestException $e)
+			{
+			$this->lastError = $e->getMessage();
+			$this->statusCode = $e->getResponse()->getStatusCode();
+			}
+
+		return [];
 		}
 
 	public function post(string $url, array $parameters) : array
 		{
-		$guzzle = new \GuzzleHttp\Client(['headers' => $this->getHeaders(),
-																		 'body' => \json_encode($parameters), ]);
-		$response = $guzzle->request('POST', $url);
+		try
+			{
+			$json = \json_encode($parameters['body'], JSON_PRETTY_PRINT);
+			$guzzle = new \GuzzleHttp\Client(['headers' => $this->getHeaders(),
+																			 'body' => $json, ]);
+			$response = $guzzle->request('POST', $url);
 
-		return $this->process($response);
+			return $this->process($response);
+			}
+		catch (\GuzzleHttp\Exception\RequestException $e)
+			{
+			$this->lastError = $e->getMessage();
+			$this->statusCode = $e->getResponse()->getStatusCode();
+			}
+
+		return [];
 		}
 
   private function exec(\CurlHandle $ch) : bool
