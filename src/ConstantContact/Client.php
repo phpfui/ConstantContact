@@ -124,7 +124,7 @@ class Client
    * Make this call by passing in the code present when the account owner is redirected back to you.
    * The response will contain an 'access_token' and 'refresh_token'
    *
-	 * @param string $code - Authorization Code
+   * @param string $code - Authorization Code
    */
   public function acquireAccessToken(string $code) : bool
 		{
@@ -144,9 +144,9 @@ class Client
 		}
 
   /**
-	 * Refresh the access token.
-	 *
-	 * @return string new access token or 'Error' for error
+   * Refresh the access token.
+   *
+   * @return string new access token or 'Error' for error
    */
   public function refreshToken() : string
 		{
@@ -184,7 +184,7 @@ class Client
 				'Host' => $this->host,
 				'Accept' => '*/*']),
 				'body' => $json, ]);
-																			 ;
+
 			$response = $guzzle->request($method, $url);
 
 			return $this->process($response);
@@ -224,8 +224,13 @@ class Client
 			{
 			if ($parameters)
 				{
-				$paramString = urldecode(http_build_query($parameters));
-				$url .= $url . '&' . urlencode(preg_replace('/\[[0-9]\]/', '', $paramString));
+				$paramString = \urldecode(\http_build_query($parameters));
+				$paramString = \urlencode(\preg_replace('/\[[0-9]\]/', '', $paramString));
+
+				if ($paramString)
+					{
+					$url .= '&' . $paramString;
+					}
 				}
 
 			$guzzle = new \GuzzleHttp\Client(['headers' => $this->getHeaders()]);
@@ -248,7 +253,7 @@ class Client
 			{
 			$json = \json_encode($parameters['body'], JSON_PRETTY_PRINT);
 			$guzzle = new \GuzzleHttp\Client(['headers' => $this->getHeaders(),
-																			 'body' => $json, ]);
+				'body' => $json, ]);
 			$response = $guzzle->request('POST', $url);
 
 			return $this->process($response);
@@ -309,7 +314,7 @@ class Client
 			'Authorization' => 'Bearer ' . $this->accessToken,
 			'Content-Type' => 'application/json',
 			'Accept' => 'application/json',
-												], $additional);
+		], $additional);
 		}
 
 	private function process(\GuzzleHttp\Psr7\Response $response) : array
