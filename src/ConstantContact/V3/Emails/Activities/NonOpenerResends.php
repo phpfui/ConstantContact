@@ -6,12 +6,10 @@ namespace PHPFUI\ConstantContact\V3\Emails\Activities;
 
 class NonOpenerResends extends \PHPFUI\ConstantContact\Base
 	{
-
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
 		parent::__construct($client, '/v3/emails/activities/{campaign_activity_id}/non_opener_resends');
 		}
-
 
 	/**
 	 * GET Details for a Resend to Non-openers Campaign Activity
@@ -25,6 +23,7 @@ class NonOpenerResends extends \PHPFUI\ConstantContact\Base
 	 */
 	public function get(string $campaign_activity_id) : array
 		{
+
 		return $this->doGet(['campaign_activity_id' => $campaign_activity_id, ]);
 		}
 	}

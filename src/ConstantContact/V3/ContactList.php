@@ -6,12 +6,10 @@ namespace PHPFUI\ConstantContact\V3;
 
 class ContactList extends \PHPFUI\ConstantContact\Base
 	{
-
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
 		parent::__construct($client, '/v3/contact_lists/{list_id}');
 		}
-
 
 	/**
 	 * GET a List
@@ -24,14 +22,17 @@ class ContactList extends \PHPFUI\ConstantContact\Base
 	 */
 	public function get(string $list_id, ?string $include_membership_count = null) : array
 		{
+
 		if (null !== $include_membership_count)
 			{
-			$validValues = ['all' , 'active'];
-			if (! in_array($include_membership_count, $validValues))
+			$validValues = ['all', 'active'];
+
+			if (! \in_array($include_membership_count, $validValues))
 				{
-				throw new \PHPFUI\ConstantContact\Exception\InvalidValue("Parameter include_membership_count with value '{$include_membership_count}' is not one of (" . implode(', ', $validValues) . ') in ' . __METHOD__);
+				throw new \PHPFUI\ConstantContact\Exception\InvalidValue("Parameter include_membership_count with value '{$include_membership_count}' is not one of (" . \implode(', ', $validValues) . ') in ' . __METHOD__);
 				}
 			}
+
 		return $this->doGet(['list_id' => $list_id, 'include_membership_count' => $include_membership_count, ]);
 		}
 
@@ -45,6 +46,7 @@ class ContactList extends \PHPFUI\ConstantContact\Base
 	 */
 	public function put(string $list_id, \PHPFUI\ConstantContact\Definition\ListInput $JSON_PUT_body) : array
 		{
+
 		return $this->doPut(['list_id' => $list_id, 'JSON_PUT_body' => $JSON_PUT_body->getData(), ]);
 		}
 
@@ -60,6 +62,7 @@ class ContactList extends \PHPFUI\ConstantContact\Base
 	 */
 	public function delete(string $list_id) : bool
 		{
+
 		return $this->doDelete(['list_id' => $list_id, ]);
 		}
 	}

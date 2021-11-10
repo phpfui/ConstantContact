@@ -4,7 +4,6 @@ namespace Tests\Fixtures;
 
 class TypeTest extends \PHPFUI\ConstantContact\Definition\Base
 	{
-
 	protected static array $fields = [
 		'boolean' => 'bool',
 		'integer' => 'int',
@@ -26,5 +25,4 @@ class TypeTest extends \PHPFUI\ConstantContact\Definition\Base
 	protected static array $maxLength = [
 		'string' => 50,
 	];
-
 	}

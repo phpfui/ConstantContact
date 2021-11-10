@@ -6,12 +6,10 @@ namespace PHPFUI\ConstantContact\V3;
 
 class ContactTags extends \PHPFUI\ConstantContact\Base
 	{
-
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
 		parent::__construct($client, '/v3/contact_tags');
 		}
-
 
 	/**
 	 * GET Details for All Tags
@@ -23,7 +21,7 @@ class ContactTags extends \PHPFUI\ConstantContact\Base
 	 * page of results, copy the <code>cursor={the cursor ID}</code> from the
 	 * resulting href link and add it (<code>&</code>) to the URL. For example:
 	 *
-	 * 
+	 *
 	 * <p><code>/v3/contact_tags?limit=1&cursor=</code></p><p><code>bGltaXQ9MSZuZXh0PTJjZDgwMjdhLTc4YzAtMTFlOS1iZmQwLWZhMTYzZTZiMDFjMQ=</code></p>
 	 *
 	 * To learn more, see [Get Tags](https://v3.developer.constantcontact.com/api_guide/tags_get.html).
@@ -34,6 +32,7 @@ class ContactTags extends \PHPFUI\ConstantContact\Base
 	 */
 	public function get(?int $limit = null, ?bool $include_count = null) : array
 		{
+
 		return $this->doGet(['limit' => $limit, 'include_count' => $include_count, ]);
 		}
 
@@ -50,6 +49,7 @@ class ContactTags extends \PHPFUI\ConstantContact\Base
 	 */
 	public function post(\PHPFUI\ConstantContact\Definition\TagPost $body) : array
 		{
+
 		return $this->doPost(['body' => $body->getData(), ]);
 		}
 	}

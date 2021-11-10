@@ -7,7 +7,6 @@ namespace PHPFUI\ConstantContact;
  */
 class Date extends \DateTime
 	{
-
 	public function __toString() : string
 		{
 		return $this->format('Y-m-d');

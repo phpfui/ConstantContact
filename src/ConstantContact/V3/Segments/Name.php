@@ -6,12 +6,10 @@ namespace PHPFUI\ConstantContact\V3\Segments;
 
 class Name extends \PHPFUI\ConstantContact\Base
 	{
-
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
 		parent::__construct($client, '/v3/segments/{segment_id}/name');
 		}
-
 
 	/**
 	 * PATCH (rename) a Segment
@@ -26,6 +24,7 @@ class Name extends \PHPFUI\ConstantContact\Base
 	 */
 	public function patch(int $segment_id, \PHPFUI\ConstantContact\Definition\SegmentName $body) : array
 		{
+
 		return $this->doPatch(['segment_id' => $segment_id, 'body' => $body->getData(), ]);
 		}
 	}

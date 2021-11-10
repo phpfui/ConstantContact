@@ -6,12 +6,10 @@ namespace PHPFUI\ConstantContact\V3;
 
 class ContactCustomField extends \PHPFUI\ConstantContact\Base
 	{
-
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
 		parent::__construct($client, '/v3/contact_custom_fields/{custom_field_id}');
 		}
-
 
 	/**
 	 * GET a custom_field
@@ -23,6 +21,7 @@ class ContactCustomField extends \PHPFUI\ConstantContact\Base
 	 */
 	public function get(string $custom_field_id) : array
 		{
+
 		return $this->doGet(['custom_field_id' => $custom_field_id, ]);
 		}
 
@@ -36,6 +35,7 @@ class ContactCustomField extends \PHPFUI\ConstantContact\Base
 	 */
 	public function put(string $custom_field_id, \PHPFUI\ConstantContact\Definition\CustomFieldInput $body) : array
 		{
+
 		return $this->doPut(['custom_field_id' => $custom_field_id, 'body' => $body->getData(), ]);
 		}
 
@@ -48,6 +48,7 @@ class ContactCustomField extends \PHPFUI\ConstantContact\Base
 	 */
 	public function delete(string $custom_field_id) : bool
 		{
+
 		return $this->doDelete(['custom_field_id' => $custom_field_id, ]);
 		}
 	}

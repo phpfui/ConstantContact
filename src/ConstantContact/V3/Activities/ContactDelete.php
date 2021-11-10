@@ -6,12 +6,10 @@ namespace PHPFUI\ConstantContact\V3\Activities;
 
 class ContactDelete extends \PHPFUI\ConstantContact\Base
 	{
-
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
 		parent::__construct($client, '/v3/activities/contact_delete');
 		}
-
 
 	/**
 	 * Delete Contacts in Bulk
@@ -28,6 +26,7 @@ class ContactDelete extends \PHPFUI\ConstantContact\Base
 	 */
 	public function post(\PHPFUI\ConstantContact\Definition\ContactDelete $body) : array
 		{
+
 		return $this->doPost(['body' => $body->getData(), ]);
 		}
 	}

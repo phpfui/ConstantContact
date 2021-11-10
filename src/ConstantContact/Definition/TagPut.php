@@ -4,13 +4,11 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-	/**
-	 * @var string $name The new tag name to use. The tag name must be unique.
-	 */
-
+/**
+ * @var string $name The new tag name to use. The tag name must be unique.
+ */
 class TagPut extends \PHPFUI\ConstantContact\Definition\Base
 	{
-
 	protected static array $fields = [
 		'name' => 'string',
 

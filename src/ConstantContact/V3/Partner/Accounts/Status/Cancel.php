@@ -6,12 +6,10 @@ namespace PHPFUI\ConstantContact\V3\Partner\Accounts\Status;
 
 class Cancel extends \PHPFUI\ConstantContact\Base
 	{
-
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
 		parent::__construct($client, '/v3/partner/accounts/{encoded_account_id}/status/cancel');
 		}
-
 
 	/**
 	 * PUT Cancel the Billing Plan for a Client Account
@@ -21,14 +19,14 @@ class Cancel extends \PHPFUI\ConstantContact\Base
 	 * exist, the system returns a 404 error response. If the client account
 	 * exists under a different technology partner account, the system returns
 	 * a 400 error response.
-	 * 
-	 * 
+	 *
+	 *
 	 * To get a list of all canceled client accounts (`"billing_status": "Canceled"`),
 	 * make a `GET` call to the `/partner/accounts` endpoint.
-	 * 
+	 *
 	 * Only technology partners can access partner endpoints and partner endpoints
 	 * cannot be tested using the API reference tester.
-	 * 
+	 *
 	 * For more use case information, see [Cancel the Billing Plan for a Client
 	 * Account](https://v3.developer.constantcontact.com/api_guide/partners_plans_cancel.html)
 	 * in the API guide."
@@ -38,6 +36,7 @@ class Cancel extends \PHPFUI\ConstantContact\Base
 	 */
 	public function put(string $encoded_account_id, ?\PHPFUI\ConstantContact\Definition\AccountCancellation $body = null) : array
 		{
+
 		return $this->doPut(['encoded_account_id' => $encoded_account_id, 'body' => $body->getData(), ]);
 		}
 	}

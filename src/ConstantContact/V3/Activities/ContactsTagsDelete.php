@@ -6,12 +6,10 @@ namespace PHPFUI\ConstantContact\V3\Activities;
 
 class ContactsTagsDelete extends \PHPFUI\ConstantContact\Base
 	{
-
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
 		parent::__construct($client, '/v3/activities/contacts_tags_delete');
 		}
-
 
 	/**
 	 * Delete Tags
@@ -25,6 +23,7 @@ class ContactsTagsDelete extends \PHPFUI\ConstantContact\Base
 	 */
 	public function post(\PHPFUI\ConstantContact\Definition\TagIdList500Limit $body) : array
 		{
+
 		return $this->doPost(['body' => $body->getData(), ]);
 		}
 	}

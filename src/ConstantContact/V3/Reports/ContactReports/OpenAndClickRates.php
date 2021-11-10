@@ -6,12 +6,10 @@ namespace PHPFUI\ConstantContact\V3\Reports\ContactReports;
 
 class OpenAndClickRates extends \PHPFUI\ConstantContact\Base
 	{
-
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
 		parent::__construct($client, '/v3/reports/contact_reports/{contact_id}/open_and_click_rates');
 		}
-
 
 	/**
 	 * GET Average Open and Click Rates
@@ -30,6 +28,7 @@ class OpenAndClickRates extends \PHPFUI\ConstantContact\Base
 	 */
 	public function get(string $contact_id, string $start, string $end) : array
 		{
+
 		return $this->doGet(['contact_id' => $contact_id, 'start' => $start, 'end' => $end, ]);
 		}
 	}

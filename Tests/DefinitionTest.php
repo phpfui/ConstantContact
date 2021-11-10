@@ -11,7 +11,6 @@
  */
 class DefinitionTest extends \PHPUnit\Framework\TestCase
 	{
-
 	public function testGetSet() : void
 		{
 		$fixture = new \Tests\Fixtures\TypeTest();
@@ -61,7 +60,7 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 		$this->assertIsObject($fixture->class);
 
 		$json = $fixture->getJSON();
-		$expectedJSON ='{
+		$expectedJSON = '{
     "class": [],
     "integer": 123,
     "string": "A long string",
@@ -77,7 +76,7 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
     "ucEnum": "REMOVED"
 }';
 		// normalize line endings
-		$expectedJSON = str_replace("\r\n", "\n", $expectedJSON);
+		$expectedJSON = \str_replace("\r\n", "\n", $expectedJSON);
 		$this->assertEquals($expectedJSON, $json);
 		}
 
@@ -131,7 +130,7 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 			new \Tests\Fixtures\ClassTest(),
 			new \Tests\Fixtures\ClassTest(),
 			new \Tests\Fixtures\TypeTest(),
-			];
+		];
 		}
 
 	public function testBadArrayOfTypeSize() : void
@@ -144,7 +143,7 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 			new \Tests\Fixtures\ClassTest(),
 			new \Tests\Fixtures\ClassTest(),
 			new \Tests\Fixtures\ClassTest(),
-			];
+		];
 		}
 
 	public function testBadClassType() : void
@@ -172,7 +171,7 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 		{
 		$fixture = new \Tests\Fixtures\TypeTest();
 		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidLength::class);
-		$fixture->string = str_pad('', 100);
+		$fixture->string = \str_pad('', 100);
 		}
 
 	public function testGeneratedClass() : void
@@ -181,5 +180,4 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidType::class);
 		$fixture->physical_address_in_footer = new \DateTime();
 		}
-
 	}

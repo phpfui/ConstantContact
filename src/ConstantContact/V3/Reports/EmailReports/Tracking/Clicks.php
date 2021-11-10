@@ -6,12 +6,10 @@ namespace PHPFUI\ConstantContact\V3\Reports\EmailReports\Tracking;
 
 class Clicks extends \PHPFUI\ConstantContact\Base
 	{
-
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
 		parent::__construct($client, '/v3/reports/email_reports/{campaign_activity_id}/tracking/clicks');
 		}
-
 
 	/**
 	 * GET an Email Clicks Report
@@ -27,6 +25,7 @@ class Clicks extends \PHPFUI\ConstantContact\Base
 	 */
 	public function get(string $campaign_activity_id, ?int $url_id = null, ?string $limit = null) : array
 		{
+
 		return $this->doGet(['campaign_activity_id' => $campaign_activity_id, 'url_id' => $url_id, 'limit' => $limit, ]);
 		}
 	}

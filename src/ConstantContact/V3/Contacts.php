@@ -6,12 +6,10 @@ namespace PHPFUI\ConstantContact\V3;
 
 class Contacts extends \PHPFUI\ConstantContact\Base
 	{
-
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
 		parent::__construct($client, '/v3/contacts');
 		}
-
 
 	/**
 	 * GET Contacts Collection
@@ -24,7 +22,7 @@ class Contacts extends \PHPFUI\ConstantContact\Base
 	 * the `include` query parameter to include contact sub-resources in the
 	 * response and `include_count` to include the total number of contacts
 	 * that meet your specified search criteria.
-	 * 
+	 *
 	 * By default, this method returns all contacts that are not deleted. Use
 	 * the `status` query parameter with the value `all` to return all contacts
 	 * including deleted contacts.
@@ -35,36 +33,41 @@ class Contacts extends \PHPFUI\ConstantContact\Base
 	 * @param string $segment_id Use to get contacts that meet the segment criteria for a single specified `segment_id`. This query parameter can only be combined with the limit query parameter. When using the `segment_id` query parameter, the V3 API may return a 202 response code instead of a 200 response. The 202 response code indicates that your request has been accepted, but not fully completed. Retry sending your API request to return the completed results and a 200 response code.
 	 * @param string $tags Use to get contact details for up to 50 specified tags. Use a comma to separate each `tag_id`.
 	 * @param string $updated_after Use `updated_after` to search for contacts that have been updated after the date you specify; accepts ISO-8601 formatted dates.
-	 * @param string $include Use `include` to specify which contact sub-resources to include in the response. Use a comma to separate multiple sub-resources. Valid values: `custom_fields`, `list_memberships`, `taggings`, `notes`,`phone_numbers`, `street_addresses`. 
+	 * @param string $include Use `include` to specify which contact sub-resources to include in the response. Use a comma to separate multiple sub-resources. Valid values: `custom_fields`, `list_memberships`, `taggings`, `notes`,`phone_numbers`, `street_addresses`.
 	 * @param bool $include_count Set `include_count=true` to include the total number of contacts (`contacts_count`) that meet all search criteria in the response body.
 	 * @param int $limit Specifies the number of results displayed per page of output in the response, from 1 - 500, default = 50.
 	 */
 	public function get(?string $status = null, ?string $email = null, ?string $lists = null, ?string $segment_id = null, ?string $tags = null, ?string $updated_after = null, ?string $include = null, ?bool $include_count = null, ?int $limit = null) : array
 		{
+
 		if (null !== $status)
 			{
-			$parts = explode(',', $status);
-			$validValues = ['all' , 'active' , 'deleted' , 'not_set' , 'pending_confirmation' , 'temp_hold' , 'unsubscribed'];
+			$parts = \explode(',', $status);
+			$validValues = ['all', 'active', 'deleted', 'not_set', 'pending_confirmation', 'temp_hold', 'unsubscribed'];
+
 			foreach ($parts as $part)
 				{
-				if (! in_array(trim($part), $validValues))
+				if (! \in_array(\trim($part), $validValues))
 					{
-					throw new \PHPFUI\ConstantContact\Exception\InvalidValue("Parameter status containing value '{$part}' is not one of (" . implode(', ', $validValues) . ') in ' . __METHOD__);
+					throw new \PHPFUI\ConstantContact\Exception\InvalidValue("Parameter status containing value '{$part}' is not one of (" . \implode(', ', $validValues) . ') in ' . __METHOD__);
 					}
 				}
 			}
+
 		if (null !== $include)
 			{
-			$parts = explode(',', $include);
-			$validValues = ['custom_fields' , 'list_memberships' , 'phone_numbers' , 'street_addresses' , 'taggings' , 'notes'];
+			$parts = \explode(',', $include);
+			$validValues = ['custom_fields', 'list_memberships', 'phone_numbers', 'street_addresses', 'taggings', 'notes'];
+
 			foreach ($parts as $part)
 				{
-				if (! in_array(trim($part), $validValues))
+				if (! \in_array(\trim($part), $validValues))
 					{
-					throw new \PHPFUI\ConstantContact\Exception\InvalidValue("Parameter include containing value '{$part}' is not one of (" . implode(', ', $validValues) . ') in ' . __METHOD__);
+					throw new \PHPFUI\ConstantContact\Exception\InvalidValue("Parameter include containing value '{$part}' is not one of (" . \implode(', ', $validValues) . ') in ' . __METHOD__);
 					}
 				}
 			}
+
 		return $this->doGet(['status' => $status, 'email' => $email, 'lists' => $lists, 'segment_id' => $segment_id, 'tags' => $tags, 'updated_after' => $updated_after, 'include' => $include, 'include_count' => $include_count, 'limit' => $limit, ]);
 		}
 
@@ -80,6 +83,7 @@ class Contacts extends \PHPFUI\ConstantContact\Base
 	 */
 	public function post(\PHPFUI\ConstantContact\Definition\ContactPostRequest $body) : array
 		{
+
 		return $this->doPost(['body' => $body->getData(), ]);
 		}
 	}

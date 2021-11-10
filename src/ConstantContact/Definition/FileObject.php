@@ -4,29 +4,27 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-	/**
-	 * @var int $id Identifies the MyLibrary file.
-	 * @var string $name The file name.
-	 * @var int $height The image height.
-	 * @var int $width The image width.
-	 * @var int $size The image size.
-	 * @var string $url The image URL.
-	 * @var string $description The image description.
-	 * @var string $folder The image folder
-	 * @var string $source The application that uploaded this image.
-	 * @var string $type The image format.
-	 * @var string $status THe image status.
-	 * @var bool $image Boolean indicating if this file is an image.
-	 * @var int $folder_id Identifies a folder in MyLibrary.
-	 * @var string $external_url The external url for the file.
-	 * @var string $modified_date Identifies the time a user last modified the file.
-	 * @var string $added_date Identifies the time a user originally added the file to MyLibrary.
-	 * @var string $external_file_id External identifier for the file.
-	 */
-
+/**
+ * @var int $id Identifies the MyLibrary file.
+ * @var string $name The file name.
+ * @var int $height The image height.
+ * @var int $width The image width.
+ * @var int $size The image size.
+ * @var string $url The image URL.
+ * @var string $description The image description.
+ * @var string $folder The image folder
+ * @var string $source The application that uploaded this image.
+ * @var string $type The image format.
+ * @var string $status THe image status.
+ * @var bool $image Boolean indicating if this file is an image.
+ * @var int $folder_id Identifies a folder in MyLibrary.
+ * @var string $external_url The external url for the file.
+ * @var string $modified_date Identifies the time a user last modified the file.
+ * @var string $added_date Identifies the time a user originally added the file to MyLibrary.
+ * @var string $external_file_id External identifier for the file.
+ */
 class FileObject extends \PHPFUI\ConstantContact\Definition\Base
 	{
-
 	protected static array $fields = [
 		'id' => 'int',
 		'name' => 'string',

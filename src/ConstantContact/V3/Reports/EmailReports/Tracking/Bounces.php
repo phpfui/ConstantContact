@@ -6,12 +6,10 @@ namespace PHPFUI\ConstantContact\V3\Reports\EmailReports\Tracking;
 
 class Bounces extends \PHPFUI\ConstantContact\Base
 	{
-
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
 		parent::__construct($client, '/v3/reports/email_reports/{campaign_activity_id}/tracking/bounces');
 		}
-
 
 	/**
 	 * GET an Email Bounces Report
@@ -22,7 +20,7 @@ class Bounces extends \PHPFUI\ConstantContact\Base
 	 * email address, unique ID, and the email bounce date and time.
 	 * Use the <code>bounce_code</code> query parameter to limit the type of
 	 * bounce data to return.
-	 * 
+	 *
 	 * For more use case information, see [Get a Bounces Report for an Email
 	 * Campaign Activity](https://v3.developer.constantcontact.com/api_guide/email_summary_bounces_report.html)
 	 * in the API guide.
@@ -33,6 +31,7 @@ class Bounces extends \PHPFUI\ConstantContact\Base
 	 */
 	public function get(string $campaign_activity_id, ?array $bounce_code = null, ?string $limit = null) : array
 		{
+
 		return $this->doGet(['campaign_activity_id' => $campaign_activity_id, 'bounce_code' => $bounce_code, 'limit' => $limit, ]);
 		}
 	}

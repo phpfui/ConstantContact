@@ -6,12 +6,10 @@ namespace PHPFUI\ConstantContact\V3\Partner;
 
 class Accounts extends \PHPFUI\ConstantContact\Base
 	{
-
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
 		parent::__construct($client, '/v3/partner/accounts');
 		}
-
 
 	/**
 	 * GET Partner Client Accounts
@@ -29,6 +27,7 @@ class Accounts extends \PHPFUI\ConstantContact\Base
 	 */
 	public function get(?string $offset = null, ?string $limit = null) : array
 		{
+
 		return $this->doGet(['offset' => $offset, 'limit' => $limit, ]);
 		}
 
@@ -38,22 +37,22 @@ class Accounts extends \PHPFUI\ConstantContact\Base
 	 * Use this POST method to create a new Constant Contact client account
 	 * under your partner account, set up the billing plan for the account,
 	 * and to add the new client to the default contact list.
-	 * 
+	 *
 	 * Newly created accounts are free trials which give the user up to 60
 	 * days to try Constant Contact before buying. Trial accounts have limits
 	 * depending on the services that are included.
-	 * 
+	 *
 	 * If a field validation error occurs, a 400 response message is returned.
 	 *
-	 * 
+	 *
 	 * If provisioning does not complete successfully due to unavailable dependencies,
 	 * such as database or dependent services, a 503 response message is returned.
 	 * By default, the client account provision data is stored and processed
 	 * when provisioning becomes available.
-	 * 
+	 *
 	 * Some client account features will be supported in future releases, such
 	 * as Single Sign On (SSO).
-	 * 
+	 *
 	 * For more use case information, see [Create a new Partner Client Account](https://v3.developer.constantcontact.com/api_guide/partners_accts_create.html)
 	 * in the API guide.
 	 *
@@ -61,6 +60,7 @@ class Accounts extends \PHPFUI\ConstantContact\Base
 	 */
 	public function post(\PHPFUI\ConstantContact\Definition\Provision $provision) : array
 		{
+
 		return $this->doPost(['provision' => $provision->getData(), ]);
 		}
 	}

@@ -6,12 +6,10 @@ namespace PHPFUI\ConstantContact\V3\Activities;
 
 class ContactExports extends \PHPFUI\ConstantContact\Base
 	{
-
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
 		parent::__construct($client, '/v3/activities/contact_exports');
 		}
-
 
 	/**
 	 * Export Contacts to a File
@@ -24,6 +22,7 @@ class ContactExports extends \PHPFUI\ConstantContact\Base
 	 */
 	public function post(\PHPFUI\ConstantContact\Definition\ContactsExport $body) : array
 		{
+
 		return $this->doPost(['body' => $body->getData(), ]);
 		}
 	}

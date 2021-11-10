@@ -6,12 +6,10 @@ namespace PHPFUI\ConstantContact\V3;
 
 class Email extends \PHPFUI\ConstantContact\Base
 	{
-
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
 		parent::__construct($client, '/v3/emails/{campaign_id}');
 		}
-
 
 	/**
 	 * GET Details About a Single Email Campaign
@@ -25,6 +23,7 @@ class Email extends \PHPFUI\ConstantContact\Base
 	 */
 	public function get(string $campaign_id) : array
 		{
+
 		return $this->doGet(['campaign_id' => $campaign_id, ]);
 		}
 
@@ -34,15 +33,16 @@ class Email extends \PHPFUI\ConstantContact\Base
 	 * Use this method to delete an email campaign and the email campaign activities
 	 * associated with the email campaign. You cannot delete an email campaign
 	 * when it has a `Scheduled` status.
-	 * 
+	 *
 	 * Constant Contact users can restore deleted email campaigns using the
 	 * UI.
-	 * 
+	 *
 	 *
 	 * @param string $campaign_id The unique ID for the email campaign you are deleting.
 	 */
 	public function delete(string $campaign_id) : bool
 		{
+
 		return $this->doDelete(['campaign_id' => $campaign_id, ]);
 		}
 
@@ -58,6 +58,7 @@ class Email extends \PHPFUI\ConstantContact\Base
 	 */
 	public function patch(string $campaign_id, \PHPFUI\ConstantContact\Definition\EmailCampaignName $body) : array
 		{
+
 		return $this->doPatch(['campaign_id' => $campaign_id, 'body' => $body->getData(), ]);
 		}
 	}

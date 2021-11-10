@@ -6,12 +6,10 @@ namespace PHPFUI\ConstantContact\V3;
 
 class Idfed extends \PHPFUI\ConstantContact\Base
 	{
-
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
 		parent::__construct($client, '/v3/idfed');
 		}
-
 
 	/**
 	 * V3 Authorization service endpoint for OAuth 2.0 flows
@@ -25,14 +23,17 @@ class Idfed extends \PHPFUI\ConstantContact\Base
 	 */
 	public function get(string $response_type, string $client_id, string $redirect_uri) : array
 		{
+
 		if (null !== $response_type)
 			{
-			$validValues = ['code' , 'token'];
-			if (! in_array($response_type, $validValues))
+			$validValues = ['code', 'token'];
+
+			if (! \in_array($response_type, $validValues))
 				{
-				throw new \PHPFUI\ConstantContact\Exception\InvalidValue("Parameter response_type with value '{$response_type}' is not one of (" . implode(', ', $validValues) . ') in ' . __METHOD__);
+				throw new \PHPFUI\ConstantContact\Exception\InvalidValue("Parameter response_type with value '{$response_type}' is not one of (" . \implode(', ', $validValues) . ') in ' . __METHOD__);
 				}
 			}
+
 		return $this->doGet(['response_type' => $response_type, 'client_id' => $client_id, 'redirect_uri' => $redirect_uri, ]);
 		}
 	}

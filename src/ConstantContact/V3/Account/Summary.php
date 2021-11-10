@@ -6,12 +6,10 @@ namespace PHPFUI\ConstantContact\V3\Account;
 
 class Summary extends \PHPFUI\ConstantContact\Base
 	{
-
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
 		parent::__construct($client, '/v3/account/summary');
 		}
-
 
 	/**
 	 * GET a Summary of Account Details
@@ -26,18 +24,21 @@ class Summary extends \PHPFUI\ConstantContact\Base
 	 */
 	public function get(?string $extra_fields = null) : array
 		{
+
 		if (null !== $extra_fields)
 			{
-			$parts = explode(',', $extra_fields);
-			$validValues = ['physical_address' , 'company_logo'];
+			$parts = \explode(',', $extra_fields);
+			$validValues = ['physical_address', 'company_logo'];
+
 			foreach ($parts as $part)
 				{
-				if (! in_array(trim($part), $validValues))
+				if (! \in_array(\trim($part), $validValues))
 					{
-					throw new \PHPFUI\ConstantContact\Exception\InvalidValue("Parameter extra_fields containing value '{$part}' is not one of (" . implode(', ', $validValues) . ') in ' . __METHOD__);
+					throw new \PHPFUI\ConstantContact\Exception\InvalidValue("Parameter extra_fields containing value '{$part}' is not one of (" . \implode(', ', $validValues) . ') in ' . __METHOD__);
 					}
 				}
 			}
+
 		return $this->doGet(['extra_fields' => $extra_fields, ]);
 		}
 
@@ -55,6 +56,7 @@ class Summary extends \PHPFUI\ConstantContact\Base
 	 */
 	public function put(\PHPFUI\ConstantContact\Definition\CustomerPut $body) : array
 		{
+
 		return $this->doPut(['body' => $body->getData(), ]);
 		}
 	}

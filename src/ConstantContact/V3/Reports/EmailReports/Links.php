@@ -6,12 +6,10 @@ namespace PHPFUI\ConstantContact\V3\Reports\EmailReports;
 
 class Links extends \PHPFUI\ConstantContact\Base
 	{
-
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
 		parent::__construct($client, '/v3/reports/email_reports/{campaign_activity_id}/links');
 		}
-
 
 	/**
 	 * GET an Email Links Report
@@ -27,6 +25,7 @@ class Links extends \PHPFUI\ConstantContact\Base
 	 */
 	public function get(string $campaign_activity_id) : array
 		{
+
 		return $this->doGet(['campaign_activity_id' => $campaign_activity_id, ]);
 		}
 	}

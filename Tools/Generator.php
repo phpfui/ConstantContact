@@ -15,7 +15,7 @@ class Generator
 		'Tag2' => 'Tag',
 		'Status' => 'Status',
 		'Source' => 'Source',
-		];
+	];
 
 	private array $generatedClasses = [];
 
@@ -48,41 +48,6 @@ class Generator
 		$this->writeClass($namespace, $class, $apiPath, $properties);
 		}
 
-	private function getUniqueClassName(string $namespace, string $class) : string
-		{
-		if (isset($this->duplicateClasses[$class]))
-			{
-			return $this->duplicateClasses[$class];
-			}
-
-		$fullName = $namespace . '\\' . $class;
-		if (isset($this->generatedClasses[$fullName]))
-			{
-			if ('Links' == $class)
-				{
-				$class = 'Link';
-				}
-			elseif ('StreetAddress' == $class)
-				{
-				$class = 'StreetAddressRecord';
-				}
-			// trim the s off the end point for the singular
-			elseif (str_ends_with($class, 'ies'))
-				{
-				$class = substr($class, 0, strlen($class) - 3);
-				$class .= 'y';
-				}
-			else
-				{
-				$class = substr($class, 0, strlen($class) - 1);
-				}
-			$fullName = $namespace . '\\' . $class;
-			}
-		$this->generatedClasses[$fullName] = true;
-
-		return $class;
-		}
-
 	public function makeDefinitions(array $definitions) : void
 		{
 		foreach ($definitions as $class => $properties)
@@ -98,7 +63,8 @@ class Generator
 			return;
 			}
 
-		$class = str_replace('_', '', $class);
+		$class = \str_replace('_', '', $class);
+
 		if ('object' === $properties['type'])
 			{
 			$fields = [];
@@ -114,6 +80,7 @@ class Generator
 					{
 					$name = $class;
 					}
+
 				if (isset($details['$ref']))
 					{
 					$type = $this->getTypeNameFromRef($details['$ref']);
@@ -125,7 +92,7 @@ class Generator
 					if ('object' == $type)
 						{
 						$namespace = $this->definitionNamespace;
-						$baseName =  $this->getUniqueClassName($namespace, $this->getClassName($name));
+						$baseName = $this->getUniqueClassName($namespace, $this->getClassName($name));
 						$type = '\\' . $namespace . '\\' . $baseName;
 						$this->generateDefinition($baseName, $details);
 						}
@@ -135,26 +102,8 @@ class Generator
 						$type = $details['format'];
 						}
 
-					if ('number' == $type || \str_starts_with($type, 'int'))
-						{
-						$type = 'int';
-						}
-					elseif ($type == 'date-time')
-						{
-						$type = 'DateTime';
-						}
-					elseif ($type == 'date')
-						{
-						$type = '\PHPFUI\ConstantContact\Date';
-						}
-					elseif ($type == 'boolean')
-						{
-						$type = 'bool';
-						}
-					elseif ($type == 'uuid')
-						{
-						$type = '\PHPFUI\ConstantContact\UUID';
-						}
+					$type = $this->getPHPType($type);
+
 					if (isset($details['enum']))
 						{
 						$originalType = $type;
@@ -165,6 +114,7 @@ class Generator
 						{
 						$items = $details['items'];
 						$itemType = '';
+
 						if (isset($items['$ref']))
 							{
 							$itemType = $this->getTypeNameFromRef($items['$ref']);
@@ -173,9 +123,11 @@ class Generator
 							{
 							$itemType = '\PHPFUI\ConstantContact\UUID';
 							}
+
 						if ('array' == $type && $itemType)
 							{
 							$type = 'array[' . $itemType . ']';
+
 							if ($details['maxItems'] ?? false)
 								{
 								$type .= '[' . $details['maxItems'] . ']';
@@ -195,20 +147,57 @@ class Generator
 					{
 					$maxLength[$name] = (int)$details['maxLength'];
 					}
-        // description: "The contact phone number to associate with the client account."
+
 				if (isset($details['description']))
 					{
-					$description = $this->cleanDescription($details['description']);
-					if (is_array($type))
+					$description = $this->cleanDescription(\trim($details['description']));
+
+					if (\is_array($type))
 						{
 						$type = $originalType;
 						}
-					$type = str_replace('\\\\', '\\', $type);
+					$type = \str_replace('\\\\', '\\', $type);
 					$docBlock[] = "{$type} {$dollar}{$name} {$description}";
 					}
 				}
 			$this->generateFromTemplate($class, ['fields' => $fields, 'minLength' => $minLength, 'maxLength' => $maxLength, ], $docBlock);
 			}
+		}
+
+	private function getUniqueClassName(string $namespace, string $class) : string
+		{
+		if (isset($this->duplicateClasses[$class]))
+			{
+			return $this->duplicateClasses[$class];
+			}
+
+		$fullName = $namespace . '\\' . $class;
+
+		if (isset($this->generatedClasses[$fullName]))
+			{
+			if ('Links' == $class)
+				{
+				$class = 'Link';
+				}
+			elseif ('StreetAddress' == $class)
+				{
+				$class = 'StreetAddressRecord';
+				}
+			// trim the s off the end point for the singular
+			elseif (\str_ends_with($class, 'ies'))
+				{
+				$class = \substr($class, 0, \strlen($class) - 3);
+				$class .= 'y';
+				}
+			else
+				{
+				$class = \substr($class, 0, \strlen($class) - 1);
+				}
+			$fullName = $namespace . '\\' . $class;
+			}
+		$this->generatedClasses[$fullName] = true;
+
+		return $class;
 		}
 
 	private function writeClass(string $namespace, string $class, string $apiPath, array $properties) : void
@@ -240,6 +229,7 @@ class Generator
 					{
 					$enums[$name] = $parameter['enum'];
 					}
+
 				if (isset($parameter['format']) && 'csv' == $parameter['format'])
 					{
 					$csv[$name] = true;
@@ -258,7 +248,6 @@ class Generator
 
 			$methodBody = <<<'METHOD'
 
-
 	/**
 ~summary~
 	 *
@@ -268,26 +257,29 @@ class Generator
 	public function ~method~(~parameters~) : ~returnType~
 		{
 ~code~
-		}
 METHOD;
+			$methodBody .= "\t\t}";
 			$code = '';
 
 			foreach ($enums as $name => $values)
 				{
-				$array = "['" . \implode("' , '", $values) . "']";
+				$array = "['" . \implode("', '", $values) . "']";
 				$var = '$' . $name;
+
 				if (isset($csv[$name]))
 					{
 					$code .= <<<CODE
+
 		if (null !== {$var})
 			{
-			{$dollar}parts = explode(',', {$var});
+			{$dollar}parts = \\explode(',', {$var});
 			{$dollar}validValues = {$array};
+
 			foreach ({$dollar}parts as {$dollar}part)
 				{
-				if (! in_array(trim({$dollar}part), {$dollar}validValues))
+				if (! \\in_array(\\trim({$dollar}part), {$dollar}validValues))
 					{
-					throw new \PHPFUI\ConstantContact\Exception\InvalidValue("Parameter {$name} containing value '{{$dollar}part}' is not one of (" . implode(', ', {$dollar}validValues) . ') in ' . __METHOD__);
+					throw new \PHPFUI\ConstantContact\Exception\InvalidValue("Parameter {$name} containing value '{{$dollar}part}' is not one of (" . \implode(', ', {$dollar}validValues) . ') in ' . __METHOD__);
 					}
 				}
 			}
@@ -297,12 +289,14 @@ CODE;
 				else
 					{
 					$code .= <<<CODE
+
 		if (null !== {$var})
 			{
 			{$dollar}validValues = {$array};
-			if (! in_array({$var}, {$dollar}validValues))
+
+			if (! \\in_array({$var}, {$dollar}validValues))
 				{
-				throw new \PHPFUI\ConstantContact\Exception\InvalidValue("Parameter {$name} with value '{{$var}}' is not one of (" . implode(', ', {$dollar}validValues) . ') in ' . __METHOD__);
+				throw new \PHPFUI\ConstantContact\Exception\InvalidValue("Parameter {$name} with value '{{$var}}' is not one of (" . \implode(', ', {$dollar}validValues) . ') in ' . __METHOD__);
 				}
 			}
 
@@ -314,14 +308,16 @@ CODE;
 
 			foreach ($parameters as $name => $definition)
 				{
-				$getData = str_contains($definition, "\\Definition\\") ? '->getData()' : '';
+				$getData = \str_contains($definition, '\\Definition\\') ? '->getData()' : '';
 				$parameterArray .= "'{$name}' => {$dollar}{$name}{$getData}, ";
 				}
 			$parameterArray .= ']';
 			$code .= <<<ACTION
+
 		return {$dollar}this->do{$ucMethod}({$parameterArray});
 ACTION;
 
+			$code .= "\n";
 			$summary = $this->formatDescription($specs['summary']);
 			$description = $this->formatDescription($specs['description']);
 			$methods .= \str_replace(
@@ -329,6 +325,7 @@ ACTION;
 				[$method, \implode(', ', $parameters), $docblock, $summary, $description, $code, 'delete' != $method ? 'array' : 'bool'],
 				$methodBody
 			);
+			$methods .= "\n";
 			}
 
 		$php = <<<'PHP'
@@ -340,15 +337,14 @@ namespace PHPFUI\ConstantContact\~namespace~;
 
 class ~class~ extends \PHPFUI\ConstantContact\Base
 	{
-
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
 		parent::__construct($client, '~apiPath~');
 		}
 ~methods~
-	}
 PHP;
 
+		$php .= "\t}\n";
 		$php = \str_replace(
 			['~namespace~', '~class~', '~apiPath~', '~methods~'],
 			[$namespace, $class, $apiPath, $methods],
@@ -356,6 +352,7 @@ PHP;
 		);
 
 		$classPath = $this->rootPath . \str_replace('\\', '/', $namespace . '/' . $class . '.php');
+
 		if (! \file_put_contents($classPath, $php))
 			{
 			throw new \Exception("Error writing file {$classPath}");
@@ -364,16 +361,29 @@ PHP;
 
 	private function getPHPType(string $type) : string
 		{
-		switch($type)
+		if ('number' == $type || \str_starts_with($type, 'int'))
 			{
-			case 'boolean':
-				return 'bool';
-
-			case 'file':
-				return 'string';
-
-			case 'integer':
-				return 'int';
+			$type = 'int';
+			}
+		elseif ('date-time' == $type)
+			{
+			$type = 'DateTime';
+			}
+		elseif ('date' == $type)
+			{
+			$type = '\PHPFUI\ConstantContact\Date';
+			}
+		elseif ('boolean' == $type)
+			{
+			$type = 'bool';
+			}
+		elseif ('double' == $type)
+			{
+			$type = 'float';
+			}
+		elseif ('uuid' == $type)
+			{
+			$type = '\PHPFUI\ConstantContact\UUID';
 			}
 
 		return $type;
@@ -405,9 +415,12 @@ PHP;
 	private function cleanDescription(string $description) : string
 		{
 		// fix issues in documentation
-		return str_replace(['(/api_guide/', '<a/>', 'href="/api_guide/'],
-											 ['(https://v3.developer.constantcontact.com/api_guide/', '</a>', 'href="https://v3.developer.constantcontact.com/api_guide/'],
-											 $description);
+		return \str_replace(
+			['(/api_guide/', '<a/>', 'href="/api_guide/', " * \n", '    <li>', '  <ul>', '  </ul>', '  <li>', "\n<li>", "\n<ul>", "\n</ul>"],
+			['(https://v3.developer.constantcontact.com/api_guide/', '</a>', 'href="https://v3.developer.constantcontact.com/api_guide/', " *\n",
+				' * <li>', ' * <ul>', ' * </ul>', ' * <li>', ' * <li>', ' * <ul>', ' * </ul>'],
+			$description
+		);
 		}
 
 	private function formatDescription(string $description) : string
@@ -431,7 +444,7 @@ PHP;
 					$block = "\t *";
 					}
 				}
-			$blocks[] = $block;
+			$blocks[] = \rtrim($block);
 			}
 
 		return \implode("\n", $blocks);
@@ -447,21 +460,19 @@ PHP;
 
 namespace {$this->definitionNamespace};
 
-	/**
+/**
 
 PHP;
 
 		foreach ($docBlocks as $docBlock)
 			{
-			$docBlock = trim($docBlock);
-			$template .= "\t * @var {$docBlock}\n";
+			$docBlock = \trim($docBlock);
+			$template .= " * @var {$docBlock}\n";
 			}
 
-		$template .= "\t */
-
+		$template .= " */
 class ~class~ extends {$backSlash}{$this->definitionNamespace}\Base
-	{
-";
+	{";
 
 		foreach ($properties as $fields => $values)
 			{
@@ -479,13 +490,14 @@ class ~class~ extends {$backSlash}{$this->definitionNamespace}\Base
 					case 'array':
 						foreach ($value as $index => $enum)
 							{
-							if (! is_numeric($enum))
+							if (! \is_numeric($enum))
 								{
 								$value[$index] = "'{$enum}'";
 								}
 							}
-						unset ($enum);
-						$value = "[" . implode(", ", $value) . "]";
+						unset($enum);
+						$value = '[' . \implode(', ', $value) . ']';
+
 						break;
 
 					case 'string':
@@ -505,9 +517,11 @@ class ~class~ extends {$backSlash}{$this->definitionNamespace}\Base
 			$output .= "\n\t];\n";
 			$template .= $output;
 			}
-			$template = \str_replace('~class~', $name, $template) . "\t}";
+			$template = \str_replace('~class~', $name, $template) . "\t}\n";
+			$template = \str_replace("/**\r\n */\r\n", '', $template);
 
 			$path = __DIR__ . "/../src/ConstantContact/Definition/{$name}.php";
+
 			if (! \file_put_contents($path, $template))
 				{
 				throw new \Exception("Error writing file {$path}");
@@ -516,8 +530,8 @@ class ~class~ extends {$backSlash}{$this->definitionNamespace}\Base
 
 	private function getTypeNameFromRef(string $ref) : string
 		{
-		$parts = \explode('/', str_replace('_', '', $ref));
+		$parts = \explode('/', \str_replace('_', '', $ref));
+
 		return '\\' . $this->definitionNamespace . '\\' . \array_pop($parts);
 		}
-
 	}

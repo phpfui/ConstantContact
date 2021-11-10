@@ -6,12 +6,10 @@ namespace PHPFUI\ConstantContact\V3\Reports\SummaryReports;
 
 class EmailCampaignSummaries extends \PHPFUI\ConstantContact\Base
 	{
-
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
 		parent::__construct($client, '/v3/reports/summary_reports/email_campaign_summaries');
 		}
-
 
 	/**
 	 * GET an Email Campaigns Summary Report
@@ -20,14 +18,14 @@ class EmailCampaignSummaries extends \PHPFUI\ConstantContact\Base
 	 * five hundred email campaigns. The response results include the total
 	 * number of times that each contact uniquely interacted with each tracked
 	 * campaign activity.
-	 * 
+	 *
 	 * Results are sorted in descending order by the date that the email was
 	 * last sent (<code>last_sent_date</code>). Use the <code>limit</code>
 	 * query parameter to limit the number of email campaign summary reports
 	 * listed on each page.
-	 * 
-	 * 
-	 * 
+	 *
+	 *
+	 *
 	 * For more use case information, see "[Get an Email Campaign Summary Report](https://v3.developer.constantcontact.com/api_guide/email_bulk_campaign_summary_report.html)"
 	 *
 	 *
@@ -35,6 +33,7 @@ class EmailCampaignSummaries extends \PHPFUI\ConstantContact\Base
 	 */
 	public function get(?string $limit = null) : array
 		{
+
 		return $this->doGet(['limit' => $limit, ]);
 		}
 	}

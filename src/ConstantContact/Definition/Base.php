@@ -33,7 +33,7 @@ abstract class Base
 				}
 			elseif (! \is_array($type) && ! isset(self::$scalars[$type]))
 				{
-				if (str_starts_with($type, 'array'))
+				if (\str_starts_with($type, 'array'))
 					{
 					$this->data[$field] = [];
 					}
@@ -80,30 +80,36 @@ abstract class Base
 			}
 		else
 			{
-			$expectedType = trim($expectedType, '\\');
-			if ($type == 'array' && str_starts_with($expectedType, 'array'))
+			$expectedType = \trim($expectedType, '\\');
+
+			if ('array' == $type && \str_starts_with($expectedType, 'array'))
 				{
-				$arrayStart = strpos($expectedType, '[');
+				$arrayStart = \strpos($expectedType, '[');
+
 				if ($arrayStart)
 					{
-					$arrayEnd = strpos($expectedType, ']');
-					if (strlen($expectedType) > $arrayEnd + 1)
+					$arrayEnd = \strpos($expectedType, ']');
+
+					if (\strlen($expectedType) > $arrayEnd + 1)
 						{
-						$maxSize = (int)trim(substr($expectedType, $arrayEnd), '[]');
-						if (count($value) > $maxSize)
+						$maxSize = (int)\trim(\substr($expectedType, $arrayEnd), '[]');
+
+						if (\count($value) > $maxSize)
 							{
 							throw new \PHPFUI\ConstantContact\Exception\InvalidValue(static::class . "::{$field} array has a limit of {$maxSize} values");
 							}
 						}
-					$expectedType = trim(substr($expectedType, $arrayStart + 2, $arrayEnd - $arrayStart - 2), '\\');
+					$expectedType = \trim(\substr($expectedType, $arrayStart + 2, $arrayEnd - $arrayStart - 2), '\\');
 					}
 				else
 					{
 					$expectedType = 'string';
 					}
+
 				foreach ($value as $index => $element)
 					{
 					$elementType = \get_debug_type($element);
+
 					if ($expectedType != $elementType)
 						{
 						throw new \PHPFUI\ConstantContact\Exception\InvalidType(static::class . "::{$field} should be an array[{$expectedType}] but index {$index} is of type {$elementType}");
@@ -162,20 +168,21 @@ abstract class Base
 					{
 					$result[$field] = $value->getData();
 					}
-				elseif (is_array($value))
+				elseif (\is_array($value))
 					{
-					if (! count($value))
+					if (! \count($value))
 						{
 						continue;
 						}
 					$result[$field] = [];
+
 					foreach ($value as $item)
 						{
 						if ($item instanceof self)
 							{
 							$item = $item->getData();
 							}
-						elseif (is_object($item))
+						elseif (\is_object($item))
 							{
 							$item = (string)$item;
 							}
@@ -184,7 +191,7 @@ abstract class Base
 					}
 				else
 					{
-					$result[$field] = is_object($value) ? (string)$value : $value;
+					$result[$field] = \is_object($value) ? (string)$value : $value;
 					}
 				}
 			}
@@ -205,4 +212,3 @@ abstract class Base
 		return static::$fields;
 		}
 	}
-

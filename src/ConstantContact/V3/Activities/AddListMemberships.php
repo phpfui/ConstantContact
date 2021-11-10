@@ -6,12 +6,10 @@ namespace PHPFUI\ConstantContact\V3\Activities;
 
 class AddListMemberships extends \PHPFUI\ConstantContact\Base
 	{
-
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
 		parent::__construct($client, '/v3/activities/add_list_memberships');
 		}
-
 
 	/**
 	 * Add Contacts to Lists
@@ -26,6 +24,7 @@ class AddListMemberships extends \PHPFUI\ConstantContact\Base
 	 */
 	public function post(\PHPFUI\ConstantContact\Definition\ListActivityAddContacts $body) : array
 		{
+
 		return $this->doPost(['body' => $body->getData(), ]);
 		}
 	}

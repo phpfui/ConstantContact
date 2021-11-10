@@ -6,12 +6,10 @@ namespace PHPFUI\ConstantContact\V3;
 
 class Segment extends \PHPFUI\ConstantContact\Base
 	{
-
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
 		parent::__construct($client, '/v3/segments/{segment_id}');
 		}
-
 
 	/**
 	 * GET a Segment's Details
@@ -26,6 +24,7 @@ class Segment extends \PHPFUI\ConstantContact\Base
 	 */
 	public function get(int $segment_id) : array
 		{
+
 		return $this->doGet(['segment_id' => $segment_id, ]);
 		}
 
@@ -48,6 +47,7 @@ class Segment extends \PHPFUI\ConstantContact\Base
 	 */
 	public function put(int $segment_id, \PHPFUI\ConstantContact\Definition\SegmentData $body) : array
 		{
+
 		return $this->doPut(['segment_id' => $segment_id, 'body' => $body->getData(), ]);
 		}
 
@@ -57,7 +57,7 @@ class Segment extends \PHPFUI\ConstantContact\Base
 	 * Use this method to delete a segment from your account. Before deleting
 	 * a segment, verify that the segment is not associated with a scheduled
 	 * campaign.
-	 * 
+	 *
 	 * Deleted segments do not display in the results when using the `GET /segments`
 	 * endpoint. If you know the `segment_id`, you can use the `GET /segments/{segment_id}`
 	 * endpoint to view the deleted segment's details. A segment's details
@@ -70,6 +70,7 @@ class Segment extends \PHPFUI\ConstantContact\Base
 	 */
 	public function delete(int $segment_id) : bool
 		{
+
 		return $this->doDelete(['segment_id' => $segment_id, ]);
 		}
 	}

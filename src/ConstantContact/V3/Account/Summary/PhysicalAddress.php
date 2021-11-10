@@ -6,12 +6,10 @@ namespace PHPFUI\ConstantContact\V3\Account\Summary;
 
 class PhysicalAddress extends \PHPFUI\ConstantContact\Base
 	{
-
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
 		parent::__construct($client, '/v3/account/summary/physical_address');
 		}
-
 
 	/**
 	 * GET the Physical Address for the Account
@@ -24,6 +22,7 @@ class PhysicalAddress extends \PHPFUI\ConstantContact\Base
 	 */
 	public function get() : array
 		{
+
 		return $this->doGet([]);
 		}
 
@@ -46,6 +45,7 @@ class PhysicalAddress extends \PHPFUI\ConstantContact\Base
 	 */
 	public function put(\PHPFUI\ConstantContact\Definition\AccountPhysicalAddress $body) : array
 		{
+
 		return $this->doPut(['body' => $body->getData(), ]);
 		}
 	}

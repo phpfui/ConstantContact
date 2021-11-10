@@ -6,12 +6,10 @@ namespace PHPFUI\ConstantContact\V3\Reports\ContactReports;
 
 class ActivityDetails extends \PHPFUI\ConstantContact\Base
 	{
-
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
 		parent::__construct($client, '/v3/reports/contact_reports/{contact_id}/activity_details');
 		}
-
 
 	/**
 	 * GET Contact Activity Details
@@ -33,6 +31,7 @@ class ActivityDetails extends \PHPFUI\ConstantContact\Base
 	 */
 	public function get(string $contact_id, string $tracking_activities_list, ?string $limit = null) : array
 		{
+
 		return $this->doGet(['contact_id' => $contact_id, 'tracking_activities_list' => $tracking_activities_list, 'limit' => $limit, ]);
 		}
 	}

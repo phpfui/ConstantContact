@@ -6,12 +6,10 @@ namespace PHPFUI\ConstantContact\V3;
 
 class ContactCustomFields extends \PHPFUI\ConstantContact\Base
 	{
-
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
 		parent::__construct($client, '/v3/contact_custom_fields');
 		}
-
 
 	/**
 	 * GET custom_fields Collection
@@ -21,12 +19,13 @@ class ContactCustomFields extends \PHPFUI\ConstantContact\Base
 	 * <div class="Msg"><p class="note-text">This method does not currently
 	 * support filtering results using the custom field update date.</p></div>
 	 *
-	 * 
+	 *
 	 *
 	 * @param int $limit Specifies the number of results displayed per page of output, from 1 - 100, default = 50.
 	 */
 	public function get(?int $limit = null) : array
 		{
+
 		return $this->doGet(['limit' => $limit, ]);
 		}
 
@@ -40,6 +39,7 @@ class ContactCustomFields extends \PHPFUI\ConstantContact\Base
 	 */
 	public function post(\PHPFUI\ConstantContact\Definition\CustomFieldInput $body) : array
 		{
+
 		return $this->doPost(['body' => $body->getData(), ]);
 		}
 	}

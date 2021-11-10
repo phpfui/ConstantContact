@@ -85,7 +85,7 @@ class Base
 			}
 		$parameter = '{' . \array_key_first($parameters) . '}';
 
-		if (str_contains($url, $parameter))
+		if (\str_contains($url, $parameter))
 			{
 			$url = \str_replace($parameter, \array_shift($parameters), $url);
 			}
@@ -93,4 +93,3 @@ class Base
 		return $url;
 		}
 	}
-

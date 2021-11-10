@@ -4,15 +4,13 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-	/**
-	 * @var string $name The name given to the contact list
-	 * @var bool $favorite Identifies whether or not the account has favorited the contact list.
-	 * @var string $description Text describing the list.
-	 */
-
+/**
+ * @var string $name The name given to the contact list
+ * @var bool $favorite Identifies whether or not the account has favorited the contact list.
+ * @var string $description Text describing the list.
+ */
 class ListInput extends \PHPFUI\ConstantContact\Definition\Base
 	{
-
 	protected static array $fields = [
 		'name' => 'string',
 		'favorite' => 'bool',

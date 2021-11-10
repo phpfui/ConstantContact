@@ -6,12 +6,10 @@ namespace PHPFUI\ConstantContact\V3;
 
 class Contact extends \PHPFUI\ConstantContact\Base
 	{
-
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
 		parent::__construct($client, '/v3/contacts/{contact_id}');
 		}
-
 
 	/**
 	 * GET a Contact
@@ -25,18 +23,21 @@ class Contact extends \PHPFUI\ConstantContact\Base
 	 */
 	public function get(string $contact_id, ?string $include = null) : array
 		{
+
 		if (null !== $include)
 			{
-			$parts = explode(',', $include);
-			$validValues = ['custom_fields' , 'list_memberships' , 'phone_numbers' , 'street_addresses' , 'taggings' , 'notes'];
+			$parts = \explode(',', $include);
+			$validValues = ['custom_fields', 'list_memberships', 'phone_numbers', 'street_addresses', 'taggings', 'notes'];
+
 			foreach ($parts as $part)
 				{
-				if (! in_array(trim($part), $validValues))
+				if (! \in_array(\trim($part), $validValues))
 					{
-					throw new \PHPFUI\ConstantContact\Exception\InvalidValue("Parameter include containing value '{$part}' is not one of (" . implode(', ', $validValues) . ') in ' . __METHOD__);
+					throw new \PHPFUI\ConstantContact\Exception\InvalidValue("Parameter include containing value '{$part}' is not one of (" . \implode(', ', $validValues) . ') in ' . __METHOD__);
 					}
 				}
 			}
+
 		return $this->doGet(['contact_id' => $contact_id, 'include' => $include, ]);
 		}
 
@@ -58,6 +59,7 @@ class Contact extends \PHPFUI\ConstantContact\Base
 	 */
 	public function put(string $contact_id, \PHPFUI\ConstantContact\Definition\ContactPutRequest $body) : array
 		{
+
 		return $this->doPut(['contact_id' => $contact_id, 'body' => $body->getData(), ]);
 		}
 
@@ -74,6 +76,7 @@ class Contact extends \PHPFUI\ConstantContact\Base
 	 */
 	public function delete(string $contact_id) : bool
 		{
+
 		return $this->doDelete(['contact_id' => $contact_id, ]);
 		}
 	}

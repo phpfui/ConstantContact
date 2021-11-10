@@ -6,12 +6,10 @@ namespace PHPFUI\ConstantContact\V3;
 
 class ContactTag extends \PHPFUI\ConstantContact\Base
 	{
-
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
 		parent::__construct($client, '/v3/contact_tags/{tag_id}');
 		}
-
 
 	/**
 	 * GET Tag Details
@@ -27,6 +25,7 @@ class ContactTag extends \PHPFUI\ConstantContact\Base
 	 */
 	public function get(string $tag_id, ?bool $include_count = null) : array
 		{
+
 		return $this->doGet(['tag_id' => $tag_id, 'include_count' => $include_count, ]);
 		}
 
@@ -44,6 +43,7 @@ class ContactTag extends \PHPFUI\ConstantContact\Base
 	 */
 	public function put(string $tag_id, \PHPFUI\ConstantContact\Definition\TagPut $body) : array
 		{
+
 		return $this->doPut(['tag_id' => $tag_id, 'body' => $body->getData(), ]);
 		}
 
@@ -60,6 +60,7 @@ class ContactTag extends \PHPFUI\ConstantContact\Base
 	 */
 	public function delete(string $tag_id) : bool
 		{
+
 		return $this->doDelete(['tag_id' => $tag_id, ]);
 		}
 	}
