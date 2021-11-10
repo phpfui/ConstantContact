@@ -1,9 +1,11 @@
 <?php
 
+// Generated file. Do not edit by hand. Use update.php in project root.
+
 namespace PHPFUI\ConstantContact\Definition;
 
 	/**
-	 * @var array $campaign_activities Lists the role and unique activity ID of each campaign activity that is associated with an Email Campaign.
+	 * @var array[\PHPFUI\ConstantContact\Definition\ActivityReference] $campaign_activities Lists the role and unique activity ID of each campaign activity that is associated with an Email Campaign.
 	 * @var string $campaign_id The unique ID used to identify the email campaign (UUID format).
 	 * @var DateTime $created_at The system generated date and time that this email campaign was created. This string is readonly and is in ISO-8601 format.
 	 * @var string $current_status The current status of the email campaign. Valid values are: <ul>
@@ -44,7 +46,7 @@ class EmailCampaign extends \PHPFUI\ConstantContact\Definition\Base
 	{
 
 	protected static array $fields = [
-		'campaign_activities' => 'array',
+		'campaign_activities' => 'array[\PHPFUI\ConstantContact\Definition\ActivityReference]',
 		'campaign_id' => 'string',
 		'created_at' => 'DateTime',
 		'current_status' => ['Draft', 'Scheduled', 'Executing', 'Done', 'Removed', 'Error'],

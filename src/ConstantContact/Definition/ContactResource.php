@@ -1,9 +1,11 @@
 <?php
 
+// Generated file. Do not edit by hand. Use update.php in project root.
+
 namespace PHPFUI\ConstantContact\Definition;
 
 	/**
-	 * @var PHPFUI\ConstantContact\UUID $contact_id Unique ID for each contact resource
+	 * @var \PHPFUI\ConstantContact\UUID $contact_id Unique ID for each contact resource
 	 * @var string $first_name The first name of the contact.
 	 * @var string $last_name The last name of the contact.
 	 * @var string $job_title The job title of the contact.
@@ -15,21 +17,21 @@ namespace PHPFUI\ConstantContact\Definition;
 	 * @var string $create_source Describes who added the contact; valid values are <code>Contact</code> or <code>Account</code>. Your integration must accurately identify <code>create_source</code> for compliance reasons; value is set when contact is created.
 	 * @var DateTime $created_at System generated date and time that the resource was created, in ISO-8601 format.
 	 * @var DateTime $updated_at System generated date and time that the contact was last updated, in ISO-8601 format.
-	 * @var PHPFUI\ConstantContact\Date $deleted_at For deleted contacts (<code>email_address</code> contains <code>opt_out_source</code> and <code>opt_out_date</code>), shows the date of deletion.
-	 * @var array $custom_fields Array of up to 25 <code>custom_field</code> key value pairs.
-	 * @var array $phone_numbers Array of phone_numbers subresources. A contact can have up to 2 phone numbers.
-	 * @var array $street_addresses Array of street_addresses subresources. A contact can have 1 street address.
-	 * @var array $list_memberships Array of list_id's to which the contact is subscribed, up to a maximum of 50.
-	 * @var array $taggings Array of tags (<code>tag_id</code>) assigned to the contact, up to a maximum of 50.
-	 * @var array $notes An array of up to 150 notes about the contact.
+	 * @var \PHPFUI\ConstantContact\Date $deleted_at For deleted contacts (<code>email_address</code> contains <code>opt_out_source</code> and <code>opt_out_date</code>), shows the date of deletion.
+	 * @var array[\PHPFUI\ConstantContact\Definition\ContactCustomField][25] $custom_fields Array of up to 25 <code>custom_field</code> key value pairs.
+	 * @var array[\PHPFUI\ConstantContact\Definition\PhoneNumber][2] $phone_numbers Array of phone_numbers subresources. A contact can have up to 2 phone numbers.
+	 * @var array[\PHPFUI\ConstantContact\Definition\StreetAddress][1] $street_addresses Array of street_addresses subresources. A contact can have 1 street address.
+	 * @var array[\PHPFUI\ConstantContact\UUID][50] $list_memberships Array of list_id's to which the contact is subscribed, up to a maximum of 50.
+	 * @var array[\PHPFUI\ConstantContact\UUID][50] $taggings Array of tags (<code>tag_id</code>) assigned to the contact, up to a maximum of 50.
+	 * @var array[\PHPFUI\ConstantContact\Definition\Note][150] $notes An array of up to 150 notes about the contact.
 	 */
 
 class ContactResource extends \PHPFUI\ConstantContact\Definition\Base
 	{
 
 	protected static array $fields = [
-		'contact_id' => 'PHPFUI\ConstantContact\UUID',
-		'email_address' => 'PHPFUI\\ConstantContact\\Definition\\EmailAddress',
+		'contact_id' => '\PHPFUI\ConstantContact\UUID',
+		'email_address' => '\PHPFUI\ConstantContact\Definition\EmailAddress',
 		'first_name' => 'string',
 		'last_name' => 'string',
 		'job_title' => 'string',
@@ -41,13 +43,13 @@ class ContactResource extends \PHPFUI\ConstantContact\Definition\Base
 		'create_source' => ['Account', 'Contact'],
 		'created_at' => 'DateTime',
 		'updated_at' => 'DateTime',
-		'deleted_at' => 'PHPFUI\ConstantContact\Date',
-		'custom_fields' => 'array',
-		'phone_numbers' => 'array',
-		'street_addresses' => 'array',
-		'list_memberships' => 'array',
-		'taggings' => 'array',
-		'notes' => 'array',
+		'deleted_at' => '\PHPFUI\ConstantContact\Date',
+		'custom_fields' => 'array[\PHPFUI\ConstantContact\Definition\ContactCustomField][25]',
+		'phone_numbers' => 'array[\PHPFUI\ConstantContact\Definition\PhoneNumber][2]',
+		'street_addresses' => 'array[\PHPFUI\ConstantContact\Definition\StreetAddress][1]',
+		'list_memberships' => 'array[\PHPFUI\ConstantContact\UUID][50]',
+		'taggings' => 'array[\PHPFUI\ConstantContact\UUID][50]',
+		'notes' => 'array[\PHPFUI\ConstantContact\Definition\Note][150]',
 
 	];
 

@@ -1,5 +1,7 @@
 <?php
 
+// Generated file. Do not edit by hand. Use update.php in project root.
+
 namespace PHPFUI\ConstantContact\Definition;
 
 	/**
@@ -25,8 +27,8 @@ class ActivityTagging extends \PHPFUI\ConstantContact\Definition\Base
 		'updated_at' => 'DateTime',
 		'percent_done' => 'int',
 		'activity_errors' => 'array',
-		'status' => 'PHPFUI\\ConstantContact\\Definition\\ActivityTaggingStatus',
-		'_links' => 'PHPFUI\\ConstantContact\\Definition\\ActivityLinks',
+		'status' => '\PHPFUI\ConstantContact\Definition\ActivityTaggingStatus',
+		'_links' => '\PHPFUI\ConstantContact\Definition\ActivityLinks',
 
 	];
 	}

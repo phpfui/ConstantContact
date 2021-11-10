@@ -1,5 +1,7 @@
 <?php
 
+// Generated file. Do not edit by hand. Use update.php in project root.
+
 namespace PHPFUI\ConstantContact\Definition;
 
 	/**
@@ -11,9 +13,9 @@ class Contacts extends \PHPFUI\ConstantContact\Definition\Base
 	{
 
 	protected static array $fields = [
-		'contacts' => 'array',
+		'contacts' => 'array[\PHPFUI\ConstantContact\Definition\ContactResource2]',
 		'contacts_count' => 'int',
-		'_links' => 'PHPFUI\\ConstantContact\\Definition\\PagingLinks',
+		'_links' => '\PHPFUI\ConstantContact\Definition\PagingLinks',
 		'status' => ['processing'],
 
 	];

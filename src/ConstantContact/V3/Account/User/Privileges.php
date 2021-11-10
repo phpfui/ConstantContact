@@ -1,6 +1,6 @@
 <?php
 
-// Generated file. Do not edit by hand. Use generate.php in project root.
+// Generated file. Do not edit by hand. Use update.php in project root.
 
 namespace PHPFUI\ConstantContact\V3\Account\User;
 

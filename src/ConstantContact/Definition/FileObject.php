@@ -1,5 +1,7 @@
 <?php
 
+// Generated file. Do not edit by hand. Use update.php in project root.
+
 namespace PHPFUI\ConstantContact\Definition;
 
 	/**
@@ -37,7 +39,7 @@ class FileObject extends \PHPFUI\ConstantContact\Definition\Base
 		'source' => ['MyComputer', 'StockImage', 'Facebook', 'Instagram', 'Bigstock', 'Mobile', 'Artwork', 'Canva'],
 		'type' => ['GIF', 'JPG', 'PDF', 'PNG', 'DOC', 'DOCX', 'XLS', 'XLSX', 'PPT', 'PPTX'],
 		'status' => ['Active', 'Processing', 'VirusFound', 'Deleted', 'Purged', 'Failed'],
-		'thumbnail' => 'PHPFUI\\ConstantContact\\Definition\\Thumbnail',
+		'thumbnail' => '\PHPFUI\ConstantContact\Definition\Thumbnail',
 		'image' => 'bool',
 		'folder_id' => 'int',
 		'external_url' => 'string',

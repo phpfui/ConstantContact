@@ -1,9 +1,11 @@
 <?php
 
+// Generated file. Do not edit by hand. Use update.php in project root.
+
 namespace PHPFUI\ConstantContact\Definition;
 
 	/**
-	 * @var PHPFUI\ConstantContact\UUID $activity_id Unique ID for the activity.
+	 * @var \PHPFUI\ConstantContact\UUID $activity_id Unique ID for the activity.
 	 * @var string $state The state of the request: initialized - request has been received processing - request is being processed completed - job completed cancelled - request was cancelled failed - job failed to complete timed_out - the request timed out before completing
 	 * @var DateTime $started_at Timestamp showing when we began processing the activity request, in ISO-8601 format.
 	 * @var DateTime $completed_at Timestamp showing when we completed processing the activity, in ISO-8601 format.
@@ -18,7 +20,7 @@ class Activity extends \PHPFUI\ConstantContact\Definition\Base
 	{
 
 	protected static array $fields = [
-		'activity_id' => 'PHPFUI\ConstantContact\UUID',
+		'activity_id' => '\PHPFUI\ConstantContact\UUID',
 		'state' => ['initialized', 'processing', 'completed', 'cancelled', 'failed', 'timed_out'],
 		'started_at' => 'DateTime',
 		'completed_at' => 'DateTime',
@@ -27,8 +29,8 @@ class Activity extends \PHPFUI\ConstantContact\Definition\Base
 		'source_file_name' => 'string',
 		'percent_done' => 'int',
 		'activity_errors' => 'array',
-		'status' => 'PHPFUI\\ConstantContact\\Definition\\ActivityStatus',
-		'_links' => 'PHPFUI\\ConstantContact\\Definition\\ActivityStatusExportLink',
+		'status' => '\PHPFUI\ConstantContact\Definition\ActivityStatus',
+		'_links' => '\PHPFUI\ConstantContact\Definition\ActivityStatusExportLink',
 
 	];
 	}

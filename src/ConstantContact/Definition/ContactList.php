@@ -1,9 +1,11 @@
 <?php
 
+// Generated file. Do not edit by hand. Use update.php in project root.
+
 namespace PHPFUI\ConstantContact\Definition;
 
 	/**
-	 * @var PHPFUI\ConstantContact\UUID $list_id Unique ID for the contact list
+	 * @var \PHPFUI\ConstantContact\UUID $list_id Unique ID for the contact list
 	 * @var string $name The name given to the contact list
 	 * @var string $description Text describing the list.
 	 * @var bool $favorite Identifies whether or not the account has favorited the contact list.
@@ -16,7 +18,7 @@ class ContactList extends \PHPFUI\ConstantContact\Definition\Base
 	{
 
 	protected static array $fields = [
-		'list_id' => 'PHPFUI\ConstantContact\UUID',
+		'list_id' => '\PHPFUI\ConstantContact\UUID',
 		'name' => 'string',
 		'description' => 'string',
 		'favorite' => 'bool',

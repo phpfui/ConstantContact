@@ -1,9 +1,11 @@
 <?php
 
+// Generated file. Do not edit by hand. Use update.php in project root.
+
 namespace PHPFUI\ConstantContact\Definition;
 
 	/**
-	 * @var PHPFUI\ConstantContact\UUID $custom_field_id The custom_field's unique ID
+	 * @var \PHPFUI\ConstantContact\UUID $custom_field_id The custom_field's unique ID
 	 * @var string $label The display name for the custom_field shown in the UI as free-form text
 	 * @var string $name Unique name for the custom_field constructed from the label by replacing blanks with underscores.
 	 * @var string $type Specifies the type of value the custom_field field accepts: string or date.
@@ -15,7 +17,7 @@ class CustomFieldResource2 extends \PHPFUI\ConstantContact\Definition\Base
 	{
 
 	protected static array $fields = [
-		'custom_field_id' => 'PHPFUI\ConstantContact\UUID',
+		'custom_field_id' => '\PHPFUI\ConstantContact\UUID',
 		'label' => 'string',
 		'name' => 'string',
 		'type' => ['date', 'string'],
