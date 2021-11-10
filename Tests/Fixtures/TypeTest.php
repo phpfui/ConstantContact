@@ -15,6 +15,8 @@ class TypeTest extends \PHPFUI\ConstantContact\Definition\Base
 		'ucEnum' => ['DRAFT', 'SCHEDULED', 'EXECUTING', 'DONE', 'ERROR', 'REMOVED'],
 		'intEnum' => [1, 2, 3, 4, 5],
 		'class' => 'Tests\\Fixtures\\ClassTest',
+		'classArray' => 'array[\\Tests\\Fixtures\\ClassTest]',
+		'classArraySize' => 'array[\\Tests\\Fixtures\\ClassTest][3]',
 	];
 
 	protected static array $minLength = [

@@ -1,7 +1,9 @@
 <?php
 
-exec('/usr/bin/php8.0 composer.phar self-update');
-exec('/usr/bin/php8.0 composer.phar update');
+$php = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' ? 'php' : '/usr/bin/php8.0';
+
+exec($php . ' composer.phar self-update');
+exec($php . ' composer.phar update');
 
 include 'vendor/autoload.php';
 
@@ -26,6 +28,12 @@ $yaml = \Symfony\Component\Yaml\Yaml::parseFile($file);
 $generator = new \Tools\Generator();
 $generator->makeClasses($yaml['basePath'], $yaml['paths']);
 $generator->makeDefinitions($yaml['definitions']);
+
+// don't update git if running under Windows
+if ('php' == $php)
+	{
+	exit;
+	}
 
 // Stage all changed files
 $repo->run('add', ['.']);

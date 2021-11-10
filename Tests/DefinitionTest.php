@@ -30,7 +30,7 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 		$this->assertEquals($boolean, $fixture->boolean);
 		$this->assertIsBool($fixture->boolean);
 
-		$array = [1, 2, 3];
+		$array = ['String', '2', 'Another string'];
 		$fixture->array = $array;
 		$this->assertEquals($array, $fixture->array);
 		$this->assertIsArray($fixture->array);
@@ -62,14 +62,14 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 
 		$json = $fixture->getJSON();
 		$expectedJSON ='{
-    "class": {},
+    "class": [],
     "integer": 123,
     "string": "A long string",
     "boolean": true,
     "array": [
-        1,
-        2,
-        3
+        "String",
+        "2",
+        "Another string"
     ],
     "float": 1.23,
     "enum": "primary_email",
@@ -121,6 +121,30 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 		$fixture = new \Tests\Fixtures\TypeTest();
 		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidType::class);
 		$fixture->array = 0;
+		}
+
+	public function testBadArrayTypes() : void
+		{
+		$fixture = new \Tests\Fixtures\TypeTest();
+		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidType::class);
+		$fixture->classArray = [
+			new \Tests\Fixtures\ClassTest(),
+			new \Tests\Fixtures\ClassTest(),
+			new \Tests\Fixtures\TypeTest(),
+			];
+		}
+
+	public function testBadArrayOfTypeSize() : void
+		{
+		$fixture = new \Tests\Fixtures\TypeTest();
+		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidValue::class);
+		$fixture->classArraySize = [
+			new \Tests\Fixtures\ClassTest(),
+			new \Tests\Fixtures\ClassTest(),
+			new \Tests\Fixtures\ClassTest(),
+			new \Tests\Fixtures\ClassTest(),
+			new \Tests\Fixtures\ClassTest(),
+			];
 		}
 
 	public function testBadClassType() : void

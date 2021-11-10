@@ -116,8 +116,7 @@ class Generator
 					}
 				if (isset($details['$ref']))
 					{
-					$parts = \explode('/', str_replace('_', '', $details['$ref']));
-					$type = str_replace('\\', '\\\\', $this->definitionNamespace . '\\' . \array_pop($parts));
+					$type = $this->getTypeNameFromRef($details['$ref']);
 					}
 				else
 					{
@@ -127,7 +126,7 @@ class Generator
 						{
 						$namespace = $this->definitionNamespace;
 						$baseName =  $this->getUniqueClassName($namespace, $this->getClassName($name));
-						$type = str_replace('\\', '\\\\',  $namespace . '\\' . $baseName);
+						$type = '\\' . $namespace . '\\' . $baseName;
 						$this->generateDefinition($baseName, $details);
 						}
 
@@ -146,7 +145,7 @@ class Generator
 						}
 					elseif ($type == 'date')
 						{
-						$type = 'PHPFUI\\ConstantContact\\Date';
+						$type = '\PHPFUI\ConstantContact\Date';
 						}
 					elseif ($type == 'boolean')
 						{
@@ -154,13 +153,36 @@ class Generator
 						}
 					elseif ($type == 'uuid')
 						{
-						$type = 'PHPFUI\\ConstantContact\\UUID';
+						$type = '\PHPFUI\ConstantContact\UUID';
 						}
 					if (isset($details['enum']))
 						{
 						$originalType = $type;
 						$type = $details['enum'];
 						}
+
+					if (isset($details['items']))
+						{
+						$items = $details['items'];
+						$itemType = '';
+						if (isset($items['$ref']))
+							{
+							$itemType = $this->getTypeNameFromRef($items['$ref']);
+							}
+						elseif (isset($items['type']) && ($items['format'] ?? '') == 'uuid')
+							{
+							$itemType = '\PHPFUI\ConstantContact\UUID';
+							}
+						if ('array' == $type && $itemType)
+							{
+							$type = 'array[' . $itemType . ']';
+							if ($details['maxItems'] ?? false)
+								{
+								$type .= '[' . $details['maxItems'] . ']';
+								}
+							}
+						}
+
 					}
 				$fields[$name] = $type;
 
@@ -206,8 +228,7 @@ class Generator
 				{
 				if (isset($parameter['schema']))
 					{
-					$parts = \explode('/', $parameter['schema']['$ref']);
-					$type = '\\' . $this->definitionNamespace . '\\' . \array_pop($parts);
+					$type = $this->getTypeNameFromRef($parameter['schema']['$ref']);
 					}
 				else
 					{
@@ -313,7 +334,7 @@ ACTION;
 		$php = <<<'PHP'
 <?php
 
-// Generated file. Do not edit by hand. Use generate.php in project root.
+// Generated file. Do not edit by hand. Use update.php in project root.
 
 namespace PHPFUI\ConstantContact\~namespace~;
 
@@ -422,6 +443,8 @@ PHP;
 		$template = <<<PHP
 <?php
 
+// Generated file. Do not edit by hand. Use update.php in project root.
+
 namespace {$this->definitionNamespace};
 
 	/**
@@ -490,4 +513,11 @@ class ~class~ extends {$backSlash}{$this->definitionNamespace}\Base
 				throw new \Exception("Error writing file {$path}");
 				}
 		}
+
+	private function getTypeNameFromRef(string $ref) : string
+		{
+		$parts = \explode('/', str_replace('_', '', $ref));
+		return '\\' . $this->definitionNamespace . '\\' . \array_pop($parts);
+		}
+
 	}

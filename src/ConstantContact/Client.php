@@ -97,7 +97,7 @@ class Client
 		return $this->lastError;
 		}
 
-  public function getStatusCode() : int
+	public function getStatusCode() : int
 		{
 		return $this->statusCode;
 		}

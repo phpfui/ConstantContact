@@ -22,13 +22,25 @@ abstract class Base
 		'array' => true,
 	];
 
-	public function __construct()
+	public function __construct(array $initialValues = [])
 		{
 		foreach (static::$fields as $field => $type)
 			{
-			if (! \is_array($type) && ! isset(self::$scalars[$type]))
+			if (isset($initialValues[$field]))
 				{
-				$this->data[$field] = new $type();
+				$this->setFields[$field] = true;
+				$this->data[$field] = $initialValues[$field];
+				}
+			elseif (! \is_array($type) && ! isset(self::$scalars[$type]))
+				{
+				if (str_starts_with($type, 'array'))
+					{
+					$this->data[$field] = [];
+					}
+				else
+					{
+					$this->data[$field] = new $type();
+					}
 				}
 			}
 		}
@@ -56,6 +68,7 @@ abstract class Base
 			{
 			throw new \PHPFUI\ConstantContact\Exception\InvalidField(static::class . "::{$field} is not a valid field");
 			}
+
 		$type = \get_debug_type($value);
 
 		if (\is_array($expectedType))
@@ -65,9 +78,42 @@ abstract class Base
 				throw new \PHPFUI\ConstantContact\Exception\InvalidValue(static::class . "::{$field} is {$value} but must be one of " . \implode(', ', $expectedType));
 				}
 			}
-		elseif ($expectedType != $type)
+		else
 			{
-			throw new \PHPFUI\ConstantContact\Exception\InvalidType(static::class . "::{$field} is of type {$type} but should be type {$expectedType}");
+			$expectedType = trim($expectedType, '\\');
+			if ($type == 'array' && str_starts_with($expectedType, 'array'))
+				{
+				$arrayStart = strpos($expectedType, '[');
+				if ($arrayStart)
+					{
+					$arrayEnd = strpos($expectedType, ']');
+					if (strlen($expectedType) > $arrayEnd + 1)
+						{
+						$maxSize = (int)trim(substr($expectedType, $arrayEnd), '[]');
+						if (count($value) > $maxSize)
+							{
+							throw new \PHPFUI\ConstantContact\Exception\InvalidValue(static::class . "::{$field} array has a limit of {$maxSize} values");
+							}
+						}
+					$expectedType = trim(substr($expectedType, $arrayStart + 2, $arrayEnd - $arrayStart - 2), '\\');
+					}
+				else
+					{
+					$expectedType = 'string';
+					}
+				foreach ($value as $index => $element)
+					{
+					$elementType = \get_debug_type($element);
+					if ($expectedType != $elementType)
+						{
+						throw new \PHPFUI\ConstantContact\Exception\InvalidType(static::class . "::{$field} should be an array[{$expectedType}] but index {$index} is of type {$elementType}");
+						}
+					}
+				}
+			elseif ($expectedType != $type)
+				{
+				throw new \PHPFUI\ConstantContact\Exception\InvalidType(static::class . "::{$field} is of type {$type} but should be type {$expectedType}");
+				}
 			}
 
 		if (isset(static::$minLength[$field]))
@@ -114,9 +160,32 @@ abstract class Base
 				{
 				if ($value instanceof self)
 					{
-					$value = $value->getData();
+					$result[$field] = $value->getData();
 					}
-				$result[$field] = $value;
+				elseif (is_array($value))
+					{
+					if (! count($value))
+						{
+						continue;
+						}
+					$result[$field] = [];
+					foreach ($value as $item)
+						{
+						if ($item instanceof self)
+							{
+							$item = $item->getData();
+							}
+						elseif (is_object($item))
+							{
+							$item = (string)$item;
+							}
+						$result[$field][] = $item;
+						}
+					}
+				else
+					{
+					$result[$field] = is_object($value) ? (string)$value : $value;
+					}
 				}
 			}
 
@@ -136,3 +205,4 @@ abstract class Base
 		return static::$fields;
 		}
 	}
+

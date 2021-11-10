@@ -2,7 +2,7 @@
 
 namespace Tests\Fixtures;
 
-class ClassTest
+class ClassTest extends \PHPFUI\ConstantContact\Definition\Base
 	{
 
 	}

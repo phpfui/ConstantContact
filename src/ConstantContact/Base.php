@@ -10,12 +10,19 @@ class Base
 
 	public function success() : bool
 		{
-		return 200 == $this->client->getLastErrorNumber();
+		$status = $this->client->getStatusCode();
+
+		return $status >= 200 && $status < 300;
 		}
 
-	public function getResponseCode() : int
+	public function getStatusCode() : int
 		{
-		return $this->client->getLastErrorNumber();
+		return $this->client->getStatusCode();
+		}
+
+	public function getLastError() : string
+		{
+		return $this->client->getLastError();
 		}
 
 	public function getResponseText() : string
