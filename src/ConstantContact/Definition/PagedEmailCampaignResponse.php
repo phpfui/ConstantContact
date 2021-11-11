@@ -4,6 +4,8 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
+/**
+ */
 class PagedEmailCampaignResponse extends \PHPFUI\ConstantContact\Definition\Base
 	{
 	protected static array $fields = [

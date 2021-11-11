@@ -33,7 +33,7 @@ class Contacts extends \PHPFUI\ConstantContact\Base
 	 * @param string $segment_id Use to get contacts that meet the segment criteria for a single specified `segment_id`. This query parameter can only be combined with the limit query parameter. When using the `segment_id` query parameter, the V3 API may return a 202 response code instead of a 200 response. The 202 response code indicates that your request has been accepted, but not fully completed. Retry sending your API request to return the completed results and a 200 response code.
 	 * @param string $tags Use to get contact details for up to 50 specified tags. Use a comma to separate each `tag_id`.
 	 * @param string $updated_after Use `updated_after` to search for contacts that have been updated after the date you specify; accepts ISO-8601 formatted dates.
-	 * @param string $include Use `include` to specify which contact sub-resources to include in the response. Use a comma to separate multiple sub-resources. Valid values: `custom_fields`, `list_memberships`, `taggings`, `notes`,`phone_numbers`, `street_addresses`.
+	 * @param string $include Use `include` to specify which contact sub-resources to include in the response. Use a comma to separate multiple sub-resources. Valid values: `custom_fields`, `list_memberships`, `taggings`, `notes`,`phone_numbers`, `street_addresses`. 
 	 * @param bool $include_count Set `include_count=true` to include the total number of contacts (`contacts_count`) that meet all search criteria in the response body.
 	 * @param int $limit Specifies the number of results displayed per page of output in the response, from 1 - 500, default = 50.
 	 */

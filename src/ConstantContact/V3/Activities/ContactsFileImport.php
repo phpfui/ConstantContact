@@ -30,11 +30,11 @@ class ContactsFileImport extends \PHPFUI\ConstantContact\Base
 	 * and the remaining data is dropped.
 	 *
 	 * @param file $file The CSV file you are importing. The column headings that you can use in the file are: `first_name`,
-	 * `last_name`, `email`, `phone`, `job_title`, `anniversary`, `birthday_day`, `birthday_month`, `company_name`, `street`, `street2`, `city`, `state`, `zip`, and `country`. The only required column heading is `email`.
-	 *
-	 *
-	 * You can also use custom fields as column headings. Enter the custom field name prefixed with `cf:` as the column heading. For example, use `cf:first_name` as the header name if you have a custom field named "first_name". The custom field must already exist in the Constant Contact account you are using. Depending on the custom field data type, you can enter dates or strings as the value of the custom field. Each contact can contain up to 25 different custom fields.
-	 *
+`last_name`, `email`, `phone`, `job_title`, `anniversary`, `birthday_day`, `birthday_month`, `company_name`, `street`, `street2`, `city`, `state`, `zip`, and `country`. The only required column heading is `email`.
+
+
+You can also use custom fields as column headings. Enter the custom field name prefixed with `cf:` as the column heading. For example, use `cf:first_name` as the header name if you have a custom field named "first_name". The custom field must already exist in the Constant Contact account you are using. Depending on the custom field data type, you can enter dates or strings as the value of the custom field. Each contact can contain up to 25 different custom fields.
+
 	 * @param array $list_ids Specify which contact lists you are adding all imported contacts to as an array of up to 50 contact `list_id` values.
 	 */
 	public function post(file $file, array $list_ids) : array

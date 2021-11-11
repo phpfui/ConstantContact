@@ -63,18 +63,18 @@ class Plan extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $encoded_account_id Specify the client's unique `encoded_account_id`.
 	 * @param \PHPFUI\ConstantContact\Definition\PlanInfo $body Update the billing plan (`plan_type`) for an existing Constant Contact client account. Options include:
-	 * - `TRIAL`: A non-billed account with an expiration date that allows clients to try Constant Contact product features.
-	 *
-	 * - `GOOD`: A billed **Email** client account plan.
-	 *
-	 * - `BETTER`: A billed **Email Plus** client account plan.
-	 *
-	 * - `BEST`: A billed **Personal Marketer** client account plan.
-	 *
-	 * - `LITE`: A **Website Builder** client account plan.
-	 *
-	 *
-	 * If updating from a `TRIAL` plan (`plan_type`) to another type of billing plan, you have the option to update the day of month (`billing_day_of_month`) in which to bill the client account. Valid values include `1` through to and including `31`. Any additional billing plan properties and values that you include in the request body are ignored.
+  - `TRIAL`: A non-billed account with an expiration date that allows clients to try Constant Contact product features.
+
+  - `GOOD`: A billed **Email** client account plan.
+
+  - `BETTER`: A billed **Email Plus** client account plan.
+
+  - `BEST`: A billed **Personal Marketer** client account plan.
+
+  - `LITE`: A **Website Builder** client account plan.
+
+
+If updating from a `TRIAL` plan (`plan_type`) to another type of billing plan, you have the option to update the day of month (`billing_day_of_month`) in which to bill the client account. Valid values include `1` through to and including `31`. Any additional billing plan properties and values that you include in the request body are ignored.
 	 */
 	public function put(string $encoded_account_id, ?\PHPFUI\ConstantContact\Definition\PlanInfo $body = null) : array
 		{
