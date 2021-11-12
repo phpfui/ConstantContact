@@ -112,7 +112,7 @@ class Client
    */
   public function getAuthorizationURL() : string
 		{
-		$scopes = \implode('+', \array_keys($this->scopes));
+		$scopes = \implode('%2B', \array_keys($this->scopes));
 		$authURL = "https://api.cc.email/v3/idfed?client_id={$this->clientAPIKey}&response_type=code&redirect_uri={$this->redirectURI}&scope={$scopes}";
 
 		return $authURL;
@@ -225,11 +225,11 @@ class Client
 			if ($parameters)
 				{
 				$paramString = \urldecode(\http_build_query($parameters));
-				$paramString = \urlencode(\preg_replace('/\[[0-9]\]/', '', $paramString));
+				$paramString = \preg_replace('/\[[0-9]\]/', '', $paramString);
 
 				if ($paramString)
 					{
-					$url .= '&' . $paramString;
+					$url .= '?' . $paramString;
 					}
 				}
 

@@ -8,6 +8,8 @@ class Generator
 
 	private string $definitionNamespace = 'PHPFUI\\ConstantContact\\Definition';
 
+	private string $nl;
+
 	private array $duplicateClasses = [
 		'CustomFieldResource2' => 'CustomFieldResource',
 		'ContactResource2' => 'ContactResource',
@@ -18,6 +20,11 @@ class Generator
 	];
 
 	private array $generatedClasses = [];
+
+	public function __construct()
+		{
+		$this->nl = strtoupper(substr(PHP_OS, 0, 3)) === "\r\n" : "\n";
+		}
 
 	public function makeClasses(string $version, array $paths) : void
 		{
@@ -518,7 +525,7 @@ class ~class~ extends {$backSlash}{$this->definitionNamespace}\Base
 			$template .= $output;
 			}
 			$template = \str_replace('~class~', $name, $template) . "\t}\n";
-			$template = \str_replace("/**\r\n */\r\n", '', $template);
+			$template = \str_replace("/**{$this->nl} */{$this->nl}", '', $template);
 
 			$path = __DIR__ . "/../src/ConstantContact/Definition/{$name}.php";
 
