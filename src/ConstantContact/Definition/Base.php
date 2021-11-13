@@ -26,7 +26,7 @@ abstract class Base
 		{
 		foreach (static::$fields as $field => $type)
 			{
-			if (isset($initialValues[$field]))
+			if (! empty($initialValues[$field]))
 				{
 				$this->setFields[$field] = true;
 				$this->data[$field] = $initialValues[$field];
@@ -176,7 +176,7 @@ abstract class Base
 						}
 					$result[$field] = [];
 
-					foreach ($value as $item)
+					foreach ($value as $name => $item)
 						{
 						if ($item instanceof self)
 							{
@@ -186,7 +186,7 @@ abstract class Base
 							{
 							$item = (string)$item;
 							}
-						$result[$field][] = $item;
+						$result[$field][$name] = $item;
 						}
 					}
 				else
