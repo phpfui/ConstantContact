@@ -90,7 +90,7 @@ class Generator
 
 				if (isset($details['$ref']))
 					{
-					$type = $this->getTypeNameFromRef($details['$ref']);
+					$docType = $type = $this->getTypeNameFromRef($details['$ref']);
 					}
 				else
 					{
@@ -109,7 +109,7 @@ class Generator
 						$type = $details['format'];
 						}
 
-					$type = $this->getPHPType($type);
+					$docType = $type = $this->getPHPType($type);
 
 					if (isset($details['enum']))
 						{
@@ -133,6 +133,7 @@ class Generator
 
 						if ('array' == $type && $itemType)
 							{
+							$docType = 'array<' . $itemType . '>';
 							$type = 'array[' . $itemType . ']';
 
 							if ($details['maxItems'] ?? false)
@@ -164,7 +165,7 @@ class Generator
 						$type = $originalType;
 						}
 					$type = \str_replace('\\\\', '\\', $type);
-					$docBlock[] = "{$type} {$dollar}{$name} {$description}";
+					$docBlock[] = "{$docType} {$dollar}{$name} {$description}";
 					}
 				}
 			$this->generateFromTemplate($class, ['fields' => $fields, 'minLength' => $minLength, 'maxLength' => $maxLength, ], $docBlock);
