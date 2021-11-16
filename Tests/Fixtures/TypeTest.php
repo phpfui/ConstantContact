@@ -14,15 +14,18 @@ class TypeTest extends \PHPFUI\ConstantContact\Definition\Base
 		'ucEnum' => ['DRAFT', 'SCHEDULED', 'EXECUTING', 'DONE', 'ERROR', 'REMOVED'],
 		'intEnum' => [1, 2, 3, 4, 5],
 		'class' => 'Tests\\Fixtures\\ClassTest',
-		'classArray' => 'array[\\Tests\\Fixtures\\ClassTest]',
-		'classArraySize' => 'array[\\Tests\\Fixtures\\ClassTest][3]',
+		'classArray' => 'array<\\Tests\\Fixtures\\ClassTest>',
+		'classArraySize' => 'array<\\Tests\\Fixtures\\ClassTest>',
+		'classArraySizeMin' => 'array<\\Tests\\Fixtures\\ClassTest>',
 	];
 
 	protected static array $minLength = [
 		'string' => 10,
+		'classArraySizeMin' => 2,
 	];
 
 	protected static array $maxLength = [
 		'string' => 50,
+		'classArraySize' => 3,
 	];
 	}

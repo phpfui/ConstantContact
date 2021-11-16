@@ -84,35 +84,26 @@ abstract class Base
 
 			if ('array' == $type && \str_starts_with($expectedType, 'array'))
 				{
-				$arrayStart = \strpos($expectedType, '[');
+				$arrayStart = \strpos($expectedType, '<');
 
 				if ($arrayStart)
 					{
-					$arrayEnd = \strpos($expectedType, ']');
+					$arrayEnd = \strpos($expectedType, '>');
 
-					if (\strlen($expectedType) > $arrayEnd + 1)
-						{
-						$maxSize = (int)\trim(\substr($expectedType, $arrayEnd), '[]');
-
-						if (\count($value) > $maxSize)
-							{
-							throw new \PHPFUI\ConstantContact\Exception\InvalidValue(static::class . "::{$field} array has a limit of {$maxSize} values");
-							}
-						}
-					$expectedType = \trim(\substr($expectedType, $arrayStart + 2, $arrayEnd - $arrayStart - 2), '\\');
+					$arrayType = \trim(\substr($expectedType, $arrayStart + 2, $arrayEnd - $arrayStart - 2), '\\');
 					}
 				else
 					{
-					$expectedType = 'string';
+					$arrayType = 'string';
 					}
 
 				foreach ($value as $index => $element)
 					{
 					$elementType = \get_debug_type($element);
 
-					if ($expectedType != $elementType)
+					if ($arrayType != $elementType)
 						{
-						throw new \PHPFUI\ConstantContact\Exception\InvalidType(static::class . "::{$field} should be an array[{$expectedType}] but index {$index} is of type {$elementType}");
+						throw new \PHPFUI\ConstantContact\Exception\InvalidType(static::class . "::{$field} should be an array<{$arrayType}> but index {$index} is of type {$elementType}");
 						}
 					}
 				}
@@ -126,7 +117,14 @@ abstract class Base
 			{
 			$minLength = static::$minLength[$field];
 
-			if (\strlen($value) < $minLength)
+			if ('array' == $type && \str_starts_with($expectedType, 'array'))
+				{
+				if (\count($value) < $minLength)
+					{
+					throw new \PHPFUI\ConstantContact\Exception\InvalidLength(static::class . "::{$field} array must have at least {$minLength} values");
+					}
+				}
+			elseif (\strlen($value) < $minLength)
 				{
 				throw new \PHPFUI\ConstantContact\Exception\InvalidLength(static::class . "::{$field} must be at least {$minLength} characters long");
 				}
@@ -136,7 +134,14 @@ abstract class Base
 			{
 			$maxLength = static::$maxLength[$field];
 
-			if (\strlen($value) > $maxLength)
+			if ('array' == $type && \str_starts_with($expectedType, 'array'))
+				{
+				if (\count($value) > $maxLength)
+					{
+					throw new \PHPFUI\ConstantContact\Exception\InvalidLength(static::class . "::{$field} array has a limit of {$maxLength} values");
+					}
+				}
+			elseif (\strlen($value) > $maxLength)
 				{
 				throw new \PHPFUI\ConstantContact\Exception\InvalidLength(static::class . "::{$field} must be at less than {$maxLength} characters long");
 				}

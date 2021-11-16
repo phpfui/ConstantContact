@@ -133,12 +133,16 @@ class Generator
 
 						if ('array' == $type && $itemType)
 							{
-							$docType = 'array<' . $itemType . '>';
-							$type = 'array[' . $itemType . ']';
+							$type = 'array<' . $itemType . '>';
 
 							if ($details['maxItems'] ?? false)
 								{
-								$type .= '[' . $details['maxItems'] . ']';
+								$maxLength[$name] = (int)$details['maxItems'];
+								}
+
+							if ($details['minItems'] ?? false)
+								{
+								$minLength[$name] = (int)$details['minItems'];
 								}
 							}
 						}
@@ -165,7 +169,7 @@ class Generator
 						$type = $originalType;
 						}
 					$type = \str_replace('\\\\', '\\', $type);
-					$docBlock[] = "{$docType} {$dollar}{$name} {$description}";
+					$docBlock[] = "{$type} {$dollar}{$name} {$description}";
 					}
 				}
 			$this->generateFromTemplate($class, ['fields' => $fields, 'minLength' => $minLength, 'maxLength' => $maxLength, ], $docBlock);

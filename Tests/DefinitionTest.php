@@ -133,15 +133,24 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 		];
 		}
 
-	public function testBadArrayOfTypeSize() : void
+	public function testBadArrayOfTypeSizeMax() : void
 		{
 		$fixture = new \Tests\Fixtures\TypeTest();
-		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidValue::class);
+		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidLength::class);
 		$fixture->classArraySize = [
 			new \Tests\Fixtures\ClassTest(),
 			new \Tests\Fixtures\ClassTest(),
 			new \Tests\Fixtures\ClassTest(),
 			new \Tests\Fixtures\ClassTest(),
+			new \Tests\Fixtures\ClassTest(),
+		];
+		}
+
+	public function testBadArrayOfTypeSizeMin() : void
+		{
+		$fixture = new \Tests\Fixtures\TypeTest();
+		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidLength::class);
+		$fixture->classArraySizeMin = [
 			new \Tests\Fixtures\ClassTest(),
 		];
 		}
@@ -179,5 +188,23 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 		$fixture = new \PHPFUI\ConstantContact\Definition\EmailCampaignActivity();
 		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidType::class);
 		$fixture->physical_address_in_footer = new \DateTime();
+		}
+
+	public function testConstructFromArray() : void
+		{
+		$original = [
+			'boolean' => true,
+			'integer' => 10,
+			'string' => 'string',
+			'enum' => 'primary_email',
+			'array' => ['one' => 1, 'two' => 2, 'three' => 3],
+			'float' => 3.1415926,
+			'ucEnum' => 'SCHEDULED',
+			'intEnum' => 5,
+			'class' => [['float' => 234.567], ],
+			'classArray' => [['boolean' => false], ['integer' => 22], ['array' => [1,2,3]], ],
+		];
+		$fixture = new \Tests\Fixtures\TypeTest($original);
+		$this->assertEquals($original, $fixture->getData());
 		}
 	}
