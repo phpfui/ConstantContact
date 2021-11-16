@@ -11,7 +11,7 @@ namespace PHPFUI\ConstantContact\Definition;
  * <li><code>BETTER</code>: A billed <b>Email Plus</b> client account plan.</li>
  * <li><code>BEST</code>: A billed <b>Personal Marketer</b> client account plan.</li>
  * <li><code>LITE</code>: A <b>Website Builder</b> client account plan.</li> * </ul>
- * @var array[\PHPFUI\ConstantContact\Definition\TierObject] $current_tiers Lists the billing plan tiers that are currently associated with a client account.
+ * @var array<\PHPFUI\ConstantContact\Definition\TierObject> $current_tiers Lists the billing plan tiers that are currently associated with a client account.
  * @var string $billing_status The client's account billing status. When you first create a client account the <code>billing_status</code> defaults to <code>Trial</code>. Billing status values include:
  * <ul>
  * <li><code>Trial</code> - A non-paying trial client account (default value).</li>
@@ -25,7 +25,7 @@ class PlanTiersObject extends \PHPFUI\ConstantContact\Definition\Base
 	{
 	protected static array $fields = [
 		'plan_type' => ['TRIAL', 'GOOD', 'BETTER', 'BEST', 'LITE'],
-		'current_tiers' => 'array[\PHPFUI\ConstantContact\Definition\TierObject]',
+		'current_tiers' => 'array<\PHPFUI\ConstantContact\Definition\TierObject>',
 		'billing_status' => ['Trial', 'Open', 'Canceled', 'Trial End'],
 		'billing_day_of_month' => 'int',
 

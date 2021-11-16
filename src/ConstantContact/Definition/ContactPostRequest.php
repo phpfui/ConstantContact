@@ -13,12 +13,12 @@ namespace PHPFUI\ConstantContact\Definition;
  * @var int $birthday_month The month value for the contact's birthday. Valid values are from 1 through 12. The <code>birthday_month</code> property is required if you use <code>birthday_day</code>.
  * @var int $birthday_day The day value for the contact's birthday. Valid values are from 1 through 31. The <code>birthday_day</code> property is required if you use <code>birthday_month</code>.
  * @var string $anniversary The anniversary date for the contact. For example, this value could be the date when the contact first became a customer of an organization in Constant Contact. Valid date formats are MM/DD/YYYY, M/D/YYYY, YYYY/MM/DD, YYYY/M/D, YYYY-MM-DD, YYYY-M-D,M-D-YYYY, or M-DD-YYYY.
- * @var array[\PHPFUI\ConstantContact\Definition\ContactCustomField][25] $custom_fields Array of up to 25 <code>custom_field</code> key value pairs.
- * @var array[\PHPFUI\ConstantContact\Definition\PhoneNumberPut][2] $phone_numbers Array of up to 2 phone_numbers subresources.
- * @var array[\PHPFUI\ConstantContact\Definition\StreetAddressPut] $street_addresses Array of street_addresses subresources. A contact can have 1 street address.
- * @var array[\PHPFUI\ConstantContact\UUID][50] $list_memberships Array of list_id's to which the contact is being subscribed, up to a maximum of 50.
- * @var array[\PHPFUI\ConstantContact\UUID][50] $taggings Array of tags (<code>tag_id</code>) assigned to the contact, up to a maximum of 50.
- * @var array[\PHPFUI\ConstantContact\Definition\Note][150] $notes An array of notes about the contact.
+ * @var array<\PHPFUI\ConstantContact\Definition\ContactCustomField> $custom_fields Array of up to 25 <code>custom_field</code> key value pairs.
+ * @var array<\PHPFUI\ConstantContact\Definition\PhoneNumberPut> $phone_numbers Array of up to 2 phone_numbers subresources.
+ * @var array<\PHPFUI\ConstantContact\Definition\StreetAddressPut> $street_addresses Array of street_addresses subresources. A contact can have 1 street address.
+ * @var array<\PHPFUI\ConstantContact\UUID> $list_memberships Array of list_id's to which the contact is being subscribed, up to a maximum of 50.
+ * @var array<\PHPFUI\ConstantContact\UUID> $taggings Array of tags (<code>tag_id</code>) assigned to the contact, up to a maximum of 50.
+ * @var array<\PHPFUI\ConstantContact\Definition\Note> $notes An array of notes about the contact.
  */
 class ContactPostRequest extends \PHPFUI\ConstantContact\Definition\Base
 	{
@@ -32,12 +32,12 @@ class ContactPostRequest extends \PHPFUI\ConstantContact\Definition\Base
 		'birthday_month' => 'int',
 		'birthday_day' => 'int',
 		'anniversary' => 'string',
-		'custom_fields' => 'array[\PHPFUI\ConstantContact\Definition\ContactCustomField][25]',
-		'phone_numbers' => 'array[\PHPFUI\ConstantContact\Definition\PhoneNumberPut][2]',
-		'street_addresses' => 'array[\PHPFUI\ConstantContact\Definition\StreetAddressPut]',
-		'list_memberships' => 'array[\PHPFUI\ConstantContact\UUID][50]',
-		'taggings' => 'array[\PHPFUI\ConstantContact\UUID][50]',
-		'notes' => 'array[\PHPFUI\ConstantContact\Definition\Note][150]',
+		'custom_fields' => 'array<\PHPFUI\ConstantContact\Definition\ContactCustomField>',
+		'phone_numbers' => 'array<\PHPFUI\ConstantContact\Definition\PhoneNumberPut>',
+		'street_addresses' => 'array<\PHPFUI\ConstantContact\Definition\StreetAddressPut>',
+		'list_memberships' => 'array<\PHPFUI\ConstantContact\UUID>',
+		'taggings' => 'array<\PHPFUI\ConstantContact\UUID>',
+		'notes' => 'array<\PHPFUI\ConstantContact\Definition\Note>',
 
 	];
 
@@ -47,6 +47,11 @@ class ContactPostRequest extends \PHPFUI\ConstantContact\Definition\Base
 		'job_title' => 50,
 		'company_name' => 50,
 		'anniversary' => 10,
+		'custom_fields' => 25,
+		'phone_numbers' => 2,
+		'list_memberships' => 50,
+		'taggings' => 50,
+		'notes' => 150,
 
 	];
 	}
