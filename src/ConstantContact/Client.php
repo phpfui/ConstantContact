@@ -323,7 +323,11 @@ class Client
 		$this->statusCode = $response->getStatusCode();
 		$this->body = $response->getBody();
 		$data = \json_decode($this->body, true);
-		$this->next = $data['_links']['next']['href'] ?? '';
+
+		if (isset($data['_links']['next']['href']))
+			{
+			$this->next = $data['_links']['next']['href'];
+			}
 
 		if (null !== $data)
 			{
