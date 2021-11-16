@@ -35,6 +35,8 @@ class Client
 		// default to all scopes
 		$this->scopes = \array_flip($this->validScopes);
 		$this->host = $_SERVER['HTTP_HOST'] ?? '';
+		$this->guzzleHandler = \GuzzleHttp\HandlerStack::create();
+		$this->guzzleHandler->push(\Spatie\GuzzleRateLimiterMiddleware\RateLimiterMiddleware::perSecond(4));
 		}
 
 	public function getBody() : string
@@ -49,7 +51,7 @@ class Client
 			return [];
 			}
 
-		$guzzle = new \GuzzleHttp\Client(['headers' => $this->getHeaders()]);
+		$guzzle = new \GuzzleHttp\Client(['headers' => $this->getHeaders(), 'handler' => $this->guzzleHandler, ]);
 		$response = $guzzle->request('GET', 'https://api.cc.email' . $this->next);
 
 		return $this->process($response);
@@ -177,12 +179,16 @@ class Client
 		try
 			{
 			$json = \json_encode($parameters['body'], JSON_PRETTY_PRINT);
-			$guzzle = new \GuzzleHttp\Client(['headers' => $this->getHeaders([
-				'Connection' => 'keep-alive',
-				'Content-Length' => \strlen($json),
-				'Accept-Encoding' => 'gzip, deflate',
-				'Host' => $this->host,
-				'Accept' => '*/*']),
+			$guzzle = new \GuzzleHttp\Client(['headers' => $this->getHeaders(
+				[
+					'Connection' => 'keep-alive',
+					'Content-Length' => \strlen($json),
+					'Accept-Encoding' => 'gzip, deflate',
+					'Host' => $this->host,
+					'Accept' => '*/*'
+				]
+			),
+				'handler' => $this->guzzleHandler,
 				'body' => $json, ]);
 
 			$response = $guzzle->request($method, $url);
@@ -202,7 +208,7 @@ class Client
 		{
 		try
 			{
-			$guzzle = new \GuzzleHttp\Client(['headers' => $this->getHeaders()]);
+			$guzzle = new \GuzzleHttp\Client(['headers' => $this->getHeaders(), 'handler' => $this->guzzleHandler, ]);
 			$response = $guzzle->request('DELETE', $url);
 
 			$this->process($response);
@@ -233,7 +239,7 @@ class Client
 					}
 				}
 
-			$guzzle = new \GuzzleHttp\Client(['headers' => $this->getHeaders()]);
+			$guzzle = new \GuzzleHttp\Client(['headers' => $this->getHeaders(), 'handler' => $this->guzzleHandler, ]);
 			$response = $guzzle->request('GET', $url);
 
 			return $this->process($response);
@@ -253,6 +259,7 @@ class Client
 			{
 			$json = \json_encode($parameters['body'], JSON_PRETTY_PRINT);
 			$guzzle = new \GuzzleHttp\Client(['headers' => $this->getHeaders(),
+				'handler' => $this->guzzleHandler,
 				'body' => $json, ]);
 			$response = $guzzle->request('POST', $url);
 
