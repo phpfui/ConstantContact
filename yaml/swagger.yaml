@@ -37,6 +37,9 @@ tags:
 - name: "Email Campaigns"
   description: "Use email campaign endpoints and methods to get, create, and update\
     \ email campaigns."
+- name: "Email Campaigns AB Tests"
+  description: "Use Email Campaigns A/B Test endpoints and methods to get, create,\
+    \ delete and update A/B tests."
 - name: "Email Reporting"
   description: "Use the email reporting endpoints and methods to get reporting data\
     \ for email campaigns you sent to contacts."
@@ -49,6 +52,9 @@ tags:
 - name: "Technology Partners"
   description: "Use partner endpoints to manage client Constant Contact accounts under\
     \ your partner account."
+- name: "Technology Partners Webhooks"
+  description: "Use partner webhooks to subscribe to billing event notifications from\
+    \ Constant Contact."
 - name: "My Library"
   description: "Use the MyLibrary methods to manage images in a Constant Contact account"
 schemes:
@@ -537,9 +543,15 @@ paths:
       tags:
       - "Bulk Activities"
       summary: "Export Contacts to a File"
-      description: "Use this method to create an activity that exports contacts to\
-        \ a CSV file. After Constant Contact finishes processing the activity, use\
-        \ the `results` link in the response body to retrieve the CSV file."
+      description: "Use this method to create an activity that exports contacts and\
+        \ contact details to a CSV file. By default, all contacts are exported. To\
+        \ filter contacts to export, specify the source to use, `contact_id`, `list_id`,\
+        \ or `segment_id` (all mutually exclusive).\nBy default, all contact related\
+        \ fields are exported. Use the fields array to only export specific contact\
+        \ fields. You must export `email_address` to successfully export `email_optin_source`,\
+        \ `email_optin_date`, `email_optout_source`, `email_optout_date`, or `email_optout_reason`.\n\
+        After Constant Contact finishes processing the activity, use the `results`\
+        \ link in the response body to retrieve the CSV file."
       operationId: "postContactsExport"
       consumes:
       - "application/json"
@@ -3500,9 +3512,9 @@ paths:
       - "Email Campaigns"
       summary: "GET Details for a Resend to Non-openers Campaign Activity"
       description: "Get details about a resend to non-openers campaign activity. If\
-        \ a resend activity does not exist for the specified `campaign_activity_id`,\
+        \ resend activity does not exist for the specified `campaign_activity_id`,\
         \ an empty list is returned in the results. You can only create one resend\
-        \ activity per  email campaign."
+        \ activity per email campaign."
       operationId: "retrieveResendToNonOpenersUsingGET"
       consumes:
       - "application/json"
@@ -3542,6 +3554,225 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "campaign:read"
+    post:
+      tags:
+      - "Email Campaigns"
+      summary: "POST a Resend to Non-openers Campaign Activity"
+      description: "Use this POST method to resend a primary campaign activity to\
+        \ contacts that did not open a campaign activity that has a current `status`\
+        \ of `Draft`, `Scheduled`, or `Done`. You can only create one resend activity\
+        \ per email campaign.\n \n After an email campaign activity is sent to contacts,\
+        \ Constant Contact waits the specified number of `delay_days` or `delay_minutes`\
+        \ (properties are mutually exclusive) before resending to non-openers. If\
+        \ you set both `delay_days` or `delay_minutes`, `delay_minutes` is ignored\
+        \ in the request. You can resend to non-openers a minimum of twelve hours\
+        \ (720 minutes) and a maximum of up to 10 days (or 10 x 1440 minutes) after\
+        \ the initial send date.\n \n "
+      operationId: "createResendToNonOpenersUsingPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "campaign_activity_id"
+        in: "path"
+        description: "The unique ID for the primary email campaign activity."
+        required: true
+        type: "string"
+        x-example: "91569d46-00e4-4a4d-9a4c-d17d98740d04"
+      - in: "body"
+        name: "resend_schedule"
+        description: "A JSON request body that specifies when to resend the campaign\
+          \ activity to non-openers."
+        required: true
+        schema:
+          $ref: "#/definitions/ResendToNonOpenersInput"
+      responses:
+        "201":
+          description: "Request successful."
+          schema:
+            $ref: "#/definitions/ResendToNonOpenersObject"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "The requested resource was not found."
+        "409":
+          description: "Conflict. The resource you are creating or updating conflicts\
+            \ with an existing resource."
+        "429":
+          description: "Too many requests. You exceeded the request rate limit."
+        "500":
+          description: "There was a problem with our internal service."
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      - api_key: []
+      x-authorization-privileges:
+      - "campaign:send"
+  /emails/activities/{campaign_activity_id}/non_opener_resends/{resend_request_id}:
+    delete:
+      tags:
+      - "Email Campaigns"
+      summary: "DELETE a Resend to Non Openers Activity"
+      description: "Use this `DELETE` method to delete (unschedule) a resend to non\
+        \ openers activity."
+      operationId: "deleteResendToNonOpenersUsingDELETE"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "campaign_activity_id"
+        in: "path"
+        description: "The unique ID for the primary email campaign activity."
+        required: true
+        type: "string"
+        x-example: "91569d46-00e4-4a4d-9a4c-d17d98740d04"
+      - name: "resend_request_id"
+        in: "path"
+        description: "The unique ID associated with the resend for the email campaign\
+          \ activity (for example: `389093`). If the email campaign activity is currently\
+          \ in draft status, specify `DRAFT` as the ID."
+        required: true
+        type: "string"
+        x-example: "389093"
+      responses:
+        "204":
+          description: "Request successful."
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "The requested resource was not found."
+        "409":
+          description: "Conflict. The resource you are creating or updating conflicts\
+            \ with an existing resource."
+        "429":
+          description: "Too many requests. You exceeded the request rate limit."
+        "500":
+          description: "There was a problem with our internal service."
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      - api_key: []
+      x-authorization-privileges:
+      - "campaign:send"
+  /emails/activities/{campaign_activity_id}/abtest:
+    get:
+      tags:
+      - "Email Campaigns AB Tests"
+      summary: "GET A/B Test Details for an Email Campaign Activity"
+      description: "Use this method to get A/B test details for a primary email campaign\
+        \ activity, such as the alternate email subject line, the contact test percentage\
+        \ size, and the number of hours to wait to determine the winning subject line\
+        \ to use. Currently, A/B tests support subject line only."
+      operationId: "retrieveEmailCampaignABTestUsingGET"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "campaign_activity_id"
+        in: "path"
+        description: "The unique ID for the primary email campaign activity."
+        required: true
+        type: "string"
+        x-example: "91569d46-00e4-4a4d-9a4c-d17d98740d04"
+      responses:
+        "200":
+          description: "Request successful."
+          schema:
+            $ref: "#/definitions/ABTestData"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "The requested resource was not found."
+        "409":
+          description: "Conflict. The resource you are creating or updating conflicts\
+            \ with an existing resource."
+        "429":
+          description: "Too many requests. You exceeded the request rate limit."
+        "500":
+          description: "There was a problem with our internal service."
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      - api_key: []
+      x-authorization-privileges:
+      - "campaign:read"
+    delete:
+      tags:
+      - "Email Campaigns AB Tests"
+      summary: "DELETE an A/B Test for an Email Campaign Activity"
+      description: "Deletes an A/B Test on an primary email campaign activity. You\
+        \ can only delete A/B tests that have a `current_status` of `Draft`. Deleting\
+        \ an A/B tests reverts the email campaign activity `type` from A/B Test (code=\
+        \ `57`) back to NewsLetter (code= `10`). Constant Contact uses the original\
+        \ subject line, rather than the alternate A/B test subject line, when an A/B\
+        \ test is deleted."
+      operationId: "deleteEmailCampaignABTestUsingDELETE"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "campaign_activity_id"
+        in: "path"
+        description: "The unique ID for the primary email campaign activity."
+        required: true
+        type: "string"
+        x-example: "91569d46-00e4-4a4d-9a4c-d17d98740d04"
+      responses:
+        "204":
+          description: "A/B test successfully deleted."
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "The requested resource was not found."
+        "409":
+          description: "Conflict. The resource you are creating or updating conflicts\
+            \ with an existing resource."
+        "429":
+          description: "Too many requests. You exceeded the request rate limit."
+        "500":
+          description: "There was a problem with our internal service."
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      - api_key: []
+      x-authorization-privileges:
+      - "campaign:write"
   /reports/contact_reports/{contact_id}/activity_details:
     get:
       tags:
@@ -4474,9 +4705,11 @@ paths:
       summary: "GET Partner Client Accounts"
       description: "Get all Constant Contact client accounts managed under your technology\
         \ partner account. Use the `limit` query parameter to set the number of accounts\
-        \ to return on each results page.\nOnly technology partners can access partner\
-        \ endpoints and partner endpoints cannot be tested using the API reference\
-        \ tester.\nFor more use case information, see [Get all Partner Client Accounts](/api_guide/partners_accts_get.html)\
+        \ to return on each results page. Use the `account_type` query parameter to\
+        \ filter client account results by type: `all` (default), `managed`, or `unmanaged`.\n\
+        Only technology partners can access partner endpoints and partner endpoints\
+        \ cannot be tested using the API reference tester.\nFor more use case information,\
+        \ see [Get all Partner Client Accounts](/api_guide/partners_accts_get.html)\
         \ in the API guide."
       operationId: "getPartnerSiteOwners"
       produces:
@@ -4504,6 +4737,19 @@ paths:
         minimum: 10
         format: "int32"
         x-example: "50"
+      - name: "account_type"
+        in: "query"
+        description: "Filters client account results by account type: `all` (default),\
+          \ `managed`, or `unmanaged`. Excluding the `account_type` query parameter\
+          \ returns all client accounts for the partner."
+        required: false
+        type: "string"
+        default: "all"
+        x-example: "managed"
+        enum:
+        - "all"
+        - "managed"
+        - "unmanaged"
       responses:
         "200":
           description: "Request successful."
@@ -4766,7 +5012,7 @@ paths:
   /partner/webhooks/subscriptions:
     get:
       tags:
-      - "Technology Partners"
+      - "Technology Partners Webhooks"
       summary: "GET a Collection of Webhook Topic Subscriptions"
       description: "Use this GET method to return a collection containing your application's\
         \ webhook subscriptions."
@@ -4799,7 +5045,7 @@ paths:
   /partner/webhooks/subscriptions/{topic_id}:
     get:
       tags:
-      - "Technology Partners"
+      - "Technology Partners Webhooks"
       summary: "GET Webhook Topic Subscription"
       description: "Use this GET method to return subscription information for a certain\
         \ `topic_id`. Possible `topic_id` values include:\n\n  * `1` - Billing tier\
@@ -4839,7 +5085,7 @@ paths:
       - api_key: []
     put:
       tags:
-      - "Technology Partners"
+      - "Technology Partners Webhooks"
       summary: "PUT Webhook Topic Subscription"
       description: "Use this PUT method to subscribe your application to a `topic_id`\
         \ or to update the callback URI for an existing subscription. Possible `topic_id`\
@@ -4894,7 +5140,7 @@ paths:
       - api_key: []
     delete:
       tags:
-      - "Technology Partners"
+      - "Technology Partners Webhooks"
       summary: "DELETE Webhook Topic Subscriptions"
       description: "Use this DELETE method to unsubscribe your application from notifications\
         \ on a certain `topic_id`. Possible `topic_id` values include:\n\n * `1` -\
@@ -4933,7 +5179,7 @@ paths:
   /partner/webhooks/subscriptions/{topic_id}/tests:
     post:
       tags:
-      - "Technology Partners"
+      - "Technology Partners Webhooks"
       summary: "POST Test Send Webhook Notification"
       description: "Use this POST method to validate a webhook subscription by triggering\
         \ a test notification for your chosen webhook `topic_id`. Possible `topic_id`\
@@ -5758,19 +6004,26 @@ definitions:
           - "job_title"
           - "social_profiles"
           - "website"
+          - "tag"
+          - "notes"
           - "street"
+          - "street_1"
+          - "street_2"
           - "city"
           - "state"
+          - "intl_state"
           - "zip"
           - "country"
           - "anniversary"
           - "birthday"
           - "birthday_day"
           - "birthday_month"
+          - "source_name"
           - "created_at"
           - "updated_at"
-          - "email_permission"
           - "email_optin"
+          - "email_permission"
+          - "email_update_source"
           - "email_optin_source"
           - "email_optin_date"
           - "email_optout_date"
@@ -9224,17 +9477,19 @@ definitions:
           type: "integer"
           format: "int32"
           example: 3
-          description: "The number of days to wait before another email is sent. This\
-            \ value is only returned in the response results if the resend activity\
+          description: "The number of days to wait before Constant Contact resends\
+            \ the email. Valid values include <code>1</code> to <code>10</code> days.\
+            \ This value is only returned in the response results if the resend activity\
             \ was created with <code>delay_days</code> or the <code>delay_minutes</code>\
-            \ equal to an exact day value. Valid values are 1 to 10."
+            \ equal to an exact day value. "
         delay_minutes:
           type: "integer"
           format: "int32"
           example: 1000
-          description: "The number of minutes before Constant Contact resends the\
-            \ email. The range of valid values includes 720 to 14,400. There are 1,440\
-            \ minutes in a day."
+          description: "The number of minutes to wait before Constant Contact resends\
+            \ the email. There are 1,440 minutes in a day. Valid values includes a\
+            \ minimum of <code>720</code> (12 hours) and a maximum of <code>14,400</code>\
+            \ minutes (10 days). This property is mutually exclusive with <code>delay_days</code>."
         resend_date:
           type: "string"
           format: "date-time"
@@ -9245,9 +9500,9 @@ definitions:
         resend_request_id:
           type: "string"
           example: "DRAFT"
-          description: "For scheduled email campaign resend activities, the system\
-            \ generates an ID that identifies the resend. For draft email campaign\
-            \ resend activities, the system returns <code>DRAFT</code>."
+          description: "For scheduled or sent resend to non-opener emails, the system\
+            \ generates an ID that identifies the resend to non-openers activity.\
+            \ For draft email campaign resend activities, the system returns <code>DRAFT</code>."
         resend_status:
           type: "string"
           example: "DRAFT"
@@ -9255,6 +9510,100 @@ definitions:
             \ The <code>resend_status</code> is only returned in the response results\
             \ if the campaign activity is either scheduled to be sent or was already\
             \ sent.\n"
+  ResendToNonOpenersInput:
+    required:
+    - "resend_subject"
+    properties:
+      resend_subject:
+        type: "string"
+        example: "Our Big Sale is Coming Soon!"
+        description: "The subject line used when resending the email campaign activity."
+      delay_days:
+        type: "integer"
+        format: "int32"
+        example: 3
+        description: "The number of days to wait before Constant Contact resends the\
+          \ email. Valid values include <code>1</code> to <code>10</code> days. This\
+          \ property is mutually exclusive with <code>delay_minutes</code>. This value\
+          \ is only returned in the response results if the resend activity was created\
+          \ with <code>delay_days</code> or the <code>delay_minutes</code> equal to\
+          \ an exact day value."
+      delay_minutes:
+        type: "integer"
+        format: "int32"
+        example: 1000
+        description: "The number of minutes to wait before Constant Contact resends\
+          \ the email campaign activity. There are 1,440 minutes in a day. Valid values\
+          \ includes a minimum of <code>720</code> (12 hours) and a maximum of <code>14,400</code>\
+          \ minutes (10 days). This property is mutually exclusive with <code>delay_days</code>"
+  ResendToNonOpenersObject:
+    type: "object"
+    properties:
+      resend_subject:
+        type: "string"
+        example: "Our Big Sale is Coming Soon!"
+        description: "The subject line for the resend email."
+      delay_days:
+        type: "integer"
+        format: "int32"
+        example: 7
+        description: "The number of days to wait before Constant Contact resends the\
+          \ email. Valid values include <code>1</code> to <code>10</code> days. This\
+          \ property is mutually exclusive with <code>delay_minutes</code>. This value\
+          \ is only returned in the response results if the resend activity was created\
+          \ with <code>delay_days</code> or the <code>delay_minutes</code> equal to\
+          \ an exact day value."
+      delay_minutes:
+        type: "integer"
+        format: "int32"
+        example: "10,080"
+        description: "The number of minutes to wait before Constant Contact resends\
+          \ the email. There are 1,440 minutes in a day. Valid values includes a minimum\
+          \ of <code>720</code> (12 hours) and a maximum of <code>14,400</code> minutes\
+          \ (10 days). This property is mutually exclusive with <code>delay_days</code>."
+      resend_date:
+        type: "string"
+        format: "date-time"
+        description: "The system generated ISO-8601 format date and time that Constant\
+          \ Contact resent the email to non-openers."
+        readOnly: true
+      resend_request_id:
+        type: "string"
+        example: "DRAFT"
+        description: "For scheduled or sent resend to non-opener emails, this property\
+          \ is a unique identifier for the resend. For draft email campaign resend\
+          \ activities, the value of this property is <code>DRAFT</code>."
+  ABTestData:
+    type: "object"
+    required:
+    - "alternative_subject"
+    - "test_size"
+    - "winner_wait_duration"
+    properties:
+      alternative_subject:
+        type: "string"
+        example: "Reminder: Our Biggest Sale of the Year is Coming Soon!"
+        description: "The alternate email subject line to use for A/B testing."
+      test_size:
+        type: "integer"
+        format: "int32"
+        example: 30
+        description: "The percentage of contact recipients to participate in the A/B\
+          \ Test. For example, if the value is 30, then 30% of contacts will receive\
+          \ the email campaign with subject line A, and 30% of contacts will receive\
+          \ the email campaign with subject line B. Valid values include <code>5</code>\
+          \ to <code>50</code> percent. Currently, A/B tests support subject line\
+          \ only."
+      winner_wait_duration:
+        type: "integer"
+        format: "int32"
+        example: 24
+        description: "The number of hours Constant Contact waits after the A/B test\
+          \ is sent before determining the winning subject line. The winner is the\
+          \ subject line with the highest number of contact opens. After the winner\
+          \ is determined, Constant Contact automatically sends the email campaign\
+          \ with the winning subject line to all the remaining contacts, which did\
+          \ not participate in the A/B test."
   ContactTrackingActivitiesPage:
     type: "object"
     properties:
@@ -9615,7 +9964,7 @@ definitions:
         description: "The ID that uniquely identifies an email campaign activity."
       tracking_activity_type:
         type: "string"
-        example: "em_didnotopens"
+        example: "em_sends"
         description: "The type of tracking activity that is associated with this <code>campaign_activity_id</code>\
           \ and used for reporting purposes."
       email_address:
@@ -10834,29 +11183,27 @@ definitions:
     type: "array"
     description: "An array of webhook subscriptions."
     items:
-      $ref: "#/definitions/WebhooksSubscription"
-  WebhooksSubscription:
-    type: "object"
-    properties:
-      topic_id:
-        type: "integer"
-        example: 2
-        description: "Identifies the topic using an integer to indicate the type of\
-          \ topic."
-      hook_uri:
-        type: "string"
-        example: "https://www.examplename.com/webhooks/billingTier"
-        description: "Your webhook callback URI. Constant Contact automatically sends\
-          \ POST requests to this URI to notify you about the topic."
-      topic_name:
-        type: "string"
-        example: "Billing Tier Downgrade"
-        description: "The name of the topic."
-      topic_description:
-        type: "string"
-        example: "Executes when an account's billing tier is downgraded."
-        description: "A description of what the topic is and when Constant Contact\
-          \ notifies you concerning it."
+      type: "object"
+      properties:
+        topic_id:
+          type: "integer"
+          example: 2
+          description: "Identifies the topic using an integer to indicate the type\
+            \ of topic."
+        hook_uri:
+          type: "string"
+          example: "https://www.examplename.com/webhooks/billingTier"
+          description: "Your webhook callback URI. Constant Contact automatically\
+            \ sends POST requests to this URI to notify you about the topic."
+        topic_name:
+          type: "string"
+          example: "Billing Tier Downgrade"
+          description: "The name of the topic."
+        topic_description:
+          type: "string"
+          example: "Executes when an account's billing tier is downgraded."
+          description: "A description of what the topic is and when Constant Contact\
+            \ notifies you concerning it."
   WebhooksSubscriptionResponse:
     type: "object"
     properties:

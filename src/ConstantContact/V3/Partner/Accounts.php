@@ -16,7 +16,9 @@ class Accounts extends \PHPFUI\ConstantContact\Base
 	 *
 	 * Get all Constant Contact client accounts managed under your technology
 	 * partner account. Use the `limit` query parameter to set the number of
-	 * accounts to return on each results page.
+	 * accounts to return on each results page. Use the `account_type` query
+	 * parameter to filter client account results by type: `all` (default),
+	 * `managed`, or `unmanaged`.
 	 * Only technology partners can access partner endpoints and partner endpoints
 	 * cannot be tested using the API reference tester.
 	 * For more use case information, see [Get all Partner Client Accounts](https://v3.developer.constantcontact.com/api_guide/partners_accts_get.html)
@@ -24,11 +26,22 @@ class Accounts extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $offset Depending on the `limit` you specify, the system determines the `offset` parameter to use (number of records to skip) and includes it in the link used to get the next page of results
 	 * @param string $limit The number of client accounts to return on each page of results. The default value is `50`. Entering a `limit` value less than the minimum (`10`) or greater than the maximum (`50`) is ignored and the system uses the default values. Depending on the `limit` you specify, the system determines the `offset` parameter to use (number of records to skip) and includes it in the link used to get the next page of results.
+	 * @param string $account_type Filters client account results by account type: `all` (default), `managed`, or `unmanaged`. Excluding the `account_type` query parameter returns all client accounts for the partner.
 	 */
-	public function get(?string $offset = null, ?string $limit = null) : array
+	public function get(?string $offset = null, ?string $limit = null, ?string $account_type = null) : array
 		{
 
-		return $this->doGet(['offset' => $offset, 'limit' => $limit, ]);
+		if (null !== $account_type)
+			{
+			$validValues = ['all', 'managed', 'unmanaged'];
+
+			if (! \in_array($account_type, $validValues))
+				{
+				throw new \PHPFUI\ConstantContact\Exception\InvalidValue("Parameter account_type with value '{$account_type}' is not one of (" . \implode(', ', $validValues) . ') in ' . __METHOD__);
+				}
+			}
+
+		return $this->doGet(['offset' => $offset, 'limit' => $limit, 'account_type' => $account_type, ]);
 		}
 
 	/**
