@@ -47,7 +47,8 @@ if (! strlen(trim($output)))
 
 // figure out the next version number
 $tags = $repo->getReferences()->getTags();
-$highest = $proposed = (int)date('y') * 10000 + (int)date('n') * 100;
+$highest = 0;
+$proposed = (int)date('y') * 10000 + (int)date('n') * 100;
 foreach ($tags as $tag)
 	{
 	$parts = explode('.', trim($tag->getName(), 'V'));
@@ -58,6 +59,7 @@ foreach ($tags as $tag)
 		}
 	$highest = max($number, $highest);
 	}
+
 if ($highest >= $proposed)
 	{
 	$proposed = $highest + 1;
