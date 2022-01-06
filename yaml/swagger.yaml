@@ -11179,6 +11179,29 @@ definitions:
       \ default, this is the current date and time in ISO format. In the request body,\
       \ you can optionally specify a future cancellation date (in ISO format) and\
       \ a reason (`reason_code`) that the client wants to cancel their account."
+  PartnerAccountOperationsRequest:
+    type: "object"
+    properties:
+      account_operation_query_parameters:
+        type: "array"
+        items:
+          $ref: "#/definitions/QueryParamObject"
+      account_operation_path_parameters:
+        type: "array"
+        items:
+          $ref: "#/definitions/PathParamObject"
+      account_operation_headers:
+        type: "array"
+        items:
+          $ref: "#/definitions/HeadersObject"
+    description: "JSON object that contains the fields Constant Contact will use to\
+      \ construct the HTTP request you want to send on behalf of a managed account."
+  QueryParamObject:
+    type: "object"
+  PathParamObject:
+    type: "object"
+  HeadersObject:
+    type: "object"
   WebhooksSubscriptionCollection:
     type: "array"
     description: "An array of webhook subscriptions."
