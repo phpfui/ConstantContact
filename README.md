@@ -6,6 +6,16 @@ PHP Object Oriented wrapper for the Constant Contact V3 API.
 
 **PHPFUI/ConstantContact** reads the [YAML](https://api.cc.email/v3/swagger.yaml) file from the Constant Contact documentation and generates PHP classes directly from the YAML file. The library is auto updated nightly. This means the library is always up to date with the latest changes. See the [versioning](#Versioning) section for further details.
 
+## Installation
+Since this library is constantly updated when Constant Contact updates their API, it is best to modify the Composer version constraint from '^' to '>=', for example:
+```
+"phpfui/constantcontact": "^22.1",
+```
+should be changed to:
+```
+"phpfui/constantcontact": ">=22.1",
+```
+
 ## Namespaces
 This library normalizes the [Constant Contact API](https://v3.developer.constantcontact.com/api_guide/index.html) to modern PHP class standards.  All endpoints are first character capitialized. Underscores are removed and followed by a capital letter. Each end point is a class with methods matching the standard REST methods (ie. put, post, delete, put, etc.).  The methods take required and optional parameters matching the name specified in the Constant Contact YAML API.  In addition, this library supports all definitions of types in the API.  See below.
 
@@ -69,8 +79,8 @@ You should now be authorized to use the API.  Make sure you save and restore the
 ## Versioning
 Since the [Constant Contact API](https://v3.developer.constantcontact.com/api_guide/index.html) is constantly being updated, this library will track all updates on a calendar based versioning schema. The major version will be the last two digits of the year the update was released. The minor version will be the month it was released. Any bug fixes will be a patch version.  So V21.8.0 would be the first August 2021 version, and V21.8.1 would be a bug fix to V21.8.  All bug fixes will be included in subsequent versions, so V21.9.0 would include all fixes from the V21.8 version. YAML changes are tracked nightly and a new version will be generated automatically. Multiple YAML changes in a month will be tracked as patch versions.
 
-## Documentation
-Via [PHPFUI/InstaDoc](http://www.phpfui.com/?n=PHPFUI%5CConstantContact)
+## Full Class Documentation
+[PHPFUI/InstaDoc](http://www.phpfui.com/?n=PHPFUI%5CConstantContact)
 
 ## License
 **PHPFUI/ConstantContact** is distributed under the MIT License.
