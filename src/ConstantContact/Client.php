@@ -3,24 +3,26 @@
 namespace PHPFUI\ConstantContact;
 
 class Client
-  {
+	{
 	public string $accessToken = '';
 
 	public string $refreshToken = '';
 
-  private string $oauth2URL = 'https://idfed.constantcontact.com/as/token.oauth2';
+	private string $oauth2URL = 'https://authz.constantcontact.com/oauth2/default/v1/token';
 
-  private string $lastError = '';
+	private string $authorizeURL = 'https://authz.constantcontact.com/oauth2/default/v1/authorize';
+
+	private string $lastError = '';
 
 	private string $body = '';
 
 	private string $host = '';
 
-  private int $statusCode = 200;
+	private int $statusCode = 200;
 
-  private array $scopes = [];
+	private array $scopes = [];
 
-  private array $validScopes = ['account_read', 'account_update', 'contact_data', 'campaign_data', ];
+	private array $validScopes = ['account_read', 'account_update', 'contact_data', 'campaign_data', 'offline_access', ];
 
 	private string $next = '';
 
@@ -30,7 +32,7 @@ class Client
 	 * By default, all scopes are enabled.  You can remove any, or
 	 * set new ones.
 	 */
-  public function __construct(private string $clientAPIKey, private string $clientSecret, private string $redirectURI = 'https://localhost/')
+	public function __construct(private string $clientAPIKey, private string $clientSecret, private string $redirectURI = 'https://localhost/', private bool $PKCE = true)
 		{
 		// default to all scopes
 		$this->scopes = \array_flip($this->validScopes);
@@ -64,7 +66,7 @@ class Client
 		return $this;
 		}
 
-  public function addScope(string $scope) : self
+	public function addScope(string $scope) : self
 		{
 		if (! \in_array($scope, $this->validScopes))
 			{
@@ -75,14 +77,14 @@ class Client
 		return $this;
 		}
 
-  public function removeScope(string $scope) : self
+	public function removeScope(string $scope) : self
 		{
 		unset($this->scopes[$scope]);
 
 		return $this;
 		}
 
-  public function setScopes(array $scopes) : self
+	public function setScopes(array $scopes) : self
 		{
 		$this->scopes = [];
 
@@ -104,37 +106,89 @@ class Client
 		return $this->statusCode;
 		}
 
-  /**
-   * Generate the URL an account owner would use to allow your app
-   * to access their account.
-   *
-   * After visiting the URL, the account owner is prompted to log in and allow your app to access their account.
-   * They are then redirected to your redirect URL with the authorization code appended as a query parameter. e.g.:
-   * http://localhost:8888/?code={authorization_code}
-   */
-  public function getAuthorizationURL() : string
+	/**
+	 * Generate the URL an account owner would use to allow your app
+	 * to access their account.
+	 *
+	 * After visiting the URL, the account owner is prompted to log in and allow your app to access their account.
+	 * They are then redirected to your redirect URL with the authorization code appended as a query parameter. e.g.:
+	 * http://localhost:8888/?code={authorization_code}
+	 */
+	public function getAuthorizationURL() : string
 		{
-		$scopes = \implode('%2B', \array_keys($this->scopes));
-		$authURL = "https://api.cc.email/v3/idfed?client_id={$this->clientAPIKey}&response_type=code&redirect_uri={$this->redirectURI}&scope={$scopes}";
+		$scopes = \implode('+', \array_keys($this->scopes));
 
-		return $authURL;
-		}
+		$state = \bin2hex(\random_bytes(8));
+		$_SESSION['PHPFUI\ConstantContact\state'] = $state;
+		$params = [
+			'response_type' => 'code',
+			'client_id' => $this->clientAPIKey,
+			'redirect_uri' => $this->redirectURI,
+			'scope' => $scopes,
+			'state' => $state,
+		];
 
-  /**
-   * Exchange an authorization code for an access token.
-   *
-   * Make this call by passing in the code present when the account owner is redirected back to you.
-   * The response will contain an 'access_token' and 'refresh_token'
-   *
-   * @param string $code - Authorization Code
-   */
-  public function acquireAccessToken(string $code) : bool
+		if ($this->PKCE)
+			{
+			[$code_verifier, $code_challenge] = $this->codeChallenge();
+
+			// Store generated random state and code challenge based on RFC 7636
+			// https://datatracker.ietf.org/doc/html/rfc7636#section-6.1
+			$_SESSION['PHPFUI\ConstantContact\code_verifier'] = $code_verifier;
+			$params['code_challenge'] = $code_challenge;
+			$params['code_challenge_method'] = 'S256';
+			}
+
+		$url = $this->authorizeURL . '?' . \str_replace('%2B', '+', \http_build_query($params));	// hack %2B to + for stupid CC API bug
+
+		return $url;
+	}
+
+	/**
+	 * Exchange an authorization code for an access token.
+	 *
+	 * Make this call by passing in the code present when the account owner is redirected back to you.
+	 * The response will contain an 'access_token' and 'refresh_token'
+	 *
+	 * @param array of get parameters passed to redirect URL
+	 */
+	public function acquireAccessToken(array $parameters) : bool
 		{
+		if (isset($parameters['error']))
+			{
+			$this->statusCode = 0;
+			$this->lastError = $parameters['error'] . ': ' . ($parameters['error_description'] ?? 'Undefined');
+
+			return false;
+			}
+
+		$expectedState = $_SESSION['PHPFUI\ConstantContact\state'];
+		unset($_SESSION['PHPFUI\ConstantContact\state']);
+
+		if (($parameters['state'] ?? 'undefined') != $expectedState)
+			{
+			$this->statusCode = 0;
+			$this->lastError = 'state is not correct';
+
+			return false;
+			}
+
 		// Use cURL to get access token and refresh token
 		$ch = \curl_init();
 
 		// Create full request URL
-		$url = "{$this->oauth2URL}?code={$code}&redirect_uri={$this->redirectURI}&grant_type=authorization_code";
+		$params = [
+			'code' => $parameters['code'],
+			'redirect_uri' => $this->redirectURI,
+			'grant_type' => 'authorization_code',
+		];
+
+		if ($this->PKCE)
+			{
+			$params['code_verifier'] = $_SESSION['PHPFUI\ConstantContact\code_verifier'];
+			unset($_SESSION['PHPFUI\ConstantContact\code_verifier']);
+			}
+		$url = $this->oauth2URL . '?' . \http_build_query($params);
 		\curl_setopt($ch, CURLOPT_URL, $url);
 
 		$this->setAuthorization($ch);
@@ -145,18 +199,22 @@ class Client
 		return $this->exec($ch);
 		}
 
-  /**
-   * Refresh the access token.
-   *
-   * @return string new access token or 'Error' for error
-   */
-  public function refreshToken() : string
+	/**
+	 * Refresh the access token.
+	 */
+	public function refreshToken() : bool
 		{
 		// Use cURL to get a new access token and refresh token
 		$ch = \curl_init();
 
 		// Create full request URL
-		$url = "{$this->oauth2URL}?refresh_token={$this->refreshToken}&grant_type=refresh_token";
+		$params = [
+			'refresh_token' => $this->refreshToken,
+			'grant_type' => 'refresh_token',
+			'redirect_uri' => $this->redirectURI,
+		];
+
+		$url = $this->oauth2URL . '?' . \http_build_query($params);
 		\curl_setopt($ch, CURLOPT_URL, $url);
 
 		$this->setAuthorization($ch);
@@ -274,7 +332,7 @@ class Client
 		return [];
 		}
 
-  private function exec(\CurlHandle $ch) : bool
+	private function exec(\CurlHandle $ch) : bool
 		{
 		\curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
@@ -286,13 +344,21 @@ class Client
 		if ($result)
 			{
 			$data = \json_decode($result, true);
-			$retVal = isset($data['access_token'], $data['refresh_token']);
-			$this->accessToken = $data['access_token'] ?? 'Error';
-			$this->refreshToken = $data['refresh_token'] ?? 'Error';
+
+			if (isset($data['error']))
+				{
+//    [error_description] => Cannot supply multiple client credentials.
+//		 Use one of the following: credentials in the Authorization header,
+//			credentials in the post body,
+//			or a client_assertion in the post body.
+				$this->lastError = $data['error'] . ': ' . ($data['error_description'] ?? 'Undefined');
+				}
+			$this->accessToken = $data['access_token'] ?? '';
+			$this->refreshToken = $data['refresh_token'] ?? '';
 
 			\curl_close($ch);
 
-			return $retVal;
+			return isset($data['access_token'], $data['refresh_token']);
 			}
 
 		$this->statusCode = \curl_errno($ch);
@@ -302,7 +368,7 @@ class Client
 		return false;
 		}
 
-  private function setAuthorization(\CurlHandle $ch) : void
+	private function setAuthorization(\CurlHandle $ch) : void
 		{
 		// Set authorization header
 		// Make string of "API_KEY:SECRET"
@@ -345,4 +411,38 @@ class Client
 
 		return [];
 		}
-  }
+
+	/**
+	 * Generate code_verifier and code_challenge for rfc7636 PKCE.
+	 * https://datatracker.ietf.org/doc/html/rfc7636#appendix-B
+	 *
+	 * @return array [code_verifier, code_challenge].
+	 */
+	private function codeChallenge(?string $code_verifier = null) : array
+		{
+		$gen = static function()
+			{
+			$strings = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
+			$length = \random_int(43, 128);
+
+			for ($i = 0; $i < $length; $i++)
+				{
+				yield $strings[\random_int(0, 65)];
+				}
+			};
+
+		$code = $code_verifier ?? \implode('', \iterator_to_array($gen()));
+
+		if (! \preg_match('/[A-Za-z0-9-._~]{43,128}/', $code))
+			{
+			return ['', ''];
+			}
+
+		return [$code, $this->base64url_encode(\pack('H*', \hash('sha256', $code)))];
+		}
+
+	private function base64url_encode(string $data) : string
+		{
+		return \rtrim(\strtr(\base64_encode($data), '+/', '-_'), '=');
+		}
+	}

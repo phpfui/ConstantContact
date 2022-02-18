@@ -23,7 +23,7 @@ class Generator
 
 	public function __construct()
 		{
-		$this->nl = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' ? "\r\n" : "\n";
+		$this->nl = 'WIN' === \strtoupper(\substr(PHP_OS, 0, 3)) ? "\r\n" : "\n";
 		}
 
 	public function makeClasses(string $version, array $paths) : void

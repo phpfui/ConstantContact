@@ -195,14 +195,12 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 		$original = [
 			'boolean' => true,
 			'integer' => 10,
-			'string' => 'string',
+			'string' => 'stringLn10',
 			'enum' => 'primary_email',
-			'array' => ['one' => 1, 'two' => 2, 'three' => 3],
+			'array' => ['one' => false, 'two' => 2, 'three' => '3', 'four' => 1.23],
 			'float' => 3.1415926,
 			'ucEnum' => 'SCHEDULED',
 			'intEnum' => 5,
-			'class' => [['float' => 234.567], ],
-			'classArray' => [['boolean' => false], ['integer' => 22], ['array' => [1,2,3]], ],
 		];
 		$fixture = new \Tests\Fixtures\TypeTest($original);
 		$this->assertEquals($original, $fixture->getData());

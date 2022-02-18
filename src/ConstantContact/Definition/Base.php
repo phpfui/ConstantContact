@@ -4,16 +4,43 @@ namespace PHPFUI\ConstantContact\Definition;
 
 abstract class Base
 	{
+	/**
+	 * @var array indexed by field name containing field type.
+	 *
+	 * Valid types are:
+	 * - bool
+	 * - float
+	 * - int
+	 * - string
+	 * - FQN (fully qualified name) PHP class
+	 * - array&lt;FQN&gt;
+	 * - array of case sensitive string or integer enums
+	 */
 	protected static array $fields = [];
 
+	/**
+	 * @var array of minimum allowed values. Arrays are size, int and float are values, strings are length.
+	 */
 	protected static array $minLength = [];
 
+	/**
+	 * @var array of maximum allowed values. Arrays are size, int and float are values, strings are length.
+	 */
 	protected static array $maxLength = [];
 
+  /**
+   * $var array of the actual object data
+   */
 	private array $data = [];
 
+  /**
+   * @var array of bool indicating which values are set to reduce data output.
+   */
 	private array $setFields = [];
 
+	/**
+	 * @var array of supported scalars
+	 */
 	private static array $scalars = [
 		'bool' => true,
 		'float' => true,
@@ -28,8 +55,7 @@ abstract class Base
 			{
 			if (! empty($initialValues[$field]))
 				{
-				$this->setFields[$field] = true;
-				$this->data[$field] = $initialValues[$field];
+				$this->{$field} = $initialValues[$field];
 				}
 			elseif (! \is_array($type) && ! isset(self::$scalars[$type]))
 				{
@@ -48,11 +74,11 @@ abstract class Base
 	/**
 	 * Unset fields will return null
 	 */
-	public function __get(string $field)
+	public function __get(string $field) : mixed
 		{
 		if (! isset(static::$fields[$field]))
 			{
-			throw new \PHPFUI\ConstantContact\Exception\InvalidField("{$field} is not a valid field for " . static::class);
+			throw new \PHPFUI\ConstantContact\Exception\InvalidField(static::class . "::{$field} is not a valid field");
 			}
 
 		$this->setFields[$field] = true;
@@ -60,6 +86,9 @@ abstract class Base
 		return $this->data[$field] ?? null;
 		}
 
+	/**
+	 * @return mixed value being set to allow for assignment chaining
+	 */
 	public function __set(string $field, $value)
 		{
 		$expectedType = static::$fields[$field] ?? null;
@@ -91,19 +120,15 @@ abstract class Base
 					$arrayEnd = \strpos($expectedType, '>');
 
 					$arrayType = \trim(\substr($expectedType, $arrayStart + 2, $arrayEnd - $arrayStart - 2), '\\');
-					}
-				else
-					{
-					$arrayType = 'string';
-					}
 
-				foreach ($value as $index => $element)
-					{
-					$elementType = \get_debug_type($element);
-
-					if ($arrayType != $elementType)
+					foreach ($value as $index => $element)
 						{
-						throw new \PHPFUI\ConstantContact\Exception\InvalidType(static::class . "::{$field} should be an array<{$arrayType}> but index {$index} is of type {$elementType}");
+						$elementType = \get_debug_type($element);
+
+						if ($arrayType != $elementType)
+							{
+							throw new \PHPFUI\ConstantContact\Exception\InvalidType(static::class . "::{$field} should be an array<{$arrayType}> but index {$index} is of type {$elementType}");
+							}
 						}
 					}
 				}
@@ -124,6 +149,10 @@ abstract class Base
 					throw new \PHPFUI\ConstantContact\Exception\InvalidLength(static::class . "::{$field} array must have at least {$minLength} values");
 					}
 				}
+			elseif ((\is_int($value) || \is_float($value)) && $value < $minLength)
+				{
+				throw new \PHPFUI\ConstantContact\Exception\InvalidLength(static::class . "::{$field} must be at least {$minLength}");
+				}
 			elseif (\strlen($value) < $minLength)
 				{
 				throw new \PHPFUI\ConstantContact\Exception\InvalidLength(static::class . "::{$field} must be at least {$minLength} characters long");
@@ -141,11 +170,16 @@ abstract class Base
 					throw new \PHPFUI\ConstantContact\Exception\InvalidLength(static::class . "::{$field} array has a limit of {$maxLength} values");
 					}
 				}
+			elseif ((\is_int($value) || \is_float($value)) && $value > $maxLength)
+				{
+				throw new \PHPFUI\ConstantContact\Exception\InvalidLength(static::class . "::{$field} must be equal or less than {$maxLength}");
+				}
 			elseif (\strlen($value) > $maxLength)
 				{
 				throw new \PHPFUI\ConstantContact\Exception\InvalidLength(static::class . "::{$field} must be at less than {$maxLength} characters long");
 				}
 			}
+
 		// Do additional formatting
 		switch ($type)
 			{
@@ -161,6 +195,9 @@ abstract class Base
 		return $this->data[$field] = $value;
 		}
 
+	/**
+	 * @return array representation of data
+	 */
 	public function getData() : array
 		{
 		$result = [];
@@ -204,13 +241,16 @@ abstract class Base
 		return $result;
 		}
 
+	/**
+	 * @return string pretty print JSON
+	 */
 	public function getJSON() : string
 		{
 		return \json_encode($this->getData(), JSON_PRETTY_PRINT);
 		}
 
 	/**
-	 * Return all the valid fields for the object. Index is field name and value is the type.
+	 * @return array all the valid fields for the object. Index is field name and value is the type.
 	 */
 	public function getfields() : array
 		{
