@@ -9,12 +9,15 @@ PHP Object Oriented wrapper for the Constant Contact V3 API.
 ## Installation
 Since this library is constantly updated when Constant Contact updates their API, it is best to modify the Composer version constraint from '^' to '>=', for example:
 ```
-"phpfui/constantcontact": "^22.1",
+"phpfui/constantcontact": "^22.3",
 ```
 should be changed to:
 ```
-"phpfui/constantcontact": ">=22.1",
+"phpfui/constantcontact": ">=22.3",
 ```
+
+## New OAuth2 PKCE Authentication effective April 1, 2022
+As of March 31, 2022, Constant Contact will no longer be supporting versions of this library before 22.3.  You must upgrade you app on the Constant Contact site. A new secret is also suggested.  You must also upgrade to the 22.3 version of this library.  The only code change needed is to pass the parameter array ($_GET) to acquireAccessToken instead of the single code parameter.
 
 ## Namespaces
 This library normalizes the [Constant Contact API](https://v3.developer.constantcontact.com/api_guide/index.html) to modern PHP class standards.  All endpoints are first character capitialized. Underscores are removed and followed by a capital letter. Each end point is a class with methods matching the standard REST methods (ie. put, post, delete, put, etc.).  The methods take required and optional parameters matching the name specified in the Constant Contact YAML API.  In addition, this library supports all definitions of types in the API.  See below.
@@ -69,7 +72,7 @@ The above will ask the user to authorize the app for the scopes you specified.  
 
 ### 3. Retrieve the Code sent to the $redirectURI
 ```php
-$client->acquireAccessToken($_GET['code']);
+$client->acquireAccessToken($_GET);
 // Save $client->accessToken and $client->refreshToken to the database
 // redirect back to where ever
 ```
