@@ -25,8 +25,10 @@ file_put_contents($file, $yaml);
 
 // assume it has changed and run Generator
 $yaml = \Symfony\Component\Yaml\Yaml::parseFile($file);
-$generator = new \Tools\Generator();
+$generator = new \Tool\Generator();
+$generator->deleteClasses($yaml['basePath']);
 $generator->makeClasses($yaml['basePath'], $yaml['paths']);
+$generator->deleteDefinitions();
 $generator->makeDefinitions($yaml['definitions']);
 
 // don't update git if running under Windows

@@ -28,6 +28,6 @@
         "psr-4": {"PHPFUI\\": "src/"}
     },
     "autoload-dev": {
-        "psr-4": {"Tests\\": "Tests/", "Tools\\": "Tools/"}
+        "psr-4": {"Tests\\": "Tests/", "Tool\\": "Tool/"}
     }
 }

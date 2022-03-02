@@ -1,12 +1,12 @@
 <?php
 
-namespace Tools;
+namespace Tool;
 
 class Generator
 	{
 	private string $rootPath = 'src/ConstantContact/';
 
-	private string $definitionNamespace = 'PHPFUI\\ConstantContact\\Definition';
+	private string $definitionNamespace = '\\PHPFUI\\ConstantContact\\Definition';
 
 	private string $nl;
 
@@ -14,6 +14,11 @@ class Generator
 		'CustomFieldResource2' => 'CustomFieldResource',
 		'ContactResource2' => 'ContactResource',
 		'ContactList2' => 'ContactList',
+		'Lin' => 'Link',
+		'Link2' => 'Link',
+		'Links' => 'Link',
+		'PagingLinks2' => 'PagingLinks',
+		'Results' => 'Result',
 		'Tag2' => 'Tag',
 		'Status' => 'Status',
 		'Source' => 'Source',
@@ -24,6 +29,11 @@ class Generator
 	public function __construct()
 		{
 		$this->nl = 'WIN' === \strtoupper(\substr(PHP_OS, 0, 3)) ? "\r\n" : "\n";
+		}
+
+	public function deleteClasses(string $version) : void
+		{
+		$this->deleteFileTree($version);
 		}
 
 	public function makeClasses(string $version, array $paths) : void
@@ -50,21 +60,30 @@ class Generator
 			\mkdir($dir, recursive: true);
 			}
 
-		$class = $this->getUniqueClassName($namespace, $class);
+		$namespacedClass = $this->getUniqueClassName($namespace, $class);
 
-		$this->writeClass($namespace, $class, $apiPath, $properties);
+		$this->writeClass($namespacedClass, $apiPath, $properties);
+		}
+
+	public function deleteDefinitions() : void
+		{
+		$this->deleteFileTree('/Definition');
 		}
 
 	public function makeDefinitions(array $definitions) : void
 		{
 		foreach ($definitions as $class => $properties)
 			{
-			$this->generateDefinition($class, $properties);
+			$this->generateDefinition($this->getUniqueClassName($this->definitionNamespace, $class), $properties);
 			}
 		}
 
-	public function generateDefinition(string $class, array $properties) : void
+	public function generateDefinition(string $namespacedClass, array $properties) : void
 		{
+		$parts = explode('\\', $namespacedClass);
+		$class = array_pop($parts);
+		$namespace = implode('\\', $parts);
+
 		if (! isset($properties['type']))
 			{
 			return;
@@ -99,9 +118,8 @@ class Generator
 					if ('object' == $type)
 						{
 						$namespace = $this->definitionNamespace;
-						$baseName = $this->getUniqueClassName($namespace, $this->getClassName($name));
-						$type = '\\' . $namespace . '\\' . $baseName;
-						$this->generateDefinition($baseName, $details);
+						$type = $this->getUniqueClassName($this->definitionNamespace, $name);
+						$this->generateDefinition($type, $details);
 						}
 
 					if (isset($details['format']))
@@ -160,60 +178,69 @@ class Generator
 					$maxLength[$name] = (int)$details['maxLength'];
 					}
 
+				$description = '';
 				if (isset($details['description']))
 					{
 					$description = $this->cleanDescription(\trim($details['description']));
-
-					if (\is_array($type))
-						{
-						$type = $originalType;
-						}
-					$type = \str_replace('\\\\', '\\', $type);
-					$docBlock[] = "{$type} {$dollar}{$name} {$description}";
 					}
+
+				if (\is_array($type))
+					{
+					$type = $originalType;
+					}
+				$type = \str_replace('\\\\', '\\', $type);
+				$docBlock[] = trim("{$type} {$dollar}{$name} {$description}");
 				}
 			$this->generateFromTemplate($class, ['fields' => $fields, 'minLength' => $minLength, 'maxLength' => $maxLength, ], $docBlock);
 			}
 		}
 
+	/**
+	 * Given a namespace and a class in the namespace, get a unique name that combines duplicate classes
+	 *
+	 * @return string fully namespaced class name
+	 */
 	private function getUniqueClassName(string $namespace, string $class) : string
 		{
+		$namespace = trim($namespace, '\\');
+		$class = $this->getClassName($class);
 		if (isset($this->duplicateClasses[$class]))
 			{
-			return $this->duplicateClasses[$class];
+			$class = $this->duplicateClasses[$class];
+			$fullName = '\\' . $namespace . '\\' . $class;
+			$this->generatedClasses[$fullName] = true;
+
+			return $fullName;
 			}
 
-		$fullName = $namespace . '\\' . $class;
+		$fullName = '\\' . $namespace . '\\' . $class;
 
-		if (isset($this->generatedClasses[$fullName]))
+		// if we have seen this class before, then it is the plural version and it should be singular because CC does not know how to design an API (among other things).
+		if (! str_contains($fullName, 'Definition') && isset($this->generatedClasses[$fullName]))
 			{
-			if ('Links' == $class)
-				{
-				$class = 'Link';
-				}
-			elseif ('StreetAddress' == $class)
-				{
-				$class = 'StreetAddressRecord';
-				}
-			// trim the s off the end point for the singular
-			elseif (\str_ends_with($class, 'ies'))
+			if (\str_ends_with($class, 'ies'))
 				{
 				$class = \substr($class, 0, \strlen($class) - 3);
 				$class .= 'y';
 				}
-			else
+			else // trim the s off the end point for the singular
 				{
 				$class = \substr($class, 0, \strlen($class) - 1);
 				}
-			$fullName = $namespace . '\\' . $class;
+			$fullName = '\\' . $namespace . '\\' . $class;
 			}
+
 		$this->generatedClasses[$fullName] = true;
 
-		return $class;
+		return $fullName;
 		}
 
-	private function writeClass(string $namespace, string $class, string $apiPath, array $properties) : void
+	private function writeClass(string $namespacedClass, string $apiPath, array $properties) : void
 		{
+		$parts = explode('\\', $namespacedClass);
+		$class = array_pop($parts);
+		$namespace = trim(implode('\\', $parts), '\\');
+
 		$methods = '';
 		$dollar = '$';
 
@@ -379,7 +406,7 @@ PHP;
 			}
 		elseif ('date-time' == $type)
 			{
-			$type = 'DateTime';
+			$type = '\PHPFUI\ConstantContact\DateTime';
 			}
 		elseif ('date' == $type)
 			{
@@ -462,15 +489,23 @@ PHP;
 		return \implode("\n", $blocks);
 		}
 
+	/**
+	 * Generate a definition from a template
+	 *
+	 * @param string $name of the class, no namespace
+	 * @param array  $properties from YAML file
+	 * @param array  $docBlocks @var docblocks to output
+	 */
 	private function generateFromTemplate(string $name, array $properties, array $docBlocks) : void
 		{
-		$backSlash = '\\';
+		$namespace = trim($this->definitionNamespace, '\\');
+
 		$template = <<<PHP
 <?php
 
 // Generated file. Do not edit by hand. Use update.php in project root.
 
-namespace {$this->definitionNamespace};
+namespace {$namespace};
 
 /**
 
@@ -483,7 +518,7 @@ PHP;
 			}
 
 		$template .= " */
-class ~class~ extends {$backSlash}{$this->definitionNamespace}\Base
+class ~class~ extends {$this->definitionNamespace}\Base
 	{";
 
 		foreach ($properties as $fields => $values)
@@ -544,6 +579,29 @@ class ~class~ extends {$backSlash}{$this->definitionNamespace}\Base
 		{
 		$parts = \explode('/', \str_replace('_', '', $ref));
 
-		return '\\' . $this->definitionNamespace . '\\' . \array_pop($parts);
+		return $this->getUniqueClassName($this->definitionNamespace, \array_pop($parts));
 		}
+
+	private function deleteFileTree(string $path) : void
+		{
+		$directory = __DIR__ . '/../src/ConstantContact' . $path;
+
+		$iterator = new \RecursiveIteratorIterator(
+				new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS),
+				\RecursiveIteratorIterator::SELF_FIRST);
+
+		foreach ($iterator as $item)
+			{
+			if (! $item->isDir())
+				{
+				$fileName = "{$item}";
+				// don't delete base classes
+				if (! str_ends_with($fileName, 'Base.php'))
+					{
+					unlink($fileName);
+					}
+				}
+			}
+		}
+
 	}
