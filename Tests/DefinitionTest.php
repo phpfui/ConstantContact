@@ -197,12 +197,64 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 			'integer' => 10,
 			'string' => 'stringLn10',
 			'enum' => 'primary_email',
-			'array' => ['one' => false, 'two' => 2, 'three' => '3', 'four' => 1.23],
+			'array' => ['one' => 1, 'two' => 2, 'three' => 3],
 			'float' => 3.1415926,
 			'ucEnum' => 'SCHEDULED',
 			'intEnum' => 5,
 		];
+
 		$fixture = new \Tests\Fixtures\TypeTest($original);
 		$this->assertEquals($original, $fixture->getData());
 		}
+
+	public function testConstructFromObject() : void
+		{
+		$testClass = new \Tests\Fixtures\ClassTest();
+		$original = [
+			'class' => $testClass,
+		];
+		$fixture = new \Tests\Fixtures\TypeTest($original);
+
+		$this->assertEquals($testClass, $fixture->class);
+		}
+
+	public function testClassArray() : void
+		{
+		$testClass = new \Tests\Fixtures\ClassTest();
+		$original = [
+			'classArray' => [$testClass, new \Tests\Fixtures\ClassTest(), ],
+		];
+
+		$fixture = new \Tests\Fixtures\TypeTest($original);
+
+		$this->assertIsArray($fixture->classArray);
+		$this->assertCount(2, $fixture->classArray);
+		}
+
+	public function testClassArraySize() : void
+		{
+		$testClass = new \Tests\Fixtures\ClassTest();
+		$original = [
+			'classArraySize' => [$testClass, new \Tests\Fixtures\ClassTest(), ],
+		];
+
+		$fixture = new \Tests\Fixtures\TypeTest($original);
+
+		$this->assertIsArray($fixture->classArraySize);
+		$this->assertCount(2, $fixture->classArraySize);
+		}
+
+	public function testClassArraySizeMin() : void
+		{
+		$testClass = new \Tests\Fixtures\ClassTest();
+		$original = [
+			'classArraySizeMin' => [$testClass, new \Tests\Fixtures\ClassTest(), ],
+		];
+
+		$fixture = new \Tests\Fixtures\TypeTest($original);
+
+		$this->assertIsArray($fixture->classArraySizeMin);
+		$this->assertCount(2, $fixture->classArraySizeMin);
+		}
+
 	}
