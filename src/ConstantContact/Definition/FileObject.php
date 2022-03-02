@@ -16,6 +16,7 @@ namespace PHPFUI\ConstantContact\Definition;
  * @var string $source The application that uploaded this image.
  * @var string $type The image format.
  * @var string $status THe image status.
+ * @var \PHPFUI\ConstantContact\Definition\Thumbnail $thumbnail
  * @var bool $image Boolean indicating if this file is an image.
  * @var int $folder_id Identifies a folder in MyLibrary.
  * @var string $external_url The external url for the file.

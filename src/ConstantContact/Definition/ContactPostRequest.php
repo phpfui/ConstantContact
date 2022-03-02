@@ -5,6 +5,7 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
+ * @var \PHPFUI\ConstantContact\Definition\EmailAddressPost $email_address
  * @var string $first_name The first name of the contact.
  * @var string $last_name The last name of the contact.
  * @var string $job_title The job title of the contact.

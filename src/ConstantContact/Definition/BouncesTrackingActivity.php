@@ -20,7 +20,7 @@ namespace PHPFUI\ConstantContact\Definition;
  * <li><code>X</code> - Other; the contact's ISP specified another reason that the message cannot be delivered.</li>
  * <li><code>Z</code> - Blocked; the recipient's ISP chose not to deliver the email. For example, the ISP may have flagged the email as spam.</li></ul>
  * @var string $current_email_address The contact's most current email address. If <code>email_address</code> was updated after the email bounce activity occurred, <code>current_ email_address</code> displays the updated address. If updates were not made to <code>email_address</code>, the <code>email_address</code> and <code>current_email_address</code> are the same.
- * @var DateTime $created_time The date and time that the email bounce tracking activity occurred.
+ * @var \PHPFUI\ConstantContact\DateTime $created_time The date and time that the email bounce tracking activity occurred.
  * @var \PHPFUI\ConstantContact\Date $deleted_at If applicable, the date when the contact was deleted.
  */
 class BouncesTrackingActivity extends \PHPFUI\ConstantContact\Definition\Base
@@ -34,7 +34,7 @@ class BouncesTrackingActivity extends \PHPFUI\ConstantContact\Definition\Base
 		'last_name' => 'string',
 		'bounce_code' => 'string',
 		'current_email_address' => 'string',
-		'created_time' => 'DateTime',
+		'created_time' => '\PHPFUI\ConstantContact\DateTime',
 		'deleted_at' => '\PHPFUI\ConstantContact\Date',
 
 	];

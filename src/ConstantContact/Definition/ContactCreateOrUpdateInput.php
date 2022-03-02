@@ -16,6 +16,7 @@ namespace PHPFUI\ConstantContact\Definition;
  * @var string $anniversary The anniversary date for the contact. For example, this value could be the date when the contact first became a customer of an organization in Constant Contact. Valid date formats are MM/DD/YYYY, M/D/YYYY, YYYY/MM/DD, YYYY/M/D, YYYY-MM-DD, YYYY-M-D,M-D-YYYY, or M-DD-YYYY.
  * @var int $birthday_month The month value for the contact's birthday. Valid values are from 1 through 12. The <code>birthday_month</code> property is required if you use <code>birthday_day</code>.
  * @var int $birthday_day The day value for the contact's birthday. Valid values are from 1 through 31. The <code>birthday_day</code> property is required if you use <code>birthday_month</code>.
+ * @var \PHPFUI\ConstantContact\Definition\StreetAddress $street_address
  */
 class ContactCreateOrUpdateInput extends \PHPFUI\ConstantContact\Definition\Base
 	{

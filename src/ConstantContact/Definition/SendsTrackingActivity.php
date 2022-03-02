@@ -11,7 +11,7 @@ namespace PHPFUI\ConstantContact\Definition;
  * @var string $email_address The email address used to send the email campaign activity to a contact.
  * @var string $first_name The first name of the contact.
  * @var string $last_name The last name of the contact.
- * @var DateTime $created_time The date and time that you sent the email campaign to the contact.
+ * @var \PHPFUI\ConstantContact\DateTime $created_time The date and time that you sent the email campaign to the contact.
  * @var \PHPFUI\ConstantContact\Date $deleted_at If applicable, displays the date that the contact was deleted.
  */
 class SendsTrackingActivity extends \PHPFUI\ConstantContact\Definition\Base
@@ -23,7 +23,7 @@ class SendsTrackingActivity extends \PHPFUI\ConstantContact\Definition\Base
 		'email_address' => 'string',
 		'first_name' => 'string',
 		'last_name' => 'string',
-		'created_time' => 'DateTime',
+		'created_time' => '\PHPFUI\ConstantContact\DateTime',
 		'deleted_at' => '\PHPFUI\ConstantContact\Date',
 
 	];

@@ -5,6 +5,7 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
+ * @var string $href
  * @var \PHPFUI\ConstantContact\Definition\Next2 $next Contains the next page link, if applicable.
  */
 class Links2 extends \PHPFUI\ConstantContact\Definition\Base

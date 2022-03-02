@@ -6,6 +6,7 @@ namespace PHPFUI\ConstantContact\Definition;
 
 /**
  * @var \PHPFUI\ConstantContact\UUID $contact_id Unique ID for each contact resource
+ * @var \PHPFUI\ConstantContact\Definition\EmailAddress $email_address
  * @var string $first_name The first name of the contact.
  * @var string $last_name The last name of the contact.
  * @var string $job_title The job title of the contact.
@@ -15,8 +16,8 @@ namespace PHPFUI\ConstantContact\Definition;
  * @var string $anniversary The anniversary date for the contact. For example, this value could be the date when the contact first became a customer of an organization in Constant Contact. Valid date formats are MM/DD/YYYY, M/D/YYYY, YYYY/MM/DD, YYYY/M/D, YYYY-MM-DD, YYYY-M-D,M-D-YYYY, or M-DD-YYYY.
  * @var string $update_source Identifies who last updated the contact; valid values are Contact or Account
  * @var string $create_source Describes who added the contact; valid values are <code>Contact</code> or <code>Account</code>. Your integration must accurately identify <code>create_source</code> for compliance reasons; value is set when contact is created.
- * @var DateTime $created_at System generated date and time that the resource was created, in ISO-8601 format.
- * @var DateTime $updated_at System generated date and time that the contact was last updated, in ISO-8601 format.
+ * @var \PHPFUI\ConstantContact\DateTime $created_at System generated date and time that the resource was created, in ISO-8601 format.
+ * @var \PHPFUI\ConstantContact\DateTime $updated_at System generated date and time that the contact was last updated, in ISO-8601 format.
  * @var \PHPFUI\ConstantContact\Date $deleted_at For deleted contacts (<code>email_address</code> contains <code>opt_out_source</code> and <code>opt_out_date</code>), shows the date of deletion.
  * @var array<\PHPFUI\ConstantContact\Definition\ContactCustomField> $custom_fields Array of up to 25 <code>custom_field</code> key value pairs.
  * @var array<\PHPFUI\ConstantContact\Definition\PhoneNumber> $phone_numbers Array of phone_numbers subresources. A contact can have up to 2 phone numbers.
@@ -39,8 +40,8 @@ class ContactResource extends \PHPFUI\ConstantContact\Definition\Base
 		'anniversary' => 'string',
 		'update_source' => ['Account', 'Contact'],
 		'create_source' => ['Account', 'Contact'],
-		'created_at' => 'DateTime',
-		'updated_at' => 'DateTime',
+		'created_at' => '\PHPFUI\ConstantContact\DateTime',
+		'updated_at' => '\PHPFUI\ConstantContact\DateTime',
 		'deleted_at' => '\PHPFUI\ConstantContact\Date',
 		'custom_fields' => 'array<\PHPFUI\ConstantContact\Definition\ContactCustomField>',
 		'phone_numbers' => 'array<\PHPFUI\ConstantContact\Definition\PhoneNumber>',

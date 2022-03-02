@@ -12,7 +12,7 @@ namespace PHPFUI\ConstantContact\Definition;
  * @var string $first_name The first name of the contact.
  * @var string $last_name The last name of the contact.
  * @var string $device_type The type of device that the contact used to open the email campaign activity.
- * @var DateTime $created_time The date and time that the contact opened the email campaign activity.
+ * @var \PHPFUI\ConstantContact\DateTime $created_time The date and time that the contact opened the email campaign activity.
  * @var \PHPFUI\ConstantContact\Date $deleted_at If applicable, displays the date that the contact was deleted.
  */
 class OpensTrackingActivity extends \PHPFUI\ConstantContact\Definition\Base
@@ -25,7 +25,7 @@ class OpensTrackingActivity extends \PHPFUI\ConstantContact\Definition\Base
 		'first_name' => 'string',
 		'last_name' => 'string',
 		'device_type' => ['computer', 'mobile', 'tablet', 'other'],
-		'created_time' => 'DateTime',
+		'created_time' => '\PHPFUI\ConstantContact\DateTime',
 		'deleted_at' => '\PHPFUI\ConstantContact\Date',
 
 	];

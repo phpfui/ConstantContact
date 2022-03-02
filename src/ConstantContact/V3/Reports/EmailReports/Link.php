@@ -4,7 +4,7 @@
 
 namespace PHPFUI\ConstantContact\V3\Reports\EmailReports;
 
-class Links extends \PHPFUI\ConstantContact\Base
+class Link extends \PHPFUI\ConstantContact\Base
 	{
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
