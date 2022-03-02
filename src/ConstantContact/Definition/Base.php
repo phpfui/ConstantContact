@@ -120,17 +120,30 @@ abstract class Base
 					$arrayEnd = \strpos($expectedType, '>');
 
 					$arrayType = \trim(\substr($expectedType, $arrayStart + 2, $arrayEnd - $arrayStart - 2), '\\');
+					$convertToObjects = ! isset(self::$scalars[$arrayType]);
 
 					foreach ($value as $index => $element)
 						{
 						$elementType = \get_debug_type($element);
 
+						// convert members of the array to the correct type if not a standard type
+						if ($convertToObjects && ! \is_object($element))
+							{
+							$value[$index] = new $arrayType($element);
+
+							continue;
+							}
+
 						if ($arrayType != $elementType)
 							{
-							throw new \PHPFUI\ConstantContact\Exception\InvalidType(static::class . "::{$field} should be an array<{$arrayType}> but index {$index} is of type {$elementType}");
+							throw new \PHPFUI\ConstantContact\Exception\InvalidType(static::class . "::{$field} should be an array[{$arrayType}] but index {$index} is of type {$elementType}");
 							}
 						}
 					}
+				}
+			elseif (! \is_object($value) && ! isset(self::$scalars[$expectedType]))
+				{
+				$value = new $expectedType($value);
 				}
 			elseif ($expectedType != $type)
 				{
