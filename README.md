@@ -19,6 +19,8 @@ should be changed to:
 ## New OAuth2 PKCE Authentication effective April 1, 2022
 As of March 31, 2022, Constant Contact will no longer be supporting versions of this library before 22.3.  You must upgrade you app on the Constant Contact site. A new secret is also suggested.  You must also upgrade to the 22.3 version of this library.  The only code change needed is to pass the parameter array ($_GET) to acquireAccessToken instead of the single code parameter.
 
+This library now requires PHP Session support for authentication. See [PHP Manual](https://www.php.net/manual/en/session.security.php) and [a good best practices article](https://www.phparch.com/2018/01/php-sessions-in-depth/).
+
 ## Namespaces
 This library normalizes the [Constant Contact API](https://v3.developer.constantcontact.com/api_guide/index.html) to modern PHP class standards.  All endpoints are first character capitialized. Underscores are removed and followed by a capital letter. Each end point is a class with methods matching the standard REST methods (ie. put, post, delete, put, etc.).  The methods take required and optional parameters matching the name specified in the Constant Contact YAML API.  In addition, this library supports all definitions of types in the API.  See below.
 
