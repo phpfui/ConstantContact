@@ -2,6 +2,8 @@
 
 namespace PHPFUI\ConstantContact;
 
+session_start();
+
 class Client
 	{
 	public string $accessToken = '';
