@@ -2,6 +2,14 @@
 
 namespace PHPFUI\ConstantContact;
 
+/**
+ * The Client class needs to store authentication information between PHP sessions in order to function correctly.  The class defaults to normal PHP $_SESSION handling,
+ * but you can specify a callback via **setSessionCallback** to provide a different persistence model. The callback function signature is:
+ *
+ * @param string $key used to store or retrieve $value
+ * @param ?string $value if null, value should be returned and key deleted, if not null, value should be stored by key.
+ * @return string $value from store or value passed in on set (ignored)
+ */
 class Client
 	{
 	public string $accessToken = '';
@@ -26,13 +34,14 @@ class Client
 
 	private string $next = '';
 
+	private $sessionCallback = null;
+
 	/**
 	 * Construct a client.
 	 *
-	 * By default, all scopes are enabled.  You can remove any, or
-	 * set new ones.
+	 * By default, all scopes are enabled.  You can remove any, or set new ones.
 	 */
-	public function __construct(private string $clientAPIKey, private string $clientSecret, private string $redirectURI = 'https://localhost/', private bool $PKCE = true)
+	public function __construct(private string $clientAPIKey, private string $clientSecret, private string $redirectURI, public bool $PKCE = true)
 		{
 		// default to all scopes
 		$this->scopes = \array_flip($this->validScopes);
@@ -41,11 +50,32 @@ class Client
 		$this->guzzleHandler->push(\Spatie\GuzzleRateLimiterMiddleware\RateLimiterMiddleware::perSecond(4));
 		}
 
+	/**
+	 * To avoid using built in PHP Sessions, set the callback to save values yourself
+	 *
+	 * Callback function signature:
+	 *
+	 * @param string $key used to store or retrieve $value
+	 * @param ?string $value if null, value should be returned and key deleted, if not null, value should be stored by key.
+	 * @return string $value from store or value passed in on set (ignored)
+	 */
+	public function setSessionCallback(callable $callback) : self
+		{
+		$this->sessionCallback = $callback;
+
+		return $this;
+		}
+
 	public function getBody() : string
 		{
 		return $this->body;
 		}
 
+	/**
+	 * Get the next result set
+	 *
+	 * @return array of data, empty if no more results
+	 */
 	public function next() : array
 		{
 		if (! $this->next)
@@ -119,7 +149,7 @@ class Client
 		$scopes = \implode('+', \array_keys($this->scopes));
 
 		$state = \bin2hex(\random_bytes(8));
-		$_SESSION['PHPFUI\ConstantContact\state'] = $state;
+		$this->session('PHPFUI\ConstantContact\state', $state);
 		$params = [
 			'response_type' => 'code',
 			'client_id' => $this->clientAPIKey,
@@ -134,7 +164,7 @@ class Client
 
 			// Store generated random state and code challenge based on RFC 7636
 			// https://datatracker.ietf.org/doc/html/rfc7636#section-6.1
-			$_SESSION['PHPFUI\ConstantContact\code_verifier'] = $code_verifier;
+			$this->session('PHPFUI\ConstantContact\code_verifier', $code_verifier);
 			$params['code_challenge'] = $code_challenge;
 			$params['code_challenge_method'] = 'S256';
 			}
@@ -162,8 +192,7 @@ class Client
 			return false;
 			}
 
-		$expectedState = $_SESSION['PHPFUI\ConstantContact\state'];
-		unset($_SESSION['PHPFUI\ConstantContact\state']);
+		$expectedState = $this->session('PHPFUI\ConstantContact\state', null);
 
 		if (($parameters['state'] ?? 'undefined') != $expectedState)
 			{
@@ -185,8 +214,7 @@ class Client
 
 		if ($this->PKCE)
 			{
-			$params['code_verifier'] = $_SESSION['PHPFUI\ConstantContact\code_verifier'];
-			unset($_SESSION['PHPFUI\ConstantContact\code_verifier']);
+			$params['code_verifier'] = $this->session('PHPFUI\ConstantContact\code_verifier', null);
 			}
 		$url = $this->oauth2URL . '?' . \http_build_query($params);
 		\curl_setopt($ch, CURLOPT_URL, $url);
@@ -227,11 +255,17 @@ class Client
 		return $this->exec($ch);
 		}
 
+	/**
+	 * Issue a patch request.  This is not normally called directly, but by the V3 namespace classes.
+	 */
 	public function patch(string $url, array $parameters) : array
 		{
 		return $this->put($url, $parameters, 'PATCH');
 		}
 
+	/**
+	 * Issue a put request.  This is not normally called directly, but by the V3 namespace classes.
+	 */
 	public function put(string $url, array $parameters, string $method = 'PUT') : array
 		{
 		try
@@ -262,6 +296,9 @@ class Client
 		return [];
 		}
 
+	/**
+	 * Issue a delete request.  This is not normally called directly, but by the V3 namespace classes.
+	 */
 	public function delete(string $url) : bool
 		{
 		try
@@ -282,6 +319,9 @@ class Client
 		return false;
 		}
 
+	/**
+	 * Issue a get request.  This is not normally called directly, but by the V3 namespace classes.
+	 */
 	public function get(string $url, array $parameters) : array
 		{
 		try
@@ -311,6 +351,9 @@ class Client
 		return [];
 		}
 
+	/**
+	 * Issue a post request.  This is not normally called directly, but by the V3 namespace classes.
+	 */
 	public function post(string $url, array $parameters) : array
 		{
 		try
@@ -347,10 +390,6 @@ class Client
 
 			if (isset($data['error']))
 				{
-//    [error_description] => Cannot supply multiple client credentials.
-//		 Use one of the following: credentials in the Authorization header,
-//			credentials in the post body,
-//			or a client_assertion in the post body.
 				$this->lastError = $data['error'] . ': ' . ($data['error_description'] ?? 'Undefined');
 				}
 			$this->accessToken = $data['access_token'] ?? '';
@@ -444,5 +483,22 @@ class Client
 	private function base64url_encode(string $data) : string
 		{
 		return \rtrim(\strtr(\base64_encode($data), '+/', '-_'), '=');
+		}
+
+	private function session(string $key, ?string $value) : string
+		{
+		if ($this->sessionCallback)
+			{
+			return call_user_func($this->sessionCallback, $key, $value);
+			}
+		if (null === $value)
+			{
+			$value = $_SESSION[$key];
+			unset($_SESSION[$key]);
+
+			return $value;
+			}
+
+		return $_SESSION[$key] = $value;
 		}
 	}
