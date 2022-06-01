@@ -494,7 +494,7 @@ PHP;
 	 *
 	 * @param string $name of the class, no namespace
 	 * @param array  $properties from YAML file
-	 * @param array  $docBlocks @var docblocks to output
+	 * @param array  $docBlocks @property docblocks to output
 	 */
 	private function generateFromTemplate(string $name, array $properties, array $docBlocks) : void
 		{
@@ -514,7 +514,7 @@ PHP;
 		foreach ($docBlocks as $docBlock)
 			{
 			$docBlock = \trim($docBlock);
-			$template .= " * @var {$docBlock}\n";
+			$template .= " * @property {$docBlock}\n";
 			}
 
 		$template .= " */
