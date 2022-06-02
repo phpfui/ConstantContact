@@ -25,9 +25,10 @@ file_put_contents($file, $yaml);
 
 // assume it has changed and run Generator
 $yaml = \Symfony\Component\Yaml\Yaml::parseFile($file);
+$baseVersion = strtoupper($yaml['basePath']);
 $generator = new \Tool\Generator();
-$generator->deleteClasses($yaml['basePath']);
-$generator->makeClasses($yaml['basePath'], $yaml['paths']);
+$generator->deleteClasses($baseVersion);
+$generator->makeClasses($baseVersion, $yaml['paths']);
 $generator->deleteDefinitions();
 $generator->makeDefinitions($yaml['definitions']);
 
