@@ -8,7 +8,7 @@ class Clicks extends \PHPFUI\ConstantContact\Base
 	{
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
-		parent::__construct($client, '/V3/reports/email_reports/{campaign_activity_id}/tracking/clicks');
+		parent::__construct($client, '/v3/reports/email_reports/{campaign_activity_id}/tracking/clicks');
 		}
 
 	/**

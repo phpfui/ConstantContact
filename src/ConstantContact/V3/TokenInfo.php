@@ -8,7 +8,7 @@ class TokenInfo extends \PHPFUI\ConstantContact\Base
 	{
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
-		parent::__construct($client, '/V3/token_info');
+		parent::__construct($client, '/v3/token_info');
 		}
 
 	/**

@@ -8,7 +8,7 @@ class Tests extends \PHPFUI\ConstantContact\Base
 	{
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
-		parent::__construct($client, '/V3/partner/webhooks/subscriptions/{topic_id}/tests');
+		parent::__construct($client, '/v3/partner/webhooks/subscriptions/{topic_id}/tests');
 		}
 
 	/**

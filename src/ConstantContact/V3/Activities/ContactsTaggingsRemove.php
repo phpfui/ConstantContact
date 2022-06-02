@@ -8,7 +8,7 @@ class ContactsTaggingsRemove extends \PHPFUI\ConstantContact\Base
 	{
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
-		parent::__construct($client, '/V3/activities/contacts_taggings_remove');
+		parent::__construct($client, '/v3/activities/contacts_taggings_remove');
 		}
 
 	/**

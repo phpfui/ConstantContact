@@ -8,7 +8,7 @@ class RemoveListMemberships extends \PHPFUI\ConstantContact\Base
 	{
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
-		parent::__construct($client, '/V3/activities/remove_list_memberships');
+		parent::__construct($client, '/v3/activities/remove_list_memberships');
 		}
 
 	/**

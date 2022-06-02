@@ -8,7 +8,7 @@ class Sync extends \PHPFUI\ConstantContact\Base
 	{
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
-		parent::__construct($client, '/V3/partner/accounts/{encoded_account_id}/account_operations/sync');
+		parent::__construct($client, '/v3/partner/accounts/{encoded_account_id}/account_operations/sync');
 		}
 
 	/**

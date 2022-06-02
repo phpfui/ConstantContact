@@ -8,7 +8,7 @@ class ContactsJsonImport extends \PHPFUI\ConstantContact\Base
 	{
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
-		parent::__construct($client, '/V3/activities/contacts_json_import');
+		parent::__construct($client, '/v3/activities/contacts_json_import');
 		}
 
 	/**
