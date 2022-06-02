@@ -5,7 +5,7 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var int $reason_id Specifies the reason that the client is canceling their Constant Contact account as follows:
+ * @property int $reason_id Specifies the reason that the client is canceling their Constant Contact account as follows:
  * <ul>
  * <li><code>1</code>  Cost Too High</li>
  * <li><code>2</code>  Using A Competitive Service</li>
@@ -17,7 +17,7 @@ namespace PHPFUI\ConstantContact\Definition;
  * <li><code>27</code> Canceled Online by Customer</li>
  * <li><code>30</code> Dissatisfied With Billing Policies</li>
  * </ul>
- * @var \PHPFUI\ConstantContact\DateTime $effective_date The client account cancellation date and time in ISO-8601 format.
+ * @property \PHPFUI\ConstantContact\DateTime $effective_date The client account cancellation date and time in ISO-8601 format.
  */
 class AccountCancellation extends \PHPFUI\ConstantContact\Definition\Base
 	{

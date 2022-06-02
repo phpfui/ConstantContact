@@ -5,10 +5,10 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var \PHPFUI\ConstantContact\UUID $contact_id The contact id.
- * @var \PHPFUI\ConstantContact\UUID $campaign_activity_id The unique id of the activity for an e-mail campaign.
- * @var \PHPFUI\ConstantContact\DateTime $created_time The time the tracking activity occurred
- * @var string $tracking_activity_type The type of the tracking activity (send, open, click, bounce, opt-out or forward to a friend)
+ * @property \PHPFUI\ConstantContact\UUID $contact_id The contact id.
+ * @property \PHPFUI\ConstantContact\UUID $campaign_activity_id The unique id of the activity for an e-mail campaign.
+ * @property \PHPFUI\ConstantContact\DateTime $created_time The time the tracking activity occurred
+ * @property string $tracking_activity_type The type of the tracking activity (send, open, click, bounce, opt-out or forward to a friend)
  */
 class ContactTrackingActivity extends \PHPFUI\ConstantContact\Definition\Base
 	{

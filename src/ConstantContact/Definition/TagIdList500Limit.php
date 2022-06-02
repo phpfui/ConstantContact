@@ -5,7 +5,7 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var array<\PHPFUI\ConstantContact\UUID> $tag_ids The tag IDs (<code>tag_ids</code>) to delete.
+ * @property array<\PHPFUI\ConstantContact\UUID> $tag_ids The tag IDs (<code>tag_ids</code>) to delete.
  */
 class TagIdList500Limit extends \PHPFUI\ConstantContact\Definition\Base
 	{

@@ -5,9 +5,9 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var \PHPFUI\ConstantContact\UUID $note_id The ID that uniquely identifies the note (UUID format).
- * @var \PHPFUI\ConstantContact\DateTime $created_at The date that the note was created.
- * @var string $content The content for the note.
+ * @property \PHPFUI\ConstantContact\UUID $note_id The ID that uniquely identifies the note (UUID format).
+ * @property \PHPFUI\ConstantContact\DateTime $created_at The date that the note was created.
+ * @property string $content The content for the note.
  */
 class Note extends \PHPFUI\ConstantContact\Definition\Base
 	{

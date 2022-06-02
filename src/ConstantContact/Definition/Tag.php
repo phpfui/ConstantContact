@@ -5,12 +5,12 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var \PHPFUI\ConstantContact\UUID $tag_id The ID that uniquely identifies a tag (UUID format)
- * @var string $name The unique tag name.
- * @var int $contacts_count The total number of contacts who are assigned this tag.
- * @var \PHPFUI\ConstantContact\DateTime $created_at The system generated date and time when the tag was created (ISO-8601 format).
- * @var \PHPFUI\ConstantContact\DateTime $updated_at The system generated date and time when the tag was last updated (ISO-8601 format).
- * @var string $tag_source The source used to tag contacts.
+ * @property \PHPFUI\ConstantContact\UUID $tag_id The ID that uniquely identifies a tag (UUID format)
+ * @property string $name The unique tag name.
+ * @property int $contacts_count The total number of contacts who are assigned this tag.
+ * @property \PHPFUI\ConstantContact\DateTime $created_at The system generated date and time when the tag was created (ISO-8601 format).
+ * @property \PHPFUI\ConstantContact\DateTime $updated_at The system generated date and time when the tag was last updated (ISO-8601 format).
+ * @property string $tag_source The source used to tag contacts.
  */
 class Tag extends \PHPFUI\ConstantContact\Definition\Base
 	{

@@ -8,7 +8,7 @@ class Abtest extends \PHPFUI\ConstantContact\Base
 	{
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
-		parent::__construct($client, '/v3/emails/activities/{campaign_activity_id}/abtest');
+		parent::__construct($client, '/V3/emails/activities/{campaign_activity_id}/abtest');
 		}
 
 	/**
@@ -26,6 +26,26 @@ class Abtest extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doGet(['campaign_activity_id' => $campaign_activity_id, ]);
+		}
+
+	/**
+	 * POST (Create) an A/B Test for an Email Campaign Activity
+	 *
+	 * Use this method to create a new A/B test for a primary email campaign
+	 * activity. You must specify an alternative subject line, the percentage
+	 * of contact to use for the A/B test, and the number of hours to wait
+	 * after the A/B test is sent before determining the winning subject line.
+	 * To create an A/B test, the campaign must have a `current_status` of
+	 * `DRAFT`. When you create an A/B test, the `type` changes from Newsletter
+	 * (code= `10`) to A/B Test (code= `57`).
+	 *
+	 * @param string $campaign_activity_id The unique ID for the primary email campaign activity.
+	 * @param \PHPFUI\ConstantContact\Definition\ABTestData $abtest Specify the `alternative_subject` line, `test_size` percentage of contacts (value must from `5` to `50` inclusively), and the `winner_wait_duration` (value must be `6`, `12`, `24`, or `48` hours).
+	 */
+	public function post(string $campaign_activity_id, \PHPFUI\ConstantContact\Definition\ABTestData $abtest) : array
+		{
+
+		return $this->doPost(['campaign_activity_id' => $campaign_activity_id, 'abtest' => $abtest->getData(), ]);
 		}
 
 	/**

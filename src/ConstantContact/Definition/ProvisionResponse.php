@@ -5,8 +5,8 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var string $encoded_account_id The system generated ID used to uniquely identify a client account.
- * @var string $provision_uuid The system generated ID used to uniquely identify the provisioning of a client account.
+ * @property string $encoded_account_id The system generated ID used to uniquely identify a client account.
+ * @property string $provision_uuid The system generated ID used to uniquely identify the provisioning of a client account.
  */
 class ProvisionResponse extends \PHPFUI\ConstantContact\Definition\Base
 	{

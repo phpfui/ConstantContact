@@ -5,8 +5,8 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var string $name The segment's unique descriptive name.
- * @var string $segment_criteria The <code>segment_criteria</code> specifies the contact data that Constant Contact uses to evaluate and identify contacts that meet your criteria. The <code>segment_criteria</code> must be formatted as single-string escaped JSON. The top-level <code>group</code> <code>type</code> must be <code>add</code>.
+ * @property string $name The segment's unique descriptive name.
+ * @property string $segment_criteria The <code>segment_criteria</code> specifies the contact data that Constant Contact uses to evaluate and identify contacts that meet your criteria. The <code>segment_criteria</code> must be formatted as single-string escaped JSON. The top-level <code>group</code> <code>type</code> must be <code>add</code>.
  */
 class SegmentData extends \PHPFUI\ConstantContact\Definition\Base
 	{

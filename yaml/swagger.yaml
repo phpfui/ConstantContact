@@ -3723,6 +3723,67 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "campaign:read"
+    post:
+      tags:
+      - "Email Campaigns AB Tests"
+      summary: "POST (Create) an A/B Test for an Email Campaign Activity"
+      description: "Use this method to create a new A/B test for a primary email campaign\
+        \ activity. You must specify an alternative subject line, the percentage of\
+        \ contact to use for the A/B test, and the number of hours to wait after the\
+        \ A/B test is sent before determining the winning subject line. To create\
+        \ an A/B test, the campaign must have a `current_status` of `DRAFT`. When\
+        \ you create an A/B test, the `type` changes from Newsletter (code= `10`)\
+        \ to A/B Test (code= `57`)."
+      operationId: "createEmailCampaignABTestUsingPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "campaign_activity_id"
+        in: "path"
+        description: "The unique ID for the primary email campaign activity."
+        required: true
+        type: "string"
+        x-example: "91569d46-00e4-4a4d-9a4c-d17d98740d04"
+      - in: "body"
+        name: "abtest"
+        description: "Specify the `alternative_subject` line, `test_size` percentage\
+          \ of contacts (value must from `5` to `50` inclusively), and the `winner_wait_duration`\
+          \ (value must be `6`, `12`, `24`, or `48` hours)."
+        required: true
+        schema:
+          $ref: "#/definitions/ABTestData"
+      responses:
+        "201":
+          description: "Request successful."
+          schema:
+            $ref: "#/definitions/ABTestData"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "The requested resource was not found."
+        "409":
+          description: "Conflict. The resource you are creating or updating conflicts\
+            \ with an existing resource."
+        "429":
+          description: "Too many requests. You exceeded the request rate limit."
+        "500":
+          description: "There was a problem with our internal service."
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      - api_key: []
+      x-authorization-privileges:
+      - "campaign:write"
     delete:
       tags:
       - "Email Campaigns AB Tests"
@@ -5009,6 +5070,60 @@ paths:
       security:
       - ctctPartnerAuthorizer: []
       - api_key: []
+  /partner/accounts/{encoded_account_id}/account_operations/sync:
+    post:
+      tags:
+      - "Technology Partners"
+      summary: "POST Send an API request on Behalf of a Client Account"
+      description: "Use this API method to send an API request on behalf of a managed\
+        \ client account in your partnership.\n\nThe request body properties you use\
+        \ in this partner API call determine the structure of the API request that\
+        \ Constant Contact sends on behalf of the managed client account. This includes\
+        \ the HTTP url, HTTP method type, request body, request url parameters, request\
+        \ query parameters, and headers that for the request. You can use this `/partner/accounts/{encoded_account_id}/account_operations/sync`\
+        \ API method to send a request using non-partner v3 API methods."
+      operationId: "partnerAccountOperationsPostSync"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "encoded_account_id"
+        in: "path"
+        description: "An encoded account id for a managed account in your partnership."
+        required: true
+        type: "string"
+        x-example: "a07e1lxqqqo0"
+      - in: "body"
+        name: "body"
+        description: "A JSON request body that contains the structure of the HTTP\
+          \ request you are instructing Constant Contact to send on behalf of specific\
+          \ managed account in your partnership."
+        required: false
+        schema:
+          $ref: "#/definitions/PartnerAccountOperationsRequest"
+      responses:
+        "200":
+          description: "Request successful. The response body schema returned by this\
+            \ method corresponds to the specific API request you provided in the request\
+            \ body."
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "Not found. This may indicate that the encoded_account_id you\
+            \ provided is invalid, or the API request you are sending on behalf of\
+            \ an account returned a 404."
+        "500":
+          description: "There was a problem with our internal service."
+      security:
+      - ctctPartnerAuthorizer: []
+      - api_key: []
   /partner/webhooks/subscriptions:
     get:
       tags:
@@ -5225,9 +5340,9 @@ paths:
       tags:
       - "Access Token Information"
       summary: "Access Token Information"
-      description: "Use this POST method to retrieve the list of authorization scopes\
-        \ associated with an OAuth2.0 access token.\n\nYou cannot retrieve authorization\
-        \ information using expired access tokens.\n"
+      description: "IMPORTANT NOTE: As of March 31, 2022, this POST method is being\
+        \ depreciated. To view the scopes associated with an access token, parse the\
+        \ access token (JWT) claims.\n"
       operationId: "postAuthCode"
       consumes:
       - "application/json"
@@ -5696,7 +5811,7 @@ definitions:
     properties:
       email_address:
         type: "string"
-        example: "ddipper@example.com"
+        example: "dlang@example.com"
         description: "The new email address you want to add to a Constant Contact\
           \ account."
         maxLength: 80
@@ -5705,7 +5820,7 @@ definitions:
     properties:
       email_address:
         type: "string"
-        example: "ddipper@example.com"
+        example: "dlang@example.com"
         description: "An email address associated with a Constant Contact account\
           \ owner."
         maxLength: 80
@@ -6970,12 +7085,12 @@ definitions:
         $ref: "#/definitions/EmailAddress"
       first_name:
         type: "string"
-        example: "Jones"
+        example: "Debora"
         description: "The first name of the contact."
         maxLength: 50
       last_name:
         type: "string"
-        example: "Nipperdipper"
+        example: "Lang"
         description: "The last name of the contact."
         maxLength: 50
       job_title:
@@ -7104,7 +7219,7 @@ definitions:
     properties:
       address:
         type: "string"
-        example: "ddipper@example.com"
+        example: "dlang@example.com"
         description: "The email address of the contact. The email address must be\
           \ unique for each contact."
         maxLength: 80
@@ -7350,12 +7465,12 @@ definitions:
         $ref: "#/definitions/EmailAddressPut"
       first_name:
         type: "string"
-        example: "Dipali"
+        example: "Debora"
         description: "The contact's first name"
         maxLength: 50
       last_name:
         type: "string"
-        example: "Rogers"
+        example: "Lang"
         description: "The contact's last name"
         maxLength: 50
       job_title:
@@ -7445,7 +7560,7 @@ definitions:
     properties:
       address:
         type: "string"
-        example: "ddipper@example.com"
+        example: "dlang@example.com"
         description: "The email address of the contact. The email address must be\
           \ unique for each contact."
         maxLength: 80
@@ -7614,12 +7729,12 @@ definitions:
         $ref: "#/definitions/EmailAddress"
       first_name:
         type: "string"
-        example: "Jones"
+        example: "Debora"
         description: "The first name of the contact."
         maxLength: 50
       last_name:
         type: "string"
-        example: "Nipperdipper"
+        example: "Lang"
         description: "The last name of the contact."
         maxLength: 50
       job_title:
@@ -7748,12 +7863,12 @@ definitions:
         $ref: "#/definitions/EmailAddressPost"
       first_name:
         type: "string"
-        example: "Dipali"
+        example: "Debora"
         description: "The first name of the contact."
         maxLength: 50
       last_name:
         type: "string"
-        example: "Nipperdipper"
+        example: "Lang"
         description: "The last name of the contact."
         maxLength: 50
       job_title:
@@ -7850,7 +7965,7 @@ definitions:
     properties:
       address:
         type: "string"
-        example: "ddipper@example.com"
+        example: "dlang@example.com"
         description: "The contact's email address"
         maxLength: 80
       permission_to_send:
@@ -9310,7 +9425,7 @@ definitions:
           \ at a time."
         items:
           type: "string"
-          example: "ddipper@example.com"
+          example: "dlang@example.com"
         maxItems: 5
       personal_message:
         type: "string"
@@ -9600,10 +9715,11 @@ definitions:
         example: 24
         description: "The number of hours Constant Contact waits after the A/B test\
           \ is sent before determining the winning subject line. The winner is the\
-          \ subject line with the highest number of contact opens. After the winner\
-          \ is determined, Constant Contact automatically sends the email campaign\
-          \ with the winning subject line to all the remaining contacts, which did\
-          \ not participate in the A/B test."
+          \ subject line with the highest number of contact opens. Valid values include\
+          \ <code>6</code>, <code>12</code>, <code>24</code>, and <code>48</code>.\
+          \ After the winner is determined, Constant Contact automatically sends the\
+          \ email campaign with the winning subject line to all the remaining contacts,\
+          \ which did not participate in the A/B test."
   ContactTrackingActivitiesPage:
     type: "object"
     properties:
@@ -11181,27 +11297,87 @@ definitions:
       \ a reason (`reason_code`) that the client wants to cancel their account."
   PartnerAccountOperationsRequest:
     type: "object"
+    required:
+    - "account_operation_method"
+    - "account_operation_url"
     properties:
+      account_operation_url:
+        type: "string"
+        example: "/contacts/{contact_id}"
+        description: "The API method path for the request you are sending on behalf\
+          \ of a managed child account. This value should be a V3 API URL without\
+          \ the https://api.cc.email/v3 base url and with any path parameter names\
+          \ included. For example: <code>/emails/activities/{campaign_activity_id}</code>."
+      account_operation_method:
+        type: "string"
+        example: "GET"
+        description: "The http method for the request you are sending on behalf of\
+          \ a managed child account."
+        enum:
+        - "GET"
+        - "POST"
+        - "PUT"
+        - "DELETE"
+        - "PATCH"
+      account_operation_payload:
+        type: "string"
+        example: ""
+        description: "The request payload for the request you are sending on behalf\
+          \ of a managed child account. If you provide a JSON payload using this parameter,\
+          \ make sure that the JSON is string escaped."
       account_operation_query_parameters:
         type: "array"
+        description: "An array containing the query parameters for the request you\
+          \ are sending on behalf of a managed child account."
         items:
           $ref: "#/definitions/QueryParamObject"
       account_operation_path_parameters:
         type: "array"
+        description: "An array containing the path parameters for the request you\
+          \ are sending on behalf of a managed child account."
         items:
           $ref: "#/definitions/PathParamObject"
       account_operation_headers:
         type: "array"
+        description: "An array containing the headers for the request you are sending\
+          \ on behalf of a managed child account."
         items:
           $ref: "#/definitions/HeadersObject"
-    description: "JSON object that contains the fields Constant Contact will use to\
-      \ construct the HTTP request you want to send on behalf of a managed account."
+    description: "JSON object that contains the fields Constant Contact uses to construct\
+      \ the HTTP request you are sending on behalf of a managed account."
   QueryParamObject:
     type: "object"
+    properties:
+      query_param_key:
+        type: "string"
+        example: "include"
+        description: "The name of the query parameter."
+      query_param_value:
+        type: "string"
+        example: "list_memberships"
+        description: "The value of the query parameter."
   PathParamObject:
     type: "object"
+    properties:
+      path_param_key:
+        type: "string"
+        example: "contact_id"
+        description: "The name of the path parameter."
+      path_param_value:
+        type: "string"
+        example: "04fe9a-a579-43c5-bb1a-58ed29bf0a6a"
+        description: "The value of the path parameter."
   HeadersObject:
     type: "object"
+    properties:
+      header_key:
+        type: "string"
+        example: "Accept"
+        description: "The name of the header."
+      header_value:
+        type: "string"
+        example: "application/json"
+        description: "The value of the header."
   WebhooksSubscriptionCollection:
     type: "array"
     description: "An array of webhook subscriptions."

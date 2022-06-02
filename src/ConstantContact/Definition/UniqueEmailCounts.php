@@ -5,14 +5,14 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var int $sends The total number of unique sends.
- * @var int $opens The total number of unique opens.
- * @var int $clicks The total number of unique clicks.
- * @var int $forwards The total number of unique forwards.
- * @var int $optouts The total number of unique optouts (unsubscribes).
- * @var int $abuse The total number of unique abuse count (spam).
- * @var int $bounces The total number of unique bounce count.
- * @var int $not_opened The total number of unique non-opens
+ * @property int $sends The total number of unique sends.
+ * @property int $opens The total number of unique opens.
+ * @property int $clicks The total number of unique clicks.
+ * @property int $forwards The total number of unique forwards.
+ * @property int $optouts The total number of unique optouts (unsubscribes).
+ * @property int $abuse The total number of unique abuse count (spam).
+ * @property int $bounces The total number of unique bounce count.
+ * @property int $not_opened The total number of unique non-opens
  */
 class UniqueEmailCounts extends \PHPFUI\ConstantContact\Definition\Base
 	{

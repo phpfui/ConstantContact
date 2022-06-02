@@ -5,7 +5,7 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var \PHPFUI\ConstantContact\Definition\Link $next Contains the next page link, if applicable.
+ * @property \PHPFUI\ConstantContact\Definition\Link $next Contains the next page link, if applicable.
  */
 class PaginationLinks extends \PHPFUI\ConstantContact\Definition\Base
 	{

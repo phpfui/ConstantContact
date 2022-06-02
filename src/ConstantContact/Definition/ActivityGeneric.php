@@ -5,14 +5,14 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var string $activity_id The ID that uniquely identifies the activity.
- * @var string $state The processing state for the activity.
- * @var \PHPFUI\ConstantContact\DateTime $created_at The system generated date and time that the resource was created, in ISO-8601 format.
- * @var \PHPFUI\ConstantContact\DateTime $updated_at The system generated date and time that the resource was last updated, in ISO-8601 format.
- * @var int $percent_done The percentage complete for the specified activity.
- * @var array<\PHPFUI\ConstantContact\Definition\ActivityErrors> $activity_errors An array of error messages if errors occurred for a specified activity. The system returns an empty array if no errors occur.
- * @var \PHPFUI\ConstantContact\Definition\ActivityGenericStatus $status
- * @var \PHPFUI\ConstantContact\Definition\ActivityLinks2 $_links
+ * @property string $activity_id The ID that uniquely identifies the activity.
+ * @property string $state The processing state for the activity.
+ * @property \PHPFUI\ConstantContact\DateTime $created_at The system generated date and time that the resource was created, in ISO-8601 format.
+ * @property \PHPFUI\ConstantContact\DateTime $updated_at The system generated date and time that the resource was last updated, in ISO-8601 format.
+ * @property int $percent_done The percentage complete for the specified activity.
+ * @property array<\PHPFUI\ConstantContact\Definition\ActivityErrors> $activity_errors An array of error messages if errors occurred for a specified activity. The system returns an empty array if no errors occur.
+ * @property \PHPFUI\ConstantContact\Definition\ActivityGenericStatus $status
+ * @property \PHPFUI\ConstantContact\Definition\ActivityLinks2 $_links
  */
 class ActivityGeneric extends \PHPFUI\ConstantContact\Definition\Base
 	{

@@ -5,24 +5,24 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var int $id Identifies the MyLibrary file.
- * @var string $name The file name.
- * @var int $height The image height.
- * @var int $width The image width.
- * @var int $size The image size.
- * @var string $url The image URL.
- * @var string $description The image description.
- * @var string $folder The image folder
- * @var string $source The application that uploaded this image.
- * @var string $type The image format.
- * @var string $status THe image status.
- * @var \PHPFUI\ConstantContact\Definition\Thumbnail $thumbnail
- * @var bool $image Boolean indicating if this file is an image.
- * @var int $folder_id Identifies a folder in MyLibrary.
- * @var string $external_url The external url for the file.
- * @var string $modified_date Identifies the time a user last modified the file.
- * @var string $added_date Identifies the time a user originally added the file to MyLibrary.
- * @var string $external_file_id External identifier for the file.
+ * @property int $id Identifies the MyLibrary file.
+ * @property string $name The file name.
+ * @property int $height The image height.
+ * @property int $width The image width.
+ * @property int $size The image size.
+ * @property string $url The image URL.
+ * @property string $description The image description.
+ * @property string $folder The image folder
+ * @property string $source The application that uploaded this image.
+ * @property string $type The image format.
+ * @property string $status THe image status.
+ * @property \PHPFUI\ConstantContact\Definition\Thumbnail $thumbnail
+ * @property bool $image Boolean indicating if this file is an image.
+ * @property int $folder_id Identifies a folder in MyLibrary.
+ * @property string $external_url The external url for the file.
+ * @property string $modified_date Identifies the time a user last modified the file.
+ * @property string $added_date Identifies the time a user originally added the file to MyLibrary.
+ * @property string $external_file_id External identifier for the file.
  */
 class FileObject extends \PHPFUI\ConstantContact\Definition\Base
 	{

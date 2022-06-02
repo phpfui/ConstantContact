@@ -5,8 +5,8 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var \PHPFUI\ConstantContact\UUID $custom_field_id The custom_field's unique ID
- * @var string $value The custom_field value.
+ * @property \PHPFUI\ConstantContact\UUID $custom_field_id The custom_field's unique ID
+ * @property string $value The custom_field value.
  */
 class ContactCustomField extends \PHPFUI\ConstantContact\Definition\Base
 	{

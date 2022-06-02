@@ -5,7 +5,7 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var \PHPFUI\ConstantContact\Definition\ActivityLinks2 $ActivityLinks2 The link returned in the response that you use to retrieve the status for the specified activity.
+ * @property \PHPFUI\ConstantContact\Definition\ActivityLinks2 $ActivityLinks2 The link returned in the response that you use to retrieve the status for the specified activity.
  */
 class ActivityLinks2 extends \PHPFUI\ConstantContact\Definition\Base
 	{

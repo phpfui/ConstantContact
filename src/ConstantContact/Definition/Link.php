@@ -5,7 +5,7 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var string $href
+ * @property string $href
  */
 class Link extends \PHPFUI\ConstantContact\Definition\Base
 	{

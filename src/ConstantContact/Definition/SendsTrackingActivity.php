@@ -5,14 +5,14 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var \PHPFUI\ConstantContact\UUID $contact_id The ID that uniquely identifies a contact.
- * @var \PHPFUI\ConstantContact\UUID $campaign_activity_id The ID that uniquely identifies an email campaign activity.
- * @var string $tracking_activity_type The type of tracking activity that is associated with this <code>campaign_activity_id</code> and used for reporting purposes.
- * @var string $email_address The email address used to send the email campaign activity to a contact.
- * @var string $first_name The first name of the contact.
- * @var string $last_name The last name of the contact.
- * @var \PHPFUI\ConstantContact\DateTime $created_time The date and time that you sent the email campaign to the contact.
- * @var \PHPFUI\ConstantContact\Date $deleted_at If applicable, displays the date that the contact was deleted.
+ * @property \PHPFUI\ConstantContact\UUID $contact_id The ID that uniquely identifies a contact.
+ * @property \PHPFUI\ConstantContact\UUID $campaign_activity_id The ID that uniquely identifies an email campaign activity.
+ * @property string $tracking_activity_type The type of tracking activity that is associated with this <code>campaign_activity_id</code> and used for reporting purposes.
+ * @property string $email_address The email address used to send the email campaign activity to a contact.
+ * @property string $first_name The first name of the contact.
+ * @property string $last_name The last name of the contact.
+ * @property \PHPFUI\ConstantContact\DateTime $created_time The date and time that you sent the email campaign to the contact.
+ * @property \PHPFUI\ConstantContact\Date $deleted_at If applicable, displays the date that the contact was deleted.
  */
 class SendsTrackingActivity extends \PHPFUI\ConstantContact\Definition\Base
 	{

@@ -5,8 +5,8 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var array<\PHPFUI\ConstantContact\Definition\SegmentMaster> $segments Lists all segments for the account.
- * @var \PHPFUI\ConstantContact\Definition\Link $_links HAL property that contains next link if applicable.
+ * @property array<\PHPFUI\ConstantContact\Definition\SegmentMaster> $segments Lists all segments for the account.
+ * @property \PHPFUI\ConstantContact\Definition\Link $_links HAL property that contains next link if applicable.
  */
 class SegmentsDTO extends \PHPFUI\ConstantContact\Definition\Base
 	{

@@ -5,10 +5,10 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var string $campaign_id The ID that uniquely identifies an email campaign.
- * @var string $campaign_type Identifies the email campaign type.
- * @var \PHPFUI\ConstantContact\DateTime $last_sent_date The date and time that the email campaign was last sent.
- * @var \PHPFUI\ConstantContact\Definition\UniqueEmailCounts $unique_counts The total number of times each unique contact interacted with a tracked email campaign activity.
+ * @property string $campaign_id The ID that uniquely identifies an email campaign.
+ * @property string $campaign_type Identifies the email campaign type.
+ * @property \PHPFUI\ConstantContact\DateTime $last_sent_date The date and time that the email campaign was last sent.
+ * @property \PHPFUI\ConstantContact\Definition\UniqueEmailCounts $unique_counts The total number of times each unique contact interacted with a tracked email campaign activity.
  */
 class BulkEmailCampaignSummary extends \PHPFUI\ConstantContact\Definition\Base
 	{

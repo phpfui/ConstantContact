@@ -5,8 +5,8 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var \PHPFUI\ConstantContact\Definition\ActivityLinks $ActivityLinks
- * @var \PHPFUI\ConstantContact\Definition\Result $results
+ * @property \PHPFUI\ConstantContact\Definition\ActivityLinks $ActivityLinks
+ * @property \PHPFUI\ConstantContact\Definition\Result $results
  */
 class ActivityLinks extends \PHPFUI\ConstantContact\Definition\Base
 	{

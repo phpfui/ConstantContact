@@ -5,8 +5,8 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var \PHPFUI\ConstantContact\Definition\PagingLinks $_links
- * @var array<\PHPFUI\ConstantContact\Definition\EmailCampaigns> $campaigns
+ * @property \PHPFUI\ConstantContact\Definition\PagingLinks $_links
+ * @property array<\PHPFUI\ConstantContact\Definition\EmailCampaigns> $campaigns
  */
 class PagedEmailCampaignResponse extends \PHPFUI\ConstantContact\Definition\Base
 	{

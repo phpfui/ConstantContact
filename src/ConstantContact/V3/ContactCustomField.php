@@ -8,7 +8,7 @@ class ContactCustomField extends \PHPFUI\ConstantContact\Base
 	{
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
-		parent::__construct($client, '/v3/contact_custom_fields/{custom_field_id}');
+		parent::__construct($client, '/V3/contact_custom_fields/{custom_field_id}');
 		}
 
 	/**

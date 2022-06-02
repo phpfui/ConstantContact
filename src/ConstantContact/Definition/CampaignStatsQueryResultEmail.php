@@ -5,8 +5,8 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var array<\PHPFUI\ConstantContact\Definition\StatsError> $errors An array of errors indicating any partial failures in the query.
- * @var array<\PHPFUI\ConstantContact\Definition\CampaignStatsResultGenericStatsEmailPercentsEmail> $results An array of results listing statistics for each requested <code>campaign_id</code>.
+ * @property array<\PHPFUI\ConstantContact\Definition\StatsError> $errors An array of errors indicating any partial failures in the query.
+ * @property array<\PHPFUI\ConstantContact\Definition\CampaignStatsResultGenericStatsEmailPercentsEmail> $results An array of results listing statistics for each requested <code>campaign_id</code>.
  */
 class CampaignStatsQueryResultEmail extends \PHPFUI\ConstantContact\Definition\Base
 	{

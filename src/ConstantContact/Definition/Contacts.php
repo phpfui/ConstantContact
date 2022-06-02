@@ -5,10 +5,10 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var array<\PHPFUI\ConstantContact\Definition\ContactResource> $contacts
- * @var int $contacts_count Total number of contacts in the response.
- * @var \PHPFUI\ConstantContact\Definition\PagingLinks $_links
- * @var string $status If you use the <code>segment_id</code> query parameter to filter results based on a segment, this property indicates that the V3 API accepted your request and is still processing it.
+ * @property array<\PHPFUI\ConstantContact\Definition\ContactResource> $contacts
+ * @property int $contacts_count Total number of contacts in the response.
+ * @property \PHPFUI\ConstantContact\Definition\PagingLinks $_links
+ * @property string $status If you use the <code>segment_id</code> query parameter to filter results based on a segment, this property indicates that the V3 API accepted your request and is still processing it.
  */
 class Contacts extends \PHPFUI\ConstantContact\Definition\Base
 	{

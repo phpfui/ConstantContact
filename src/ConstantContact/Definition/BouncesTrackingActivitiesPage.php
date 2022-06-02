@@ -5,8 +5,8 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var array<\PHPFUI\ConstantContact\Definition\BouncesTrackingActivity> $tracking_activities The list of email bounce tracking activities associated with a given `campaign_activity_id'.
- * @var \PHPFUI\ConstantContact\Definition\Links2 $_links HAL property that contains next link if applicable
+ * @property array<\PHPFUI\ConstantContact\Definition\BouncesTrackingActivity> $tracking_activities The list of email bounce tracking activities associated with a given `campaign_activity_id'.
+ * @property \PHPFUI\ConstantContact\Definition\Links2 $_links HAL property that contains next link if applicable
  */
 class BouncesTrackingActivitiesPage extends \PHPFUI\ConstantContact\Definition\Base
 	{

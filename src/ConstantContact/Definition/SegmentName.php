@@ -5,7 +5,7 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var string $name The segment's unique descriptive name.
+ * @property string $name The segment's unique descriptive name.
  */
 class SegmentName extends \PHPFUI\ConstantContact\Definition\Base
 	{

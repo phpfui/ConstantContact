@@ -5,8 +5,8 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var string $sequence_id The V2 API contact unique identifier
- * @var \PHPFUI\ConstantContact\UUID $contact_id The V3 API contact unique identifier
+ * @property string $sequence_id The V2 API contact unique identifier
+ * @property \PHPFUI\ConstantContact\UUID $contact_id The V3 API contact unique identifier
  */
 class ContactXref extends \PHPFUI\ConstantContact\Definition\Base
 	{

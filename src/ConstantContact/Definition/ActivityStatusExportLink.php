@@ -5,8 +5,8 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var \PHPFUI\ConstantContact\Definition\ActivityStatusExportLink $ActivityStatusExportLink HATEOS-style link to the activity status (this object).
- * @var \PHPFUI\ConstantContact\Definition\Result $results Link to an activity result resource; as an example, for file_export, the link to the exported contacts file.
+ * @property \PHPFUI\ConstantContact\Definition\ActivityStatusExportLink $ActivityStatusExportLink HATEOS-style link to the activity status (this object).
+ * @property \PHPFUI\ConstantContact\Definition\Result $results Link to an activity result resource; as an example, for file_export, the link to the exported contacts file.
  */
 class ActivityStatusExportLink extends \PHPFUI\ConstantContact\Definition\Base
 	{

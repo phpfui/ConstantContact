@@ -5,11 +5,11 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var array<\PHPFUI\ConstantContact\UUID> $contact_ids An array of contacts IDs.
- * @var array<\PHPFUI\ConstantContact\UUID> $list_ids An array of list IDs ( <code>list_id</code> ).
- * @var array<\PHPFUI\ConstantContact\UUID> $tag_ids An array of tags ( <code>tag_id</code> ).
- * @var bool $all_active_contacts Use to identify contacts with an active status.
- * @var bool $new_subscriber Use to identify newly subscribed contacts.
+ * @property array<\PHPFUI\ConstantContact\UUID> $contact_ids An array of contacts IDs.
+ * @property array<\PHPFUI\ConstantContact\UUID> $list_ids An array of list IDs ( <code>list_id</code> ).
+ * @property array<\PHPFUI\ConstantContact\UUID> $tag_ids An array of tags ( <code>tag_id</code> ).
+ * @property bool $all_active_contacts Use to identify contacts with an active status.
+ * @property bool $new_subscriber Use to identify newly subscribed contacts.
  */
 class Source extends \PHPFUI\ConstantContact\Definition\Base
 	{

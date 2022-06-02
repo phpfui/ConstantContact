@@ -5,7 +5,7 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var string $email_address The new email address you want to add to a Constant Contact account.
+ * @property string $email_address The new email address you want to add to a Constant Contact account.
  */
 class AccountEmailInput extends \PHPFUI\ConstantContact\Definition\Base
 	{

@@ -5,16 +5,16 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var string $activity_id The system assigned UUID that uniquely identifies an activity.
- * @var string $state The activity processing state.
- * @var \PHPFUI\ConstantContact\DateTime $started_at Timestamp showing when processing started for the activity, in ISO-8601 format.
- * @var \PHPFUI\ConstantContact\DateTime $completed_at Timestamp showing when processing completed for the activity, in ISO-8601 format.
- * @var \PHPFUI\ConstantContact\DateTime $created_at Timestamp showing when the activity was first requested, in ISO-8601 format.
- * @var \PHPFUI\ConstantContact\DateTime $updated_at Timestamp showing when the activity was last updated, in ISO-8601 format.
- * @var int $percent_done The processing percent complete for the activity.
- * @var array $activity_errors An array of error message strings describing the errors that occurred.
- * @var \PHPFUI\ConstantContact\Definition\ActivityTaggingStatus $status
- * @var \PHPFUI\ConstantContact\Definition\ActivityLinks $_links
+ * @property string $activity_id The system assigned UUID that uniquely identifies an activity.
+ * @property string $state The activity processing state.
+ * @property \PHPFUI\ConstantContact\DateTime $started_at Timestamp showing when processing started for the activity, in ISO-8601 format.
+ * @property \PHPFUI\ConstantContact\DateTime $completed_at Timestamp showing when processing completed for the activity, in ISO-8601 format.
+ * @property \PHPFUI\ConstantContact\DateTime $created_at Timestamp showing when the activity was first requested, in ISO-8601 format.
+ * @property \PHPFUI\ConstantContact\DateTime $updated_at Timestamp showing when the activity was last updated, in ISO-8601 format.
+ * @property int $percent_done The processing percent complete for the activity.
+ * @property array $activity_errors An array of error message strings describing the errors that occurred.
+ * @property \PHPFUI\ConstantContact\Definition\ActivityTaggingStatus $status
+ * @property \PHPFUI\ConstantContact\Definition\ActivityLinks $_links
  */
 class ActivityTagging extends \PHPFUI\ConstantContact\Definition\Base
 	{

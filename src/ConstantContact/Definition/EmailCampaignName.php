@@ -5,7 +5,7 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var string $name The updated email campaign name. The email campaign name must be unique.
+ * @property string $name The updated email campaign name. The email campaign name must be unique.
  */
 class EmailCampaignName extends \PHPFUI\ConstantContact\Definition\Base
 	{

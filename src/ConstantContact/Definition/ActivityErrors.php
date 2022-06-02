@@ -5,7 +5,7 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var string $message Message describing the error condition.
+ * @property string $message Message describing the error condition.
  */
 class ActivityErrors extends \PHPFUI\ConstantContact\Definition\Base
 	{

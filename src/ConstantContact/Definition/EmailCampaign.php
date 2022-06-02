@@ -5,19 +5,19 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var array<\PHPFUI\ConstantContact\Definition\ActivityReference> $campaign_activities Lists the role and unique activity ID of each campaign activity that is associated with an Email Campaign.
- * @var string $campaign_id The unique ID used to identify the email campaign (UUID format).
- * @var \PHPFUI\ConstantContact\DateTime $created_at The system generated date and time that this email campaign was created. This string is readonly and is in ISO-8601 format.
- * @var string $current_status The current status of the email campaign. Valid values are: <ul>
+ * @property array<\PHPFUI\ConstantContact\Definition\ActivityReference> $campaign_activities Lists the role and unique activity ID of each campaign activity that is associated with an Email Campaign.
+ * @property string $campaign_id The unique ID used to identify the email campaign (UUID format).
+ * @property \PHPFUI\ConstantContact\DateTime $created_at The system generated date and time that this email campaign was created. This string is readonly and is in ISO-8601 format.
+ * @property string $current_status The current status of the email campaign. Valid values are: <ul>
  * <li>Draft — An email campaign that you have created but have not sent to contacts.</li>
  * <li>Scheduled — An email campaign that you have scheduled for Constant Contact to send to contacts.</li>
  * <li>Executing — An email campaign that Constant Contact is currently sending to contacts. Email campaign activities are only in this status briefly.</li>
  * <li>Done — An email campaign that you successfully sent to contacts.</li>
  * <li>Error — An email campaign activity that encountered an error.</li>
  * <li>Removed — An email campaign that a user deleted. Users can view and restore deleted emails through the UI.</li> * </ul>
- * @var string $name The descriptive name the user provides to identify this campaign. Campaign names must be unique for each account ID.
- * @var string $type Identifies the type of campaign that you select when creating the campaign. Newsletter and Custom Code email campaigns are the primary types.
- * @var int $type_code The code used to identify the email campaign `type`. <ul>
+ * @property string $name The descriptive name the user provides to identify this campaign. Campaign names must be unique for each account ID.
+ * @property string $type Identifies the type of campaign that you select when creating the campaign. Newsletter and Custom Code email campaigns are the primary types.
+ * @property int $type_code The code used to identify the email campaign `type`. <ul>
  * <li> 1  (Default) </li>
  * <li> 2  (Bulk Email) </li>
  * <li> 10 (Newsletter) </li>
@@ -37,7 +37,7 @@ namespace PHPFUI\ConstantContact\Definition;
  * <li> 25 (Fundraiser) </li>
  * <li> 26 (Custom Code Email)</li>
  * <li> 57 (A/B Test)</li> * </ul>
- * @var \PHPFUI\ConstantContact\DateTime $updated_at The system generated date and time showing when the campaign was last updated. This string is read only and is in ISO-8601 format.
+ * @property \PHPFUI\ConstantContact\DateTime $updated_at The system generated date and time showing when the campaign was last updated. This string is read only and is in ISO-8601 format.
  */
 class EmailCampaign extends \PHPFUI\ConstantContact\Definition\Base
 	{

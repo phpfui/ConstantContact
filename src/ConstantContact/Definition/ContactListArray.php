@@ -5,9 +5,9 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var array<\PHPFUI\ConstantContact\Definition\ContactList> $lists
- * @var int $lists_count The total number of contact lists.
- * @var \PHPFUI\ConstantContact\Definition\PagingLinks $_links
+ * @property array<\PHPFUI\ConstantContact\Definition\ContactList> $lists
+ * @property int $lists_count The total number of contact lists.
+ * @property \PHPFUI\ConstantContact\Definition\PagingLinks $_links
  */
 class ContactListArray extends \PHPFUI\ConstantContact\Definition\Base
 	{

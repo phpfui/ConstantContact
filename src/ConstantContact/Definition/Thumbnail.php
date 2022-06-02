@@ -5,9 +5,9 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @var int $width Thumbnail width.
- * @var int $height Thumbnail height.
- * @var string $url Thumbnail url.
+ * @property int $width Thumbnail width.
+ * @property int $height Thumbnail height.
+ * @property string $url Thumbnail url.
  */
 class Thumbnail extends \PHPFUI\ConstantContact\Definition\Base
 	{
