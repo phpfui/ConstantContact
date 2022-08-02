@@ -1573,13 +1573,14 @@ paths:
       description: "Use this method to return a collection of contacts. Use the query\
         \ parameters to search for contacts that match specific criteria. For example,\
         \ you can search by the contact's `email` address, `status`, `lists` memberships,\
-        \ `segment_id`, `tags`, `notes` and `updated_after` date. Use the `limit`\
-        \ query parameter to limit the number of results returned per page. Use the\
-        \ `include` query parameter to include contact sub-resources in the response\
-        \ and `include_count` to include the total number of contacts that meet your\
-        \ specified search criteria.\n\nBy default, this method returns all contacts\
-        \ that are not deleted. Use the `status` query parameter with the value `all`\
-        \ to return all contacts including deleted contacts."
+        \ `segment_id`, `tags`, `notes`, and by the date or date range that a contact\
+        \ was created or updated. Use the `limit` query parameter to limit the number\
+        \ of results returned per page. Use the `include` query parameter to include\
+        \ contact sub-resources in the response and `include_count` to include the\
+        \ total number of contacts that meet your specified search criteria.\n\nBy\
+        \ default, this method returns all contacts that are not deleted. Use the\
+        \ `status` query parameter with the value `all` to return all contacts including\
+        \ deleted contacts."
       operationId: "getContacts"
       produces:
       - "application/json"
@@ -1641,11 +1642,43 @@ paths:
       - name: "updated_after"
         in: "query"
         description: "Use `updated_after` to search for contacts that have been updated\
-          \ after the date you specify; accepts ISO-8601 formatted dates."
+          \ after the date you specify. To search for updated contacts within a date\
+          \ range, specify both `updated_after` and `updated_before` dates. Accepts\
+          \ ISO-8601 formatted dates."
         required: false
         type: "string"
-        format: "date"
-        x-example: "2016-07-16"
+        format: "date-time"
+        x-example: "2022-01-01T16:37:59.091Z"
+      - name: "updated_before"
+        in: "query"
+        description: "Use `updated_before` to search for contacts that have been updated\
+          \ before a specified date. To search for updated contacts within a date\
+          \ range, specify both `updated_after` and `updated_before` dates. Accepts\
+          \ ISO-8601 formatted dates."
+        required: false
+        type: "string"
+        format: "date-time"
+        x-example: "2022-07-16T16:37:59.091Z"
+      - name: "created_after"
+        in: "query"
+        description: "Use `created_after` to search for contacts created after a specified\
+          \ date. To search for contacts created within a date range, specify both\
+          \ `created_after` and `created_before` dates. Accepts ISO-8601 formatted\
+          \ dates."
+        required: false
+        type: "string"
+        format: "date-time"
+        x-example: "2021-01-01T16:37:59.091Z"
+      - name: "created_before"
+        in: "query"
+        description: "Use `created_before` to search for contacts created before a\
+          \ specified date. To search for contacts created within a date range, specify\
+          \ both `created_after` and `created_before` dates. Accepts ISO-8601 formatted\
+          \ dates."
+        required: false
+        type: "string"
+        format: "date-time"
+        x-example: "2022-07-16T16:37:59.091Z"
       - name: "include"
         in: "query"
         description: "Use `include` to specify which contact sub-resources to include\
@@ -2803,10 +2836,13 @@ paths:
       description: "Use this method to create a new email campaign. This method also\
         \ creates new `primary_email` and `permalink` email campaign activities and\
         \ associates them with the new email campaign.\n\nThe request body must contain\
-        \ the `name` property and the `email_campaign_activities` array. The `email_campaign_activities`\
-        \ array contains the main content of your email campaign using the required\
-        \ properties `format_type`, `from_name`, `from_email`, `reply_to_email`, `subject`,\
-        \ and `html_content`.\n"
+        \ the `name` property and the `email_campaign_activities` array. The `name`\
+        \ must be unique. The `email_campaign_activities` array contains the main\
+        \ content of your email campaign and must include `format_type`, `from_name`,\
+        \ `from_email`, `reply_to_email`, `subject`, and `html_content` properties.\
+        \ The `from_email` address you use must use a verified email address for your\
+        \ account.\nNOTE: If you create an email campaign using a legacy (V7) format,\
+        \ Constant Contact automatically converts it to the newer custom code format.\n"
       operationId: "createEmailCampaignUsingPOST"
       consumes:
       - "application/json"
@@ -2821,7 +2857,9 @@ paths:
           $ref: "#/definitions/EmailCampaignComplete"
       responses:
         "200":
-          description: "Request successful."
+          description: "Request successful. NOTE: If you created an email campaign\
+            \ using a legacy (V7) format, Constant Contact successfully converted\
+            \ it to the newer custom code format."
           schema:
             $ref: "#/definitions/EmailCampaign"
         "400":

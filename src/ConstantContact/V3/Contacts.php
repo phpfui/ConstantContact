@@ -17,11 +17,12 @@ class Contacts extends \PHPFUI\ConstantContact\Base
 	 * Use this method to return a collection of contacts. Use the query parameters
 	 * to search for contacts that match specific criteria. For example, you
 	 * can search by the contact's `email` address, `status`, `lists` memberships,
-	 * `segment_id`, `tags`, `notes` and `updated_after` date. Use the `limit`
-	 * query parameter to limit the number of results returned per page. Use
-	 * the `include` query parameter to include contact sub-resources in the
-	 * response and `include_count` to include the total number of contacts
-	 * that meet your specified search criteria.
+	 * `segment_id`, `tags`, `notes`, and by the date or date range that a
+	 * contact was created or updated. Use the `limit` query parameter to limit
+	 * the number of results returned per page. Use the `include` query parameter
+	 * to include contact sub-resources in the response and `include_count`
+	 * to include the total number of contacts that meet your specified search
+	 * criteria.
 	 *
 	 * By default, this method returns all contacts that are not deleted. Use
 	 * the `status` query parameter with the value `all` to return all contacts
@@ -32,12 +33,15 @@ class Contacts extends \PHPFUI\ConstantContact\Base
 	 * @param string $lists Use the `lists` query parameter to search for contacts that are members of one or more specified lists. Use a comma to separate multiple `list_id` values, up to a maximum of 25.
 	 * @param string $segment_id Use to get contacts that meet the segment criteria for a single specified `segment_id`. This query parameter can only be combined with the limit query parameter. When using the `segment_id` query parameter, the V3 API may return a 202 response code instead of a 200 response. The 202 response code indicates that your request has been accepted, but not fully completed. Retry sending your API request to return the completed results and a 200 response code.
 	 * @param string $tags Use to get contact details for up to 50 specified tags. Use a comma to separate each `tag_id`.
-	 * @param string $updated_after Use `updated_after` to search for contacts that have been updated after the date you specify; accepts ISO-8601 formatted dates.
+	 * @param string $updated_after Use `updated_after` to search for contacts that have been updated after the date you specify. To search for updated contacts within a date range, specify both `updated_after` and `updated_before` dates. Accepts ISO-8601 formatted dates.
+	 * @param string $updated_before Use `updated_before` to search for contacts that have been updated before a specified date. To search for updated contacts within a date range, specify both `updated_after` and `updated_before` dates. Accepts ISO-8601 formatted dates.
+	 * @param string $created_after Use `created_after` to search for contacts created after a specified date. To search for contacts created within a date range, specify both `created_after` and `created_before` dates. Accepts ISO-8601 formatted dates.
+	 * @param string $created_before Use `created_before` to search for contacts created before a specified date. To search for contacts created within a date range, specify both `created_after` and `created_before` dates. Accepts ISO-8601 formatted dates.
 	 * @param string $include Use `include` to specify which contact sub-resources to include in the response. Use a comma to separate multiple sub-resources. Valid values: `custom_fields`, `list_memberships`, `taggings`, `notes`,`phone_numbers`, `street_addresses`. 
 	 * @param bool $include_count Set `include_count=true` to include the total number of contacts (`contacts_count`) that meet all search criteria in the response body.
 	 * @param int $limit Specifies the number of results displayed per page of output in the response, from 1 - 500, default = 50.
 	 */
-	public function get(?string $status = null, ?string $email = null, ?string $lists = null, ?string $segment_id = null, ?string $tags = null, ?string $updated_after = null, ?string $include = null, ?bool $include_count = null, ?int $limit = null) : array
+	public function get(?string $status = null, ?string $email = null, ?string $lists = null, ?string $segment_id = null, ?string $tags = null, ?string $updated_after = null, ?string $updated_before = null, ?string $created_after = null, ?string $created_before = null, ?string $include = null, ?bool $include_count = null, ?int $limit = null) : array
 		{
 
 		if (null !== $status)
@@ -68,7 +72,7 @@ class Contacts extends \PHPFUI\ConstantContact\Base
 				}
 			}
 
-		return $this->doGet(['status' => $status, 'email' => $email, 'lists' => $lists, 'segment_id' => $segment_id, 'tags' => $tags, 'updated_after' => $updated_after, 'include' => $include, 'include_count' => $include_count, 'limit' => $limit, ]);
+		return $this->doGet(['status' => $status, 'email' => $email, 'lists' => $lists, 'segment_id' => $segment_id, 'tags' => $tags, 'updated_after' => $updated_after, 'updated_before' => $updated_before, 'created_after' => $created_after, 'created_before' => $created_before, 'include' => $include, 'include_count' => $include_count, 'limit' => $limit, ]);
 		}
 
 	/**

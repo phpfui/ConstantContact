@@ -46,10 +46,13 @@ class Emails extends \PHPFUI\ConstantContact\Base
 	 * them with the new email campaign.
 	 *
 	 * The request body must contain the `name` property and the `email_campaign_activities`
-	 * array. The `email_campaign_activities` array contains the main content
-	 * of your email campaign using the required properties `format_type`,
-	 * `from_name`, `from_email`, `reply_to_email`, `subject`, and `html_content`.
-	 *
+	 * array. The `name` must be unique. The `email_campaign_activities` array
+	 * contains the main content of your email campaign and must include `format_type`,
+	 * `from_name`, `from_email`, `reply_to_email`, `subject`, and `html_content`
+	 * properties. The `from_email` address you use must use a verified email
+	 * address for your account.
+	 * NOTE: If you create an email campaign using a legacy (V7) format, Constant
+	 * Contact automatically converts it to the newer custom code format.
 	 *
 	 *
 	 * @param \PHPFUI\ConstantContact\Definition\EmailCampaignComplete $body A JSON request body that contains the email content.
