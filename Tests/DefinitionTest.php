@@ -61,7 +61,6 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 
 		$json = $fixture->getJSON();
 		$expectedJSON = '{
-    "class": [],
     "integer": 123,
     "string": "A long string",
     "boolean": true,
@@ -73,7 +72,8 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
     "float": 1.23,
     "enum": "primary_email",
     "intEnum": 1,
-    "ucEnum": "REMOVED"
+    "ucEnum": "REMOVED",
+    "class": []
 }';
 		// normalize line endings
 		$expectedJSON = \str_replace("\r\n", "\n", $expectedJSON);

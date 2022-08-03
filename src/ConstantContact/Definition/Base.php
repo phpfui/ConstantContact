@@ -51,21 +51,32 @@ abstract class Base
 
 	public function __construct(array $initialValues = [])
 		{
-		foreach (static::$fields as $field => $type)
+		foreach ($initialValues as $field => $value)
 			{
-			if (! empty($initialValues[$field]))
+			$actualField = $field;
+			if (str_starts_with($field, 'cf_'))
 				{
-				$this->{$field} = $initialValues[$field];
+				$field = 'cf:custom_field_name';
+				}
+			$type = static::$fields[$field] ?? null;
+			if (! $type)
+				{
+				continue;
+				}
+
+			if (! empty(static::$fields[$field]))
+				{
+				$this->{$actualField} = $value;
 				}
 			elseif (! \is_array($type) && ! isset(self::$scalars[$type]))
 				{
 				if (\str_starts_with($type, 'array'))
 					{
-					$this->data[$field] = [];
+					$this->data[$actualField] = [];
 					}
 				else
 					{
-					$this->data[$field] = new $type();
+					$this->data[$actualField] = new $type();
 					}
 				}
 			}

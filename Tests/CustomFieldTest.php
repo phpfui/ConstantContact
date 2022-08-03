@@ -20,6 +20,28 @@ class CustomFieldTest extends \PHPUnit\Framework\TestCase
 		$this->assertIsString($fixture->cf_string);
 		}
 
+	public function testJsonOutput() : void
+		{
+		$class = new \Tests\Fixtures\CustomFieldTest();
+		$class->cf_gender = 'mail';
+		$class->cf_firstName = 'First';
+		$class->cf_lastName = 'Class';
+
+		$json = $class->getJSON();
+		$expectedJSON = '{
+    "cf:gender": "mail",
+    "cf:firstName": "First",
+    "cf:lastName": "Class"
+}';
+		// normalize line endings
+		$expectedJSON = \str_replace("\r\n", "\n", $expectedJSON);
+		$this->assertEquals($expectedJSON, $json);
+
+		$class = new \Tests\Fixtures\CustomFieldTest(['cf_gender' => 'mail', 'cf_firstName' => 'First', 'cf_lastName' => 'Class']);
+		$json = $class->getJSON();
+		$this->assertEquals($expectedJSON, $json);
+		}
+
 	public function testBadIntType() : void
 		{
 		$fixture = new \Tests\Fixtures\CustomFieldTest();
