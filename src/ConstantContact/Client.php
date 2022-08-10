@@ -36,6 +36,8 @@ class Client
 
 	private $sessionCallback = null;
 
+	private \GuzzleHttp\HandlerStack $guzzleHandler;
+
 	/**
 	 * Construct a client.
 	 *
@@ -180,7 +182,7 @@ class Client
 	 * Make this call by passing in the code present when the account owner is redirected back to you.
 	 * The response will contain an 'access_token' and 'refresh_token'
 	 *
-	 * @param array of get parameters passed to redirect URL
+	 * @param array $parameters passed to redirect URL
 	 */
 	public function acquireAccessToken(array $parameters) : bool
 		{
