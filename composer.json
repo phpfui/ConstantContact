@@ -14,7 +14,8 @@
     "require": {
         "php": ">=8.0 <8.2",
         "guzzlehttp/guzzle": "^7.3",
-        "spatie/guzzle-rate-limiter-middleware": "^2.0"
+        "spatie/guzzle-rate-limiter-middleware": "^2.0",
+        "phpstan/phpstan": "^1.8"
     },
     "require-dev": {
         "phpunit/phpunit": ">=9.0",

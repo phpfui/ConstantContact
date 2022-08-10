@@ -83,6 +83,7 @@ class Generator
 		$parts = explode('\\', $namespacedClass);
 		$class = array_pop($parts);
 		$namespace = implode('\\', $parts);
+		$originalType = '';
 
 		if (! isset($properties['type']))
 			{
