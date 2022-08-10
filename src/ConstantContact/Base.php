@@ -40,11 +40,11 @@ class Base
 		return $this->client->next();
 		}
 
-	protected function doDelete(array $parameters) : array
+	protected function doDelete(array $parameters) : bool
 		{
 		$url = $this->getUrl($parameters);
 
-		return $this->client->delete($url, $parameters);
+		return $this->client->delete($url);
 		}
 
 	protected function doGet(array $parameters) : array
