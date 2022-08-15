@@ -54,11 +54,13 @@ abstract class Base
 		foreach ($initialValues as $field => $value)
 			{
 			$actualField = $field;
-			if (str_starts_with($field, 'cf_'))
+
+			if (\str_starts_with($field, 'cf_'))
 				{
 				$field = 'cf:custom_field_name';
 				}
 			$type = static::$fields[$field] ?? null;
+
 			if (! $type)
 				{
 				continue;
@@ -88,10 +90,12 @@ abstract class Base
 	public function __get(string $field) : mixed
 		{
 		$actualField = $field;
-		if (str_starts_with($field, 'cf_'))
+
+		if (\str_starts_with($field, 'cf_'))
 			{
 			$field = 'cf:custom_field_name';
 			}
+
 		if (! isset(static::$fields[$field]))
 			{
 			throw new \PHPFUI\ConstantContact\Exception\InvalidField(static::class . "::{$actualField} is not a valid field");
@@ -108,7 +112,8 @@ abstract class Base
 	public function __set(string $field, $value)
 		{
 		$actualField = $field;
-		if (str_starts_with($field, 'cf_'))
+
+		if (\str_starts_with($field, 'cf_'))
 			{
 			$field = 'cf:custom_field_name';
 			}
@@ -267,7 +272,7 @@ abstract class Base
 					}
 				else
 					{
-					$result[str_replace('cf_', 'cf:', $field)] = \is_object($value) ? (string)$value : $value;
+					$result[\str_replace('cf_', 'cf:', $field)] = \is_object($value) ? (string)$value : $value;
 					}
 				}
 			}

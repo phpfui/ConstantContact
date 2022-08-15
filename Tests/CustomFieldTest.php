@@ -76,5 +76,4 @@ class CustomFieldTest extends \PHPUnit\Framework\TestCase
 		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidLength::class);
 		$fixture->cf_string = \str_pad('', 300);
 		}
-
 	}

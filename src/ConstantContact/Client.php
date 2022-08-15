@@ -57,8 +57,6 @@ class Client
 	 *
 	 * Callback function signature:
 	 *
-	 * @param string $key used to store or retrieve $value
-	 * @param ?string $value if null, value should be returned and key deleted, if not null, value should be stored by key.
 	 * @return string $value from store or value passed in on set (ignored)
 	 */
 	public function setSessionCallback(callable $callback) : self
@@ -310,7 +308,7 @@ class Client
 
 			$this->process($response);
 
-			return 204 == $this->statusCode;
+			return $this->statusCode >= 200 && $this->statusCode < 300;
 			}
 		catch (\GuzzleHttp\Exception\RequestException $e)
 			{
@@ -491,8 +489,9 @@ class Client
 		{
 		if ($this->sessionCallback)
 			{
-			return call_user_func($this->sessionCallback, $key, $value);
+			return \call_user_func($this->sessionCallback, $key, $value);
 			}
+
 		if (null === $value)
 			{
 			$value = $_SESSION[$key];

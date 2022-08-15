@@ -80,9 +80,9 @@ class Generator
 
 	public function generateDefinition(string $namespacedClass, array $properties) : void
 		{
-		$parts = explode('\\', $namespacedClass);
-		$class = array_pop($parts);
-		$namespace = implode('\\', $parts);
+		$parts = \explode('\\', $namespacedClass);
+		$class = \array_pop($parts);
+		$namespace = \implode('\\', $parts);
 		$originalType = '';
 
 		if (! isset($properties['type']))
@@ -180,6 +180,7 @@ class Generator
 					}
 
 				$description = '';
+
 				if (isset($details['description']))
 					{
 					$description = $this->cleanDescription(\trim($details['description']));
@@ -190,7 +191,7 @@ class Generator
 					$type = $originalType;
 					}
 				$type = \str_replace('\\\\', '\\', $type);
-				$docBlock[] = trim("{$type} {$dollar}{$name} {$description}");
+				$docBlock[] = \trim("{$type} {$dollar}{$name} {$description}");
 				}
 			$this->generateFromTemplate($class, ['fields' => $fields, 'minLength' => $minLength, 'maxLength' => $maxLength, ], $docBlock);
 			}
@@ -203,8 +204,9 @@ class Generator
 	 */
 	private function getUniqueClassName(string $namespace, string $class) : string
 		{
-		$namespace = trim($namespace, '\\');
+		$namespace = \trim($namespace, '\\');
 		$class = $this->getClassName($class);
+
 		if (isset($this->duplicateClasses[$class]))
 			{
 			$class = $this->duplicateClasses[$class];
@@ -217,7 +219,7 @@ class Generator
 		$fullName = '\\' . $namespace . '\\' . $class;
 
 		// if we have seen this class before, then it is the plural version and it should be singular because CC does not know how to design an API (among other things).
-		if (! str_contains($fullName, 'Definition') && isset($this->generatedClasses[$fullName]))
+		if (! \str_contains($fullName, 'Definition') && isset($this->generatedClasses[$fullName]))
 			{
 			if (\str_ends_with($class, 'ies'))
 				{
@@ -238,9 +240,9 @@ class Generator
 
 	private function writeClass(string $namespacedClass, string $apiPath, array $properties) : void
 		{
-		$parts = explode('\\', $namespacedClass);
-		$class = array_pop($parts);
-		$namespace = trim(implode('\\', $parts), '\\');
+		$parts = \explode('\\', $namespacedClass);
+		$class = \array_pop($parts);
+		$namespace = \trim(\implode('\\', $parts), '\\');
 
 		$methods = '';
 		$dollar = '$';
@@ -499,7 +501,7 @@ PHP;
 	 */
 	private function generateFromTemplate(string $name, array $properties, array $docBlocks) : void
 		{
-		$namespace = trim($this->definitionNamespace, '\\');
+		$namespace = \trim($this->definitionNamespace, '\\');
 
 		$template = <<<PHP
 <?php
@@ -588,8 +590,9 @@ class ~class~ extends {$this->definitionNamespace}\Base
 		$directory = __DIR__ . '/../src/ConstantContact' . $path;
 
 		$iterator = new \RecursiveIteratorIterator(
-				new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS),
-				\RecursiveIteratorIterator::SELF_FIRST);
+			new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS),
+			\RecursiveIteratorIterator::SELF_FIRST
+		);
 
 		foreach ($iterator as $item)
 			{
@@ -597,12 +600,11 @@ class ~class~ extends {$this->definitionNamespace}\Base
 				{
 				$fileName = "{$item}";
 				// don't delete base classes
-				if (! str_ends_with($fileName, 'Base.php'))
+				if (! \str_ends_with($fileName, 'Base.php'))
 					{
-					unlink($fileName);
+					\unlink($fileName);
 					}
 				}
 			}
 		}
-
 	}

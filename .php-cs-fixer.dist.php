@@ -11,6 +11,6 @@ $config = include '../phpfui/PhpCsFixer.php';
 return $config->setFinder(PhpCsFixer\Finder::create()
 			->exclude('vendor')
 			->in(__DIR__.'\src')
-			->in(__DIR__.'\Tools')
+			->in(__DIR__.'\Tool')
 			->in(__DIR__.'\tests')
     );

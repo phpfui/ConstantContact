@@ -256,5 +256,4 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 		$this->assertIsArray($fixture->classArraySizeMin);
 		$this->assertCount(2, $fixture->classArraySizeMin);
 		}
-
 	}
