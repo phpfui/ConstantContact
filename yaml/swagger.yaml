@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.0"
+  version: "3.0.1955"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -2483,6 +2483,59 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "contacts:lists:read"
+  /contacts/counts:
+    get:
+      tags:
+      - "Contacts"
+      summary: "GET Contact Consent Counts"
+      description: "Use to get the total contacts count for the account and the total\
+        \ contact-consent counts for each consent state. Optionally, to include the\
+        \ total number of new subscribers in the results, use `new_subscribers` in\
+        \ the `include` query parameter. To optimize open rates, reduce spam reports,\
+        \ and help grow your business,  you must value your contact's consent to receive\
+        \ or to not receive your emails."
+      operationId: "countContact"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "include"
+        in: "query"
+        description: "Use to return the total number of new contact subscribers in\
+          \ the results."
+        required: false
+        type: "string"
+        x-example: "new_subscriber"
+        enum:
+        - "new_subscriber"
+      responses:
+        "200":
+          description: "Request successful"
+          schema:
+            $ref: "#/definitions/ContactsCounts"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "The requested resource was not found."
+        "500":
+          description: "There was a problem with our internal service."
+        "503":
+          description: "Our internal service is temporarily unavailable."
+      security:
+      - oauth2_implicit:
+        - "contact_data"
+      - oauth2_access_code:
+        - "contact_data"
+      - api_key: []
+      x-authorization-privileges:
+      - "contacts:read"
   /contact_tags/{tag_id}:
     get:
       tags:
@@ -4083,12 +4136,13 @@ paths:
       tags:
       - "Email Reporting"
       summary: "GET an Email Links Report"
-      description: "Use this method to return the number of unique contacts that clicked\
-        \ each link in an email campaign activity and the type of action associated\
-        \ with clicking each link. You can return reporting data for `primary_email`\
-        \ and `resend` role email campaign activities. For more use case information,\
-        \ see [Get an Email Links Report](/api_guide/email_links_report.html) in the\
-        \ API guide."
+      description: "Use this method to return link details, including the number of\
+        \ unique contacts that clicked each link in an email campaign activity, and\
+        \ the type of action associated with clicking each link. To include link details\
+        \ for links that were not clicked, set the `no_clicks` query parameter to\
+        \ `true`.\n\nYou can return reporting data for `primary_email` and `resend`\
+        \ role email campaign activities. For more use case information, see [Get\
+        \ an Email Links Report](/api_guide/email_links_report.html) in the API guide."
       operationId: "getCampaignActivityLinkStats"
       consumes:
       - "application/json"
@@ -4102,6 +4156,14 @@ paths:
         type: "string"
         format: "uuid"
         x-example: "8892baf9-970a-4de6-8400-fa4ec461987c"
+      - name: "no_clicks"
+        in: "query"
+        description: "Set this query parameter to `true` to  return details for links\
+          \ that were not clicked in the response results."
+        required: false
+        type: "boolean"
+        default: false
+        x-example: true
       responses:
         "200":
           description: "Request was successful"
@@ -5373,47 +5435,6 @@ paths:
       security:
       - ctctPartnerAuthorizer: []
       - api_key: []
-  /token_info:
-    post:
-      tags:
-      - "Access Token Information"
-      summary: "Access Token Information"
-      description: "IMPORTANT NOTE: As of March 31, 2022, this POST method is being\
-        \ depreciated. To view the scopes associated with an access token, parse the\
-        \ access token (JWT) claims.\n"
-      operationId: "postAuthCode"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "auth_token"
-        description: "A JSON request payload containing a valid OAuth2.0 access token."
-        required: true
-        schema:
-          $ref: "#/definitions/AuthToken"
-      responses:
-        "200":
-          description: "Request Successful"
-          schema:
-            $ref: "#/definitions/AuthInfoResponse"
-        "400":
-          description: "Bad request. Either the JSON was malformed or there was a\
-            \ data validation error."
-        "401":
-          description: "The Access Token used is invalid."
-        "403":
-          description: "Forbidden request. You lack the necessary scopes, you lack\
-            \ the necessary user privileges, or the application is deactivated."
-        "415":
-          description: "Unsupported Media Type."
-        "500":
-          description: "There was a problem with our internal service."
-      security:
-      - oauth2_implicit: []
-      - oauth2_access_code: []
-      - api_key: []
   /idfed:
     get:
       summary: "V3 Authorization service endpoint for OAuth 2.0 flows"
@@ -5455,7 +5476,7 @@ paths:
 securityDefinitions:
   oauth2_implicit:
     type: "oauth2"
-    authorizationUrl: "https://api.cc.email/v3/idfed"
+    authorizationUrl: "https://authz.constantcontact.com/oauth2/default/v1/authorize"
     flow: "implicit"
     scopes:
       contact_data: "Read or modify contact data."
@@ -5464,8 +5485,8 @@ securityDefinitions:
       account_update: "Modify account data."
   oauth2_access_code:
     type: "oauth2"
-    authorizationUrl: "https://api.cc.email/v3/idfed"
-    tokenUrl: "https://idfed.constantcontact.com/as/token.oauth2"
+    authorizationUrl: "https://authz.constantcontact.com/oauth2/default/v1/authorize"
+    tokenUrl: "https://authz.constantcontact.com/oauth2/default/v1/token"
     flow: "accessCode"
     scopes:
       contact_data: "Read or modify contact data."
@@ -8522,6 +8543,44 @@ definitions:
         description: "The V3 API list unique identifier"
     description: "The cross-referenced pair of V3 API <code>list_id</code> and V2\
       \ API <code>sequence_id</code> for a list. Response is sorted ascending by <code>sequence_id</code>."
+  ContactsCounts:
+    type: "object"
+    properties:
+      total:
+        type: "integer"
+        example: 72
+        description: "Total number of contacts for the account."
+      explicit:
+        type: "integer"
+        example: 10
+        description: "Total number of contacts explicitly confirmed. Consent is obtained\
+          \ when you explicitly ask your potential contacts for permission to send\
+          \ the email (for example, using a sign-up form) and they agree. After you\
+          \ obtain express consent, it is good forever or until the contact opts out."
+      implicit:
+        type: "integer"
+        example: 20
+        description: "Total number of contacts implicitly confirmed. Consent is inferred\
+          \ based on actions, such as having an existing business relationship (making\
+          \ a purchase or donation, for example). In order to maintain implied consent\
+          \ to comply with CASL a contact must take a business action with you at\
+          \ least once every two years. Under CAN-Spam there is no need to maintain\
+          \ implied consent, it is assumed until the receiver indicates they no longer\
+          \ wish to receive messages."
+      pending:
+        type: "integer"
+        example: 30
+        description: "Total number of contacts pending confirmation. Consent is requested\
+          \ and pending confirmation from the contact."
+      unsubscribed:
+        type: "integer"
+        example: 12
+        description: "Total number of unsubscribed contacts. Consent is revoked when\
+          \ a contact has unsubscribed."
+      new_subscriber:
+        type: "integer"
+        example: 1
+        description: "Total number of newly subscribed contacts."
   Tag:
     type: "object"
     properties:
@@ -11716,27 +11775,6 @@ definitions:
         file_id:
           type: "integer"
           description: "Identifies the file in MyLibrary."
-  AuthToken:
-    required:
-    - "token"
-    properties:
-      token:
-        type: "string"
-        example: "FCR3XvjhqjhGVftqkjkUhf66nhAn"
-        description: "A valid OAuth2.0 access token."
-  AuthInfoResponse:
-    properties:
-      scopes:
-        type: "array"
-        description: "The scopes associated with your access token as an array containing\
-          \ scope strings."
-        items:
-          type: "string"
-          enum:
-          - "account_read"
-          - "account_update"
-          - "contact_data"
-          - "campaign_data"
 responses:
   Activities429ErrorResponse:
     description: "Too many requests. You exceeded 1,000 queued activities for this\
