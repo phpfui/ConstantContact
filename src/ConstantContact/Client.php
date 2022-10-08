@@ -57,7 +57,7 @@ class Client
 	 *
 	 * Callback function signature:
 	 *
-	 * @return string $value from store or value passed in on set (ignored)
+	 * - function(string $key, string $value) : string // returns string $value from store or value passed in on set (ignored)
 	 */
 	public function setSessionCallback(callable $callback) : self
 		{
