@@ -423,6 +423,10 @@ PHP;
 			{
 			$type = 'float';
 			}
+		elseif ('file' == $type)
+			{
+			$type = 'string';
+			}
 		elseif ('uuid' == $type)
 			{
 			$type = '\PHPFUI\ConstantContact\UUID';

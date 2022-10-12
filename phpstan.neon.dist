@@ -4,11 +4,5 @@ parameters:
 	editorUrl: '%%file%% %%line%% %%column%%: %%error%%'
 	paths:
 		- src
-		- Tests
 		- Tool
-	ignoreErrors:
-		-
-			message: '#Access to an undefined property Tests\\Fixtures[a-zA-Z0-9\\_]+::[\$a-zA-Z0-9_]+#'
-			paths:
-				- Tests/*
 
