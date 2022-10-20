@@ -52,4 +52,9 @@ class ContactCreateOrUpdateInput extends \PHPFUI\ConstantContact\Definition\Base
 		'custom_fields' => 50,
 
 	];
+
+	protected static array $requiredFields = [
+		'kind',
+
+	];
 	}

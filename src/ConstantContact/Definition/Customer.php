@@ -42,4 +42,11 @@ class Customer extends \PHPFUI\ConstantContact\Definition\Base
 		'contact_phone' => 25,
 
 	];
+
+	protected static array $requiredFields = [
+		'address_line1',
+		'city',
+		'country_code',
+
+	];
 	}
