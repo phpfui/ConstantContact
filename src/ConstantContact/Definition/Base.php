@@ -19,27 +19,32 @@ abstract class Base
 	protected static array $fields = [];
 
 	/**
-	 * @var array of minimum allowed values. Arrays are size, int and float are values, strings are length.
+	 * @var array<string, int> minimum allowed values. Arrays are size, int and float are values, strings are length.
 	 */
 	protected static array $minLength = [];
 
 	/**
-	 * @var array of maximum allowed values. Arrays are size, int and float are values, strings are length.
+	 * @var array<string, int> maximum allowed values. Arrays are size, int and float are values, strings are length.
 	 */
 	protected static array $maxLength = [];
 
+	/**
+	 * @var array<string> required fields.
+	 */
+	protected static array $requiredFields = [];
+
   /**
-   * $var array of the actual object data
+   * $var array<string, mixed> the actual object data by field name.
    */
 	private array $data = [];
 
   /**
-   * @var array of bool indicating which values are set to reduce data output.
+   * @var array<string, bool> indicates which values are set to reduce data output.
    */
 	private array $setFields = [];
 
 	/**
-	 * @var array of supported scalars
+	 * @var array<string, bool> supported scalars
 	 */
 	private static array $scalars = [
 		'bool' => true,
@@ -240,6 +245,14 @@ abstract class Base
 	public function getData() : array
 		{
 		$result = [];
+
+		foreach (static::$requiredFields as $field)
+			{
+			if (! empty($this->setFields[$field]))
+				{
+				throw new \PHPFUI\ConstantContact\Exception\RequiredField(static::class . "::{$field} is required but not set.");
+				}
+			}
 
 		foreach ($this->data as $field => $value)
 			{

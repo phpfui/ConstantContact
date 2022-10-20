@@ -87,7 +87,13 @@ class Generator
 
 		if (! isset($properties['type']))
 			{
-			return;
+			echo "{$namespacedClass} has no type";
+			if (str_contains($namespacedClass, 'ResendToNonOpenersInput'))
+				{
+				echo 'but assuming object';
+				$properties['type'] = 'object';
+				}
+			echo "\n";
 			}
 
 		$class = \str_replace('_', '', $class);
@@ -99,6 +105,7 @@ class Generator
 			$minLength = [];
 			$maxLength = [];
 			$docBlock = [];
+			$required = [];
 			$dollar = '$';
 
 			foreach ($properties['properties'] ?? [] as $name => $details)
@@ -179,6 +186,11 @@ class Generator
 					$maxLength[$name] = (int)$details['maxLength'];
 					}
 
+				if (isset($details['required']))
+					{
+					$required = $details['required'];
+					}
+
 				$description = '';
 
 				if (isset($details['description']))
@@ -193,7 +205,7 @@ class Generator
 				$type = \str_replace('\\\\', '\\', $type);
 				$docBlock[] = \trim("{$type} {$dollar}{$name} {$description}");
 				}
-			$this->generateFromTemplate($class, ['fields' => $fields, 'minLength' => $minLength, 'maxLength' => $maxLength, ], $docBlock);
+			$this->generateFromTemplate($class, ['fields' => $fields, 'minLength' => $minLength, 'maxLength' => $maxLength, 'requiredFields' => $required], $docBlock);
 			}
 		}
 
@@ -564,8 +576,14 @@ class ~class~ extends {$this->definitionNamespace}\Base
 
 						break;
 					}
-
-				$output .= "\t\t'{$field}' => {$value},\n";
+				if ('string' == \gettype($field))
+					{
+					$output .= "\t\t'{$field}' => {$value},\n";
+					}
+				else
+					{
+					$output .= "\t\t{$value},\n";
+					}
 				}
 
 			$output .= "\n\t];\n";
