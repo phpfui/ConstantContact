@@ -429,7 +429,7 @@ class Client
 		], $additional);
 		}
 
-	private function process(\GuzzleHttp\Psr7\Response $response) : array
+	private function process(\Psr\Http\Message\ResponseInterface $response) : array
 		{
 		$this->lastError = $response->getReasonPhrase();
 		$this->statusCode = $response->getStatusCode();

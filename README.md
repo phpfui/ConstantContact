@@ -1,4 +1,4 @@
-# ConstantContact [![Tests](https://github.com/phpfui/ConstantContact/actions/workflows/tests.yml/badge.svg)](https://github.com/phpfui/ConstantContact/actions?query=workflow%3Atests) [![Latest Packagist release](https://img.shields.io/packagist/v/phpfui/constantcontact.svg)](https://packagist.org/packages/phpfui/constantcontact)
+# ConstantContact [![Tests](https://github.com/phpfui/ConstantContact/actions/workflows/tests.yml/badge.svg)](https://github.com/phpfui/ConstantContact/actions?query=workflow%3Atests) [![Latest Packagist release](https://img.shields.io/packagist/v/phpfui/constantcontact.svg)](https://packagist.org/packages/phpfui/constantcontact) ![](https://img.shields.io/badge/PHPStan-level%205-brightgreen.svg?style=flat)
 
 PHP Object Oriented wrapper for the Constant Contact V3 API.
 
