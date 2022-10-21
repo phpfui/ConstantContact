@@ -24,8 +24,10 @@ class ContactLists extends \PHPFUI\ConstantContact\Base
 	 * @param int $limit Use to specify the number of results displayed per page of output, from 1 - 500, default = 50.
 	 * @param bool $include_count Set `include_count` to `true` to return the total number of contact lists that meet your selection criteria.
 	 * @param string $include_membership_count Use to include the number of contact members per list by setting the `include_membership_count` to either `active`, to count only active contacts, or `all` to include all contacts in the count.
+	 * @param string $name Use to get a single list by entering the full name of the list.
+	 * @param string $status Use to get lists by status. Accepts comma-separated status values.
 	 */
-	public function get(?int $limit = null, ?bool $include_count = null, ?string $include_membership_count = null) : array
+	public function get(?int $limit = null, ?bool $include_count = null, ?string $include_membership_count = null, ?string $name = null, ?string $status = null) : array
 		{
 
 		if (null !== $include_membership_count)
@@ -38,7 +40,17 @@ class ContactLists extends \PHPFUI\ConstantContact\Base
 				}
 			}
 
-		return $this->doGet(['limit' => $limit, 'include_count' => $include_count, 'include_membership_count' => $include_membership_count, ]);
+		if (null !== $status)
+			{
+			$validValues = ['all', 'active', 'deleted'];
+
+			if (! \in_array($status, $validValues))
+				{
+				throw new \PHPFUI\ConstantContact\Exception\InvalidValue("Parameter status with value '{$status}' is not one of (" . \implode(', ', $validValues) . ') in ' . __METHOD__);
+				}
+			}
+
+		return $this->doGet(['limit' => $limit, 'include_count' => $include_count, 'include_membership_count' => $include_membership_count, 'name' => $name, 'status' => $status, ]);
 		}
 
 	/**

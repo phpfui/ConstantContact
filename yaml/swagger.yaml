@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.1955"
+  version: "3.0.2005"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -85,12 +85,18 @@ paths:
             $ref: "#/definitions/UserPrivilegesResource"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. Your application is deactivated."
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit: []
       - oauth2_access_code: []
@@ -128,15 +134,25 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "account_read"
@@ -145,6 +161,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "account:read"
+      x-sdk-methodName: "getAccountDetails"
     put:
       tags:
       - "Account Services"
@@ -176,15 +193,25 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "account_update"
@@ -193,6 +220,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "account:update"
+      x-sdk-methodName: "updateAccount"
   /account/summary/physical_address:
     get:
       tags:
@@ -213,17 +241,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "account_read"
@@ -232,6 +272,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "account:read"
+      x-sdk-methodName: "getAccountPhysicalAddress"
     put:
       tags:
       - "Account Services"
@@ -270,17 +311,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "account_update"
@@ -289,6 +342,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "account:update"
+      x-sdk-methodName: "updateAccountPhysicalAddress"
   /account/emails:
     get:
       tags:
@@ -354,17 +408,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "account_read"
@@ -373,6 +439,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "account:read"
+      x-sdk-methodName: "getAllAccountEmailAddresses"
     post:
       tags:
       - "Account Services"
@@ -405,20 +472,34 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "409":
           description: "Conflict. The resource you are creating or updating conflicts\
             \ with an existing resource."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "account_update"
@@ -474,17 +555,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -493,6 +586,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "contacts:write"
+      x-sdk-methodName: "getAllActivities"
   /activities/{activity_id}:
     get:
       tags:
@@ -519,17 +613,27 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "Resource not found for the activity_id provided"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -538,6 +642,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "contacts:write"
+      x-sdk-methodName: "getActivityById"
   /activities/contact_exports:
     post:
       tags:
@@ -573,20 +678,34 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "429":
           description: "Too many requests. You exceeded 1,000 queued activities for\
             \ this user account."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -595,6 +714,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "contacts:write"
+      x-sdk-methodName: "createExportActivity"
   /activities/contact_delete:
     post:
       tags:
@@ -628,18 +748,30 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "429":
           description: "Too many requests. You exceeded 1,000 queued activities for\
             \ this user account."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -648,6 +780,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "contacts:write"
+      x-sdk-methodName: "createDeleteActivity"
   /activities/contacts_file_import:
     post:
       tags:
@@ -705,23 +838,37 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "1. This endpoint requires that Content-Type be unspecified\
             \ 2. Wrong file format, upload file must be of type .csv"
         "429":
           description: "Too many requests. You exceeded 1,000 queued activities for\
             \ this user account."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -730,6 +877,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "contacts:write"
+      x-sdk-methodName: "createCSVImportActivity"
   /activities/contacts_json_import:
     post:
       tags:
@@ -770,18 +918,30 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "429":
           description: "Too many requests. You exceeded 1,000 queued activities for\
             \ this user account."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -790,6 +950,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "contacts:write"
+      x-sdk-methodName: "createImportJSONActivity"
   /activities/remove_list_memberships:
     post:
       tags:
@@ -820,20 +981,34 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "429":
           description: "Too many requests. You exceeded 1,000 queued activities for\
             \ this user account."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -842,6 +1017,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "contacts:write"
+      x-sdk-methodName: "createListRemoveActivity"
   /activities/add_list_memberships:
     post:
       tags:
@@ -873,18 +1049,30 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "429":
           description: "Too many requests. You exceeded 1,000 queued activities for\
             \ this user account."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -893,6 +1081,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "contacts:write"
+      x-sdk-methodName: "createListAddActivity"
   /activities/contacts_taggings_remove:
     post:
       tags:
@@ -928,20 +1117,34 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "429":
           description: "Too many requests. You exceeded 1,000 queued activities for\
             \ this user account."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -950,6 +1153,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "contacts:write"
+      x-sdk-methodName: "createTagRemoveActivity"
   /activities/contacts_taggings_add:
     post:
       tags:
@@ -984,20 +1188,34 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "429":
           description: "Too many requests. You exceeded 1,000 queued activities for\
             \ this user account."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -1006,6 +1224,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "contacts:write"
+      x-sdk-methodName: "createTagAddContactActivity"
   /activities/contacts_tags_delete:
     post:
       tags:
@@ -1035,18 +1254,30 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "429":
           description: "Too many requests. You exceeded 1,000 queued activities for\
             \ this user account."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -1055,6 +1286,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "contacts:write"
+      x-sdk-methodName: "createTagDeleteActivity"
   /segments:
     get:
       tags:
@@ -1093,19 +1325,33 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "429":
           description: "Too many requests. You exceeded the request rate limit."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -1114,6 +1360,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "contacts:lists:read"
+      x-sdk-methodName: "getAllSegments"
     post:
       tags:
       - "Segments"
@@ -1155,18 +1402,30 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "409":
           description: "Conflict. The resource you are creating or updating conflicts\
             \ with an existing resource."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -1205,14 +1464,24 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -1221,6 +1490,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "contacts:lists:read"
+      x-sdk-methodName: "getSegmentById"
     put:
       tags:
       - "Segments"
@@ -1263,20 +1533,34 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "409":
           description: "Conflict. The resource you are creating or updating conflicts\
             \ with an existing resource."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -1315,17 +1599,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -1371,20 +1667,34 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "409":
           description: "Conflict. The resource you are creating or updating conflicts\
             \ with an existing resource."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -1401,7 +1711,7 @@ paths:
       description: "This endpoint GETs a specific contact resource (contact_id). Use\
         \ the `include` query parameter to add any of the available contact sub-resources\
         \ to the response payload."
-      operationId: "getContact"
+      operationId: "getContactById"
       produces:
       - "application/json"
       parameters:
@@ -1436,17 +1746,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -1496,20 +1818,34 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "409":
           description: "Conflict. The resource you are creating or updating conflicts\
             \ with an existing resource."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -1518,6 +1854,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "contacts:write"
+      x-sdk-methodName: "updateContact"
     delete:
       tags:
       - "Contacts"
@@ -1544,19 +1881,33 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -1725,17 +2076,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -1744,6 +2107,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "contacts:read"
+      x-sdk-methodName: "getAllContacts"
     post:
       tags:
       - "Contacts"
@@ -1772,21 +2136,33 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "409":
           description: "Conflict. The resource you are creating or updating conflicts\
             \ with an existing resource."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type; the payload must be in JSON format,\
             \ and Content-Type must be application/json"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -1850,20 +2226,32 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "409":
           description: "Conflict. You sent simultaneous requests that are attempting\
             \ to modify the same contact."
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -1912,17 +2300,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -1956,17 +2356,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -2007,17 +2419,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -2026,6 +2450,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "contacts:write"
+      x-sdk-methodName: "updateCustomField"
     delete:
       tags:
       - "Contacts Custom Fields"
@@ -2046,17 +2471,29 @@ paths:
           description: "Request successful; No content returned"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -2094,15 +2531,25 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -2111,6 +2558,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "contacts:read"
+      x-sdk-methodName: "getAllCustomFields"
     post:
       tags:
       - "Contacts Custom Fields"
@@ -2137,21 +2585,33 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "409":
           description: "Conflict. The resource you are creating or updating conflicts\
             \ with an existing resource."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type; the payload must be in JSON format,\
             \ and Content-Type must be application/json."
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -2160,6 +2620,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "contacts:write"
+      x-sdk-methodName: "createCustomFields"
   /contact_lists/{list_id}:
     get:
       tags:
@@ -2195,15 +2656,25 @@ paths:
             $ref: "#/definitions/ContactList"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -2244,17 +2715,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -2263,6 +2746,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "contacts:lists:write"
+      x-sdk-methodName: "updateList"
     delete:
       tags:
       - "Contact Lists"
@@ -2295,17 +2779,29 @@ paths:
             $ref: "#/definitions/ActivityDeleteListResponse"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -2314,6 +2810,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "contacts:lists:write"
+      x-sdk-methodName: "deleteList"
   /contact_lists:
     get:
       tags:
@@ -2354,6 +2851,22 @@ paths:
         enum:
         - "all"
         - "active"
+      - name: "name"
+        in: "query"
+        description: "Use to get a single list by entering the full name of the list."
+        required: false
+        type: "string"
+        x-example: "TopTier"
+      - name: "status"
+        in: "query"
+        description: "Use to get lists by status. Accepts comma-separated status values."
+        required: false
+        type: "string"
+        x-example: "all"
+        enum:
+        - "all"
+        - "active"
+        - "deleted"
       responses:
         "200":
           description: "Request successful"
@@ -2362,15 +2875,25 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -2379,6 +2902,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "contacts:lists:read"
+      x-sdk-methodName: "getAllLists"
     post:
       tags:
       - "Contact Lists"
@@ -2404,18 +2928,30 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "409":
           description: "Conflict. The resource you are creating or updating conflicts\
             \ with an existing resource."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -2464,17 +3000,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -2517,17 +3065,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -2536,6 +3096,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "contacts:read"
+      x-sdk-methodName: "getContactCounts"
   /contact_tags/{tag_id}:
     get:
       tags:
@@ -2574,15 +3135,25 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -2627,18 +3198,30 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "409":
           description: "Conflict. The resource you are creating or updating conflicts\
             \ with an existing resource."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -2678,17 +3261,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "406":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -2741,15 +3336,25 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -2758,6 +3363,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "contacts:read"
+      x-sdk-methodName: "getAllTags"
     post:
       tags:
       - "Contact Tags"
@@ -2786,18 +3392,30 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "409":
           description: "Conflict. The resource you are creating or updating conflicts\
             \ with an existing resource."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -2863,17 +3481,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "429":
           description: "Too many requests. You exceeded the request rate limit."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -2882,6 +3512,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "campaign:read"
+      x-sdk-methodName: "getAllEmailCampaigns"
     post:
       tags:
       - "Email Campaigns"
@@ -2918,20 +3549,34 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "409":
           description: "Conflict. The resource you are creating or updating conflicts\
             \ with an existing resource."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "429":
           description: "Too many requests. You exceeded the request rate limit."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -2940,6 +3585,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "campaign:write"
+      x-sdk-methodName: "createEmailCampaign"
   /emails/{campaign_id}:
     get:
       tags:
@@ -2969,17 +3615,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "429":
           description: "Too many requests. You exceeded the request rate limit."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -2988,6 +3646,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "campaign:read"
+      x-sdk-methodName: "getEmailCampaignById"
     delete:
       tags:
       - "Email Campaigns"
@@ -3012,17 +3671,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "429":
           description: "Too many requests. You exceeded the request rate limit."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -3031,6 +3702,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "campaign:delete"
+      x-sdk-methodName: "deleteEmailCampaign"
     patch:
       tags:
       - "Email Campaigns"
@@ -3064,22 +3736,38 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "409":
           description: "Conflict. The resource you are creating or updating conflicts\
             \ with an existing resource."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "429":
           description: "Too many requests. You exceeded the request rate limit."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -3088,6 +3776,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "campaign:write"
+      x-sdk-methodName: "patchEmailCampaignName"
   /emails/campaign_id_xrefs:
     get:
       tags:
@@ -3127,17 +3816,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "429":
           description: "Too many requests. You exceeded the request rate limit."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -3146,6 +3847,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "campaign:read"
+      x-sdk-methodName: "getEmailCampaignXrefs"
   /emails/activities/{campaign_activity_id}:
     get:
       tags:
@@ -3191,17 +3893,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "429":
           description: "Too many requests. You exceeded the request rate limit."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -3210,6 +3924,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "campaign:read"
+      x-sdk-methodName: "getEmailCampaignActivity"
     put:
       tags:
       - "Email Campaigns"
@@ -3252,19 +3967,33 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "429":
           description: "Too many requests. You exceeded the request rate limit."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -3273,6 +4002,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "campaign:write"
+      x-sdk-methodName: "updateEmailCampaignActivity"
   /emails/activities/{campaign_activity_id}/schedules:
     get:
       tags:
@@ -3302,17 +4032,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "429":
           description: "Too many requests. You exceeded the request rate limit."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -3321,6 +4063,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "campaign:read"
+      x-sdk-methodName: "getEmailCampaignActivitySchedule"
     post:
       tags:
       - "Email Scheduling"
@@ -3367,17 +4110,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "429":
           description: "Too many requests. You exceeded the request rate limit."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -3386,6 +4141,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "campaign:send"
+      x-sdk-methodName: "scheduleEmailCampaignActivity"
     delete:
       tags:
       - "Email Scheduling"
@@ -3414,17 +4170,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "429":
           description: "Too many requests. You exceeded the request rate limit."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -3433,6 +4201,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "campaign:send"
+      x-sdk-methodName: "unscheduleEmailCampaignActivity"
   /emails/activities/{campaign_activity_id}/tests:
     post:
       tags:
@@ -3473,18 +4242,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "429":
-          description: "Too many requests. You exceeded the daily test send limit\
-            \ or the request rate limit."
+          description: "Too many requests. You exceeded the request rate limit."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -3493,6 +4273,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "campaign:send"
+      x-sdk-methodName: "testSendEmailCampaignActivity"
   /emails/activities/{campaign_activity_id}/previews:
     get:
       tags:
@@ -3524,17 +4305,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "429":
           description: "Too many requests. You exceeded the request rate limit."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -3543,6 +4336,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "campaign:read"
+      x-sdk-methodName: "getEmailCampaignActivityPreview"
   /emails/activities/{campaign_activity_id}/send_history:
     get:
       tags:
@@ -3578,17 +4372,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "429":
           description: "Too many requests. You exceeded the request rate limit."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -3597,6 +4403,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "campaign:read"
+      x-sdk-methodName: "getEmailCampaignActivitySendHistory"
   /emails/activities/{campaign_activity_id}/non_opener_resends:
     get:
       tags:
@@ -3626,17 +4433,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "429":
           description: "Too many requests. You exceeded the request rate limit."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -3645,6 +4464,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "campaign:read"
+      x-sdk-methodName: "getResendEmailCampaign"
     post:
       tags:
       - "Email Campaigns"
@@ -3686,20 +4506,34 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "409":
           description: "Conflict. The resource you are creating or updating conflicts\
             \ with an existing resource."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "429":
           description: "Too many requests. You exceeded the request rate limit."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -3708,6 +4542,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "campaign:send"
+      x-sdk-methodName: "createResendEmailCampaign"
   /emails/activities/{campaign_activity_id}/non_opener_resends/{resend_request_id}:
     delete:
       tags:
@@ -3741,20 +4576,34 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "409":
           description: "Conflict. The resource you are creating or updating conflicts\
             \ with an existing resource."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "429":
           description: "Too many requests. You exceeded the request rate limit."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -3763,6 +4612,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "campaign:send"
+      x-sdk-methodName: "deleteResendEmailCampaign"
   /emails/activities/{campaign_activity_id}/abtest:
     get:
       tags:
@@ -3792,20 +4642,34 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "409":
           description: "Conflict. The resource you are creating or updating conflicts\
             \ with an existing resource."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "429":
           description: "Too many requests. You exceeded the request rate limit."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -3814,6 +4678,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "campaign:read"
+      x-sdk-methodName: "getABTestEmailCampaign"
     post:
       tags:
       - "Email Campaigns AB Tests"
@@ -3853,20 +4718,34 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "409":
           description: "Conflict. The resource you are creating or updating conflicts\
             \ with an existing resource."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "429":
           description: "Too many requests. You exceeded the request rate limit."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -3875,6 +4754,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "campaign:write"
+      x-sdk-methodName: "createABTestEmailCampaign"
     delete:
       tags:
       - "Email Campaigns AB Tests"
@@ -3903,20 +4783,34 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "409":
           description: "Conflict. The resource you are creating or updating conflicts\
             \ with an existing resource."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "429":
           description: "Too many requests. You exceeded the request rate limit."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -3925,6 +4819,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "campaign:write"
+      x-sdk-methodName: "deleteABTestEmailCampaign"
   /reports/contact_reports/{contact_id}/activity_details:
     get:
       tags:
@@ -3989,17 +4884,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -4008,6 +4915,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
+      x-sdk-methodName: "getContactTrackingReport"
   /reports/contact_reports/{contact_id}/open_and_click_rates:
     get:
       tags:
@@ -4052,17 +4960,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -4071,6 +4991,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
+      x-sdk-methodName: "getContactOpenClickRateReport"
   /reports/contact_reports/{contact_id}/activity_summary:
     get:
       tags:
@@ -4112,17 +5033,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "contact_data"
@@ -4131,6 +5064,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
+      x-sdk-methodName: "getContactTrackingCountReport"
   /reports/email_reports/{campaign_activity_id}/links:
     get:
       tags:
@@ -4172,17 +5106,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -4191,6 +5137,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
+      x-sdk-methodName: "getCampaignActivityLinkReport"
   /reports/email_reports/{campaign_activity_id}/tracking/sends:
     get:
       tags:
@@ -4233,17 +5180,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -4252,6 +5211,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
+      x-sdk-methodName: "getEmailSendsReport"
   /reports/email_reports/{campaign_activity_id}/tracking/opens:
     get:
       tags:
@@ -4294,17 +5254,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -4313,6 +5285,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
+      x-sdk-methodName: "getEmailOpensReport"
   /reports/email_reports/{campaign_activity_id}/tracking/unique_opens:
     get:
       tags:
@@ -4356,17 +5329,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -4375,6 +5360,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
+      x-sdk-methodName: "getUniqueOpensReport"
   /reports/email_reports/{campaign_activity_id}/tracking/didnotopens:
     get:
       tags:
@@ -4417,17 +5403,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -4436,6 +5434,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
+      x-sdk-methodName: "getDidNotOpensReport"
   /reports/email_reports/{campaign_activity_id}/tracking/clicks:
     get:
       tags:
@@ -4483,17 +5482,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -4502,6 +5513,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
+      x-sdk-methodName: "getClicksReport"
   /reports/email_reports/{campaign_activity_id}/tracking/forwards:
     get:
       tags:
@@ -4543,17 +5555,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -4562,6 +5586,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
+      x-sdk-methodName: "getForwardsReport"
   /reports/email_reports/{campaign_activity_id}/tracking/optouts:
     get:
       tags:
@@ -4603,17 +5628,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -4622,6 +5659,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
+      x-sdk-methodName: "getOptoutsReport"
   /reports/email_reports/{campaign_activity_id}/tracking/bounces:
     get:
       tags:
@@ -4682,17 +5720,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -4701,6 +5751,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
+      x-sdk-methodName: "getBouncesReport"
   /reports/summary_reports/email_campaign_summaries:
     get:
       tags:
@@ -4737,15 +5788,25 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -4754,6 +5815,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
+      x-sdk-methodName: "getEmailCampaignReport"
   /reports/stats/email_campaigns/{campaign_ids}:
     get:
       tags:
@@ -4788,15 +5850,25 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -4805,6 +5877,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
+      x-sdk-methodName: "getEmailStatsReport"
   /reports/stats/email_campaign_activities/{campaign_activity_ids}:
     get:
       tags:
@@ -4842,15 +5915,25 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -4859,6 +5942,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
+      x-sdk-methodName: "getEmailCampaignActivityReport"
   /partner/accounts:
     get:
       tags:
@@ -4919,18 +6003,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - ctctPartnerAuthorizer: []
       - api_key: []
+      x-sdk-methodName: "getAccounts"
     post:
       tags:
       - "Technology Partners"
@@ -4970,25 +6065,42 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "409":
           description: "Conflict. The resource you are creating or updating conflicts\
             \ with an existing resource."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "503":
           description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - ctctPartnerAuthorizer: []
       - api_key: []
+      x-sdk-methodName: "createAccount"
   /partner/accounts/{encoded_account_id}/plan:
     get:
       tags:
@@ -5019,22 +6131,37 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "405":
           description: "Unsupported method used."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - ctctPartnerAuthorizer: []
       - api_key: []
+      x-sdk-methodName: "getAccountBillingPlan"
     put:
       tags:
       - "Technology Partners"
@@ -5097,22 +6224,37 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "405":
           description: "Unsupported method used."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "415":
           description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - ctctPartnerAuthorizer: []
       - api_key: []
+      x-sdk-methodName: "updateAccountBillingPlan"
   /partner/accounts/{encoded_account_id}/status/cancel:
     put:
       tags:
@@ -5158,18 +6300,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - ctctPartnerAuthorizer: []
       - api_key: []
+      x-sdk-methodName: "cancelAccountBillingPlan"
   /partner/accounts/{encoded_account_id}/account_operations/sync:
     post:
       tags:
@@ -5210,20 +6363,31 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "Not found. This may indicate that the encoded_account_id you\
             \ provided is invalid, or the API request you are sending on behalf of\
             \ an account returned a 404."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - ctctPartnerAuthorizer: []
       - api_key: []
+      x-sdk-methodName: "sendRequestUsingManagedAccount"
   /partner/webhooks/subscriptions:
     get:
       tags:
@@ -5245,18 +6409,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - ctctPartnerAuthorizer: []
       - api_key: []
+      x-sdk-methodName: "getAllWebhooks"
   /partner/webhooks/subscriptions/{topic_id}:
     get:
       tags:
@@ -5286,18 +6461,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - ctctPartnerAuthorizer: []
       - api_key: []
+      x-sdk-methodName: "getWebhooksTopicById"
     put:
       tags:
       - "Technology Partners Webhooks"
@@ -5341,18 +6527,29 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - ctctPartnerAuthorizer: []
       - api_key: []
+      x-sdk-methodName: "updateWebhooksTopic"
     delete:
       tags:
       - "Technology Partners Webhooks"
@@ -5379,15 +6576,25 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - ctctPartnerAuthorizer: []
       - api_key: []
@@ -5423,15 +6630,25 @@ paths:
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "401":
           description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "403":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
         "404":
           description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
         "500":
           description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
       security:
       - ctctPartnerAuthorizer: []
       - api_key: []
@@ -5528,6 +6745,30 @@ definitions:
           - "contacts:write"
           - "contacts:lists:read"
           - "contacts:lists:write"
+  AuthorizationErrorSchema:
+    type: "object"
+    properties:
+      error_key:
+        type: "string"
+        example: "unauthorized"
+        description: "Identifies the type of error."
+      error_message:
+        type: "string"
+        example: "Unauthorized"
+        description: "Description of the error."
+  APIErrorSchema:
+    type: "array"
+    items:
+      type: "object"
+      properties:
+        error_key:
+          type: "string"
+          example: "contacts.api.validation.error"
+          description: "Identifies the type of error."
+        error_message:
+          type: "string"
+          example: "include_membership_count does not have a valid value"
+          description: "Description of the error."
   Customer:
     type: "object"
     properties:
@@ -8381,6 +9622,13 @@ definitions:
         description: "Date and time that the list was last updated, in ISO-8601 format.\
           \ System generated."
         readOnly: true
+      deleted_at:
+        type: "string"
+        format: "date-time"
+        example: "2016-03-03T10:56:29-05:00"
+        description: "If the list was deleted, this property shows the date and time\
+          \ it was deleted, in ISO-8601 format. System generated."
+        readOnly: true
       membership_count:
         type: "integer"
         example: 327
@@ -8512,6 +9760,13 @@ definitions:
         example: "2016-03-03T10:56:29-05:00"
         description: "Date and time that the list was last updated, in ISO-8601 format.\
           \ System generated."
+        readOnly: true
+      deleted_at:
+        type: "string"
+        format: "date-time"
+        example: "2016-03-03T10:56:29-05:00"
+        description: "If the list was deleted, this property shows the date and time\
+          \ it was deleted, in ISO-8601 format. System generated."
         readOnly: true
       membership_count:
         type: "integer"
@@ -11776,31 +13031,35 @@ definitions:
           type: "integer"
           description: "Identifies the file in MyLibrary."
 responses:
-  Activities429ErrorResponse:
-    description: "Too many requests. You exceeded 1,000 queued activities for this\
-      \ user account."
+  Standard405ErrorResponse:
+    description: "Unsupported method used."
+  Standard415ErrorResponse:
+    description: "Unsupported Media Type."
+  Standard401ErrorResponse:
+    description: "The Access Token used is invalid."
   EmailCampaigns429ErrorResponse:
     description: "Too many requests. You exceeded the request rate limit."
   Standard400ErrorResponse:
     description: "Bad request. Either the JSON was malformed or there was a data validation\
       \ error."
-  Standard401ErrorResponse:
-    description: "The Access Token used is invalid."
+  Standard503ErrorResponse:
+    description: "Our internal service is temporarily unavailable."
+  Standard409ErrorResponse:
+    description: "Conflict. The resource you are creating or updating conflicts with\
+      \ an existing resource."
+  AccountOperations404ErrorResponse:
+    description: "Not found. This may indicate that the encoded_account_id you provided\
+      \ is invalid, or the API request you are sending on behalf of an account returned\
+      \ a 404."
+  Standard429ErrorResponse:
+    description: "Too many requests. You exceeded the request rate limit."
+  Activities429ErrorResponse:
+    description: "Too many requests. You exceeded 1,000 queued activities for this\
+      \ user account."
+  Standard500ErrorResponse:
+    description: "There was a problem with our internal service."
   Standard403ErrorResponse:
     description: "Forbidden request. You lack the necessary scopes, you lack the necessary\
       \ user privileges, or the application is deactivated."
   Standard404ErrorResponse:
     description: "The requested resource was not found."
-  Standard405ErrorResponse:
-    description: "Unsupported method used."
-  Standard409ErrorResponse:
-    description: "Conflict. The resource you are creating or updating conflicts with\
-      \ an existing resource."
-  Standard415ErrorResponse:
-    description: "Unsupported Media Type."
-  Standard429ErrorResponse:
-    description: "Too many requests. You exceeded the request rate limit."
-  Standard500ErrorResponse:
-    description: "There was a problem with our internal service."
-  Standard503ErrorResponse:
-    description: "Our internal service is temporarily unavailable."
