@@ -16,10 +16,8 @@ should be changed to:
 "phpfui/constantcontact": ">=22.3",
 ```
 
-## New OAuth2 PKCE Authentication effective April 1, 2022
-As of March 31, 2022, Constant Contact will no longer be supporting versions of this library before 22.3.  You must upgrade you app on the Constant Contact site. A new secret is also suggested.  You must also upgrade to the 22.3 version of this library.  The only code change needed is to pass the parameter array ($_GET) to acquireAccessToken instead of the single code parameter.
-
-This library now requires PHP Session support for authentication. See [PHP Manual](https://www.php.net/manual/en/session.security.php) and [a good best practices article](https://www.phparch.com/2018/01/php-sessions-in-depth/). You can provide your own session management by specifying a callback with **setSessionCallback**.
+## Requirements
+This library requires PHP Session support for authentication. See [PHP Manual](https://www.php.net/manual/en/session.security.php) and [a good best practices article](https://www.phparch.com/2018/01/php-sessions-in-depth/). You can provide your own session management by specifying a callback with **setSessionCallback**.
 
 ## Namespaces
 This library normalizes the [Constant Contact API](https://v3.developer.constantcontact.com/api_guide/index.html) to modern PHP class standards.  All endpoints are first character capitialized. Underscores are removed and followed by a capital letter. Each end point is a class with methods matching the standard REST methods (ie. put, post, delete, put, etc.).  The methods take required and optional parameters matching the name specified in the Constant Contact YAML API.  In addition, this library supports all definitions of types in the API.  See below.
@@ -57,29 +55,43 @@ You will need to set up a web page where your user can enter the *API Key* and *
 
 ## The Authorization control flow is as follows:
 
-1. Create a Client with the API Key and Secret and specify a Redirect URI which will receive a code from Constant Contact.
-2. Redirect to $client->getAuthorizationURL(); User will authorize and redirected back to the $redirectURI you provide.
-3. Retrieve the code and save access and refresh tokens for later use.  Redirect back to where ever.
-
-### 1. Create A Client
+### 1. Create A Client and Redirect to Authorization URL
 ```php
-$client = new \PHPFUI\ConstantContact\Client($apiKey, $secret, $tokenURL);
+$redirectURI = 'http://yourdomain/php_script_in_step2.php';
+$client = new \PHPFUI\ConstantContact\Client($apiKey, $secret, $redirectURI);
 // set any scopes here, defaults to all scopes. Your user will need to accept what ever scopes you specify.
-```
-### 2. Redirect to Authorization URL
-```php
 \header('location: ' . $client->getAuthorizationURL());
 ```
 The above will ask the user to authorize the app for the scopes you specified.  The default is all scopes, but you can specify different scopes after constructing the client and before you authorize.
 
-### 3. Retrieve the Code sent to the $redirectURI
+### 2. Retrieve the Code sent to the $redirectURI
 ```php
 $client->acquireAccessToken($_GET);
 // Save $client->accessToken and $client->refreshToken to the database
-// redirect back to where ever
+// redirect back to your businesss logic (Step 3)
 ```
+You have now recieved authorization to access the API according to the scopes you requested.
 
-You should now be authorized to use the API.  Make sure you save and restore the access token and refresh tokens every time you access the API.
+### 3. Use in your code
+```php
+$client = new \PHPFUI\ConstantContact\Client($apiKey, $secret, $redirectURI);
+$client->accessToken = $accessTokenFromDatabase;
+$client->refreshToken = $refreshTokenFromDatabase;
+$listEndPoint = new \PHPFUI\ConstantContact\V3\ContactLists($client);
+$lists = $listEndPoint->get();
+do {
+  print_r($lists);
+  $lists = $listEndPoint->next();
+} while ($lists);
+```
+You can now access the API with the scopes you requested.
+
+### 4. Refresh the token on a regular basis
+```php
+$client->refreshToken();
+// save $client->accessToken and $client->refreshToken to database.
+```
+The token will expire requiring your user to reauthorize your app unless you refresh the token.  You should refresh the token on a regular basis to avoid reauthorization.
 
 ## Versioning
 Since the [Constant Contact API](https://v3.developer.constantcontact.com/api_guide/index.html) is constantly being updated, this library will track all updates on a calendar based versioning schema. The major version will be the last two digits of the year the update was released. The minor version will be the month it was released. Any bug fixes will be a patch version.  So V21.8.0 would be the first August 2021 version, and V21.8.1 would be a bug fix to V21.8.  All bug fixes will be included in subsequent versions, so V21.9.0 would include all fixes from the V21.8 version. YAML changes are tracked nightly and a new version will be generated automatically. Multiple YAML changes in a month will be tracked as patch versions.
