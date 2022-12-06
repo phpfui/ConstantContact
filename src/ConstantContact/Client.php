@@ -492,9 +492,14 @@ class Client
 			return \call_user_func($this->sessionCallback, $key, $value);
 			}
 
+		if (PHP_SESSION_ACTIVE !== \session_status())
+			{
+			throw new \PHPFUI\ConstantContact\Exception('session not started. Call session_start() or use \PHPFUI\ConstantContact\Client->setSessionCallback');
+			}
+
 		if (null === $value)
 			{
-			$value = $_SESSION[$key];
+			$value = $_SESSION[$key] ?? '';
 			unset($_SESSION[$key]);
 
 			return $value;
