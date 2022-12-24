@@ -28,7 +28,7 @@ Due to a mistake in naming conventions by Constant Contact API designers, severa
 This Constant Contact API defines all types of objects to interact with the API. They are defined in the **PHPFUI\ConstantContact\Definition** namespace. Only valid fields are allowed to be accessed. Types are fully validated as to the best ability of PHP.  Min and max lengths are enforced for strings.
 
 ## Usage Once Authorized (see below)
-```PHP
+```php
 // Create a client
 $client = new \PHPFUI\ConstantContact\Client($apiKey, $secret, $redirectURI);
 // Set access and refresh tokens on client
