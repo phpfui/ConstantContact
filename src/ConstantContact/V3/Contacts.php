@@ -15,11 +15,11 @@ class Contacts extends \PHPFUI\ConstantContact\Base
 	 * GET Contacts Collection
 	 *
 	 * Use this method to return a collection of contacts. Use the query parameters
-	 * to search for contacts that match specific criteria. For example, you
-	 * can search by the contact's `email` address, `status`, `lists` memberships,
-	 * `segment_id`, `tags`, `notes`, and by the date or date range that a
-	 * contact was created or updated. Use the `limit` query parameter to limit
-	 * the number of results returned per page. Use the `include` query parameter
+	 * to search for contacts that match specific contact properties and subresourse
+	 * properties as criteria. For example, you can search using the contact's
+	 * `email` address, `lists` memberships, and by the date range that a contact
+	 * was created or updated. Use the `limit` query parameter to limit the
+	 * number of results returned per page. Use the `include` query parameter
 	 * to include contact sub-resources in the response and `include_count`
 	 * to include the total number of contacts that meet your specified search
 	 * criteria.
@@ -37,11 +37,14 @@ class Contacts extends \PHPFUI\ConstantContact\Base
 	 * @param string $updated_before Use `updated_before` to search for contacts that have been updated before a specified date. To search for updated contacts within a date range, specify both `updated_after` and `updated_before` dates. Accepts ISO-8601 formatted dates.
 	 * @param string $created_after Use `created_after` to search for contacts created after a specified date. To search for contacts created within a date range, specify both `created_after` and `created_before` dates. Accepts ISO-8601 formatted dates.
 	 * @param string $created_before Use `created_before` to search for contacts created before a specified date. To search for contacts created within a date range, specify both `created_after` and `created_before` dates. Accepts ISO-8601 formatted dates.
-	 * @param string $include Use `include` to specify which contact sub-resources to include in the response. Use a comma to separate multiple sub-resources. Valid values: `custom_fields`, `list_memberships`, `taggings`, `notes`,`phone_numbers`, `street_addresses`. 
+	 * @param string $optout_after Use `optout_after` to search for contacts that unsubscribed after a specified date.
+	 * @param string $optout_before Use `optout_before` to search for contacts that unsubscribed before a specified date.
+	 * @param string $include Use `include` to specify which contact sub-resources to include in the response. Use a comma to separate multiple sub-resources. Valid values: `custom_fields`, `list_memberships`, `taggings`, `notes`,`phone_numbers`, `street_addresses`, `sms_channel`.
+	 * @param string $sms_status Use to get contacts by their SMS status. This parameter accepts one or more comma separated values: `all`, `explicit`, `unsubscribed`, `pending_confirmation`, `not_set`.
 	 * @param bool $include_count Set `include_count=true` to include the total number of contacts (`contacts_count`) that meet all search criteria in the response body.
 	 * @param int $limit Specifies the number of results displayed per page of output in the response, from 1 - 500, default = 50.
 	 */
-	public function get(?string $status = null, ?string $email = null, ?string $lists = null, ?string $segment_id = null, ?string $tags = null, ?string $updated_after = null, ?string $updated_before = null, ?string $created_after = null, ?string $created_before = null, ?string $include = null, ?bool $include_count = null, ?int $limit = null) : array
+	public function get(?string $status = null, ?string $email = null, ?string $lists = null, ?string $segment_id = null, ?string $tags = null, ?string $updated_after = null, ?string $updated_before = null, ?string $created_after = null, ?string $created_before = null, ?string $optout_after = null, ?string $optout_before = null, ?string $include = null, ?string $sms_status = null, ?bool $include_count = null, ?int $limit = null) : array
 		{
 
 		if (null !== $status)
@@ -61,7 +64,7 @@ class Contacts extends \PHPFUI\ConstantContact\Base
 		if (null !== $include)
 			{
 			$parts = \explode(',', $include);
-			$validValues = ['custom_fields', 'list_memberships', 'phone_numbers', 'street_addresses', 'taggings', 'notes'];
+			$validValues = ['custom_fields', 'list_memberships', 'phone_numbers', 'street_addresses', 'taggings', 'notes', 'sms_channel'];
 
 			foreach ($parts as $part)
 				{
@@ -72,7 +75,21 @@ class Contacts extends \PHPFUI\ConstantContact\Base
 				}
 			}
 
-		return $this->doGet(['status' => $status, 'email' => $email, 'lists' => $lists, 'segment_id' => $segment_id, 'tags' => $tags, 'updated_after' => $updated_after, 'updated_before' => $updated_before, 'created_after' => $created_after, 'created_before' => $created_before, 'include' => $include, 'include_count' => $include_count, 'limit' => $limit, ]);
+		if (null !== $sms_status)
+			{
+			$parts = \explode(',', $sms_status);
+			$validValues = ['all', 'explicit', 'unsubscribed', 'pending_confirmation', 'not_set'];
+
+			foreach ($parts as $part)
+				{
+				if (! \in_array(\trim($part), $validValues))
+					{
+					throw new \PHPFUI\ConstantContact\Exception\InvalidValue("Parameter sms_status containing value '{$part}' is not one of (" . \implode(', ', $validValues) . ') in ' . __METHOD__);
+					}
+				}
+			}
+
+		return $this->doGet(['status' => $status, 'email' => $email, 'lists' => $lists, 'segment_id' => $segment_id, 'tags' => $tags, 'updated_after' => $updated_after, 'updated_before' => $updated_before, 'created_after' => $created_after, 'created_before' => $created_before, 'optout_after' => $optout_after, 'optout_before' => $optout_before, 'include' => $include, 'sms_status' => $sms_status, 'include_count' => $include_count, 'limit' => $limit, ]);
 		}
 
 	/**

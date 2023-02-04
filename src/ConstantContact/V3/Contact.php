@@ -19,7 +19,7 @@ class Contact extends \PHPFUI\ConstantContact\Base
 	 * to the response payload.
 	 *
 	 * @param string $contact_id Unique ID of contact to GET
-	 * @param string $include Use `include` to specify which contact sub-resources to include in the response. Use a comma to separate multiple sub-resources. Valid values: `custom_fields`, `list_memberships`, `phone_numbers`, `street_addresses`, `notes`, and `taggings`.
+	 * @param string $include Use `include` to specify which contact sub-resources to include in the response. Use a comma to separate multiple sub-resources. Valid values: `custom_fields`, `list_memberships`, `phone_numbers`, `street_addresses`, `notes`, `sms_channel`, and `taggings`.
 	 */
 	public function get(string $contact_id, ?string $include = null) : array
 		{

@@ -6,12 +6,12 @@ namespace PHPFUI\ConstantContact\Definition;
 
 /**
  * @property \PHPFUI\ConstantContact\UUID $phone_number_id Unique ID for the phone number
- * @property string $phone_number The contact's phone number, 1 of 2 allowed per contact, no more than 25 characters
- * @property string $kind Describes the type of phone number; valid values are home, work, mobile, or other.
+ * @property string $phone_number The contact's phone number.
+ * @property string $kind Identifies the type of phone number; valid values are home, work, mobile, or other.
  * @property \PHPFUI\ConstantContact\DateTime $created_at Date and time that the street address was created, in ISO-8601 format. System generated.
- * @property \PHPFUI\ConstantContact\DateTime $updated_at Date and time that the phone_number was last updated, in ISO-8601 format. System generated.
- * @property string $update_source Identifies who last updated the phone_number; valid values are Contact or Account
- * @property string $create_source Describes who added the phone_number; valid values are Contact or Account.
+ * @property \PHPFUI\ConstantContact\DateTime $updated_at Date and time that the phone number was last updated, in ISO-8601 format. System generated.
+ * @property string $update_source Identifies who last updated the phone number; valid values are Contact or Account
+ * @property string $create_source Identifies who added the phone number; valid values are Contact or Account.
  */
 class PhoneNumber extends \PHPFUI\ConstantContact\Definition\Base
 	{

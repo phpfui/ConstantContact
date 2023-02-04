@@ -20,7 +20,6 @@ class ContactCustomFields extends \PHPFUI\ConstantContact\Base
 	 * support filtering results using the custom field update date.</p></div>
 	 *
 	 *
-	 *
 	 * @param int $limit Specifies the number of results displayed per page of output, from 1 - 100, default = 50.
 	 */
 	public function get(?int $limit = null) : array

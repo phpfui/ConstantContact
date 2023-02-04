@@ -29,7 +29,6 @@ class ListIdXrefs extends \PHPFUI\ConstantContact\Base
 	 * See [Migrating Apps and Data to V3](https://v3.developer.constantcontact.com/api_guide/migration_overview.html)
 	 * to learn more."
 	 *
-	 *
 	 * @param string $sequence_ids Comma delimited list of V2 API list `ids` to cross-reference with the V3 API `list_id` value. Endpoint accepts a maximum of 500 ids at a time.
 	 */
 	public function get(string $sequence_ids) : array

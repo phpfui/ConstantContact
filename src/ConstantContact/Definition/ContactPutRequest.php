@@ -14,9 +14,9 @@ namespace PHPFUI\ConstantContact\Definition;
  * @property int $birthday_day Accepts values from 1-31; must be used with <code>birthday_month</code>
  * @property string $anniversary The anniversary date; Accepted formats are MM/DD/YYYY, M/D/YYYY, YYYY/MM/DD, YYYY/M/D, YYYY-MM-DD, YYYY-M-D, MM-DD-YYYY, M-D-YYYY
  * @property string $update_source Identifies who last updated the contact; valid values are <code>Contact</code> or <code>Account</code>.
- * @property array<\PHPFUI\ConstantContact\Definition\ContactCustomField> $custom_fields Array of up to 25 custom_field subresources.
- * @property array<\PHPFUI\ConstantContact\Definition\PhoneNumberPut> $phone_numbers Array of up to 2 phone_numbers subresources.
- * @property array<\PHPFUI\ConstantContact\Definition\StreetAddressPut> $street_addresses Array of street_addresses subresources. A contact can have 1 street address.
+ * @property array<\PHPFUI\ConstantContact\Definition\ContactCustomField> $custom_fields Array of up to 25 <code>custom_field</code> subresources.
+ * @property array<\PHPFUI\ConstantContact\Definition\PhoneNumberPut> $phone_numbers Array of up to 3 <code>phone_numbers</code> subresources.
+ * @property array<\PHPFUI\ConstantContact\Definition\StreetAddressPut> $street_addresses Array of up to 3 <code>street_addresses</code> subresources.
  * @property array<\PHPFUI\ConstantContact\UUID> $list_memberships Array of up to 50 <code>list_ids</code> to which the contact is subscribed.
  * @property array<\PHPFUI\ConstantContact\UUID> $taggings Array of tags (<code>tag_id</code>) assigned to the contact, up to a maximum of 50.
  * @property array<\PHPFUI\ConstantContact\Definition\Note> $notes An array of notes about the contact listed by most recent note first.
@@ -49,7 +49,8 @@ class ContactPutRequest extends \PHPFUI\ConstantContact\Definition\Base
 		'company_name' => 50,
 		'anniversary' => 10,
 		'custom_fields' => 25,
-		'phone_numbers' => 2,
+		'phone_numbers' => 3,
+		'street_addresses' => 3,
 		'list_memberships' => 50,
 		'taggings' => 50,
 		'notes' => 150,

@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.2005"
+  version: "3.0.2183"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -715,6 +715,72 @@ paths:
       x-authorization-privileges:
       - "contacts:write"
       x-sdk-methodName: "createExportActivity"
+  /contact_exports/{file_export_id}:
+    get:
+      tags:
+      - "Bulk Activities"
+      summary: "Retrieve Exported Contacts File"
+      description: "Use this endpoint to retrieve (GET) a CSV file containing exported\
+        \ contacts by providing the `activity_id` of a completed CSV export activity.\
+        \ \n"
+      operationId: "getContactsExport"
+      consumes:
+      - "application/json"
+      produces:
+      - "text/csv"
+      parameters:
+      - name: "file_export_id"
+        in: "path"
+        description: "The unique ID of the exported file provided in the results:\
+          \ section of the export contacts activity response."
+        required: true
+        type: "string"
+        x-example: "04fe9a-a579-43c5-bb1a-58ed29bf0a6a"
+      responses:
+        "200":
+          description: "Request Successful"
+          schema:
+            $ref: "#/definitions/ActivityGetExport"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "401":
+          description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
+        "404":
+          description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "429":
+          description: "Too many requests. You exceeded 1,000 queued activities for\
+            \ this user account."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "500":
+          description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "503":
+          description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+      security:
+      - oauth2_implicit:
+        - "contact_data"
+      - oauth2_access_code:
+        - "contact_data"
+      - api_key: []
+      x-authorization-privileges:
+      - "contacts:write"
+      x-sdk-methodName: "getCSVExportFile"
   /activities/contact_delete:
     post:
       tags:
@@ -806,16 +872,16 @@ paths:
       - name: "file"
         in: "formData"
         description: "The CSV file you are importing. The column headings that you\
-          \ can use in the file are: `first_name`,\n`last_name`, `email`, `phone`,\
+          \ can use in the file are: `first_name`, `last_name`, `email`, `phone`,\
           \ `job_title`, `anniversary`, `birthday_day`, `birthday_month`, `company_name`,\
           \ `street`, `street2`, `city`, `state`, `zip`, and `country`. The only required\
-          \ column heading is `email`.\n\n\nYou can also use custom fields as column\
+          \ column heading is `email`.\n\nYou can also use custom fields as column\
           \ headings. Enter the custom field name prefixed with `cf:` as the column\
           \ heading. For example, use `cf:first_name` as the header name if you have\
           \ a custom field named \"first_name\". The custom field must already exist\
           \ in the Constant Contact account you are using. Depending on the custom\
           \ field data type, you can enter dates or strings as the value of the custom\
-          \ field. Each contact can contain up to 25 different custom fields.\n"
+          \ field. Each contact can contain up to 25 different custom fields."
         required: true
         type: "file"
         x-example: "new_contacts_import.csv"
@@ -886,17 +952,20 @@ paths:
       description: "Use this method to create an asynchronous background job that\
         \ adds new contacts or updates existing contacts by importing a JSON payload.\
         \ This method requires a request body that contains the contact data you are\
-        \ importing and the contact lists you are adding all imported contacts to.\n\
-        \nImporting a new contact automatically sets the contact's `permission_to_send`\
+        \ importing and the contact lists to which you want to add the imported contacts.\n\
+        Importing a new contact automatically sets the contact's `permission_to_send`\
         \ property as `implicit` and the `opt_in_source` property as `Account`. Importing\
         \ an existing contact only updates the contact properties you include in the\
-        \ request.\n\nYou can import custom fields by prefixing a custom field name\
-        \ with `cf:` and adding it as a contact property. For example, use the property\
-        \ name `cf:first_name` if you have a custom field named first_name. The custom\
-        \ field must already exist in the Constant Contact account you are using.\
-        \ Each contact can contain up to 25 custom fields.\n\nThe request body payload\
-        \ has a maximum size of 4 megabytes (MB). If the request body exceeds 4 MB,\
-        \ this method only imports the first 4 MB and drops the remaining data."
+        \ request.\nFor each contact, you can import up to three addresses and three\
+        \ phone numbers. International phone numbers are currently not supported.\n\
+        To import custom fields, prefix the custom field name with `cf:` and add it\
+        \ as a contact property. For example, use the property name `cf:first_name`\
+        \ if you have a custom field named first_name. The custom field must already\
+        \ exist in the Constant Contact account you are using. Each contact can contain\
+        \ up to 25 custom fields.\n\nThe request body payload has a maximum size of\
+        \ 4 megabytes (MB). If the request body exceeds 4 MB, this method only imports\
+        \ the first 4 MB and drops the remaining data.\nUse the activity URL to check\
+        \ the status of the import activity request."
       operationId: "bulkImportContactsJSON"
       consumes:
       - "application/json"
@@ -959,7 +1028,7 @@ paths:
       description: "Use this method to create an activity that removes contacts from\
         \ one or more lists. Use the properties in the `source` object to remove specific\
         \ contacts from your targeted lists. Use the `list_ids` array to specify the\
-        \ lists from which you want to remove the source contacts.\n"
+        \ lists from which you want to remove the source contacts."
       operationId: "postListRemoveContact"
       consumes:
       - "application/json"
@@ -1090,12 +1159,12 @@ paths:
       description: "Use this method to create an asynchronous activity that removes\
         \ one or more tags from all contacts meeting your contact filtering criteria.\
         \ Filtering criteria must include the `source` type used to identify contacts\
-        \ from which the specified tags (`tag_id`) are removed.\n\nSource types are\
+        \ from which the specified tags (`tag_id`) are removed.\nSource types are\
         \ mutually exclusive. If the specified source is either `all_active_contacts`\
         \ or `list_ids`, you can optionally choose to `exclude` specified contacts\
         \ by `contact_id`. Use the activity link in the results to check the status\
-        \ of your request.\"\n\nFor more use case information, see \"[Remove Tags\
-        \ from Contacts](/api_guide/remove_tagging_activity.html)\"\n"
+        \ of your request.\"\nFor more use case information, see \"[Remove Tags from\
+        \ Contacts](/api_guide/remove_tagging_activity.html)"
       operationId: "postTagRemoveContact"
       consumes:
       - "application/json"
@@ -1162,11 +1231,10 @@ paths:
       description: "Use this method to create an asynchronous activity that adds one\
         \ or more tags to all contacts meeting your contact filtering criteria. Use\
         \ the `source` type to identify contacts from which the specified tags (`tag_id`)\
-        \ are added.\n\nSource criteria are mutually exclusive. If the source is `all_active_contacts`\
+        \ are added.\nSource criteria are mutually exclusive. If the source is `all_active_contacts`\
         \ or `list_ids`, you can optionally choose to `exclude` contacts by `contact_id`.\
         \ Use the activity link in the results to check the status of your request.\n\
-        \nFor more use case information, see \"[Add Tags to Contacts](/api_guide/add_tagging_activity.html)\"\
-        \n"
+        For more use case information, see \"[Add Tags to Contacts](/api_guide/add_tagging_activity.html)"
       operationId: "postTagAddContact"
       consumes:
       - "application/json"
@@ -1711,7 +1779,7 @@ paths:
       description: "This endpoint GETs a specific contact resource (contact_id). Use\
         \ the `include` query parameter to add any of the available contact sub-resources\
         \ to the response payload."
-      operationId: "getContactById"
+      operationId: "getContact"
       produces:
       - "application/json"
       parameters:
@@ -1726,7 +1794,7 @@ paths:
         description: "Use `include` to specify which contact sub-resources to include\
           \ in the response. Use a comma to separate multiple sub-resources. Valid\
           \ values: `custom_fields`, `list_memberships`, `phone_numbers`, `street_addresses`,\
-          \ `notes`, and `taggings`."
+          \ `notes`, `sms_channel`, and `taggings`."
         required: false
         type: "string"
         format: "csv"
@@ -1777,6 +1845,7 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "contacts:read"
+      x-sdk-methodName: "getContactById"
     put:
       tags:
       - "Contacts"
@@ -1922,14 +1991,14 @@ paths:
       - "Contacts"
       summary: "GET Contacts Collection"
       description: "Use this method to return a collection of contacts. Use the query\
-        \ parameters to search for contacts that match specific criteria. For example,\
-        \ you can search by the contact's `email` address, `status`, `lists` memberships,\
-        \ `segment_id`, `tags`, `notes`, and by the date or date range that a contact\
-        \ was created or updated. Use the `limit` query parameter to limit the number\
-        \ of results returned per page. Use the `include` query parameter to include\
-        \ contact sub-resources in the response and `include_count` to include the\
-        \ total number of contacts that meet your specified search criteria.\n\nBy\
-        \ default, this method returns all contacts that are not deleted. Use the\
+        \ parameters to search for contacts that match specific contact properties\
+        \ and subresourse properties as criteria. For example, you can search using\
+        \ the contact's `email` address, `lists` memberships, and by the date range\
+        \ that a contact was created or updated. Use the `limit` query parameter to\
+        \ limit the number of results returned per page. Use the `include` query parameter\
+        \ to include contact sub-resources in the response and `include_count` to\
+        \ include the total number of contacts that meet your specified search criteria.\n\
+        \nBy default, this method returns all contacts that are not deleted. Use the\
         \ `status` query parameter with the value `all` to return all contacts including\
         \ deleted contacts."
       operationId: "getContacts"
@@ -2030,12 +2099,28 @@ paths:
         type: "string"
         format: "date-time"
         x-example: "2022-07-16T16:37:59.091Z"
+      - name: "optout_after"
+        in: "query"
+        description: "Use `optout_after` to search for contacts that unsubscribed\
+          \ after a specified date."
+        required: false
+        type: "string"
+        format: "date-time"
+        x-example: "2022-11-16T16:20:59.091Z"
+      - name: "optout_before"
+        in: "query"
+        description: "Use `optout_before` to search for contacts that unsubscribed\
+          \ before a specified date."
+        required: false
+        type: "string"
+        format: "date-time"
+        x-example: "2022-11-16T16:20:59.091Z"
       - name: "include"
         in: "query"
         description: "Use `include` to specify which contact sub-resources to include\
           \ in the response. Use a comma to separate multiple sub-resources. Valid\
           \ values: `custom_fields`, `list_memberships`, `taggings`, `notes`,`phone_numbers`,\
-          \ `street_addresses`. "
+          \ `street_addresses`, `sms_channel`."
         required: false
         type: "string"
         format: "csv"
@@ -2047,6 +2132,21 @@ paths:
         - "street_addresses"
         - "taggings"
         - "notes"
+        - "sms_channel"
+      - name: "sms_status"
+        in: "query"
+        description: "Use to get contacts by their SMS status. This parameter accepts\
+          \ one or more comma separated values: `all`, `explicit`, `unsubscribed`,\
+          \ `pending_confirmation`, `not_set`."
+        required: false
+        type: "string"
+        format: "csv"
+        enum:
+        - "all"
+        - "explicit"
+        - "unsubscribed"
+        - "pending_confirmation"
+        - "not_set"
       - name: "include_count"
         in: "query"
         description: "Set `include_count=true` to include the total number of contacts\
@@ -2199,7 +2299,7 @@ paths:
         \ method automatically sets the `permission_to_send` property as explicit\
         \ and the `opt_in_source` property as `Contact` for new contacts. Updated\
         \ contacts have their `permission_to_send` property set as explicit.\n   \
-        \   \n"
+        \   "
       operationId: "createOrUpdateContact"
       consumes:
       - "application/json"
@@ -2277,7 +2377,7 @@ paths:
         \ resource ID formats. Use the `sequence_ids` query parameter to specify a\
         \ set of comma delimited V2 contacts ids to cross-referenced with their V3\
         \ `contact_ids`. See [Migrating to V3](/api_guide/migration_overview.html)\
-        \ to learn more.\n"
+        \ to learn more."
       operationId: "getContactIdXrefs"
       produces:
       - "application/json"
@@ -2509,7 +2609,7 @@ paths:
       summary: "GET custom_fields Collection"
       description: "This GET request returns all `custom_fields` defined in the user's\
         \ account.\n<div class=\"Msg\"><p class=\"note-text\">This method does not\
-        \ currently support filtering results using the custom field update date.</p></div>\n"
+        \ currently support filtering results using the custom field update date.</p></div>"
       operationId: "getCustomFields"
       produces:
       - "application/json"
@@ -2818,7 +2918,7 @@ paths:
       summary: "GET Lists Collection"
       description: "Use this method to return details about all contact lists for\
         \ the account.\n<div class=\"Msg\"><p class=\"note-text\">This method does\
-        \ not currently support filtering results using the contact list update date.</p></div>\n"
+        \ not currently support filtering results using the contact list update date.</p></div>"
       operationId: "getLists"
       produces:
       - "application/json"
@@ -2842,9 +2942,9 @@ paths:
         x-example: true
       - name: "include_membership_count"
         in: "query"
-        description: "Use to include the number of contact members per list by setting\
-          \ the `include_membership_count` to either `active`, to count only active\
-          \ contacts, or `all` to include all contacts in the count."
+        description: "Use to include the total number of contacts members in each\
+          \ list. Set to  `active`, to count only active (mailable) contacts, or `all`\
+          \ to count all contacts."
         required: false
         type: "string"
         x-example: "all"
@@ -2853,7 +2953,8 @@ paths:
         - "active"
       - name: "name"
         in: "query"
-        description: "Use to get a single list by entering the full name of the list."
+        description: "Use to get details for a single list by entering the full name\
+          \ of the list."
         required: false
         type: "string"
         x-example: "TopTier"
@@ -2976,8 +3077,7 @@ paths:
         \ migrating their users to a new V3 API integration. The V2 and V3 APIs use\
         \ different resource ID formats. Use the `sequence_ids` query parameter to\
         \ specify a set of comma delimited V2 list ids to cross-reference. See [Migrating\
-        \ Apps and Data to V3](/api_guide/migration_overview.html) to learn more.\"\
-        \ \n"
+        \ Apps and Data to V3](/api_guide/migration_overview.html) to learn more.\""
       operationId: "getListIdXrefs"
       produces:
       - "application/json"
@@ -7161,10 +7261,12 @@ definitions:
             state:
               type: "string"
               example: "initialized"
-              description: "The state of the request: initialized - request has been\
-                \ received processing - request is being processed completed - job\
-                \ completed cancelled - request was cancelled failed - job failed\
-                \ to complete timed_out - the request timed out before completing"
+              description: "The state of the request: <p><ul>\n  <li>initialized -\
+                \ request has been received</li>\n  <li>processing - request is being\
+                \ processed</li>\n  <li>completed - job completed</li>\n  <li>cancelled\
+                \ - request was cancelled</li>\n  <li>failed - job failed to complete</li>\n\
+                \  <li>timed_out - the request timed out before completing\"</li>\n\
+                \  </ul> </p>"
               enum:
               - "initialized"
               - "processing"
@@ -7252,10 +7354,10 @@ definitions:
       correctable_count:
         type: "integer"
         example: 1
-        description: "The number of correctable errors. Correctable errors are: invalid\
-          \ email address format, birthday or anniversary format error, or does not\
-          \ have minimal contact information (no name or email address). Correctable\
-          \ errors are available in the product UI to correct."
+        description: "The number of correctable errors. Correctable errors include\
+          \ invalid email address format, birthday or anniversary format error, or\
+          \ does not have minimal contact information (no name or email address).\
+          \ Correctable errors are available in the product UI to correct."
       cannot_add_to_list_count:
         type: "integer"
         example: 1
@@ -7265,7 +7367,7 @@ definitions:
       list_count:
         type: "integer"
         example: 3
-        description: "The number of lists processed in an add_ or remove_list_membership\
+        description: "The number of lists processed in an add or remove list membership\
           \ activity request."
         readOnly: true
   ActivityStatusExportLink:
@@ -7309,10 +7411,11 @@ definitions:
       state:
         type: "string"
         example: "initialized"
-        description: "The state of the request: initialized - request has been received\
-          \ processing - request is being processed completed - job completed cancelled\
-          \ - request was cancelled failed - job failed to complete timed_out - the\
-          \ request timed out before completing"
+        description: "The state of the request: <p><ul> <li>initialized - request\
+          \ has been received</li> <li>processing - request is being processed</li>\
+          \ <li>completed - job completed</li> <li>cancelled - request was cancelled</li>\
+          \ <li>failed - job failed to complete</li> <li>timed_out - the request timed\
+          \ out before completing\"</li> </ul> </p>"
         enum:
         - "initialized"
         - "processing"
@@ -7472,10 +7575,11 @@ definitions:
       state:
         type: "string"
         example: "initialized"
-        description: "The state of the request: initialized - request has been received\
-          \ processing - request is being processed completed - job completed cancelled\
-          \ - request was cancelled failed - job failed to complete timed_out - the\
-          \ request timed out before completing"
+        description: "<p> The state of the request: <ul>\n <li>initialized - request\
+          \ has been received</li>\n <li>processing - request is being processed</li>\n\
+          \ <li>completed - job completed</li>\n <li>cancelled - request was cancelled</li>\n\
+          \ <li>failed - job failed to complete</li>\n <li>timed_out - the request\
+          \ timed out before completing\"</li>\n </ul> </p>"
         enum:
         - "initialized"
         - "processing"
@@ -7540,6 +7644,9 @@ definitions:
       _links:
         $ref: "#/definitions/ActivityStatusExportLink"
     description: "Activity status for contact_exports activity"
+  ActivityGetExport:
+    type: "string"
+    description: "CSV file containing exported contacts"
   ContactDelete:
     type: "object"
     properties:
@@ -7575,10 +7682,11 @@ definitions:
       state:
         type: "string"
         example: "initialized"
-        description: "The state of the request: initialized - request has been received\
-          \ processing - request is being processed completed - job completed cancelled\
-          \ - request was cancelled failed - job failed to complete timed_out - the\
-          \ request timed out before completing"
+        description: "The state of the request: <p><ul> <li>initialized - request\
+          \ has been received</li> <li>processing - request is being processed</li>\
+          \ <li>completed - job completed</li> <li>cancelled - request was cancelled</li>\
+          \ <li>failed - job failed to complete</li> <li>timed_out - the request timed\
+          \ out before completing\"</li> </ul> </p>"
         enum:
         - "initialized"
         - "processing"
@@ -7669,10 +7777,11 @@ definitions:
       state:
         type: "string"
         example: "initialized"
-        description: "The state of the request: initialized - request has been received\
-          \ processing - request is being processed completed - job completed cancelled\
-          \ - request was cancelled failed - job failed to complete timed_out - the\
-          \ request timed out before completing"
+        description: "The state of the request:\n <p><ul>\n   <li>initialized - request\
+          \ has been received</li>\n  <li>processing - request is being processed</li>\n\
+          \  <li>completed - job completed</li>\n  <li>cancelled - request was cancelled</li>\n\
+          \  <li>failed - job failed to complete</li>\n  <li>timed_out - the request\
+          \ timed out before completing\"</li>\n</ul> </p>"
         enum:
         - "initialized"
         - "processing"
@@ -7721,11 +7830,10 @@ definitions:
       activity_errors:
         type: "array"
         description: "Array of messages describing the errors that occurred."
+        readOnly: true
         items:
           type: "string"
           example: "Message describing the error condition."
-          description: "Message describing the error condition."
-          readOnly: true
       status:
         type: "object"
         properties:
@@ -7843,42 +7951,170 @@ definitions:
         description: "The anniversary date for the contact. For example, this value\
           \ could be the date when the contact first became a customer of an organization\
           \ in Constant Contact. Valid date formats are MM/DD/YYYY, M/D/YYYY, YYYY/MM/DD,\
-          \ YYYY/M/D, YYYY-MM-DD, YYYY-M-D,M-D-YYYY, or M-DD-YYYY.\n"
+          \ YYYY/M/D, YYYY-MM-DD, YYYY-M-D,M-D-YYYY, or M-DD-YYYY."
       phone:
         type: "string"
         example: "555-555-5555"
-        description: "The phone number for the contact."
+        description: "The primary phone number for the contact. Use this field to\
+          \ add the default kind of phone number to the imported contact's phone number.\
+          \ Default <code>kind</code> is <code>other</code>."
+        maxLength: 50
+      home_phone:
+        type: "string"
+        example: "555-555-5555"
+        description: "The home phone number for the contact."
+        maxLength: 50
+      work_phone:
+        type: "string"
+        example: "555-555-4444"
+        description: "The work phone number for the contact."
+        maxLength: 50
+      mobile_phone:
+        type: "string"
+        example: "555-555-3333"
+        description: "The mobile phone number for the contact."
+        maxLength: 50
+      other_phone:
+        type: "string"
+        example: "555-555-2222"
+        description: "A phone number for the contact."
         maxLength: 50
       street:
         type: "string"
         example: "123 Maple Lane"
-        description: "Line one of the street address for the contact."
+        description: "Line one of the primary street address for the contact. Use\
+          \ this field to add the default kind of street to the imported contact's\
+          \ street address. The default <code>kind</code> is <code>home</code>. which\
+          \ maps to the <code>street_addresses</code> array` in the response."
         maxLength: 255
       street2:
         type: "string"
         example: "Apt. 337"
-        description: "Line two of the street address for the contact. This value is\
-          \ automatically appended to the <code>street</code> value."
+        description: "Line two of the primary street address for the contact. This\
+          \ value is automatically appended to the <code>street</code> value. Use\
+          \ this field to add the default kind for line two of the street address\
+          \ to the imported contact's address. The default <code>kind</code> is <code>other</code>."
         maxLength: 255
       city:
         type: "string"
         example: "Chicago"
-        description: "The name of the city where the contact lives."
+        description: "The name of the primary city for the contact. Use this field\
+          \ to add the default kind of city to the imported contact's home address.\
+          \ The default <code>kind</code> is <code>home</code>."
         maxLength: 50
       state:
         type: "string"
         example: "Illinois"
-        description: "The name of the state or province where the contact lives."
+        description: "The name of the primary state or province for the contact. Use\
+          \ this field to add the default kind of state to the imported contact's\
+          \ home address. The default <code>kind</code> is <code>home</code>."
         maxLength: 50
       zip:
         type: "string"
         example: "60609"
-        description: "The zip or postal code of the contact."
+        description: "The zip or postal code associated with the contact's primary\
+          \ address. Use this field to add the default kind of zip to the imported\
+          \ contact's street address. The default <code>kind</code> is <code>home</code>."
         maxLength: 50
       country:
         type: "string"
         example: "United States"
+        description: "The name of the primary country where the contact is located.\
+          \ Use this field to add the default kind of country to the imported contact's\
+          \ street address. The default <code>kind</code> is <code>home</code>."
+        maxLength: 50
+      home_street:
+        type: "string"
+        example: "123 Maple Lane"
+        description: "Line one of the home street address for the contact."
+        maxLength: 255
+      home_street2:
+        type: "string"
+        example: "Apt. 337"
+        description: "Line two of the home street address for the contact. This value\
+          \ is automatically appended to the <code>home_street</code> value."
+        maxLength: 255
+      home_city:
+        type: "string"
+        example: "Chicago"
+        description: "The name of the city where the contact lives."
+        maxLength: 50
+      home_state:
+        type: "string"
+        example: "Illinois"
+        description: "The name of the home state or province where the contact lives."
+        maxLength: 50
+      home_zip:
+        type: "string"
+        example: "60609"
+        description: "The zip or postal code associated with the contact's home address."
+        maxLength: 50
+      home country:
+        type: "string"
+        example: "United States"
         description: "The name of the country where the contact lives."
+        maxLength: 50
+      work_street:
+        type: "string"
+        example: "123 Maple Lane"
+        description: "Line one of the work street address for the contact."
+        maxLength: 255
+      work_street2:
+        type: "string"
+        example: "Apt. 337"
+        description: "Line two of the work street address for the contact. This value\
+          \ is automatically appended to the <code>work_street</code> value."
+        maxLength: 255
+      work_city:
+        type: "string"
+        example: "Chicago"
+        description: "The name of the city where the contact works."
+        maxLength: 50
+      work_state:
+        type: "string"
+        example: "Illinois"
+        description: "The name of the state or province where the contact works."
+        maxLength: 50
+      work_zip:
+        type: "string"
+        example: "60609"
+        description: "The zip or postal code associated with the contact's work address."
+        maxLength: 50
+      work_country:
+        type: "string"
+        example: "United States"
+        description: "The name of the country where the contact works."
+        maxLength: 50
+      other_street:
+        type: "string"
+        example: "123 Maple Lane"
+        description: "Line one of the other street address for the contact."
+        maxLength: 255
+      other_street2:
+        type: "string"
+        example: "Apt. 337"
+        description: "Line two of the other street address for the contact. This value\
+          \ is automatically appended to the <code>other_street</code> value."
+        maxLength: 255
+      other_city:
+        type: "string"
+        example: "Chicago"
+        description: "The name of another city where the contact is located."
+        maxLength: 50
+      other_state:
+        type: "string"
+        example: "Illinois"
+        description: "The name of another state or province where the contact is located."
+        maxLength: 50
+      other_zip:
+        type: "string"
+        example: "60609"
+        description: "The zip or postal code associated with the contact's other address."
+        maxLength: 50
+      other_country:
+        type: "string"
+        example: "Canada"
+        description: "The name of another country where the contact is located."
         maxLength: 50
       cf:custom_field_name:
         type: "string"
@@ -7948,10 +8184,11 @@ definitions:
       state:
         type: "string"
         example: "initialized"
-        description: "The state of the request: initialized - request has been received\
-          \ processing - request is being processed completed - job completed cancelled\
-          \ - request was cancelled failed - job failed to complete timed_out - the\
-          \ request timed out before completing"
+        description: "The state of the request: <p><ul> <li>initialized - request\
+          \ has been received</li> <li>processing - request is being processed</li>\
+          \ <li>completed - job completed</li> <li>cancelled - request was cancelled</li>\
+          \ <li>failed - job failed to complete</li> <li>timed_out - the request timed\
+          \ out before completing\"</li> </ul> </p>"
         enum:
         - "initialized"
         - "processing"
@@ -8424,8 +8661,8 @@ definitions:
       update_source:
         type: "string"
         example: "Contact"
-        description: "Identifies who last updated the contact; valid values are Contact\
-          \ or Account"
+        description: "Identifies who last updated the contact; valid values are  <code>Contact</code>\
+          \ or <code>Account</code>."
         enum:
         - "Account"
         - "Contact"
@@ -8461,34 +8698,31 @@ definitions:
         readOnly: true
       custom_fields:
         type: "array"
-        description: "Array of up to 25 <code>custom_field</code> key value pairs."
+        description: "Array of up to 25 <code>custom_field</code> subresources."
         items:
           $ref: "#/definitions/ContactCustomField"
         maxItems: 25
       phone_numbers:
         type: "array"
-        description: "Array of phone_numbers subresources. A contact can have up to\
-          \ 2 phone numbers."
+        description: "Array of up to 3 <code>phone_numbers</code> subresources."
         items:
           $ref: "#/definitions/PhoneNumber"
-        maxItems: 2
+        maxItems: 3
       street_addresses:
         type: "array"
-        description: "Array of street_addresses subresources. A contact can have 1\
-          \ street address."
+        description: "Array of up to 3 <code>street_addresses</code> subresources."
         items:
           $ref: "#/definitions/StreetAddress"
-        maxItems: 1
+        maxItems: 3
       list_memberships:
         type: "array"
-        description: "Array of list_id's to which the contact is subscribed, up to\
-          \ a maximum of 50."
+        description: "Array of up to 50 <code>list_ids</code> to which the contact\
+          \ is subscribed."
         items:
           type: "string"
           format: "uuid"
-          example: "5bc0ed68-d8ce-11e9-8d3a-fa163e56c9b0"
-          description: "Unique ID of a list to which the contact is subscribed, up\
-            \ to a maximum of 50."
+          example: "07936f78-662a-11eb-af0a-fa163e56c9b0"
+          description: "Unique list ID to which the contact is subscribed."
           readOnly: true
         maxItems: 50
       taggings:
@@ -8505,10 +8739,58 @@ definitions:
         maxItems: 50
       notes:
         type: "array"
-        description: "An array of up to 150 notes about the contact."
+        description: "An array of notes about the contact listed by most recent note\
+          \ first."
         items:
           $ref: "#/definitions/Note"
         maxItems: 150
+      sms_channel:
+        type: "object"
+        description: "Includes SMS channel and consent details."
+        properties:
+          sms_channel_id:
+            type: "string"
+            format: "uuid"
+            example: "3fa85f64-5712-6245-b3fc-2c963f66bfc6"
+            description: "The unique ID that identifies an SMS channel."
+          sms_address:
+            type: "string"
+            example: "7815551212"
+            description: "The phone number of the SMS-capable phone, which does not\
+              \ include the country code."
+          dial_code:
+            type: "string"
+            example: "1"
+            description: "The dial code used for the SMS-capable phone. For example,\
+              \ the dial code for the United States is <code>1</code>."
+          country_code:
+            type: "string"
+            example: "US"
+            description: "The two character ISO country code used for the SMS-capable\
+              \ phone. For example, the country code for the United States is <code>US</code>."
+          update_source:
+            type: "string"
+            example: "Contact"
+            description: "Identifies who last updated SMS details for the contact.\
+              \ Valid values are Contact or Account"
+            enum:
+            - "Account"
+            - "Contact"
+          create_source:
+            type: "string"
+            example: "Account"
+            description: "Identifies who added SMS details for the contact. The value\
+              \ is set when you create SMS details for the contact. Valid values are\
+              \ <code>Contact</code> or <code>Account</code>. "
+            enum:
+            - "Account"
+            - "Contact"
+          sms_channel_consents:
+            type: "array"
+            description: "Identifies SMS channel consent details such as the current\
+              \ permission status for the SMS channel and opt-in date."
+            items:
+              $ref: "#/definitions/SmsChannelConsentDetails"
     description: "Use this endpoint to retrieve (GET), update (PUT), or DELETE an\
       \ existing contact resource specified using the <code>contact_id</code> path\
       \ parameter."
@@ -8603,7 +8885,7 @@ definitions:
         - "pending"
         - "confirmed"
         - "off"
-    description: "A contact subresource describing the contact's email_address."
+    description: "A contact subresource describing the contact's email address."
   ContactCustomField:
     type: "object"
     required:
@@ -8635,14 +8917,13 @@ definitions:
       phone_number:
         type: "string"
         example: "+1-555-555-5555"
-        description: "The contact's phone number, 1 of 2 allowed per contact, no more\
-          \ than 25 characters"
+        description: "The contact's phone number."
         maxLength: 25
       kind:
         type: "string"
         example: "home"
-        description: "Describes the type of phone number; valid values are home, work,\
-          \ mobile, or other."
+        description: "Identifies the type of phone number; valid values are home,\
+          \ work, mobile, or other."
         enum:
         - "home"
         - "work"
@@ -8659,13 +8940,13 @@ definitions:
         type: "string"
         format: "date-time"
         example: "2016-03-03T10:56:29-05:00"
-        description: "Date and time that the phone_number was last updated, in ISO-8601\
+        description: "Date and time that the phone number was last updated, in ISO-8601\
           \ format. System generated."
         readOnly: true
       update_source:
         type: "string"
         example: "Account"
-        description: "Identifies who last updated the phone_number; valid values are\
+        description: "Identifies who last updated the phone number; valid values are\
           \ Contact or Account"
         enum:
         - "Account"
@@ -8673,7 +8954,7 @@ definitions:
       create_source:
         type: "string"
         example: "Account"
-        description: "Describes who added the phone_number; valid values are Contact\
+        description: "Identifies who added the phone number; valid values are Contact\
           \ or Account."
         enum:
         - "Account"
@@ -8756,6 +9037,73 @@ definitions:
         description: "The content for the note."
         maxLength: 2000
     description: "A note about the contact."
+  SmsChannelConsentDetails:
+    type: "object"
+    properties:
+      sms_consent_permission:
+        type: "string"
+        example: "explicit"
+        description: "Identifies the current permission status for the SMS channel."
+        enum:
+        - "pending_confirmation"
+        - "opt_out"
+        - "explicit"
+      consent_type:
+        type: "string"
+        example: "promotional_sms"
+        enum:
+        - "promotional_sms"
+      opt_in_date:
+        type: "string"
+        format: "date-time"
+        example: "2016-01-23T13:48:44.108Z"
+        description: "Date and time, in ISO-8601 format, that the contact subscribed/opted-in\
+          \ to receiving SMS from the account. Displays only if the contact subscribes/opts-in.\
+          \ System generated."
+        readOnly: true
+      opt_out_date:
+        type: "string"
+        format: "date-time"
+        example: "2016-01-23T13:48:44.108Z"
+        description: "Date and time, in ISO-8601 format, that the contact unsubscribed/opted-out\
+          \ of receiving SMS from the account. Displays only if the contact unsubscribed/opted-out.\
+          \ System generated."
+        readOnly: true
+      advertised_frequency:
+        type: "string"
+        example: "1"
+        description: "The numeric used to set how often to send SMS advertisements\
+          \ during a specified time interval (<code>advertised_interval</code>). For\
+          \ example, if the <code>advertised_frequency</code> is set to <code>2</code>\
+          \ and the  <code>advertised_interval</code> is set to <code>monthly</code>,\
+          \ the contact can receive up to two advertisements per month."
+      advertised_interval:
+        type: "string"
+        example: "monthly"
+        description: "Identifies the unit of time used by Constant Contact to send\
+          \ SMS advertisements as a string enum. For example, if the <code>advertised_frequency</code>\
+          \ is set to <code>2</code> and the <code>advertised_interval</code> is set\
+          \ to <code>monthly</code>, the contact can receive up to two advertisements\
+          \ per month."
+        enum:
+        - "daily"
+        - "weekly"
+        - "monthly"
+      created_at:
+        type: "string"
+        format: "date-time"
+        example: "2016-01-23T13:48:44.108Z"
+        description: "Date and time that the SMS stats were created, in ISO-8601 format.\
+          \ System generated."
+        readOnly: true
+      updated_at:
+        type: "string"
+        format: "date-time"
+        example: "2016-01-23T13:48:44.108Z"
+        description: "Date and time that the SMS stats were updated, in ISO-8601 format.\
+          \ System generated."
+        readOnly: true
+    description: "Provides SMS consent details."
   ContactPutRequest:
     type: "object"
     required:
@@ -8807,22 +9155,22 @@ definitions:
         - "Contact"
       custom_fields:
         type: "array"
-        description: "Array of up to 25 custom_field subresources."
+        description: "Array of up to 25 <code>custom_field</code> subresources."
         items:
           $ref: "#/definitions/ContactCustomField"
         maxItems: 25
       phone_numbers:
         type: "array"
-        description: "Array of up to 2 phone_numbers subresources."
+        description: "Array of up to 3 <code>phone_numbers</code> subresources."
         items:
           $ref: "#/definitions/PhoneNumberPut"
-        maxItems: 2
+        maxItems: 3
       street_addresses:
         type: "array"
-        description: "Array of street_addresses subresources. A contact can have 1\
-          \ street address."
+        description: "Array of up to 3 <code>street_addresses</code> subresources."
         items:
           $ref: "#/definitions/StreetAddressPut"
+        maxItems: 3
       list_memberships:
         type: "array"
         description: "Array of up to 50 <code>list_ids</code> to which the contact\
@@ -8942,14 +9290,13 @@ definitions:
       phone_number:
         type: "string"
         example: "+1-555-555-5555"
-        description: "The contact's phone number, 1 of 2 allowed per contact, no more\
-          \ than 25 characters"
+        description: "The contact's phone number."
         maxLength: 25
       kind:
         type: "string"
         example: "home"
-        description: "Describes the type of phone number; valid values are home, work,\
-          \ mobile, or other."
+        description: "Identifies the type of phone number; valid values are home,\
+          \ work, mobile, or other."
         enum:
         - "home"
         - "work"
@@ -9068,8 +9415,8 @@ definitions:
       update_source:
         type: "string"
         example: "Contact"
-        description: "Identifies who last updated the contact; valid values are Contact\
-          \ or Account"
+        description: "Identifies who last updated the contact; valid values are  <code>Contact</code>\
+          \ or <code>Account</code>."
         enum:
         - "Account"
         - "Contact"
@@ -9105,34 +9452,31 @@ definitions:
         readOnly: true
       custom_fields:
         type: "array"
-        description: "Array of up to 25 <code>custom_field</code> key value pairs."
+        description: "Array of up to 25 <code>custom_field</code> subresources."
         items:
           $ref: "#/definitions/ContactCustomField"
         maxItems: 25
       phone_numbers:
         type: "array"
-        description: "Array of phone_numbers subresources. A contact can have up to\
-          \ 2 phone numbers."
+        description: "Array of up to 3 <code>phone_numbers</code> subresources."
         items:
           $ref: "#/definitions/PhoneNumber"
-        maxItems: 2
+        maxItems: 3
       street_addresses:
         type: "array"
-        description: "Array of street_addresses subresources. A contact can have 1\
-          \ street address."
+        description: "Array of up to 3 <code>street_addresses</code> subresources."
         items:
           $ref: "#/definitions/StreetAddress"
-        maxItems: 1
+        maxItems: 3
       list_memberships:
         type: "array"
-        description: "Array of list_id's to which the contact is subscribed, up to\
-          \ a maximum of 50."
+        description: "Array of up to 50 <code>list_ids</code> to which the contact\
+          \ is subscribed."
         items:
           type: "string"
           format: "uuid"
-          example: "5bc0ed68-d8ce-11e9-8d3a-fa163e56c9b0"
-          description: "Unique ID of a list to which the contact is subscribed, up\
-            \ to a maximum of 50."
+          example: "07936f78-662a-11eb-af0a-fa163e56c9b0"
+          description: "Unique list ID to which the contact is subscribed."
           readOnly: true
         maxItems: 50
       taggings:
@@ -9149,10 +9493,58 @@ definitions:
         maxItems: 50
       notes:
         type: "array"
-        description: "An array of up to 150 notes about the contact."
+        description: "An array of notes about the contact listed by most recent note\
+          \ first."
         items:
           $ref: "#/definitions/Note"
         maxItems: 150
+      sms_channel:
+        type: "object"
+        description: "Includes SMS channel and consent details."
+        properties:
+          sms_channel_id:
+            type: "string"
+            format: "uuid"
+            example: "3fa85f64-5712-6245-b3fc-2c963f66bfc6"
+            description: "The unique ID that identifies an SMS channel."
+          sms_address:
+            type: "string"
+            example: "7815551212"
+            description: "The phone number of the SMS-capable phone, which does not\
+              \ include the country code."
+          dial_code:
+            type: "string"
+            example: "1"
+            description: "The dial code used for the SMS-capable phone. For example,\
+              \ the dial code for the United States is <code>1</code>."
+          country_code:
+            type: "string"
+            example: "US"
+            description: "The two character ISO country code used for the SMS-capable\
+              \ phone. For example, the country code for the United States is <code>US</code>."
+          update_source:
+            type: "string"
+            example: "Contact"
+            description: "Identifies who last updated SMS details for the contact.\
+              \ Valid values are Contact or Account"
+            enum:
+            - "Account"
+            - "Contact"
+          create_source:
+            type: "string"
+            example: "Account"
+            description: "Identifies who added SMS details for the contact. The value\
+              \ is set when you create SMS details for the contact. Valid values are\
+              \ <code>Contact</code> or <code>Account</code>. "
+            enum:
+            - "Account"
+            - "Contact"
+          sms_channel_consents:
+            type: "array"
+            description: "Identifies SMS channel consent details such as the current\
+              \ permission status for the SMS channel and opt-in date."
+            items:
+              $ref: "#/definitions/SmsChannelConsentDetails"
     description: "Use this endpoint to retrieve (GET), update (PUT), or DELETE an\
       \ existing contact resource specified using the <code>contact_id</code> path\
       \ parameter."
@@ -9218,20 +9610,20 @@ definitions:
         maxItems: 25
       phone_numbers:
         type: "array"
-        description: "Array of up to 2 phone_numbers subresources."
+        description: "Array of up to 3 phone numbers subresources."
         items:
           $ref: "#/definitions/PhoneNumberPut"
-        maxItems: 2
+        maxItems: 3
       street_addresses:
         type: "array"
-        description: "Array of street_addresses subresources. A contact can have 1\
-          \ street address."
+        description: "Array of up to 3 street address subresources."
         items:
           $ref: "#/definitions/StreetAddressPut"
+        maxItems: 3
       list_memberships:
         type: "array"
-        description: "Array of list_id's to which the contact is being subscribed,\
-          \ up to a maximum of 50."
+        description: "Array of <code>list_id<code>s to which the contact is being\
+          \ subscribed, up to a maximum of 50."
         items:
           type: "string"
           format: "uuid"
@@ -9266,7 +9658,7 @@ definitions:
       address:
         type: "string"
         example: "dlang@example.com"
-        description: "The contact's email address"
+        description: "The contact's email address."
         maxLength: 80
       permission_to_send:
         type: "string"
@@ -9365,7 +9757,7 @@ definitions:
             type: "string"
             example: "home"
             description: "The type of street address for the contact. Valid values\
-              \ are home, work, or other."
+              \ are <code>home</code>, <code>work</code>, or <code>other</code>."
             enum:
             - "home"
             - "work"
@@ -9660,14 +10052,15 @@ definitions:
       activity_id:
         type: "string"
         format: "uuid"
-        description: "Unique ID for the delete list batch job"
+        description: "Unique ID for the delete list batch job."
       state:
         type: "string"
         example: "initialized"
-        description: "The state of the delete list request: processing - request is\
-          \ being processed completed - job completed cancelled - request was cancelled\
-          \ failed - job failed to complete timed_out - the request timed out before\
-          \ completing"
+        description: "The state of the request:\n <p><ul>\n <li>initialized - request\
+          \ has been received</li>\n <li>processing - request is being processed</li>\n\
+          \ <li>completed - job completed</li>\n <li>cancelled - request was cancelled</li>\n\
+          \ <li>failed - job failed to complete</li>\n <li>timed_out - the request\
+          \ timed out before completing\"</li>\n  </ul> </p>"
         enum:
         - "initialized"
         - "processing"

@@ -6,7 +6,14 @@ namespace PHPFUI\ConstantContact\Definition;
 
 /**
  * @property \PHPFUI\ConstantContact\UUID $activity_id Unique ID for the activity.
- * @property string $state The state of the request: initialized - request has been received processing - request is being processed completed - job completed cancelled - request was cancelled failed - job failed to complete timed_out - the request timed out before completing
+ * @property string $state The state of the request:
+ <p><ul>
+  * <li>initialized - request has been received</li>
+ * <li>processing - request is being processed</li>
+ * <li>completed - job completed</li>
+ * <li>cancelled - request was cancelled</li>
+ * <li>failed - job failed to complete</li>
+ * <li>timed_out - the request timed out before completing"</li> * </ul> </p>
  * @property \PHPFUI\ConstantContact\DateTime $started_at Timestamp showing when we began processing the activity request, in ISO-8601 format.
  * @property \PHPFUI\ConstantContact\DateTime $completed_at Timestamp showing when we completed processing the activity, in ISO-8601 format.
  * @property \PHPFUI\ConstantContact\DateTime $created_at Timestamp showing when we created the activity, in ISO-8601 format.

@@ -5,7 +5,7 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @property string $kind The type of street address for the contact. Valid values are home, work, or other.
+ * @property string $kind The type of street address for the contact. Valid values are <code>home</code>, <code>work</code>, or <code>other</code>.
  * @property string $street The number and street of the contact's address.
  * @property string $city The name of the city for the contact's address.
  * @property string $state The name of the state or province for the contact's address.

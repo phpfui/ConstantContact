@@ -50,7 +50,6 @@ class SignUpForm extends \PHPFUI\ConstantContact\Base
 	 * property set as explicit.
 	 *
 	 *
-	 *
 	 * @param \PHPFUI\ConstantContact\Definition\ContactCreateOrUpdateInput $body A JSON request body payload that contains the contact resource you are creating or updating. The request body must contain the `email_address` property and the `list_memberships` array.
 	 */
 	public function post(\PHPFUI\ConstantContact\Definition\ContactCreateOrUpdateInput $body) : array
