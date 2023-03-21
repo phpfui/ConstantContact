@@ -26,7 +26,7 @@
         "phpstan/phpstan": "^1.8"
     },
     "autoload": {
-        "psr-4": {"PHPFUI\\": "src/"}
+        "psr-4": {"PHPFUI\\ConstantContact\\": "src/ConstantContact/"}
     },
     "autoload-dev": {
         "psr-4": {"Tests\\": "Tests/", "Tool\\": "Tool/"}
