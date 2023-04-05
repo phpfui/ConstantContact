@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.2183"
+  version: "3.0.2238"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -1151,6 +1151,65 @@ paths:
       x-authorization-privileges:
       - "contacts:write"
       x-sdk-methodName: "createListAddActivity"
+  /activities/list_delete:
+    post:
+      tags:
+      - "Bulk Activities"
+      summary: "Delete Contact Lists"
+      description: "Use this endpoint to delete up to 100 contact lists in an account. "
+      operationId: "postListDelete"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "An array of `list_id`'s to delete."
+        required: true
+        schema:
+          $ref: "#/definitions/ListIdList100"
+      responses:
+        "201":
+          description: "Request successful. Activity queued for processing."
+          schema:
+            $ref: "#/definitions/ActivityDeleteListsResponse"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "401":
+          description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
+        "429":
+          description: "Too many requests. You exceeded 1,000 queued activities for\
+            \ this user account."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "500":
+          description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "503":
+          description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+      security:
+      - oauth2_implicit:
+        - "contact_data"
+      - oauth2_access_code:
+        - "contact_data"
+      - api_key: []
+      x-authorization-privileges:
+      - "contacts_write"
+      x-sdk-methodName: "createListDeleteActivity"
   /activities/contacts_taggings_remove:
     post:
       tags:
@@ -2740,9 +2799,9 @@ paths:
         x-example: "cbc05bac-6a41-46fa-a063-79961763bf4b"
       - name: "include_membership_count"
         in: "query"
-        description: "Use to include the number of contact members per list by setting\
-          \ the `include_membership_count` to either `active`, to count only active\
-          \ contacts, or `all` to include all contacts in the count."
+        description: "Returns the total number of contacts per list that meet your\
+          \ selection criteria. Set the `include_membership_count` to `active`, to\
+          \ count only active contacts, or `all` to include all contacts in the count."
         required: false
         type: "string"
         x-example: "all"
@@ -2811,7 +2870,7 @@ paths:
         "200":
           description: "Request successful"
           schema:
-            $ref: "#/definitions/ContactList"
+            $ref: "#/definitions/ContactListPutPost"
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
@@ -2942,9 +3001,9 @@ paths:
         x-example: true
       - name: "include_membership_count"
         in: "query"
-        description: "Use to include the total number of contacts members in each\
-          \ list. Set to  `active`, to count only active (mailable) contacts, or `all`\
-          \ to count all contacts."
+        description: "Use to include the total number of contacts per list. Set to\
+          \  `active`, to count only active (mailable) contacts, or `all` to count\
+          \ all contacts."
         required: false
         type: "string"
         x-example: "all"
@@ -3025,7 +3084,7 @@ paths:
         "201":
           description: "New list successfully created"
           schema:
-            $ref: "#/definitions/ContactList"
+            $ref: "#/definitions/ContactListPutPost"
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
@@ -8314,6 +8373,100 @@ definitions:
           format: "uuid"
           example: "04fe9a97-a579-43c5-bb1a-58ed29bf0a6a"
         maxItems: 50
+  ListIdList100:
+    type: "object"
+    required:
+    - "list_ids"
+    properties:
+      list_ids:
+        type: "array"
+        description: "The array of contact lists <code>list_id</code> to delete."
+        items:
+          type: "string"
+          format: "uuid"
+          example: "04fe9a97-a579-43c5-bb1a-58ed29bf0a6a"
+        maxItems: 100
+  ActivityDeleteListsResponse:
+    type: "object"
+    properties:
+      activity_id:
+        type: "string"
+        example: "af86135c-8740-11eb-8abf-fa163ef30864"
+        description: "The system assigned UUID that uniquely identifies an activity."
+        readOnly: true
+      state:
+        type: "string"
+        example: "initialized"
+        description: "The activity processing state."
+        readOnly: true
+        enum:
+        - "initialized"
+        - "processing"
+        - "completed"
+        - "cancelled"
+        - "failed"
+        - "timed_out"
+      started_at:
+        type: "string"
+        format: "date-time"
+        example: "2019-12-12T15:38:24Z"
+        description: "Timestamp showing when processing started for the activity,\
+          \ in ISO-8601 format."
+        readOnly: true
+      completed_at:
+        type: "string"
+        format: "date-time"
+        example: "2019-12-12T15:38:24Z"
+        description: "Timestamp showing when processing completed for the activity,\
+          \ in ISO-8601 format."
+        readOnly: true
+      created_at:
+        type: "string"
+        format: "date-time"
+        example: "2019-12-12T15:38:24Z"
+        description: "Timestamp showing when the activity was first requested, in\
+          \ ISO-8601 format."
+        readOnly: true
+      updated_at:
+        type: "string"
+        format: "date-time"
+        example: "2019-12-12T15:38:24Z"
+        description: "Timestamp showing when the activity was last updated, in ISO-8601\
+          \ format."
+        readOnly: true
+      percent_done:
+        type: "integer"
+        example: 25
+        description: "The processing percent complete for the activity."
+        readOnly: true
+      activity_errors:
+        type: "array"
+        description: "An array of error message strings describing the errors that\
+          \ occurred."
+        readOnly: true
+        items:
+          type: "string"
+          example: "Message describing the error condition."
+          description: "Message describing the error condition."
+          readOnly: true
+      status:
+        type: "object"
+        properties:
+          list_count:
+            type: "integer"
+            example: 5
+            description: "The number of lists deleted."
+      _links:
+        type: "object"
+        properties:
+          self:
+            type: "object"
+            description: "Link to the activity status to use in tracking the request\
+              \ status."
+            properties:
+              href:
+                type: "string"
+                example: "/v3/activities/04fa57a7-cf55-4185-cc1a-58ed29bf0a6a"
   TagAddRemoveContacts:
     type: "object"
     required:
@@ -9622,7 +9775,7 @@ definitions:
         maxItems: 3
       list_memberships:
         type: "array"
-        description: "Array of <code>list_id<code>s to which the contact is being\
+        description: "Array of <code>list_id</code>s to which the contact is being\
           \ subscribed, up to a maximum of 50."
         items:
           type: "string"
@@ -10024,7 +10177,8 @@ definitions:
       membership_count:
         type: "integer"
         example: 327
-        description: "The number of contacts in the contact list."
+        description: "The total number of contacts that are members in a list. Does\
+          \ not apply to segment type lists."
         readOnly: true
   ListInput:
     type: "object"
@@ -10046,6 +10200,52 @@ definitions:
         type: "string"
         example: "List of repeat customers"
         description: "Text describing the list."
+  ContactListPutPost:
+    type: "object"
+    required:
+    - "list_id"
+    - "name"
+    properties:
+      list_id:
+        type: "string"
+        format: "uuid"
+        example: "06526938-56dd-11e9-932a-fa163ea075fa"
+        description: "Unique ID for the contact list"
+        readOnly: true
+      name:
+        type: "string"
+        example: "Multiple purchases"
+        description: "The name given to the contact list"
+      description:
+        type: "string"
+        example: "List of repeat customers."
+        description: "Text describing the list."
+      favorite:
+        type: "boolean"
+        description: "Identifies whether or not the account has favorited the contact\
+          \ list."
+        default: false
+      created_at:
+        type: "string"
+        format: "date-time"
+        example: "2016-01-23T13:48:44.108Z"
+        description: "System generated date and time that the resource was created,\
+          \ in ISO-8601 format."
+        readOnly: true
+      updated_at:
+        type: "string"
+        format: "date-time"
+        example: "2016-03-03T10:56:29-05:00"
+        description: "Date and time that the list was last updated, in ISO-8601 format.\
+          \ System generated."
+        readOnly: true
+      deleted_at:
+        type: "string"
+        format: "date-time"
+        example: "2016-03-03T10:56:29-05:00"
+        description: "If the list was deleted, this property shows the date and time\
+          \ it was deleted, in ISO-8601 format. System generated."
+        readOnly: true
   ActivityDeleteListResponse:
     type: "object"
     properties:
@@ -10164,7 +10364,8 @@ definitions:
       membership_count:
         type: "integer"
         example: 327
-        description: "The number of contacts in the contact list."
+        description: "The total number of contacts that are members in a list. Does\
+          \ not apply to segment type lists."
         readOnly: true
   ListXrefs:
     type: "object"

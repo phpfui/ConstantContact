@@ -22,7 +22,7 @@ class ContactLists extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param int $limit Use to specify the number of results displayed per page of output, from 1 - 500, default = 50.
 	 * @param bool $include_count Set `include_count` to `true` to return the total number of contact lists that meet your selection criteria.
-	 * @param string $include_membership_count Use to include the total number of contacts members in each list. Set to  `active`, to count only active (mailable) contacts, or `all` to count all contacts.
+	 * @param string $include_membership_count Use to include the total number of contacts per list. Set to  `active`, to count only active (mailable) contacts, or `all` to count all contacts.
 	 * @param string $name Use to get details for a single list by entering the full name of the list.
 	 * @param string $status Use to get lists by status. Accepts comma-separated status values.
 	 */

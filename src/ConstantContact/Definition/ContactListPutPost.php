@@ -12,9 +12,8 @@ namespace PHPFUI\ConstantContact\Definition;
  * @property \PHPFUI\ConstantContact\DateTime $created_at System generated date and time that the resource was created, in ISO-8601 format.
  * @property \PHPFUI\ConstantContact\DateTime $updated_at Date and time that the list was last updated, in ISO-8601 format. System generated.
  * @property \PHPFUI\ConstantContact\DateTime $deleted_at If the list was deleted, this property shows the date and time it was deleted, in ISO-8601 format. System generated.
- * @property int $membership_count The total number of contacts that are members in a list. Does not apply to segment type lists.
  */
-class ContactList extends \PHPFUI\ConstantContact\Definition\Base
+class ContactListPutPost extends \PHPFUI\ConstantContact\Definition\Base
 	{
 	protected static array $fields = [
 		'list_id' => '\PHPFUI\ConstantContact\UUID',
@@ -24,7 +23,6 @@ class ContactList extends \PHPFUI\ConstantContact\Definition\Base
 		'created_at' => '\PHPFUI\ConstantContact\DateTime',
 		'updated_at' => '\PHPFUI\ConstantContact\DateTime',
 		'deleted_at' => '\PHPFUI\ConstantContact\DateTime',
-		'membership_count' => 'int',
 
 	];
 	}

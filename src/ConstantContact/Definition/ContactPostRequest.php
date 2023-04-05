@@ -17,7 +17,7 @@ namespace PHPFUI\ConstantContact\Definition;
  * @property array<\PHPFUI\ConstantContact\Definition\ContactCustomField> $custom_fields Array of up to 25 <code>custom_field</code> key value pairs.
  * @property array<\PHPFUI\ConstantContact\Definition\PhoneNumberPut> $phone_numbers Array of up to 3 phone numbers subresources.
  * @property array<\PHPFUI\ConstantContact\Definition\StreetAddressPut> $street_addresses Array of up to 3 street address subresources.
- * @property array<\PHPFUI\ConstantContact\UUID> $list_memberships Array of <code>list_id<code>s to which the contact is being subscribed, up to a maximum of 50.
+ * @property array<\PHPFUI\ConstantContact\UUID> $list_memberships Array of <code>list_id</code>s to which the contact is being subscribed, up to a maximum of 50.
  * @property array<\PHPFUI\ConstantContact\UUID> $taggings Array of tags (<code>tag_id</code>) assigned to the contact, up to a maximum of 50.
  * @property array<\PHPFUI\ConstantContact\Definition\Note> $notes An array of notes about the contact.
  */
