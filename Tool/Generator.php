@@ -267,7 +267,7 @@ class Generator
 			$parameters = [];
 			$docblock = '';
 
-			foreach ($specs['parameters'] as $parameter)
+			foreach ($specs['parameters'] ?? [] as $parameter)
 				{
 				if (isset($parameter['schema']))
 					{
@@ -275,9 +275,9 @@ class Generator
 					}
 				else
 					{
-					$type = $this->getPHPType($parameter['type']);
+					$type = $this->getPHPType($parameter['type'] ?? '');
 					}
-				$name = \str_replace(' ', '_', $parameter['name']);
+				$name = \str_replace(' ', '_', $parameter['name'] ?? '');
 
 				if (isset($parameter['enum']))
 					{
@@ -289,11 +289,13 @@ class Generator
 					$csv[$name] = true;
 					}
 
-				$docblock .= "\n\t * @param {$type} {$dollar}{$name} {$parameter['description']}";
-				$parameterString = $parameter['required'] ? '' : '?';
+				$description = $parameter['description'] ?? '';
+				$docblock .= "\n\t * @param {$type} {$dollar}{$name} {$description}";
+				$required = $parameter['required'] ?? false;
+				$parameterString = $required ? '' : '?';
 				$parameterString .= $type . ' $' . $name;
 
-				if (! $parameter['required'])
+				if (! $required)
 					{
 					$parameterString .= ' = null';
 					}
@@ -611,6 +613,10 @@ class ~class~ extends {$this->definitionNamespace}\Base
 		{
 		$directory = __DIR__ . '/../src/ConstantContact' . $path;
 
+		if (! is_dir($directory))
+			{
+			mkdir($directory, 0x077, true);
+			}
 		$iterator = new \RecursiveIteratorIterator(
 			new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS),
 			\RecursiveIteratorIterator::SELF_FIRST
