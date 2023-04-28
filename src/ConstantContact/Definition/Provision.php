@@ -50,18 +50,6 @@ class Provision extends \PHPFUI\ConstantContact\Definition\Base
 
 	];
 
-	protected static array $minLength = [
-		'contact_phone' => 5,
-		'country_code' => 2,
-		'organization_name' => 1,
-		'organization_phone' => 5,
-		'login_name' => 6,
-		'password' => 6,
-		'first_name' => 2,
-		'last_name' => 2,
-
-	];
-
 	protected static array $maxLength = [
 		'contact_email' => 80,
 		'contact_phone' => 25,
@@ -75,6 +63,18 @@ class Provision extends \PHPFUI\ConstantContact\Definition\Base
 		'partner_account_id' => 80,
 		'external_id' => 255,
 		'external_provider' => 80,
+
+	];
+
+	protected static array $minLength = [
+		'contact_phone' => 5,
+		'country_code' => 2,
+		'organization_name' => 1,
+		'organization_phone' => 5,
+		'login_name' => 6,
+		'password' => 6,
+		'first_name' => 2,
+		'last_name' => 2,
 
 	];
 	}

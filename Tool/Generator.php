@@ -4,11 +4,7 @@ namespace Tool;
 
 class Generator
 	{
-	private string $rootPath = 'src/ConstantContact/';
-
 	private string $definitionNamespace = '\\PHPFUI\\ConstantContact\\Definition';
-
-	private string $nl;
 
 	private array $duplicateClasses = [
 		'CustomFieldResource2' => 'CustomFieldResource',
@@ -26,6 +22,10 @@ class Generator
 
 	private array $generatedClasses = [];
 
+	private string $nl;
+
+	private string $rootPath = 'src/ConstantContact/';
+
 	public function __construct()
 		{
 		$this->nl = 'WIN' === \strtoupper(\substr(PHP_OS, 0, 3)) ? "\r\n" : "\n";
@@ -36,14 +36,9 @@ class Generator
 		$this->deleteFileTree($version);
 		}
 
-	public function makeClasses(string $version, array $paths) : void
+	public function deleteDefinitions() : void
 		{
-		\ksort($paths);
-
-		foreach ($paths as $path => $properties)
-			{
-			$this->generateClass($version, $path, $properties);
-			}
+		$this->deleteFileTree('/Definition');
 		}
 
 	public function generateClass(string $version, string $path, array $properties) : void
@@ -65,19 +60,6 @@ class Generator
 		$this->writeClass($namespacedClass, $apiPath, $properties);
 		}
 
-	public function deleteDefinitions() : void
-		{
-		$this->deleteFileTree('/Definition');
-		}
-
-	public function makeDefinitions(array $definitions) : void
-		{
-		foreach ($definitions as $class => $properties)
-			{
-			$this->generateDefinition($this->getUniqueClassName($this->definitionNamespace, $class), $properties);
-			}
-		}
-
 	public function generateDefinition(string $namespacedClass, array $properties) : void
 		{
 		$parts = \explode('\\', $namespacedClass);
@@ -88,9 +70,10 @@ class Generator
 		if (! isset($properties['type']))
 			{
 			echo "{$namespacedClass} has no type";
-			if (str_contains($namespacedClass, 'ResendToNonOpenersInput'))
+
+			if (\str_contains($namespacedClass, 'ResendToNonOpenersInput'))
 				{
-				echo 'but assuming object';
+				echo ', assuming object';
 				$properties['type'] = 'object';
 				}
 			echo "\n";
@@ -205,8 +188,249 @@ class Generator
 				$type = \str_replace('\\\\', '\\', $type);
 				$docBlock[] = \trim("{$type} {$dollar}{$name} {$description}");
 				}
-			$this->generateFromTemplate($class, ['fields' => $fields, 'minLength' => $minLength, 'maxLength' => $maxLength, 'requiredFields' => $required], $docBlock);
+			$this->generateFromTemplate($class, ['fields' => $fields, 'maxLength' => $maxLength, 'minLength' => $minLength, 'requiredFields' => $required], $docBlock);
 			}
+		}
+
+	public function makeClasses(string $version, array $paths) : void
+		{
+		\ksort($paths);
+
+		foreach ($paths as $path => $properties)
+			{
+			\ksort($properties);
+			$this->generateClass($version, $path, $properties);
+			}
+		}
+
+	public function makeDefinitions(array $definitions) : void
+		{
+		foreach ($definitions as $class => $properties)
+			{
+			$this->generateDefinition($this->getUniqueClassName($this->definitionNamespace, $class), $properties);
+			}
+		}
+
+	private function cleanDescription(string $description) : string
+		{
+		// fix issues in documentation
+		return \str_replace(
+			['(/api_guide/', '<a/>', 'href="/api_guide/', " * \n", '    <li>', '  <ul>', '  </ul>', '  <li>', "\n<li>", "\n<ul>", "\n</ul>"],
+			['(https://v3.developer.constantcontact.com/api_guide/', '</a>', 'href="https://v3.developer.constantcontact.com/api_guide/', " *\n",
+				' * <li>', ' * <ul>', ' * </ul>', ' * <li>', ' * <li>', ' * <ul>', ' * </ul>'],
+			$description
+		);
+		}
+
+	private function deleteFileTree(string $path) : void
+		{
+		$directory = __DIR__ . '/../src/ConstantContact' . $path;
+
+		if (! \is_dir($directory))
+			{
+			\mkdir($directory, 0x077, true);
+			}
+		$iterator = new \RecursiveIteratorIterator(
+			new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS),
+			\RecursiveIteratorIterator::SELF_FIRST
+		);
+
+		foreach ($iterator as $item)
+			{
+			if (! $item->isDir())
+				{
+				$fileName = "{$item}";
+				// don't delete base classes
+				if (! \str_ends_with($fileName, 'Base.php'))
+					{
+					\unlink($fileName);
+					}
+				}
+			}
+		}
+
+	private function formatDescription(string $description) : string
+		{
+		$description = $this->cleanDescription($description);
+		$lines = \explode("\n", $description);
+		$blocks = [];
+
+		foreach ($lines as $line)
+			{
+			$line = \trim($line);
+			$block = "\t *";
+
+			foreach (\explode(' ', $line) as $word)
+				{
+				$block .= ' ' . $word;
+
+				if (\strlen($block) > 70)
+					{
+					$blocks[] = $block;
+					$block = "\t *";
+					}
+				}
+			$blocks[] = \rtrim($block);
+			}
+
+		return \implode("\n", $blocks);
+		}
+
+	/**
+	 * Generate a definition from a template
+	 *
+	 * @param string $name of the class, no namespace
+	 * @param array  $properties from YAML file
+	 * @param array  $docBlocks @property docblocks to output
+	 */
+	private function generateFromTemplate(string $name, array $properties, array $docBlocks) : void
+		{
+		$namespace = \trim($this->definitionNamespace, '\\');
+
+		$template = <<<PHP
+<?php
+
+// Generated file. Do not edit by hand. Use update.php in project root.
+
+namespace {$namespace};
+
+/**
+
+PHP;
+
+		foreach ($docBlocks as $docBlock)
+			{
+			$docBlock = \trim($docBlock);
+			$template .= " * @property {$docBlock}\n";
+			}
+
+		$template .= " */
+class ~class~ extends {$this->definitionNamespace}\Base
+	{";
+
+		foreach ($properties as $fields => $values)
+			{
+			if (! $values)
+				{
+				continue;
+				}
+			$output = "\n\tprotected static array " . '$' . $fields . " = [\n";
+
+			// set constants correctly, ints are OK as is
+			foreach ($values as $field => $value)
+				{
+				switch (\gettype($value))
+					{
+					case 'array':
+						foreach ($value as $index => $enum)
+							{
+							if (! \is_numeric($enum))
+								{
+								$value[$index] = "'{$enum}'";
+								}
+							}
+						unset($enum);
+						$value = '[' . \implode(', ', $value) . ']';
+
+						break;
+
+					case 'string':
+						$value = "'{$value}'";
+
+						break;
+
+					case 'boolean':
+						$value = $value ? 'true' : 'false';
+
+						break;
+					}
+
+				if ('string' == \gettype($field))
+					{
+					$output .= "\t\t'{$field}' => {$value},\n";
+					}
+				else
+					{
+					$output .= "\t\t{$value},\n";
+					}
+				}
+
+			$output .= "\n\t];\n";
+			$template .= $output;
+			}
+			$template = \str_replace('~class~', $name, $template) . "\t}\n";
+			$template = \str_replace("/**{$this->nl} */{$this->nl}", '', $template);
+
+			$path = __DIR__ . "/../src/ConstantContact/Definition/{$name}.php";
+
+			if (! \file_put_contents($path, $template))
+				{
+				throw new \Exception("Error writing file {$path}");
+				}
+		}
+
+	private function getClassName(string $path) : string
+		{
+		$parts = \explode('/', $path);
+		$className = '';
+
+		foreach ($parts as $part)
+			{
+			if (! \strlen($part) || '{' == $part[0])
+				{
+				continue;
+				}
+			$nameParts = \explode('_', $part);
+
+			foreach ($nameParts as $namePart)
+				{
+				$className .= \ucfirst($namePart);
+				}
+			$className .= '\\';
+			}
+
+		return \trim($className, '\\');
+		}
+
+	private function getPHPType(string $type) : string
+		{
+		if ('number' == $type || \str_starts_with($type, 'int'))
+			{
+			$type = 'int';
+			}
+		elseif ('date-time' == $type)
+			{
+			$type = '\PHPFUI\ConstantContact\DateTime';
+			}
+		elseif ('date' == $type)
+			{
+			$type = '\PHPFUI\ConstantContact\Date';
+			}
+		elseif ('boolean' == $type)
+			{
+			$type = 'bool';
+			}
+		elseif ('double' == $type)
+			{
+			$type = 'float';
+			}
+		elseif ('file' == $type)
+			{
+			$type = 'string';
+			}
+		elseif ('uuid' == $type)
+			{
+			$type = '\PHPFUI\ConstantContact\UUID';
+			}
+
+		return $type;
+		}
+
+	private function getTypeNameFromRef(string $ref) : string
+		{
+		$parts = \explode('/', \str_replace('_', '', $ref));
+
+		return $this->getUniqueClassName($this->definitionNamespace, \array_pop($parts));
 		}
 
 	/**
@@ -412,227 +636,6 @@ PHP;
 		if (! \file_put_contents($classPath, $php))
 			{
 			throw new \Exception("Error writing file {$classPath}");
-			}
-		}
-
-	private function getPHPType(string $type) : string
-		{
-		if ('number' == $type || \str_starts_with($type, 'int'))
-			{
-			$type = 'int';
-			}
-		elseif ('date-time' == $type)
-			{
-			$type = '\PHPFUI\ConstantContact\DateTime';
-			}
-		elseif ('date' == $type)
-			{
-			$type = '\PHPFUI\ConstantContact\Date';
-			}
-		elseif ('boolean' == $type)
-			{
-			$type = 'bool';
-			}
-		elseif ('double' == $type)
-			{
-			$type = 'float';
-			}
-		elseif ('file' == $type)
-			{
-			$type = 'string';
-			}
-		elseif ('uuid' == $type)
-			{
-			$type = '\PHPFUI\ConstantContact\UUID';
-			}
-
-		return $type;
-		}
-
-	private function getClassName(string $path) : string
-		{
-		$parts = \explode('/', $path);
-		$className = '';
-
-		foreach ($parts as $part)
-			{
-			if (! \strlen($part) || '{' == $part[0])
-				{
-				continue;
-				}
-			$nameParts = \explode('_', $part);
-
-			foreach ($nameParts as $namePart)
-				{
-				$className .= \ucfirst($namePart);
-				}
-			$className .= '\\';
-			}
-
-		return \trim($className, '\\');
-		}
-
-	private function cleanDescription(string $description) : string
-		{
-		// fix issues in documentation
-		return \str_replace(
-			['(/api_guide/', '<a/>', 'href="/api_guide/', " * \n", '    <li>', '  <ul>', '  </ul>', '  <li>', "\n<li>", "\n<ul>", "\n</ul>"],
-			['(https://v3.developer.constantcontact.com/api_guide/', '</a>', 'href="https://v3.developer.constantcontact.com/api_guide/', " *\n",
-				' * <li>', ' * <ul>', ' * </ul>', ' * <li>', ' * <li>', ' * <ul>', ' * </ul>'],
-			$description
-		);
-		}
-
-	private function formatDescription(string $description) : string
-		{
-		$description = $this->cleanDescription($description);
-		$lines = \explode("\n", $description);
-		$blocks = [];
-
-		foreach ($lines as $line)
-			{
-			$line = \trim($line);
-			$block = "\t *";
-
-			foreach (\explode(' ', $line) as $word)
-				{
-				$block .= ' ' . $word;
-
-				if (\strlen($block) > 70)
-					{
-					$blocks[] = $block;
-					$block = "\t *";
-					}
-				}
-			$blocks[] = \rtrim($block);
-			}
-
-		return \implode("\n", $blocks);
-		}
-
-	/**
-	 * Generate a definition from a template
-	 *
-	 * @param string $name of the class, no namespace
-	 * @param array  $properties from YAML file
-	 * @param array  $docBlocks @property docblocks to output
-	 */
-	private function generateFromTemplate(string $name, array $properties, array $docBlocks) : void
-		{
-		$namespace = \trim($this->definitionNamespace, '\\');
-
-		$template = <<<PHP
-<?php
-
-// Generated file. Do not edit by hand. Use update.php in project root.
-
-namespace {$namespace};
-
-/**
-
-PHP;
-
-		foreach ($docBlocks as $docBlock)
-			{
-			$docBlock = \trim($docBlock);
-			$template .= " * @property {$docBlock}\n";
-			}
-
-		$template .= " */
-class ~class~ extends {$this->definitionNamespace}\Base
-	{";
-
-		foreach ($properties as $fields => $values)
-			{
-			if (! $values)
-				{
-				continue;
-				}
-			$output = "\n\tprotected static array " . '$' . $fields . " = [\n";
-
-			// set constants correctly, ints are OK as is
-			foreach ($values as $field => $value)
-				{
-				switch (\gettype($value))
-					{
-					case 'array':
-						foreach ($value as $index => $enum)
-							{
-							if (! \is_numeric($enum))
-								{
-								$value[$index] = "'{$enum}'";
-								}
-							}
-						unset($enum);
-						$value = '[' . \implode(', ', $value) . ']';
-
-						break;
-
-					case 'string':
-						$value = "'{$value}'";
-
-						break;
-
-					case 'boolean':
-						$value = $value ? 'true' : 'false';
-
-						break;
-					}
-				if ('string' == \gettype($field))
-					{
-					$output .= "\t\t'{$field}' => {$value},\n";
-					}
-				else
-					{
-					$output .= "\t\t{$value},\n";
-					}
-				}
-
-			$output .= "\n\t];\n";
-			$template .= $output;
-			}
-			$template = \str_replace('~class~', $name, $template) . "\t}\n";
-			$template = \str_replace("/**{$this->nl} */{$this->nl}", '', $template);
-
-			$path = __DIR__ . "/../src/ConstantContact/Definition/{$name}.php";
-
-			if (! \file_put_contents($path, $template))
-				{
-				throw new \Exception("Error writing file {$path}");
-				}
-		}
-
-	private function getTypeNameFromRef(string $ref) : string
-		{
-		$parts = \explode('/', \str_replace('_', '', $ref));
-
-		return $this->getUniqueClassName($this->definitionNamespace, \array_pop($parts));
-		}
-
-	private function deleteFileTree(string $path) : void
-		{
-		$directory = __DIR__ . '/../src/ConstantContact' . $path;
-
-		if (! is_dir($directory))
-			{
-			mkdir($directory, 0x077, true);
-			}
-		$iterator = new \RecursiveIteratorIterator(
-			new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS),
-			\RecursiveIteratorIterator::SELF_FIRST
-		);
-
-		foreach ($iterator as $item)
-			{
-			if (! $item->isDir())
-				{
-				$fileName = "{$item}";
-				// don't delete base classes
-				if (! \str_ends_with($fileName, 'Base.php'))
-					{
-					\unlink($fileName);
-					}
-				}
 			}
 		}
 	}

@@ -28,18 +28,18 @@ class PhysicalAddress extends \PHPFUI\ConstantContact\Definition\Base
 
 	];
 
-	protected static array $minLength = [
-		'address_line1' => 1,
-		'address_line2' => 1,
-		'address_line3' => 1,
-
-	];
-
 	protected static array $maxLength = [
 		'address_line1' => 80,
 		'address_line2' => 80,
 		'address_line3' => 80,
 		'state_code' => 2,
+
+	];
+
+	protected static array $minLength = [
+		'address_line1' => 1,
+		'address_line2' => 1,
+		'address_line3' => 1,
 
 	];
 	}

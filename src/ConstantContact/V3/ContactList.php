@@ -12,6 +12,22 @@ class ContactList extends \PHPFUI\ConstantContact\Base
 		}
 
 	/**
+	 * DELETE a List
+	 *
+	 * Deletes the specified contact list and its membership. DELETE List requests
+	 * are processed asynchronously, and you can track the status of the request
+	 * by making a GET call to the URI shown in the `_links` property in the
+	 * response.
+	 *
+	 * @param string $list_id Unique ID of the list to delete
+	 */
+	public function delete(string $list_id) : bool
+		{
+
+		return $this->doDelete(['list_id' => $list_id, ]);
+		}
+
+	/**
 	 * GET a List
 	 *
 	 * Use this method to get details about a specific contact list (`list_id`).
@@ -48,21 +64,5 @@ class ContactList extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doPut(['list_id' => $list_id, 'JSON_PUT_body' => $JSON_PUT_body->getData(), ]);
-		}
-
-	/**
-	 * DELETE a List
-	 *
-	 * Deletes the specified contact list and its membership. DELETE List requests
-	 * are processed asynchronously, and you can track the status of the request
-	 * by making a GET call to the URI shown in the `_links` property in the
-	 * response.
-	 *
-	 * @param string $list_id Unique ID of the list to delete
-	 */
-	public function delete(string $list_id) : bool
-		{
-
-		return $this->doDelete(['list_id' => $list_id, ]);
 		}
 	}

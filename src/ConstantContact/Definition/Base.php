@@ -19,14 +19,14 @@ abstract class Base
 	protected static array $fields = [];
 
 	/**
-	 * @var array<string, int> minimum allowed values. Arrays are size, int and float are values, strings are length.
-	 */
-	protected static array $minLength = [];
-
-	/**
 	 * @var array<string, int> maximum allowed values. Arrays are size, int and float are values, strings are length.
 	 */
 	protected static array $maxLength = [];
+
+	/**
+	 * @var array<string, int> minimum allowed values. Arrays are size, int and float are values, strings are length.
+	 */
+	protected static array $minLength = [];
 
 	/**
 	 * @var array<string> required fields.
@@ -38,11 +38,6 @@ abstract class Base
    */
 	private array $data = [];
 
-  /**
-   * @var array<string, bool> indicates which values are set to reduce data output.
-   */
-	private array $setFields = [];
-
 	/**
 	 * @var array<string, bool> supported scalars
 	 */
@@ -53,6 +48,11 @@ abstract class Base
 		'string' => true,
 		'array' => true,
 	];
+
+  /**
+   * @var array<string, bool> indicates which values are set to reduce data output.
+   */
+	private array $setFields = [];
 
 	public function __construct(array $initialValues = [])
 		{
@@ -294,18 +294,18 @@ abstract class Base
 		}
 
 	/**
-	 * @return string pretty print JSON
-	 */
-	public function getJSON() : string
-		{
-		return \json_encode($this->getData(), JSON_PRETTY_PRINT);
-		}
-
-	/**
 	 * @return array all the valid fields for the object. Index is field name and value is the type.
 	 */
 	public function getfields() : array
 		{
 		return static::$fields;
+		}
+
+	/**
+	 * @return string pretty print JSON
+	 */
+	public function getJSON() : string
+		{
+		return \json_encode($this->getData(), JSON_PRETTY_PRINT);
 		}
 	}

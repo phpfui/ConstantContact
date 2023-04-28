@@ -12,6 +12,23 @@ class ContactTag extends \PHPFUI\ConstantContact\Base
 		}
 
 	/**
+	 * DELETE a Tag
+	 *
+	 * Use this method to create an activity used to un-assign a tag from all
+	 * assigned contacts and delete the tag. This is an asynchronous activity.
+	 * To view activity details for the delete request, use the href link returned
+	 * in the response. [Learn more](https://v3.developer.constantcontact.com/api_guide/tags_delete.html).
+	 *
+	 *
+	 * @param string $tag_id The ID that uniquely identifies a tag in UUID format.
+	 */
+	public function delete(string $tag_id) : bool
+		{
+
+		return $this->doDelete(['tag_id' => $tag_id, ]);
+		}
+
+	/**
 	 * GET Tag Details
 	 *
 	 * Use this method to get tag details for a specified `tag_id`. Use the
@@ -45,22 +62,5 @@ class ContactTag extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doPut(['tag_id' => $tag_id, 'body' => $body->getData(), ]);
-		}
-
-	/**
-	 * DELETE a Tag
-	 *
-	 * Use this method to create an activity used to un-assign a tag from all
-	 * assigned contacts and delete the tag. This is an asynchronous activity.
-	 * To view activity details for the delete request, use the href link returned
-	 * in the response. [Learn more](https://v3.developer.constantcontact.com/api_guide/tags_delete.html).
-	 *
-	 *
-	 * @param string $tag_id The ID that uniquely identifies a tag in UUID format.
-	 */
-	public function delete(string $tag_id) : bool
-		{
-
-		return $this->doDelete(['tag_id' => $tag_id, ]);
 		}
 	}

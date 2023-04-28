@@ -16,13 +16,13 @@ class TagPost extends \PHPFUI\ConstantContact\Definition\Base
 
 	];
 
-	protected static array $minLength = [
-		'name' => 1,
+	protected static array $maxLength = [
+		'name' => 255,
 
 	];
 
-	protected static array $maxLength = [
-		'name' => 255,
+	protected static array $minLength = [
+		'name' => 1,
 
 	];
 	}

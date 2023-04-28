@@ -12,6 +12,19 @@ class ContactCustomField extends \PHPFUI\ConstantContact\Base
 		}
 
 	/**
+	 * DELETE a custom_field
+	 *
+	 * This DELETE request deletes a custom_field from the user's account
+	 *
+	 * @param string $custom_field_id Unique ID of the custom_field on which to operate.
+	 */
+	public function delete(string $custom_field_id) : bool
+		{
+
+		return $this->doDelete(['custom_field_id' => $custom_field_id, ]);
+		}
+
+	/**
 	 * GET a custom_field
 	 *
 	 * This GET call retrieves a `custom_field` resource, specified by `custom_field_id`.
@@ -37,18 +50,5 @@ class ContactCustomField extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doPut(['custom_field_id' => $custom_field_id, 'body' => $body->getData(), ]);
-		}
-
-	/**
-	 * DELETE a custom_field
-	 *
-	 * This DELETE request deletes a custom_field from the user's account
-	 *
-	 * @param string $custom_field_id Unique ID of the custom_field on which to operate.
-	 */
-	public function delete(string $custom_field_id) : bool
-		{
-
-		return $this->doDelete(['custom_field_id' => $custom_field_id, ]);
 		}
 	}

@@ -12,6 +12,23 @@ class Contact extends \PHPFUI\ConstantContact\Base
 		}
 
 	/**
+	 * DELETE a Contact
+	 *
+	 * Deletes the contact identified by the contact_id path parameter. Deleted
+	 * contacts won't receive email from you, and they don't count as active
+	 * contacts. Unlike unsubscribed contacts, deleted contacts can be revived,
+	 * or added back to an account. Learn how to [revive deleted contacts](https://v3.developer.constantcontact.com/api_guide/contacts_delete.html#revive).
+	 *
+	 *
+	 * @param string $contact_id Unique ID of contact to DELETE
+	 */
+	public function delete(string $contact_id) : bool
+		{
+
+		return $this->doDelete(['contact_id' => $contact_id, ]);
+		}
+
+	/**
 	 * GET a Contact
 	 *
 	 * This endpoint GETs a specific contact resource (contact_id). Use the
@@ -61,22 +78,5 @@ class Contact extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doPut(['contact_id' => $contact_id, 'body' => $body->getData(), ]);
-		}
-
-	/**
-	 * DELETE a Contact
-	 *
-	 * Deletes the contact identified by the contact_id path parameter. Deleted
-	 * contacts won't receive email from you, and they don't count as active
-	 * contacts. Unlike unsubscribed contacts, deleted contacts can be revived,
-	 * or added back to an account. Learn how to [revive deleted contacts](https://v3.developer.constantcontact.com/api_guide/contacts_delete.html#revive).
-	 *
-	 *
-	 * @param string $contact_id Unique ID of contact to DELETE
-	 */
-	public function delete(string $contact_id) : bool
-		{
-
-		return $this->doDelete(['contact_id' => $contact_id, ]);
 		}
 	}

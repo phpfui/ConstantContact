@@ -12,6 +12,25 @@ class Subscription extends \PHPFUI\ConstantContact\Base
 		}
 
 	/**
+	 * DELETE Webhook Topic Subscriptions
+	 *
+	 * Use this DELETE method to unsubscribe your application from notifications
+	 * on a certain `topic_id`. Possible `topic_id` values include:
+	 *
+	 * * `1` - Billing tier upgrade.
+	 * * `2` - Billing tier downgrade.
+	 * * `3` - Account cancelled.
+	 * * `4` - Account disabled.
+	 *
+	 * @param string $topic_id Identifies a webhook topic.
+	 */
+	public function delete(string $topic_id) : bool
+		{
+
+		return $this->doDelete(['topic_id' => $topic_id, ]);
+		}
+
+	/**
 	 * GET Webhook Topic Subscription
 	 *
 	 * Use this GET method to return subscription information for a certain
@@ -65,24 +84,5 @@ class Subscription extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doPut(['topic_id' => $topic_id, 'body' => $body->getData(), ]);
-		}
-
-	/**
-	 * DELETE Webhook Topic Subscriptions
-	 *
-	 * Use this DELETE method to unsubscribe your application from notifications
-	 * on a certain `topic_id`. Possible `topic_id` values include:
-	 *
-	 * * `1` - Billing tier upgrade.
-	 * * `2` - Billing tier downgrade.
-	 * * `3` - Account cancelled.
-	 * * `4` - Account disabled.
-	 *
-	 * @param string $topic_id Identifies a webhook topic.
-	 */
-	public function delete(string $topic_id) : bool
-		{
-
-		return $this->doDelete(['topic_id' => $topic_id, ]);
 		}
 	}

@@ -16,13 +16,13 @@ class ContactsJsonImport extends \PHPFUI\ConstantContact\Definition\Base
 
 	];
 
-	protected static array $minLength = [
-		'list_ids' => 1,
+	protected static array $maxLength = [
+		'list_ids' => 50,
 
 	];
 
-	protected static array $maxLength = [
-		'list_ids' => 50,
+	protected static array $minLength = [
+		'list_ids' => 1,
 
 	];
 	}

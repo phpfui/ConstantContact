@@ -12,6 +12,22 @@ class Schedules extends \PHPFUI\ConstantContact\Base
 		}
 
 	/**
+	 * DELETE an Email Campaign Activity Schedule
+	 *
+	 * Use this method to unschedule an email campaign activity by deleting
+	 * the schedule. You can only unschedule email campaign activities that
+	 * are in `SCHEDULED` status. Unscheduling reverts the email campaign activity
+	 * to the status prior to `SCHEDULED`.
+	 *
+	 * @param string $campaign_activity_id The unique ID for an email campaign activity.
+	 */
+	public function delete(string $campaign_activity_id) : bool
+		{
+
+		return $this->doDelete(['campaign_activity_id' => $campaign_activity_id, ]);
+		}
+
+	/**
 	 * GET an Email Campaign Activity Schedule
 	 *
 	 * Use this method to return the current schedule for an email campaign
@@ -57,21 +73,5 @@ class Schedules extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doPost(['campaign_activity_id' => $campaign_activity_id, 'body' => $body->getData(), ]);
-		}
-
-	/**
-	 * DELETE an Email Campaign Activity Schedule
-	 *
-	 * Use this method to unschedule an email campaign activity by deleting
-	 * the schedule. You can only unschedule email campaign activities that
-	 * are in `SCHEDULED` status. Unscheduling reverts the email campaign activity
-	 * to the status prior to `SCHEDULED`.
-	 *
-	 * @param string $campaign_activity_id The unique ID for an email campaign activity.
-	 */
-	public function delete(string $campaign_activity_id) : bool
-		{
-
-		return $this->doDelete(['campaign_activity_id' => $campaign_activity_id, ]);
 		}
 	}

@@ -36,11 +36,6 @@ class ContactCreateOrUpdateInput extends \PHPFUI\ConstantContact\Definition\Base
 
 	];
 
-	protected static array $minLength = [
-		'list_memberships' => 1,
-
-	];
-
 	protected static array $maxLength = [
 		'email_address' => 50,
 		'first_name' => 50,
@@ -50,6 +45,11 @@ class ContactCreateOrUpdateInput extends \PHPFUI\ConstantContact\Definition\Base
 		'phone_number' => 25,
 		'list_memberships' => 50,
 		'custom_fields' => 50,
+
+	];
+
+	protected static array $minLength = [
+		'list_memberships' => 1,
 
 	];
 

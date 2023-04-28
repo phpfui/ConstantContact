@@ -19,13 +19,13 @@ class TypeTest extends \PHPFUI\ConstantContact\Definition\Base
 		'classArraySizeMin' => 'array<\\Tests\\Fixtures\\ClassTest>',
 	];
 
-	protected static array $minLength = [
-		'string' => 10,
-		'classArraySizeMin' => 2,
-	];
-
 	protected static array $maxLength = [
 		'string' => 50,
 		'classArraySize' => 3,
+	];
+
+	protected static array $minLength = [
+		'string' => 10,
+		'classArraySizeMin' => 2,
 	];
 	}

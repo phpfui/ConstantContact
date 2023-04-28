@@ -8,18 +8,6 @@ class Base
 		{
 		}
 
-	public function success() : bool
-		{
-		$status = $this->client->getStatusCode();
-
-		return $status >= 200 && $status < 300;
-		}
-
-	public function getStatusCode() : int
-		{
-		return $this->client->getStatusCode();
-		}
-
 	public function getLastError() : string
 		{
 		return $this->client->getLastError();
@@ -30,6 +18,11 @@ class Base
 		return $this->client->getBody();
 		}
 
+	public function getStatusCode() : int
+		{
+		return $this->client->getStatusCode();
+		}
+
 	/**
 	 * If the endpoint is paginated, you can call next() to retrieve the next set of data.  If no next is provided, an empty array is returned.
 	 *
@@ -38,6 +31,13 @@ class Base
 	public function next() : array
 		{
 		return $this->client->next();
+		}
+
+	public function success() : bool
+		{
+		$status = $this->client->getStatusCode();
+
+		return $status >= 200 && $status < 300;
 		}
 
 	protected function doDelete(array $parameters) : bool
@@ -54,11 +54,11 @@ class Base
 		return $this->client->get($url, $parameters);
 		}
 
-	protected function doPut(array $parameters) : array
+	protected function doPatch(array $parameters) : array
 		{
 		$url = $this->getUrl($parameters);
 
-		return $this->client->put($url, $parameters);
+		return $this->client->patch($url, $parameters);
 		}
 
 	protected function doPost(array $parameters) : array
@@ -68,11 +68,11 @@ class Base
 		return $this->client->post($url, $parameters);
 		}
 
-	protected function doPatch(array $parameters) : array
+	protected function doPut(array $parameters) : array
 		{
 		$url = $this->getUrl($parameters);
 
-		return $this->client->patch($url, $parameters);
+		return $this->client->put($url, $parameters);
 		}
 
 	private function getUrl(array &$parameters) : string

@@ -11,6 +11,34 @@
  */
 class CustomFieldTest extends \PHPUnit\Framework\TestCase
 	{
+	public function testBadArrayType() : void
+		{
+		$fixture = new \Tests\Fixtures\CustomFieldTest();
+		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidType::class);
+		$fixture->cf_array = [];
+		}
+
+	public function testBadBooleanType() : void
+		{
+		$fixture = new \Tests\Fixtures\CustomFieldTest();
+		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidType::class);
+		$fixture->cf_boolean = true;
+		}
+
+	public function testBadFloatType() : void
+		{
+		$fixture = new \Tests\Fixtures\CustomFieldTest();
+		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidType::class);
+		$fixture->cf_float = 1.234;
+		}
+
+	public function testBadIntType() : void
+		{
+		$fixture = new \Tests\Fixtures\CustomFieldTest();
+		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidType::class);
+		$fixture->cf_integer = 0;
+		}
+
 	public function testGetSet() : void
 		{
 		$string = 'A long string';
@@ -40,34 +68,6 @@ class CustomFieldTest extends \PHPUnit\Framework\TestCase
 		$class = new \Tests\Fixtures\CustomFieldTest(['cf_gender' => 'mail', 'cf_firstName' => 'First', 'cf_lastName' => 'Class']);
 		$json = $class->getJSON();
 		$this->assertEquals($expectedJSON, $json);
-		}
-
-	public function testBadIntType() : void
-		{
-		$fixture = new \Tests\Fixtures\CustomFieldTest();
-		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidType::class);
-		$fixture->cf_integer = 0;
-		}
-
-	public function testBadFloatType() : void
-		{
-		$fixture = new \Tests\Fixtures\CustomFieldTest();
-		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidType::class);
-		$fixture->cf_float = 1.234;
-		}
-
-	public function testBadBooleanType() : void
-		{
-		$fixture = new \Tests\Fixtures\CustomFieldTest();
-		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidType::class);
-		$fixture->cf_boolean = true;
-		}
-
-	public function testBadArrayType() : void
-		{
-		$fixture = new \Tests\Fixtures\CustomFieldTest();
-		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidType::class);
-		$fixture->cf_array = [];
 		}
 
 	public function testMaxLength() : void

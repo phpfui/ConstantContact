@@ -8,9 +8,9 @@ exec($php . ' composer.phar update');
 include 'vendor/autoload.php';
 
 // get the latest
-$repo = new \Gitonomy\Git\Repository(__DIR__);
-$repo->run('checkout', ['main']);
-$repo->run('pull');
+//$repo = new \Gitonomy\Git\Repository(__DIR__);
+//$repo->run('checkout', ['main']);
+//$repo->run('pull');
 
 // download the yaml file and save it
 $url = 'https://api.cc.email/v3/swagger.yaml';
@@ -36,6 +36,9 @@ if ('php' == $php)
 	{
 	exit;
 	}
+
+// style the code
+exec($php . ' vendor\bin\php-cs-fixer fix -vv --allow-risky=yes');
 
 // Stage all changed files
 $repo->run('add', ['.']);

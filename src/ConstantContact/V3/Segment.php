@@ -12,6 +12,29 @@ class Segment extends \PHPFUI\ConstantContact\Base
 		}
 
 	/**
+	 * DELETE a Segment
+	 *
+	 * Use this method to delete a segment from your account. Before deleting
+	 * a segment, verify that the segment is not associated with a scheduled
+	 * campaign.
+	 *
+	 * Deleted segments do not display in the results when using the `GET /segments`
+	 * endpoint. If you know the `segment_id`, you can use the `GET /segments/{segment_id}`
+	 * endpoint to view the deleted segment's details. A segment's details
+	 * are preserved for external reference purposes, such as displaying the
+	 * segment name in a campaign's history. For more use case information,
+	 * see [Delete a Segment](https://v3.developer.constantcontact.com/api_guide/segment_delete.html)
+	 * in the API guide.
+	 *
+	 * @param int $segment_id The system generated ID that uniquely identifies the segment.
+	 */
+	public function delete(int $segment_id) : bool
+		{
+
+		return $this->doDelete(['segment_id' => $segment_id, ]);
+		}
+
+	/**
 	 * GET a Segment's Details
 	 *
 	 * Use this method to get details about a segment, including the segment
@@ -49,28 +72,5 @@ class Segment extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doPut(['segment_id' => $segment_id, 'body' => $body->getData(), ]);
-		}
-
-	/**
-	 * DELETE a Segment
-	 *
-	 * Use this method to delete a segment from your account. Before deleting
-	 * a segment, verify that the segment is not associated with a scheduled
-	 * campaign.
-	 *
-	 * Deleted segments do not display in the results when using the `GET /segments`
-	 * endpoint. If you know the `segment_id`, you can use the `GET /segments/{segment_id}`
-	 * endpoint to view the deleted segment's details. A segment's details
-	 * are preserved for external reference purposes, such as displaying the
-	 * segment name in a campaign's history. For more use case information,
-	 * see [Delete a Segment](https://v3.developer.constantcontact.com/api_guide/segment_delete.html)
-	 * in the API guide.
-	 *
-	 * @param int $segment_id The system generated ID that uniquely identifies the segment.
-	 */
-	public function delete(int $segment_id) : bool
-		{
-
-		return $this->doDelete(['segment_id' => $segment_id, ]);
 		}
 	}

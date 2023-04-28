@@ -12,22 +12,6 @@ class Email extends \PHPFUI\ConstantContact\Base
 		}
 
 	/**
-	 * GET Details About a Single Email Campaign
-	 *
-	 * Use this method to get details about a single email campaign and campaign
-	 * related activities. Details include the email campaign name, current
-	 * status, create date, last update date, and a list of campaign activities;
-	 * including the `campaign_activity_id` and `role`.
-	 *
-	 * @param string $campaign_id The ID (UUID format) that uniquely identifies this email campaign.
-	 */
-	public function get(string $campaign_id) : array
-		{
-
-		return $this->doGet(['campaign_id' => $campaign_id, ]);
-		}
-
-	/**
 	 * DELETE an Email Campaign
 	 *
 	 * Use this method to delete an email campaign and the email campaign activities
@@ -44,6 +28,22 @@ class Email extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doDelete(['campaign_id' => $campaign_id, ]);
+		}
+
+	/**
+	 * GET Details About a Single Email Campaign
+	 *
+	 * Use this method to get details about a single email campaign and campaign
+	 * related activities. Details include the email campaign name, current
+	 * status, create date, last update date, and a list of campaign activities;
+	 * including the `campaign_activity_id` and `role`.
+	 *
+	 * @param string $campaign_id The ID (UUID format) that uniquely identifies this email campaign.
+	 */
+	public function get(string $campaign_id) : array
+		{
+
+		return $this->doGet(['campaign_id' => $campaign_id, ]);
 		}
 
 	/**
