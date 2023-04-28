@@ -2,7 +2,7 @@
 
 namespace Tests\Fixtures;
 
-class TypeTest extends \PHPFUI\ConstantContact\Definition\Base
+class Type extends \PHPFUI\ConstantContact\Definition\Base
 	{
 	protected static array $fields = [
 		'boolean' => 'bool',
@@ -13,10 +13,10 @@ class TypeTest extends \PHPFUI\ConstantContact\Definition\Base
 		'float' => 'float',
 		'ucEnum' => ['DRAFT', 'SCHEDULED', 'EXECUTING', 'DONE', 'ERROR', 'REMOVED'],
 		'intEnum' => [1, 2, 3, 4, 5],
-		'class' => 'Tests\\Fixtures\\ClassTest',
-		'classArray' => 'array<\\Tests\\Fixtures\\ClassTest>',
-		'classArraySize' => 'array<\\Tests\\Fixtures\\ClassTest>',
-		'classArraySizeMin' => 'array<\\Tests\\Fixtures\\ClassTest>',
+		'class' => 'Tests\\Fixtures\\ClassTester',
+		'classArray' => 'array<\\Tests\\Fixtures\\ClassTester>',
+		'classArraySize' => 'array<\\Tests\\Fixtures\\ClassTester>',
+		'classArraySizeMin' => 'array<\\Tests\\Fixtures\\ClassTester>',
 	];
 
 	protected static array $maxLength = [

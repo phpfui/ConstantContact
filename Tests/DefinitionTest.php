@@ -13,101 +13,101 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 	{
 	public function testBadArrayOfTypeSizeMax() : void
 		{
-		$fixture = new \Tests\Fixtures\TypeTest();
+		$fixture = new \Tests\Fixtures\Type();
 		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidLength::class);
 		$fixture->classArraySize = [
-			new \Tests\Fixtures\ClassTest(),
-			new \Tests\Fixtures\ClassTest(),
-			new \Tests\Fixtures\ClassTest(),
-			new \Tests\Fixtures\ClassTest(),
-			new \Tests\Fixtures\ClassTest(),
+			new \Tests\Fixtures\ClassTester(),
+			new \Tests\Fixtures\ClassTester(),
+			new \Tests\Fixtures\ClassTester(),
+			new \Tests\Fixtures\ClassTester(),
+			new \Tests\Fixtures\ClassTester(),
 		];
 		}
 
 	public function testBadArrayOfTypeSizeMin() : void
 		{
-		$fixture = new \Tests\Fixtures\TypeTest();
+		$fixture = new \Tests\Fixtures\Type();
 		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidLength::class);
 		$fixture->classArraySizeMin = [
-			new \Tests\Fixtures\ClassTest(),
+			new \Tests\Fixtures\ClassTester(),
 		];
 		}
 
 	public function testBadArrayType() : void
 		{
-		$fixture = new \Tests\Fixtures\TypeTest();
+		$fixture = new \Tests\Fixtures\Type();
 		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidType::class);
 		$fixture->array = 0;
 		}
 
 	public function testBadArrayTypes() : void
 		{
-		$fixture = new \Tests\Fixtures\TypeTest();
+		$fixture = new \Tests\Fixtures\Type();
 		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidType::class);
 		$fixture->classArray = [
-			new \Tests\Fixtures\ClassTest(),
-			new \Tests\Fixtures\ClassTest(),
-			new \Tests\Fixtures\TypeTest(),
+			new \Tests\Fixtures\ClassTester(),
+			new \Tests\Fixtures\ClassTester(),
+			new \Tests\Fixtures\Type(),
 		];
 		}
 
 	public function testBadBooleanType() : void
 		{
-		$fixture = new \Tests\Fixtures\TypeTest();
+		$fixture = new \Tests\Fixtures\Type();
 		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidType::class);
 		$fixture->boolean = 0;
 		}
 
 	public function testBadClassType() : void
 		{
-		$fixture = new \Tests\Fixtures\TypeTest();
+		$fixture = new \Tests\Fixtures\Type();
 		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidType::class);
 		$fixture->class = new \DateTime();
 		}
 
 	public function testBadEnum() : void
 		{
-		$fixture = new \Tests\Fixtures\TypeTest();
+		$fixture = new \Tests\Fixtures\Type();
 		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidValue::class);
 		$fixture->enum = 'fred';
 		}
 
 	public function testBadField() : void
 		{
-		$fixture = new \Tests\Fixtures\TypeTest();
+		$fixture = new \Tests\Fixtures\Type();
 		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidField::class);
 		$fixture->badField = 'test';
 		}
 
 	public function testBadFloatType() : void
 		{
-		$fixture = new \Tests\Fixtures\TypeTest();
+		$fixture = new \Tests\Fixtures\Type();
 		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidType::class);
 		$fixture->float = 'abc';
 		}
 
 	public function testBadIntType() : void
 		{
-		$fixture = new \Tests\Fixtures\TypeTest();
+		$fixture = new \Tests\Fixtures\Type();
 		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidType::class);
 		$fixture->integer = 'test';
 		}
 
 	public function testBadStringType() : void
 		{
-		$fixture = new \Tests\Fixtures\TypeTest();
+		$fixture = new \Tests\Fixtures\Type();
 		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidType::class);
 		$fixture->string = 123;
 		}
 
 	public function testClassArray() : void
 		{
-		$testClass = new \Tests\Fixtures\ClassTest();
+		$testClass = new \Tests\Fixtures\ClassTester();
 		$original = [
-			'classArray' => [$testClass, new \Tests\Fixtures\ClassTest(), ],
+			'classArray' => [$testClass, new \Tests\Fixtures\ClassTester(), ],
 		];
 
-		$fixture = new \Tests\Fixtures\TypeTest($original);
+		$fixture = new \Tests\Fixtures\Type($original);
 
 		$this->assertIsArray($fixture->classArray);
 		$this->assertCount(2, $fixture->classArray);
@@ -115,12 +115,12 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 
 	public function testClassArraySize() : void
 		{
-		$testClass = new \Tests\Fixtures\ClassTest();
+		$testClass = new \Tests\Fixtures\ClassTester();
 		$original = [
-			'classArraySize' => [$testClass, new \Tests\Fixtures\ClassTest(), ],
+			'classArraySize' => [$testClass, new \Tests\Fixtures\ClassTester(), ],
 		];
 
-		$fixture = new \Tests\Fixtures\TypeTest($original);
+		$fixture = new \Tests\Fixtures\Type($original);
 
 		$this->assertIsArray($fixture->classArraySize);
 		$this->assertCount(2, $fixture->classArraySize);
@@ -128,12 +128,12 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 
 	public function testClassArraySizeMin() : void
 		{
-		$testClass = new \Tests\Fixtures\ClassTest();
+		$testClass = new \Tests\Fixtures\ClassTester();
 		$original = [
-			'classArraySizeMin' => [$testClass, new \Tests\Fixtures\ClassTest(), ],
+			'classArraySizeMin' => [$testClass, new \Tests\Fixtures\ClassTester(), ],
 		];
 
-		$fixture = new \Tests\Fixtures\TypeTest($original);
+		$fixture = new \Tests\Fixtures\Type($original);
 
 		$this->assertIsArray($fixture->classArraySizeMin);
 		$this->assertCount(2, $fixture->classArraySizeMin);
@@ -152,17 +152,17 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 			'intEnum' => 5,
 		];
 
-		$fixture = new \Tests\Fixtures\TypeTest($original);
+		$fixture = new \Tests\Fixtures\Type($original);
 		$this->assertEquals($original, $fixture->getData());
 		}
 
 	public function testConstructFromObject() : void
 		{
-		$testClass = new \Tests\Fixtures\ClassTest();
+		$testClass = new \Tests\Fixtures\ClassTester();
 		$original = [
 			'class' => $testClass,
 		];
-		$fixture = new \Tests\Fixtures\TypeTest($original);
+		$fixture = new \Tests\Fixtures\Type($original);
 
 		$this->assertEquals($testClass, $fixture->class);
 		}
@@ -176,7 +176,7 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 
 	public function testGetSet() : void
 		{
-		$fixture = new \Tests\Fixtures\TypeTest();
+		$fixture = new \Tests\Fixtures\Type();
 		$integer = 123;
 		$fixture->integer = $integer;
 		$this->assertEquals($integer, $fixture->integer);
@@ -217,7 +217,7 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 		$this->assertEquals($string, $fixture->ucEnum);
 		$this->assertIsString($fixture->ucEnum);
 
-		$class = new \Tests\Fixtures\ClassTest();
+		$class = new \Tests\Fixtures\ClassTester();
 		$fixture->class = $class;
 		$this->assertEquals($class, $fixture->class);
 		$this->assertIsObject($fixture->class);
@@ -245,14 +245,14 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 
 	public function testMaxLength() : void
 		{
-		$fixture = new \Tests\Fixtures\TypeTest();
+		$fixture = new \Tests\Fixtures\Type();
 		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidLength::class);
 		$fixture->string = \str_pad('', 100);
 		}
 
 	public function testMinLength() : void
 		{
-		$fixture = new \Tests\Fixtures\TypeTest();
+		$fixture = new \Tests\Fixtures\Type();
 		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidLength::class);
 		$fixture->string = 'fred';
 		}

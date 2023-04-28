@@ -2,7 +2,7 @@
 
 namespace Tests\Fixtures;
 
-class CustomFieldTest extends \PHPFUI\ConstantContact\Definition\Base
+class CustomField extends \PHPFUI\ConstantContact\Definition\Base
 	{
 	protected static array $fields = [
 		'cf:custom_field_name' => 'string',
