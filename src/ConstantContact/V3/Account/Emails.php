@@ -28,7 +28,7 @@ class Emails extends \PHPFUI\ConstantContact\Base
 	 *
 	 *
 	 * @param string $confirm_status Use the `confirm_status` query parameter to search for account emails using the email status. Possible values are `CONFIRMED` or `UNCONFIRMED`. You can also abbreviate the values of this query parameter and use `C` or `U`.
-	 *
+
 	 * @param string $role_code Use the `role_code` query parameter to search for account emails that have a specific role. Each each email address in an account can have multiple roles or no role. Possible values are `CONTACT`, `BILLING`, `REPLY_TO`, `JOURNALING`, or `OTHER`. You can also abbreviate the value of this query parameter and use `C`,`B`,`R`,`J`, or `O`.
 	 * @param string $email_address Use the `email_address` query parameter to search for a specific account email address.
 	 */
