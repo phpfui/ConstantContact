@@ -114,7 +114,7 @@ abstract class Base
 	/**
 	 * @return mixed value being set to allow for assignment chaining
 	 */
-	public function __set(string $field, $value)
+	public function __set(string $field, mixed $value)
 		{
 		$actualField = $field;
 
@@ -235,8 +235,7 @@ abstract class Base
 			}
 
 		$this->setFields[$actualField] = true;
-
-		return $this->data[$actualField] = $value;
+		$this->data[$actualField] = $value;
 		}
 
 	/**
