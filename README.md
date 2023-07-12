@@ -66,6 +66,7 @@ The above will ask the user to authorize the app for the scopes you specified.  
 
 ### 2. Retrieve the Code sent to the $redirectURI
 ```php
+$client = new \PHPFUI\ConstantContact\Client($apiKey, $secret, $redirectURI);
 $client->acquireAccessToken($_GET);
 // Save $client->accessToken and $client->refreshToken to the database
 // redirect back to your businesss logic (Step 3)
