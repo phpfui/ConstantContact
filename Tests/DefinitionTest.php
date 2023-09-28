@@ -65,6 +65,20 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 		$fixture->class = new \DateTime();
 		}
 
+	public function testClassAssignedInt() : void
+		{
+		$fixture = new \Tests\Fixtures\Type();
+		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidType::class);
+		$fixture->class = 1;
+		}
+
+	public function testClassAssignedString() : void
+		{
+		$fixture = new \Tests\Fixtures\Type();
+		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidType::class);
+		$fixture->class = 'class';
+		}
+
 	public function testBadEnum() : void
 		{
 		$fixture = new \Tests\Fixtures\Type();

@@ -172,10 +172,6 @@ abstract class Base
 						}
 					}
 				}
-			elseif (! \is_object($value) && ! isset(self::$scalars[$expectedType]))
-				{
-				$value = new $expectedType($value);
-				}
 			elseif ($expectedType != $type)
 				{
 				throw new \PHPFUI\ConstantContact\Exception\InvalidType(static::class . "::{$actualField} is of type {$type} but should be type {$expectedType}");
