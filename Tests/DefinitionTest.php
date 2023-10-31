@@ -270,4 +270,27 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidLength::class);
 		$fixture->string = 'fred';
 		}
+
+	public function testDefaultObjects() : void
+		{
+		$address = [];
+		$address['created_at'] = (string)new \PHPFUI\ConstantContact\DateTime();
+		$address['permission_to_send'] = 'explicit';
+
+		$email_address = new \PHPFUI\ConstantContact\Definition\EmailAddressPut($address);
+		$contact = ['email_address' => $email_address];
+
+		$contactBody = new \PHPFUI\ConstantContact\Definition\ContactPutRequest($contact);
+		$contactBody->update_source = 'Account';
+		$contactBody->street_addresses = [new \PHPFUI\ConstantContact\Definition\StreetAddressPut([
+			'kind' => 'home',
+			'street' => 'address',
+			'city' => 'town',
+			'state' => 'state',
+			'postal_code' => 'zip',
+			'country' => 'USA', ])];
+		$json = $contactBody->getJSON();
+
+		$this->assertStringContainsString('created_at', $json);
+		}
 	}
