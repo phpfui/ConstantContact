@@ -65,20 +65,6 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 		$fixture->class = new \DateTime();
 		}
 
-	public function testClassAssignedInt() : void
-		{
-		$fixture = new \Tests\Fixtures\Type();
-		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidType::class);
-		$fixture->class = 1;
-		}
-
-	public function testClassAssignedString() : void
-		{
-		$fixture = new \Tests\Fixtures\Type();
-		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidType::class);
-		$fixture->class = 'class';
-		}
-
 	public function testBadEnum() : void
 		{
 		$fixture = new \Tests\Fixtures\Type();
@@ -153,6 +139,20 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 		$this->assertCount(2, $fixture->classArraySizeMin);
 		}
 
+	public function testClassAssignedInt() : void
+		{
+		$fixture = new \Tests\Fixtures\Type();
+		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidType::class);
+		$fixture->class = 1;
+		}
+
+	public function testClassAssignedString() : void
+		{
+		$fixture = new \Tests\Fixtures\Type();
+		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidType::class);
+		$fixture->class = 'class';
+		}
+
 	public function testConstructFromArray() : void
 		{
 		$original = [
@@ -179,6 +179,29 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 		$fixture = new \Tests\Fixtures\Type($original);
 
 		$this->assertEquals($testClass, $fixture->class);
+		}
+
+	public function testDefaultObjects() : void
+		{
+		$address = [];
+		$address['created_at'] = (string)new \PHPFUI\ConstantContact\DateTime();
+		$address['permission_to_send'] = 'explicit';
+
+		$email_address = new \PHPFUI\ConstantContact\Definition\EmailAddressPut($address);
+		$contact = ['email_address' => $email_address];
+
+		$contactBody = new \PHPFUI\ConstantContact\Definition\ContactPutRequest($contact);
+		$contactBody->update_source = 'Account';
+		$contactBody->street_addresses = [new \PHPFUI\ConstantContact\Definition\StreetAddressPut([
+			'kind' => 'home',
+			'street' => 'address',
+			'city' => 'town',
+			'state' => 'state',
+			'postal_code' => 'zip',
+			'country' => 'USA', ])];
+		$json = $contactBody->getJSON();
+
+		$this->assertStringContainsString('created_at', $json);
 		}
 
 	public function testGeneratedClass() : void
@@ -269,28 +292,5 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 		$fixture = new \Tests\Fixtures\Type();
 		$this->expectException(\PHPFUI\ConstantContact\Exception\InvalidLength::class);
 		$fixture->string = 'fred';
-		}
-
-	public function testDefaultObjects() : void
-		{
-		$address = [];
-		$address['created_at'] = (string)new \PHPFUI\ConstantContact\DateTime();
-		$address['permission_to_send'] = 'explicit';
-
-		$email_address = new \PHPFUI\ConstantContact\Definition\EmailAddressPut($address);
-		$contact = ['email_address' => $email_address];
-
-		$contactBody = new \PHPFUI\ConstantContact\Definition\ContactPutRequest($contact);
-		$contactBody->update_source = 'Account';
-		$contactBody->street_addresses = [new \PHPFUI\ConstantContact\Definition\StreetAddressPut([
-			'kind' => 'home',
-			'street' => 'address',
-			'city' => 'town',
-			'state' => 'state',
-			'postal_code' => 'zip',
-			'country' => 'USA', ])];
-		$json = $contactBody->getJSON();
-
-		$this->assertStringContainsString('created_at', $json);
 		}
 	}

@@ -240,6 +240,7 @@ class Generator
 			if (! $item->isDir())
 				{
 				$fileName = "{$item}";
+
 				// don't delete base classes
 				if (! \str_ends_with($fileName, 'Base.php'))
 					{
