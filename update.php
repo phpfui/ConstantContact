@@ -1,6 +1,6 @@
 <?php
 
-$php = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' ? 'php' : '/usr/bin/php8.0';
+$php = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' ? 'php' : '/usr/bin/php8.2-cli';
 
 exec($php . ' composer.phar self-update');
 exec($php . ' composer.phar update');
