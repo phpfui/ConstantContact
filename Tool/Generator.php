@@ -69,14 +69,15 @@ class Generator
 
 		if (! isset($properties['type']))
 			{
-			echo "{$namespacedClass} has no type";
 
 			if (\str_contains($namespacedClass, 'ResendToNonOpenersInput'))
 				{
-				echo ', assuming object';
 				$properties['type'] = 'object';
 				}
-			echo "\n";
+			else
+				{
+				echo "{$namespacedClass} has no type\n";
+				}
 			}
 
 		$class = \str_replace('_', '', $class);

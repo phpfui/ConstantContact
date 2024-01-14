@@ -60,6 +60,7 @@ You will need to set up a web page where your user can enter the *API Key* and *
 $redirectURI = 'http://yourdomain/php_script_in_step2.php';
 $client = new \PHPFUI\ConstantContact\Client($apiKey, $secret, $redirectURI);
 // set any scopes here, defaults to all scopes. Your user will need to accept what ever scopes you specify.
+// $client->setScopes(['contact_data', 'campaign_data']);
 \header('location: ' . $client->getAuthorizationURL());
 ```
 The above will ask the user to authorize the app for the scopes you specified.  The default is all scopes, but you can specify different scopes after constructing the client and before you authorize.
@@ -71,7 +72,7 @@ $client->acquireAccessToken($_GET);
 // Save $client->accessToken and $client->refreshToken to the database
 // redirect back to your businesss logic (Step 3)
 ```
-You have now recieved authorization to access the API according to the scopes you requested.
+You have now received authorization to access the API according to the scopes you requested.
 
 ### 3. Use in your code
 ```php
