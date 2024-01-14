@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.2238"
+  version: "3.0.2343"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -38,7 +38,7 @@ tags:
   description: "Use email campaign endpoints and methods to get, create, and update\
     \ email campaigns."
 - name: "Email Campaigns AB Tests"
-  description: "Use Email Campaigns A/B Test endpoints and methods to get, create,\
+  description: "Use email campaigns A/B Test endpoints and methods to get, create,\
     \ delete and update A/B tests."
 - name: "Email Reporting"
   description: "Use the email reporting endpoints and methods to get reporting data\
@@ -49,6 +49,9 @@ tags:
 - name: "Segments"
   description: "Use segments to target a subset of your contacts that are most likely\
     \ to engage with a particular campaign."
+- name: "Landing Pages Reporting"
+  description: "Use landing pages reporting endpoints and methods to get reporting\
+    \ data about how a contact interacted with a campaign activity."
 - name: "Technology Partners"
   description: "Use partner endpoints to manage client Constant Contact accounts under\
     \ your partner account."
@@ -1414,6 +1417,67 @@ paths:
       x-authorization-privileges:
       - "contacts:write"
       x-sdk-methodName: "createTagDeleteActivity"
+  /activities/custom_fields_delete:
+    post:
+      tags:
+      - "Bulk Activities"
+      summary: "Delete Custom Fields"
+      description: "Use this endpoint to delete up to 100 custom fields for an account. "
+      operationId: "postCustomFieldDelete"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "An array of `custom_field_id`'s to delete."
+        required: true
+        schema:
+          $ref: "#/definitions/CustomFieldId100"
+      responses:
+        "201":
+          description: "Request successful. Activity queued for processing."
+          schema:
+            $ref: "#/definitions/ActivityDeleteCustomFields"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "401":
+          description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
+        "404":
+          description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "429":
+          description: "Too many requests. You exceeded 1,000 queued activities for\
+            \ this user account."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "500":
+          description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "503":
+          description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+      security:
+      - oauth2_implicit:
+        - "contact_data"
+      - oauth2_access_code:
+        - "contact_data"
+      x-authorization-privileges:
+      - "contacts_write"
   /segments:
     get:
       tags:
@@ -3190,6 +3254,64 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "contacts:lists:read"
+  /contacts/sms_engagement_history/{contact_id}:
+    get:
+      tags:
+      - "Contacts"
+      summary: "GET SMS Engagement History for a Contact"
+      description: "Use this method to return SMS engagement details for a contact,\
+        \ such as SMS consent and advertising frequency details."
+      operationId: "getSmsEngagementHistory"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "contact_id"
+        in: "path"
+        description: "The contact's unique ID."
+        required: true
+        type: "string"
+        x-example: "04fe9a-a579-43c5-bb1a-58ed29bf0a6a"
+      responses:
+        "200":
+          description: "Request successful"
+          schema:
+            $ref: "#/definitions/SmsEngagementHistory"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "401":
+          description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
+        "404":
+          description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "500":
+          description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "503":
+          description: "Our internal service is temporarily unavailable."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+      security:
+      - oauth2_implicit:
+        - "contact_data"
+      - oauth2_access_code:
+        - "contact_data"
+      - api_key: []
+      x-authorization-privileges:
+      - "contacts:read"
   /contacts/counts:
     get:
       tags:
@@ -4984,15 +5106,23 @@ paths:
       tags:
       - "Contacts Reporting"
       summary: "GET Contact Activity Details"
-      description: "<p>Gets the tracking activity data for a given account and contact,\
-        \ sorted in descending activity date order.</p><p>One or more tracking activity\
-        \ types can be returned in a single request.</p><table><tr><td colspan='2'>Valid\
-        \ tracking activity types</td></tr><tr><td><b>em_sends</b></td><td>Send activities</td></tr><tr><td><b>em_opens</b></td><td>Email\
-        \ open tracking activities</td></tr><tr><td><b>em_clicks</b></td><td>Link\
-        \ click-through tracking activities</td></tr><tr><td><b>em_bounces</b></td><td>Bounce\
-        \ tracking activities</td></tr><tr><td><b>em_optouts</b></td><td>Opt-out tracking\
-        \ activities</td></tr><tr><td><b>em_forwards</b></td><td>Forward to a friend\
-        \ tracking activities</td></tr></table>"
+      description: "<p>Gets the tracking activity data for a single contact, sorted\
+        \ in descending activity date order.</p> <p>You must chose either the `tracking_activities_list`\
+        \ query parameter and or the `tracking_activity_type` query parameter to specify\
+        \ one or more tracking activity types In the request. The `tracking_activities_list`\
+        \  and `tracking_activities_type` query parameters are mutually exclusive.</p>\n\
+        \      <table><tr><td colspan='2'>Valid tracking activity types</td></tr>\n\
+        \        <tr><td><b>em_sends</b></td><td>Send activities</td></tr>\n     \
+        \   <tr><td><b>em_opens</b></td><td>Email open tracking activities</td></tr>\n\
+        \        <tr><td><b>em_clicks</b></td><td>Link click-through tracking activities</td></tr>\n\
+        \        <tr><td><b>em_bounces</b></td><td>Bounce tracking activities</td></tr>\n\
+        \        <tr><td><b>em_optouts</b></td><td>Opt-out tracking activities</td></tr><tr>\n\
+        \        <td><b>em_forwards</b></td><td>Forward to a friend tracking activities</td></tr>\n\
+        \        <tr><td><b>p_contact_open</b></td><td>Landing page opens</td></tr>\n\
+        \        <tr><td><b>p_contact_click</b></td><td>Landing page clicks</td></tr>\n\
+        \        <tr><td><b>p_contact_add</b></td><td>Landing page adds</td></tr>\n\
+        \        <tr><td><b>p_contact_update </b></td><td> Landing page updates</td></tr>\n\
+        \      </table>"
       operationId: "getContactTracking"
       consumes:
       - "application/json"
@@ -5001,17 +5131,16 @@ paths:
       parameters:
       - name: "contact_id"
         in: "path"
-        description: "The contact id which is requesting tracking activity data."
+        description: "The contact's ID for which tracking activity data is requested."
         required: true
         type: "string"
         x-example: "aa9ff7b0-478d-11e6-8059-00163e3c8e19"
       - name: "tracking_activities_list"
         in: "query"
-        description: "The tracking activities list contains the tracking activity\
-          \ types to be specified as part of each request. The tracking activities\
-          \ list is a comma-delimited string containing one ore more tracking activity\
-          \ types. (such as em_sends, em_opens, em_forwards)"
-        required: true
+        description: "Specify one or more tracking activity types to include as a\
+          \ comma-delimited string. The `tracking_activities_list`  and `tracking_activities_type`\
+          \ query parameters are mutually exclusive."
+        required: false
         type: "string"
         items:
           type: "string"
@@ -5022,9 +5151,33 @@ paths:
           - "em_bounces"
           - "em_optouts"
           - "em_forwards"
+          - "p_contact_open"
+          - "p_contact_click"
+          - "p_contact_add"
+          - "p_contact_update"
         collectionFormat: "multi"
         format: "csv"
-        x-example: "em_clicks"
+        x-example: "em_clicks,em_opens"
+      - name: "tracking_activity_type"
+        in: "query"
+        description: "Specify one or more tracking activity types to include as an\
+          \ array. The `tracking_activities_list`  and `tracking_activities_type`\
+          \ query parameters are mutually exclusive."
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+        x-example: "`tracking_activity_type=em_sends&tracking_activity_type=em_opens`"
+      - name: "include_campaign_activity_names"
+        in: "query"
+        description: "Default (`true`) returns campaign activity names in the results.\
+          \ Not including campaign activity names in the results (`false`), is more\
+          \ efficient."
+        required: false
+        type: "boolean"
+        default: true
+        x-example: true
       - name: "limit"
         in: "query"
         description: "The number of tracking activities to return in a single page.\
@@ -6102,6 +6255,476 @@ paths:
       x-authorization-privileges:
       - "ui:campaign:metrics"
       x-sdk-methodName: "getEmailCampaignActivityReport"
+  /reports/landing_pages/campaign_details/{campaign_activity_id}/p_unique_contact_clicks:
+    get:
+      tags:
+      - "Landing Pages Reporting"
+      summary: "GET a Unique Contacts Clicks Landing Page Report"
+      description: "Use this method get details about each contact that clicked a\
+        \ link on a landing page campaign activity. Unique contact clicks are identified\
+        \ by both the `contact_id` and `url_id`. The same contact may appear more\
+        \ than once in the results, if they clicked more than one link on the landing\
+        \ page. The resulting contact data is listed with most recent activity first."
+      operationId: "getUniqueContactClicks"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "campaign_activity_id"
+        in: "path"
+        description: "The landing page `campaign_activity_id` (UUID's) to use to get\
+          \ unique contact click results."
+        required: true
+        type: "string"
+        format: "uuid"
+        x-example: "82ee2c37-c8f8-4974-9560-ef93ad51d58z"
+      - name: "limit"
+        in: "query"
+        description: "Use to limit the number of contact tracking activities to return\
+          \ on a single page. The default is `50` and the maximum is `500` per page."
+        required: false
+        type: "string"
+        default: "50"
+        x-example: "100"
+      - name: "contacts_filter"
+        in: "query"
+        description: "Use to filter the results to return only contacts that match\
+          \ a contacts full or partial first or last name, or email. For example:\
+          \ Josie or Jo."
+        required: false
+        type: "string"
+        x-example: "Jo"
+      responses:
+        "200":
+          description: "Request was successful."
+          schema:
+            $ref: "#/definitions/PContactClickTrackingActivitiesPage"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "401":
+          description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
+        "404":
+          description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "415":
+          description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "500":
+          description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      - api_key: []
+      x-authorization-privileges:
+      - "ui:campaign:metrics"
+  /reports/landing_pages/campaign_details/{campaign_activity_id}/p_unique_contact_opens:
+    get:
+      tags:
+      - "Landing Pages Reporting"
+      summary: "GET a Unique Contacts Opens Landing Page Report"
+      description: "Use this method get details about each contact that opens a link\
+        \ on a landing page. Contacts are uniquely identified by `contact_id`.  The\
+        \ resulting contact data is listed with most recent activity first."
+      operationId: "getUniqueContactOpens"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "campaign_activity_id"
+        in: "path"
+        description: "The landing page `campaign_activity_id` (UUID's) to use to get\
+          \ unique contact open results."
+        required: true
+        type: "string"
+        format: "uuid"
+        x-example: "82ee2c37-c8f8-4974-9560-ef93ad51d58z"
+      - name: "limit"
+        in: "query"
+        description: "Use to limit the number of contact tracking activities to return\
+          \ on a single page. The default is `50` and the maximum is `500` per page."
+        required: false
+        type: "string"
+        default: "50"
+        x-example: "100"
+      - name: "contacts_filter"
+        in: "query"
+        description: "Use to filter the results to only include contacts that contain\
+          \ a certain value. This parameter does full and partial matches and applies\
+          \ to the contact first name, last name, and email fields. For example: Josie\
+          \ or Jo."
+        required: false
+        type: "string"
+        x-example: "Jo"
+      responses:
+        "200":
+          description: "Request was successful."
+          schema:
+            $ref: "#/definitions/PContactOpensTrackingActivitiesPage"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "401":
+          description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
+        "404":
+          description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "415":
+          description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "500":
+          description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      - api_key: []
+      x-authorization-privileges:
+      - "ui:campaign:metrics"
+  /reports/landing_pages/campaign_details/{campaign_activity_id}/p_contact_opens:
+    get:
+      tags:
+      - "Landing Pages Reporting"
+      summary: "GET a Contacts Opens Landing Page Report"
+      description: "Use this method get contact details for each time a contact opens\
+        \ a link on a landing page.  The resulting contact data is listed with most\
+        \ recent activity first."
+      operationId: "getContactOpens"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "campaign_activity_id"
+        in: "path"
+        description: "The landing page `campaign_activity_id` (UUID's) to use to get\
+          \ unique contact open results."
+        required: true
+        type: "string"
+        format: "uuid"
+        x-example: "82ee2c37-c8f8-4974-9560-ef93ad51d58z"
+      - name: "limit"
+        in: "query"
+        description: "Use to limit the number of contact tracking activities to return\
+          \ on a single page. The default is `50` and the maximum is `500` per page."
+        required: false
+        type: "string"
+        default: "50"
+        x-example: "100"
+      - name: "contacts_filter"
+        in: "query"
+        description: "Use to filter the results to only include contacts that contain\
+          \ a certain value. This parameter does full and partial matches and applies\
+          \ to the contact first name, last name, and email fields. For example: Josie\
+          \ or Jo."
+        required: false
+        type: "string"
+        x-example: "Jo"
+      responses:
+        "200":
+          description: "Request was successful."
+          schema:
+            $ref: "#/definitions/PContactOpensTrackingActivitiesPage"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "401":
+          description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
+        "404":
+          description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "415":
+          description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "500":
+          description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      - api_key: []
+      x-authorization-privileges:
+      - "ui:campaign:metrics"
+  /reports/landing_pages/campaign_details/{campaign_activity_id}/p_unique_contact_updates:
+    get:
+      tags:
+      - "Landing Pages Reporting"
+      summary: "GET a Unique Contacts Updates Landing Page Report"
+      description: "Use this method to get contact details for each contact that updated\
+        \ their contact data from a landing page. Contacts are uniquely identified\
+        \ by `contact_id`.  The resulting contact data is listed with most recent\
+        \ activity first."
+      operationId: "getUniqueContactUpdates"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "campaign_activity_id"
+        in: "path"
+        description: "The landing page `campaign_activity_id` (UUID's) to use to get\
+          \ unique contact open results."
+        required: true
+        type: "string"
+        format: "uuid"
+        x-example: "82ee2c37-c8f8-4974-9560-ef93ad51d58z"
+      - name: "limit"
+        in: "query"
+        description: "Use to limit the number of contact tracking activities to return\
+          \ on a single page. The default is `50` and the maximum is `500` per page."
+        required: false
+        type: "string"
+        default: "50"
+        x-example: "100"
+      - name: "contacts_filter"
+        in: "query"
+        description: "Use to filter the results to only include contacts that contain\
+          \ a certain value. This parameter does full and partial matches and applies\
+          \ to the contact first name, last name, and email fields. For example: Josie\
+          \ or Jo."
+        required: false
+        type: "string"
+        x-example: "Jo"
+      responses:
+        "200":
+          description: "Request was successful."
+          schema:
+            $ref: "#/definitions/PContactUpdateTrackingActivitiesPage"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "401":
+          description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
+        "404":
+          description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "415":
+          description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "500":
+          description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      - api_key: []
+      x-authorization-privileges:
+      - "ui:campaign:metrics"
+  /reports/landing_pages/campaign_details/{campaign_activity_id}/p_unique_contact_adds:
+    get:
+      tags:
+      - "Landing Pages Reporting"
+      summary: "GET a Unique Contacts Adds Landing Page Report"
+      description: "Use this method to get details about each contact added to the\
+        \ account from a specified landing page. Contacts are identified by `contact_id`.\
+        \ The resulting contact data is listed with most recent activity first."
+      operationId: "getContactAdds"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "campaign_activity_id"
+        in: "path"
+        description: "The landing page `campaign_activity_id` (UUID's) to use to get\
+          \ unique contact results."
+        required: true
+        type: "string"
+        format: "uuid"
+        x-example: "82ee2c37-c8f8-4974-9560-ef93ad51d58z"
+      - name: "limit"
+        in: "query"
+        description: "Use to limit the number of contact tracking activities to return\
+          \ on a single page. The default is `50` and the maximum is `500` per page."
+        required: false
+        type: "string"
+        default: "50"
+        x-example: "100"
+      - name: "contacts_filter"
+        in: "query"
+        description: "Use to filter the results to only include contacts that contain\
+          \ a certain value. This parameter does full and partial matches and applies\
+          \ to the contact first name, last name, and email fields. For example: Josie\
+          \ or Jo."
+        required: false
+        type: "string"
+        x-example: "Jo"
+      responses:
+        "200":
+          description: "Request was successful."
+          schema:
+            $ref: "#/definitions/PContactAddTrackingActivitiesPage"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "401":
+          description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
+        "404":
+          description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "415":
+          description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "500":
+          description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      - api_key: []
+      x-authorization-privileges:
+      - "ui:campaign:metrics"
+  /reports/landing_pages/campaign_details/{campaign_activity_id}/p_unique_contact_sms_optins:
+    get:
+      tags:
+      - "Landing Pages Reporting"
+      summary: "GET a Unique Contacts SMS Opt-In Landing Page Report"
+      description: "Use this method get details about unique contacts that click a\
+        \ link on a landing page to opt in to receiving SMS text messages. Contacts\
+        \ are uniquely identified by `contact_id``.  The resulting contact data is\
+        \ listed with most recent activity first."
+      operationId: "getUniqueContactSMSOptIns"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "campaign_activity_id"
+        in: "path"
+        description: "The landing page `campaign_activity_id` (UUID's) to use to get\
+          \ unique contact click results."
+        required: true
+        type: "string"
+        format: "uuid"
+        x-example: "82ee2c37-c8f8-4974-9560-ef93ad51d58z"
+      - name: "limit"
+        in: "query"
+        description: "Use to limit the number of contact tracking activities to return\
+          \ on a single page. The default is `50` and the maximum is `500` per page."
+        required: false
+        type: "string"
+        default: "50"
+        x-example: "100"
+      - name: "contacts_filter"
+        in: "query"
+        description: "Use to filter the results to return only contacts that match\
+          \ a contacts full or partial first or last name, or email. For example:\
+          \ Josie or Jo."
+        required: false
+        type: "string"
+        x-example: "Jo"
+      responses:
+        "200":
+          description: "Request was successful."
+          schema:
+            $ref: "#/definitions/PContactSMSOptInTrackingActivitiesPage"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "401":
+          description: "The Access Token used is invalid."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+          schema:
+            $ref: "#/definitions/AuthorizationErrorSchema"
+        "404":
+          description: "The requested resource was not found."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "415":
+          description: "Unsupported Media Type."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+        "500":
+          description: "There was a problem with our internal service."
+          schema:
+            $ref: "#/definitions/APIErrorSchema"
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      - api_key: []
+      x-authorization-privileges:
+      - "ui:campaign:metrics"
   /partner/accounts:
     get:
       tags:
@@ -6266,10 +6889,13 @@ paths:
       - "Technology Partners"
       summary: "GET Billing Plan Details for a Client Account"
       description: "Use this GET method to return billing plan details for a client's\
-        \ Constant Contact account.\nOnly technology partners can access partner endpoints\
-        \ and partner endpoints cannot be tested using the API reference tester.\n\
-        For more use case information, see [Get Billing Plan Details for a Client\
-        \ Account](/api_guide/partners_plans_get.html) in the API guide."
+        \ Constant Contact account.\nIf you are not on the latest billing plan, contact\
+        \ the Constant Contact Partner Team. However, older billing plans and `plan_type`\
+        \ enum values will continue to be supported. Only technology partners can\
+        \ access partner endpoints and partner endpoints cannot be tested using the\
+        \ API reference tester.\nFor more use case information, see [Get Billing Plan\
+        \ Details for a Client Account](/api_guide/partners_plans_get.html) in the\
+        \ API guide."
       operationId: "getPlan"
       consumes:
       - "application/json"
@@ -6341,11 +6967,13 @@ paths:
         \ accept the default value, which is the day on which the `plan_type` value\
         \ changes from a `TRIAL` plan to a different `plan_type`. Changing the `plan_type`\
         \ from `TRIAL` to another `plan_type` automatically changes the `billing_status`\
-        \ from `Trial` to `Open`.\n\n\nOnly technology partners can access partner\
-        \ endpoints and partner endpoints cannot be tested using the API reference\
-        \ tester.\n\nFor more use case information, see [PUT Billing Plan Details\
-        \ for a Client Account](/api_guide/partners_plans_update.html) in the API\
-        \ guide."
+        \ from `Trial` to `Open`.\n\nOnly technology partners can access partner endpoints\
+        \ and partner endpoints cannot be tested using the API reference tester. If\
+        \ you are not on the latest billing plan, contact the Constant Contact Partner\
+        \ Team. However, older billing plans and `plan_type` enum values will continue\
+        \ to be supported.\n\nFor more use case information, see [PUT Billing Plan\
+        \ Details for a Client Account](/api_guide/partners_plans_update.html) in\
+        \ the API guide."
       operationId: "setPlan"
       consumes:
       - "application/json"
@@ -6363,15 +6991,18 @@ paths:
         description: "Update the billing plan (`plan_type`) for an existing Constant\
           \ Contact client account. Options include:\n  - `TRIAL`: A non-billed account\
           \ with an expiration date that allows clients to try Constant Contact product\
-          \ features.\n\n  - `GOOD`: A billed **Email** client account plan.\n\n \
-          \ - `BETTER`: A billed **Email Plus** client account plan.\n\n  - `BEST`:\
-          \ A billed **Personal Marketer** client account plan.\n\n  - `LITE`: A **Website\
-          \ Builder** client account plan.\n\n\nIf updating from a `TRIAL` plan (`plan_type`)\
-          \ to another type of billing plan, you have the option to update the day\
-          \ of month (`billing_day_of_month`) in which to bill the client account.\
-          \ Valid values include `1` through to and including `31`. Any additional\
-          \ billing plan properties and values that you include in the request body\
-          \ are ignored."
+          \ features.\n\n  - `GOLD`: A billable plan that provides all available product\
+          \ features.\n\n  - `SILVER`: A billable plan that provides all features\
+          \ available in the <code>BRONZE</code> plan, and adds some additional email\
+          \ campaign feature such as contact segmentation and social media advertisements.\n\
+          \n  - `BRONZE`: A billable plan that provides basic email and marketing\
+          \ tools. \n\nIf updating from a `TRIAL` plan (`plan_type`) to another type\
+          \ of billing plan, you have the option to update the day of month (`billing_day_of_month`)\
+          \ in which to bill the client account. Valid values include `1` through\
+          \ to and including `31`. Any additional billing plan properties and values\
+          \ that you include in the request body are ignored. If you are not on the\
+          \ latest billing plan, contact the Constant Contact Partner Team. However,\
+          \ older billing plans and `plan_type` enum values will continue to be supported."
         required: false
         schema:
           $ref: "#/definitions/PlanInfo"
@@ -8646,6 +9277,96 @@ definitions:
           description: "A list of tag_ids. Mutually exclusive with other filters and\
             \ criteria."
         maxItems: 500
+  CustomFieldId100:
+    type: "object"
+    required:
+    - "custom_field_ids"
+    properties:
+      custom_field_ids:
+        type: "array"
+        description: "The array of custom field IDs to delete."
+        items:
+          type: "string"
+          format: "uuid"
+          example: "04fe9a97-a579-43c5-bb1a-58ed29bf0a6a"
+        maxItems: 0
+  ActivityDeleteCustomFields:
+    type: "object"
+    properties:
+      activity_id:
+        type: "string"
+        format: "uuid"
+        example: "86b90820-cc52-11ea-9dad-fa163e3d9194"
+        description: "Unique ID for the activity."
+        readOnly: true
+      state:
+        type: "string"
+        example: "initialized"
+        description: "The state of the request: <p><ul> <li>initialized - request\
+          \ has been received</li> <li>processing - request is being processed</li>\
+          \ <li>completed - job completed</li> <li>cancelled - request was cancelled</li>\
+          \ <li>failed - job failed to complete</li> <li>timed_out - the request timed\
+          \ out before completing\"</li> </ul> </p>"
+        enum:
+        - "initialized"
+        - "processing"
+        - "completed"
+        - "cancelled"
+        - "failed"
+        - "timed_out"
+      started_at:
+        type: "string"
+        format: "date-time"
+        example: "2016-01-23T13:48:44.108Z"
+        description: "Timestamp showing when we began processing the activity request,\
+          \ in ISO-8601 format."
+        readOnly: true
+      completed_at:
+        type: "string"
+        format: "date-time"
+        example: "2016-01-23T13:48:44.108Z"
+        description: "Timestamp showing when we completed processing the activity,\
+          \ in ISO-8601 format."
+        readOnly: true
+      created_at:
+        type: "string"
+        format: "date-time"
+        example: "2016-01-23T13:48:44.108Z"
+        description: "Timestamp showing when we created the activity, in ISO-8601\
+          \ format."
+        readOnly: true
+      updated_at:
+        type: "string"
+        format: "date-time"
+        example: "2016-01-23T13:48:44.108Z"
+        description: "Timestamp showing when we last updated the activity, in ISO-8601\
+          \ format."
+        readOnly: true
+      percent_done:
+        type: "integer"
+        example: 75
+        description: "Shows the percent done for an activity that we are still processing."
+        readOnly: true
+      activity_errors:
+        type: "array"
+        description: "Array of messages describing the errors that occurred."
+        items:
+          type: "string"
+          example: "Message describing the error condition."
+          description: "Message describing the error condition."
+          readOnly: true
+      _links:
+        type: "object"
+        properties:
+          self:
+            type: "object"
+            description: "Link to the activity status (this object) to retrieve the\
+              \ activity status."
+            properties:
+              href:
+                type: "string"
+                example: "/v3/activities/04fe9a97-a579-43c5-bb1a-58ed29bf0a6a"
+    description: "Activity status for contact_delete activity"
   SegmentsDTO:
     type: "object"
     required:
@@ -10392,6 +11113,125 @@ definitions:
         description: "The V3 API list unique identifier"
     description: "The cross-referenced pair of V3 API <code>list_id</code> and V2\
       \ API <code>sequence_id</code> for a list. Response is sorted ascending by <code>sequence_id</code>."
+  SmsEngagementHistory:
+    type: "array"
+    items:
+      type: "object"
+      description: "Provides a contact's SMS engagement history details. The properties\
+        \ returned depend on the type of SMS consent granted by the contact."
+      properties:
+        contact_id:
+          type: "string"
+          example: "7f7923da-ebf7-11ec-ae6e-3e22fbb230ec"
+          description: "The unique contact UUID."
+        sms_channel_id:
+          type: "string"
+          example: "3fa85f64-5712-6245-b3fc-2c963f66bfc6"
+          description: "The unique SMS channel UUID."
+        sms_channel_history_id:
+          type: "string"
+          example: "04515cb3-17be-41e4-823a-f71c3d381c7b"
+          description: "The unique SMS channel history UUID."
+        insert_time:
+          type: "string"
+          format: "date-time"
+          example: "2016-03-03T10:53:04-05:00"
+          description: "The date and time that the history record was created, in\
+            \ ISO-8601 format. System generated."
+        history_details:
+          $ref: "#/definitions/HistoryDetails"
+  HistoryDetails:
+    type: "object"
+    properties:
+      state:
+        type: "string"
+        example: "O"
+        description: "The code representing the consent state, including <code>E</code>\
+          \ for optin and <code>O</code> for Optin."
+        enum:
+        - "E"
+        - "O"
+      source:
+        type: "string"
+        example: "A"
+        description: "The code representing the consent source type, including <code>A</code>\
+          \ for Account, <code>C</code> for Contact, and <code>S</code>' for System."
+        enum:
+        - "A"
+        - "C"
+        - "S"
+      consent_type:
+        type: "string"
+        example: "promotional_sms"
+        description: "The type of SMS consent used."
+        enum:
+        - "promotional_sms"
+        - "transactional_sms"
+      consent_action_time:
+        type: "string"
+        format: "date-time"
+        example: "2023-01-23 06:09:23 -0800"
+        description: "The date and time that SMS engagement data was last updated,\
+          \ in ISO-8601 format. System generated."
+      consent_action_type:
+        type: "string"
+        example: "opt_out"
+        description: "The type of consent action provided."
+        enum:
+        - "opt_out"
+        - "re_opt_in"
+        - "delete"
+        - "confirmed_opt_in"
+        - "deactivate"
+        - "suspend"
+        - "resubscribe"
+      consent_medium_type:
+        type: "string"
+        example: "MD"
+        description: "The code representing the medium used to provide consent. Medium\
+          \ types include mobile device (<code>MD</code>). lead generation form(<code>LF</code>),\
+          \ deactivation by carrier(<code>CD</code>), import_file:(<code>FI</code>),\
+          \ and system (<code>SY</code>)."
+        enum:
+        - "MD"
+        - "LF"
+        - "CD"
+        - "FI"
+        - "SY"
+      source_consent_timestamp:
+        type: "string"
+        example: "2016-03-03T10:53:04-05:0"
+        description: "The time that SMS consent was last updated."
+      source_ip:
+        type: "string"
+        example: "123.456.78.9"
+        description: "If applicable, the IP address from which the consent came."
+      source_sms_number:
+        type: "string"
+        example: "6035550239"
+        description: "If applicable, the SMS consent number associated with the source."
+      advertised_frequency:
+        type: "integer"
+        example: 2
+        description: "If applicable, the advertising numeric component used to advertise\
+          \ to the contact.. For example, if <code>advertised_frequency</code> is\
+          \ set to <code> 2</code> , and  <code>advertised_interval</code> is set\
+          \ to <code>M</code>, the contact receives advertisements twice a month."
+      advertised_interval:
+        type: "string"
+        example: "W"
+        description: "If applicable, the interval component used to advertise to the\
+          \ contact. For example, if <code>advertised_frequency</code> is set to <code>\
+          \ 2</code> , and  <code>advertised_interval</code> is set to <code>M</code>,\
+          \ the contact receives advertisements twice a month."
+        enum:
+        - "M"
+        - "D"
+        - "W"
+    description: "Additional details about the SMS consent actions (opt-in, opt-out)\
+      \ in JSON format. The  <code>consent_action_type</code> and the method used\
+      \ to add or update a contacts SMS details determines which properties are returned\
+      \ in the results."
   ContactsCounts:
     type: "object"
     properties:
@@ -11217,10 +12057,10 @@ definitions:
               \ applies only to <code>format_type</code> 1. You cannot change this\
               \ property after you create an email.\n"
             readOnly: true
+            default: "HTML"
             enum:
             - "HTML"
             - "XHTML"
-            default: "HTML"
           greeting_salutation:
             type: "string"
             example: "Dear"
@@ -11235,12 +12075,12 @@ definitions:
               \ Name), <code>B</code> (First and Last Name), or <code>N</code> (No\
               \ greeting). By default, the value is <code>N</code>. This property\
               \ applies only to <code>format_type</code> 1."
+            default: "N"
             enum:
             - "F"
             - "L"
             - "B"
             - "N"
-            default: "N"
           greeting_secondary:
             type: "string"
             example: "Greetings!"
@@ -11257,10 +12097,10 @@ definitions:
               \ does not include a link for subscribing to the list. By default, the\
               \ value is <code>false</code>. This property applies only to <code>format_type</code>\
               \ 1.\n"
+            default: "false"
             enum:
             - "true"
             - "false"
-            default: "false"
           subscribe_link_name:
             type: "string"
             example: "Subscribe to my email list!"
@@ -11284,10 +12124,10 @@ definitions:
               \ message to contacts at top of the email. If <code>false</code>, Constant\
               \ Contact does not display the message. By default, the value is <code>false</code>.\
               \ This property applies to <code>format_type</code> 1 and 2.\n"
+            default: "false"
             enum:
             - "false"
             - "true"
-            default: "false"
           permission_reminder:
             type: "string"
             example: "Hi, just a reminder that you're receiving this email because\
@@ -11324,10 +12164,10 @@ definitions:
               \ when a user forwards an email message the footer does not include\
               \ a link for subscribing to the list. By default, the value is <code>false</code>.\
               \ This property applies to <code>format_type</code> 1 and 2.\n"
+            default: "false"
             enum:
             - "true"
             - "false"
-            default: "false"
           forward_email_link_name:
             type: "string"
             example: "Forward email"
@@ -11685,18 +12525,17 @@ definitions:
     required:
     - "campaign_activity_id"
     - "contact_id"
-    - "tracking_activity_type"
     properties:
       contact_id:
         type: "string"
         format: "uuid"
         example: "71600990-908b-11e6-907f-00166bff25"
-        description: "The contact id."
+        description: "The contact ID."
       campaign_activity_id:
         type: "string"
         format: "uuid"
         example: "010a0-1234-5678-9012-1100a0c1ab2a"
-        description: "The unique id of the activity for an e-mail campaign."
+        description: "The unique ID of the activity for an e-mail campaign."
       created_time:
         type: "string"
         format: "date-time"
@@ -11705,11 +12544,15 @@ definitions:
       tracking_activity_type:
         type: "string"
         example: "em_sends"
-        description: "The type of the tracking activity (send, open, click, bounce,\
-          \ opt-out or forward to a friend)"
+        description: "The types of the tracking activities included in the request.\
+          \ For example, sends, opens, clicks, bounces, opt-outs, or forwards."
+      campaign_activity_name:
+        type: "string"
+        example: "April DLCV Newsletter"
+        description: "The campaign activity name."
     description: "The base contact tracking activity representing sends, opt-outs\
-      \ and forwards to a friend. The basic information provided is campaign activity\
-      \ id, tracking activity type and time the tracking activity occurred."
+      \ and forwards to a friend. The basic information provided includes the campaign\
+      \ activity ID, tracking activity type, and time the tracking activity occurred."
   ContactOpenAndClickRates:
     type: "object"
     required:
@@ -12358,6 +13201,11 @@ definitions:
           \ including total unique counts for tracked activities."
         items:
           $ref: "#/definitions/BulkEmailCampaignSummary"
+      aggregate_percents:
+        description: "Lists aggregate percents for  `click`, `open`, `did_not_open`,\
+          \ `bounce`, and  `unsubscribe` activities for all campaigns included on\
+          \ a page of results."
+        $ref: "#/definitions/BulkEmailCampaignSummariesPercents"
       _links:
         description: "HAL property that contains next link if applicable"
         $ref: "#/definitions/Links_2"
@@ -12438,6 +13286,30 @@ definitions:
         format: "int32"
         example: 1211
         description: "The total number of unique non-opens"
+  BulkEmailCampaignSummariesPercents:
+    type: "object"
+    properties:
+      click:
+        type: "number"
+        example: 43.0
+        description: "Aggregated click rate for campaigns on the current page."
+      open:
+        type: "number"
+        example: 12.0
+        description: "Aggregated open rate for campaigns on the current page."
+      did_not_open:
+        type: "number"
+        example: 23.0
+        description: "Aggregated did-not-open rate for campaigns on the current page."
+      bounce:
+        type: "number"
+        example: 21.0
+        description: "Aggregated bounce rate for campaigns on the current page."
+      unsubscribe:
+        type: "number"
+        example: 2.0
+        description: "Aggregated unsubscribe (optout) rate for campaigns on the current\
+          \ page."
   CampaignStatsQueryResultEmail:
     type: "object"
     properties:
@@ -12828,6 +13700,364 @@ definitions:
         example: 2
         description: "Unique number that bounced back with a vacation or out of office\
           \ autoreply."
+  PContactClickTrackingActivitiesPage:
+    type: "object"
+    required:
+    - "_links"
+    - "tracking_activities"
+    properties:
+      tracking_activities:
+        type: "array"
+        description: "The list of landing page contact click tracking activities."
+        items:
+          $ref: "#/definitions/PContactClickTrackingActivity"
+      _links:
+        description: "HAL property that contains next link if applicable"
+        $ref: "#/definitions/Links_2"
+  PContactClickTrackingActivity:
+    type: "object"
+    required:
+    - "campaign_activity_id"
+    - "contact_id"
+    - "created_time"
+    - "email_address"
+    - "link_url"
+    - "tracking_activity_type"
+    properties:
+      contact_id:
+        type: "string"
+        format: "uuid"
+        example: "a2fdc285-f4bc-408c-9e64-f3f89038ec82"
+        description: "The unique ID that identifies the contact."
+      campaign_activity_id:
+        type: "string"
+        format: "uuid"
+        example: "98edac88-f4bc-408c-9e64-acd890384231"
+        description: "The unique ID that identifies of the campaign activity to use."
+      tracking_activity_type:
+        type: "string"
+        example: "p_contact_click"
+        description: "The tracked activity event type."
+      email_address:
+        type: "string"
+        example: "maddieb@gmail.com"
+        description: "The email address for the contact and tracking activity."
+      first_name:
+        type: "string"
+        example: "Maddie"
+        description: "The first name of the contact."
+      last_name:
+        type: "string"
+        example: "Brown"
+        description: "The last name of the contact."
+      device_type:
+        type: "string"
+        example: "tablet"
+        description: "The type of device that was used to click the link."
+      url_id:
+        type: "string"
+        example: "1100407204171"
+        description: "The ID used to uniquely identify the link."
+      link_url:
+        type: "string"
+        example: "http://www.amazon.com"
+        description: "The URL link text."
+      created_time:
+        type: "string"
+        format: "date-time"
+        example: "2019-04-25T11:08:00.000Z"
+        description: "The time the tracking activity occurred."
+      deleted_at:
+        type: "string"
+        format: "date"
+        example: "2015-08-10"
+        description: "The time the Contact was deleted"
+      sms_channel:
+        description: "Sms channel info for this contact"
+        $ref: "#/definitions/TrackingActivitySmsChannelDTO"
+  TrackingActivitySmsChannelDTO:
+    type: "object"
+    properties:
+      country_code:
+        type: "string"
+        example: "US"
+        description: "The ISO country code that is associated with SMS address."
+      state:
+        type: "string"
+        description: "The SMS channel status:\n  <ul><li><code>N</code>: not_set<li>\n\
+          \     <li><code>T</code>: temp_hold<li>\n     <li><code>P</code>: pending_confirmation<li>\n\
+          \     <li><code>I</code>: implicit<li>\n     <li><code>E</code>: explicit<li>\n\
+          \     <li><code>O</code>: unsubscribed<li>\n     <li><code>D</code>:deprecated<li></ul>"
+        enum:
+        - "N"
+        - "T"
+        - "P"
+        - "I"
+        - "E"
+        - "O"
+        - "D"
+      formatted_international:
+        type: "string"
+        example: "+1 234-555-6789"
+        description: "The formatted SMS number returned if the SMS <code>country_code</code>\
+          \ does not match the contacts <code>country_code</code>. "
+      formatted_national:
+        type: "string"
+        example: "(234) 555-6789"
+        description: "The formatted SMS number returned if the SMS <code>country_code</code>\
+          \ matches the contacts <code>country_code</code>. "
+  PContactOpensTrackingActivitiesPage:
+    type: "object"
+    required:
+    - "_links"
+    - "tracking_activities"
+    properties:
+      tracking_activities:
+        type: "array"
+        description: "The list of landing page contact opens tracking activities."
+        items:
+          $ref: "#/definitions/PContactOpenTrackingActivity"
+      _links:
+        description: "HAL property that contains next link if applicable"
+        $ref: "#/definitions/Links_2"
+  PContactOpenTrackingActivity:
+    type: "object"
+    required:
+    - "campaign_activity_id"
+    - "contact_id"
+    - "created_time"
+    - "email_address"
+    - "tracking_activity_type"
+    properties:
+      contact_id:
+        type: "string"
+        format: "uuid"
+        example: "a2fdc285-f4bc-408c-9e64-f3f89038ec82"
+        description: "The unique ID that identifies the contact."
+      campaign_activity_id:
+        type: "string"
+        format: "uuid"
+        example: "98edac88-f4bc-408c-9e64-acd890384231"
+        description: "The unique ID that identifies of the campaign activity to use."
+      tracking_activity_type:
+        type: "string"
+        example: "p_contact_opens"
+        description: "The tracked activity event type."
+      email_address:
+        type: "string"
+        example: "maddieb@gmail.com"
+        description: "The email address for the contact and tracking activity."
+      first_name:
+        type: "string"
+        example: "Maddie"
+        description: "The first name of the contact."
+      last_name:
+        type: "string"
+        example: "Brown"
+        description: "The last name of the contact."
+      device_type:
+        type: "string"
+        example: "tablet"
+        description: "The type of device that was used to open the link."
+      created_time:
+        type: "string"
+        format: "date-time"
+        example: "2019-04-25T11:08:00.000Z"
+        description: "The time the tracking activity occurred."
+      deleted_at:
+        type: "string"
+        format: "date"
+        example: "2015-08-10"
+        description: "The time the Contact was deleted"
+      sms_channel:
+        description: "Sms channel info for this contact"
+        $ref: "#/definitions/TrackingActivitySmsChannelDTO"
+  PContactUpdateTrackingActivitiesPage:
+    type: "object"
+    required:
+    - "_links"
+    - "tracking_activities"
+    properties:
+      tracking_activities:
+        type: "array"
+        description: "The list of landing page contact update tracking activities."
+        items:
+          $ref: "#/definitions/PContactUpdateTrackingActivity"
+      _links:
+        description: "HAL property that contains next link if applicable"
+        $ref: "#/definitions/Links_2"
+  PContactUpdateTrackingActivity:
+    type: "object"
+    required:
+    - "campaign_activity_id"
+    - "contact_id"
+    - "created_time"
+    - "email_address"
+    - "tracking_activity_type"
+    properties:
+      contact_id:
+        type: "string"
+        format: "uuid"
+        example: "a2fdc285-f4bc-408c-9e64-f3f89038ec82"
+        description: "The unique ID that identifies the contact."
+      campaign_activity_id:
+        type: "string"
+        format: "uuid"
+        example: "98edac88-f4bc-408c-9e64-acd890384231"
+        description: "The unique ID that identifies of the campaign activity to use."
+      tracking_activity_type:
+        type: "string"
+        example: "p_contact_updates"
+        description: "The tracked activity event type."
+      email_address:
+        type: "string"
+        example: "maddieb@gmail.com"
+        description: "The email address for the contact and tracking activity."
+      first_name:
+        type: "string"
+        example: "Maddie"
+        description: "The first name of the contact."
+      last_name:
+        type: "string"
+        example: "Brown"
+        description: "The last name of the contact."
+      created_time:
+        type: "string"
+        format: "date-time"
+        example: "2019-04-25T11:08:00.000Z"
+        description: "The time the tracking activity occurred."
+      deleted_at:
+        type: "string"
+        format: "date"
+        example: "2015-08-10"
+        description: "The time the Contact was deleted"
+      sms_channel:
+        description: "Sms channel info for this contact"
+        $ref: "#/definitions/TrackingActivitySmsChannelDTO"
+  PContactAddTrackingActivitiesPage:
+    type: "object"
+    required:
+    - "_links"
+    - "tracking_activities"
+    properties:
+      tracking_activities:
+        type: "array"
+        description: "The list of landing page contact adds tracking activities."
+        items:
+          $ref: "#/definitions/PContactAddTrackingActivity"
+      _links:
+        description: "HAL property that contains next link if applicable"
+        $ref: "#/definitions/Links_2"
+  PContactAddTrackingActivity:
+    type: "object"
+    required:
+    - "campaign_activity_id"
+    - "contact_id"
+    - "created_time"
+    - "email_address"
+    - "tracking_activity_type"
+    properties:
+      contact_id:
+        type: "string"
+        format: "uuid"
+        example: "a2fdc285-f4bc-408c-9e64-f3f89038ec82"
+        description: "The unique ID that identifies the contact."
+      campaign_activity_id:
+        type: "string"
+        format: "uuid"
+        example: "98edac88-f4bc-408c-9e64-acd890384231"
+        description: "The unique ID that identifies of the campaign activity to use."
+      tracking_activity_type:
+        type: "string"
+        example: "p_contact_adds"
+        description: "The tracked activity event type."
+      email_address:
+        type: "string"
+        example: "maddieb@gmail.com"
+        description: "The email address for the contact and tracking activity."
+      first_name:
+        type: "string"
+        example: "Maddie"
+        description: "The first name of the contact."
+      last_name:
+        type: "string"
+        example: "Brown"
+        description: "The last name of the contact."
+      created_time:
+        type: "string"
+        format: "date-time"
+        example: "2019-04-25T11:08:00.000Z"
+        description: "The time the tracking activity occurred."
+      deleted_at:
+        type: "string"
+        format: "date"
+        example: "2015-08-10"
+        description: "The time the Contact was deleted"
+      sms_channel:
+        description: "Sms channel info for this contact"
+        $ref: "#/definitions/TrackingActivitySmsChannelDTO"
+  PContactSMSOptInTrackingActivitiesPage:
+    type: "object"
+    required:
+    - "_links"
+    - "tracking_activities"
+    properties:
+      tracking_activities:
+        type: "array"
+        description: "The list of landing page contact opt in tracking activities."
+        items:
+          $ref: "#/definitions/PContactSMSOptInTrackingActivity"
+      _links:
+        description: "HAL property that contains next link if applicable"
+        $ref: "#/definitions/Links_2"
+  PContactSMSOptInTrackingActivity:
+    type: "object"
+    required:
+    - "campaign_activity_id"
+    - "contact_id"
+    - "created_time"
+    - "email_address"
+    - "tracking_activity_type"
+    properties:
+      contact_id:
+        type: "string"
+        format: "uuid"
+        example: "a2fdc285-f4bc-408c-9e64-f3f89038ec82"
+        description: "The unique ID that identifies the contact."
+      campaign_activity_id:
+        type: "string"
+        format: "uuid"
+        example: "98edac88-f4bc-408c-9e64-acd890384231"
+        description: "The unique ID that identifies of the campaign activity to use."
+      tracking_activity_type:
+        type: "string"
+        example: "p_contact_sms_optins"
+        description: "The tracked activity event type."
+      email_address:
+        type: "string"
+        example: "maddieb@gmail.com"
+        description: "The email address for the contact and tracking activity."
+      first_name:
+        type: "string"
+        example: "Maddie"
+        description: "The first name of the contact."
+      last_name:
+        type: "string"
+        example: "Brown"
+        description: "The last name of the contact."
+      created_time:
+        type: "string"
+        format: "date-time"
+        example: "2019-04-25T11:08:00.000Z"
+        description: "The time the tracking activity occurred."
+      deleted_at:
+        type: "string"
+        format: "date"
+        example: "2015-08-10"
+        description: "The time the Contact was deleted"
+      sms_channel:
+        description: "Sms channel info for this contact"
+        $ref: "#/definitions/TrackingActivitySmsChannelDTO"
   PartnerAccount:
     type: "object"
     required:
@@ -13055,22 +14285,25 @@ definitions:
     properties:
       plan_type:
         type: "string"
-        example: "GOOD"
+        example: "GOLD"
         description: "The billing plan that is associated with a client's Constant\
           \ Contact account. The billing plan determines which Constant Contact product\
-          \ features that the client account can access. <ul>\n  <li><code>TRIAL</code>:\
-          \ A non-billed account with an expiration date that allows clients to try\
-          \ limited Constant Contact product features.</li>\n  <li><code>GOOD</code>:\
-          \ A billed <b>Email</b> client account plan.</li>\n  <li><code>BETTER</code>:\
-          \ A billed <b>Email Plus</b> client account plan.</li>\n  <li><code>BEST</code>:\
-          \ A billed <b>Personal Marketer</b> client account plan.</li>\n  <li><code>LITE</code>:\
-          \ A <b>Website Builder</b> client account plan.</li>\n</ul>"
+          \ features that the client account can access. If you are not on the latest\
+          \ billing plan, contact the Constant Contact Partner Team. However, older\
+          \ billing plans and <code>plan_type</code> enum values will continue to\
+          \ be supported. <ul>\n  <li><code>TRIAL</code>: Provides limited product\
+          \ features for a non-billed account and the account has an expiration date.</li>\n\
+          \  <li><code>BRONZE</code>: Billable plan that provides basic email and\
+          \ marketing tools.</li>  \n  <li><code>SILVER</code>: Billable plan that\
+          \ provides all features available in the <code>BRONZE</code> plan, and adds\
+          \ some additional email campaign to features, such as contact segmentation\
+          \ and social media ads integration.</li>\n  <li><code>GOLD</code>: Billable\
+          \ plan that provides all available product features.</li>\n</ul>"
         enum:
         - "TRIAL"
-        - "GOOD"
-        - "BETTER"
-        - "BEST"
-        - "LITE"
+        - "GOLD"
+        - "SILVER"
+        - "BRONZE"
       current_tiers:
         type: "array"
         description: "Lists the billing plan tiers that are currently associated with\
@@ -13097,7 +14330,7 @@ definitions:
         format: "int32"
         example: 15
         description: "This property is required when an account is not set up to use\
-          \ single billing. For trial accounts, the value is intially set to <code>null</code>.\
+          \ single billing. For trial accounts, the value is initially set to <code>null</code>.\
           \ The value can only be changed when changing the <code>plan_type</code>\
           \ from a trial account to a different type of plan, otherwise the value\
           \ you enter is ignored. You can choose to enter a specific day of month\
@@ -13171,7 +14404,7 @@ definitions:
     properties:
       plan_type:
         type: "string"
-        example: "GOOD"
+        example: "GOLD"
         description: "The type of billing plan (<code>plan_type</code>) to associate\
           \ with a client's Constant Contact account. The type of billing plan determines\
           \ which Constant Contact product features that the client account can access.\
@@ -13179,18 +14412,16 @@ definitions:
           \ or a 400 error message is returned. After changing the <code>plan_type</code>\
           \ from <code>TRIAL</code> to any other billing plan type, you cannot change\
           \ it back to <code>TRIAL</code>.\n  <ul>\n    <li><code>TRIAL</code>: A\
-          \ non-billed account with an expiration date that allows clients to try\
-          \ Constant Contact product features.</li>\n    <li><code>GOOD</code>: A\
-          \ billed <b>Email</b> client account plan.</li>\n    <li><code>BETTER</code>:\
-          \ A billed <b>Email Plus</b> client account plan.</li>\n    <li><code>BEST</code>:\
-          \ A billed <b>Personal Marketer</b> client account plan.</li>\n    <li><code>LITE</code>:\
-          \ A <b>Website Builder</b> client account plan.</li>\n  </ul>"
+          \ non-billable account with an expiration date that allows clients to try\
+          \ Constant Contact product features.</li>\n     <li><code>GOLD</code>: A\
+          \ billable client account plan.</li>\n     <li><code>SILVER</code>: A billable\
+          \ client account plan.</li>\n     <li><code>BRONZE</code>: A billable client\
+          \ account plan.</li>\n  </ul>"
         enum:
         - "TRIAL"
-        - "GOOD"
-        - "BETTER"
-        - "BEST"
-        - "LITE"
+        - "GOLD"
+        - "SILVER"
+        - "BRONZE"
       billing_day_of_month:
         type: "integer"
         format: "int32"
@@ -13324,6 +14555,37 @@ definitions:
         type: "string"
         example: "application/json"
         description: "The value of the header."
+  AccountSuspension:
+    type: "object"
+    required:
+    - "suspend_plan_group_id"
+    - "suspend_plan_id"
+    properties:
+      suspend_plan_id:
+        type: "integer"
+        description: "Suspended plan group id."
+      suspend_plan_group_id:
+        type: "integer"
+        description: "The suspended plan group id."
+      suspend_date:
+        type: "string"
+        format: "date-time"
+        description: "The date when the customer will start being suspended. If omitted\
+          \ defaults to the current date and time and suspends the account at the\
+          \ next billing cycle."
+      suspend_reason_id:
+        type: "integer"
+        description: "The reason the customer is suspended."
+      suspend_subreason_id:
+        type: "integer"
+        description: "The subreason why the customer is suspended."
+      suspend_comment:
+        type: "string"
+        description: "Comment field for user suspension."
+      suspend_estimated_reactivation_date:
+        type: "string"
+        format: "date-time"
+        description: "Estimated date when the customer will be reactivated."
   WebhooksSubscriptionCollection:
     type: "array"
     description: "An array of webhook subscriptions."

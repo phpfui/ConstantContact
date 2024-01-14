@@ -16,8 +16,11 @@ class Plan extends \PHPFUI\ConstantContact\Base
 	 *
 	 * Use this GET method to return billing plan details for a client's Constant
 	 * Contact account.
-	 * Only technology partners can access partner endpoints and partner endpoints
-	 * cannot be tested using the API reference tester.
+	 * If you are not on the latest billing plan, contact the Constant Contact
+	 * Partner Team. However, older billing plans and `plan_type` enum values
+	 * will continue to be supported. Only technology partners can access partner
+	 * endpoints and partner endpoints cannot be tested using the API reference
+	 * tester.
 	 * For more use case information, see [Get Billing Plan Details for a Client
 	 * Account](https://v3.developer.constantcontact.com/api_guide/partners_plans_get.html)
 	 * in the API guide.
@@ -53,9 +56,11 @@ class Plan extends \PHPFUI\ConstantContact\Base
 	 * Changing the `plan_type` from `TRIAL` to another `plan_type` automatically
 	 * changes the `billing_status` from `Trial` to `Open`.
 	 *
-	 *
 	 * Only technology partners can access partner endpoints and partner endpoints
-	 * cannot be tested using the API reference tester.
+	 * cannot be tested using the API reference tester. If you are not on the
+	 * latest billing plan, contact the Constant Contact Partner Team. However,
+	 * older billing plans and `plan_type` enum values will continue to be
+	 * supported.
 	 *
 	 * For more use case information, see [PUT Billing Plan Details for a Client
 	 * Account](https://v3.developer.constantcontact.com/api_guide/partners_plans_update.html)
@@ -65,16 +70,13 @@ class Plan extends \PHPFUI\ConstantContact\Base
 	 * @param \PHPFUI\ConstantContact\Definition\PlanInfo $body Update the billing plan (`plan_type`) for an existing Constant Contact client account. Options include:
   - `TRIAL`: A non-billed account with an expiration date that allows clients to try Constant Contact product features.
 
-  - `GOOD`: A billed **Email** client account plan.
+  - `GOLD`: A billable plan that provides all available product features.
 
-  - `BETTER`: A billed **Email Plus** client account plan.
+  - `SILVER`: A billable plan that provides all features available in the <code>BRONZE</code> plan, and adds some additional email campaign feature such as contact segmentation and social media advertisements.
 
-  - `BEST`: A billed **Personal Marketer** client account plan.
+  - `BRONZE`: A billable plan that provides basic email and marketing tools. 
 
-  - `LITE`: A **Website Builder** client account plan.
-
-
-If updating from a `TRIAL` plan (`plan_type`) to another type of billing plan, you have the option to update the day of month (`billing_day_of_month`) in which to bill the client account. Valid values include `1` through to and including `31`. Any additional billing plan properties and values that you include in the request body are ignored.
+If updating from a `TRIAL` plan (`plan_type`) to another type of billing plan, you have the option to update the day of month (`billing_day_of_month`) in which to bill the client account. Valid values include `1` through to and including `31`. Any additional billing plan properties and values that you include in the request body are ignored. If you are not on the latest billing plan, contact the Constant Contact Partner Team. However, older billing plans and `plan_type` enum values will continue to be supported.
 	 */
 	public function put(string $encoded_account_id, ?\PHPFUI\ConstantContact\Definition\PlanInfo $body = null) : array
 		{

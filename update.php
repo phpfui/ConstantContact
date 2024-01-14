@@ -8,9 +8,9 @@ exec($php . ' composer.phar update');
 include 'vendor/autoload.php';
 
 // get the latest
-//$repo = new \Gitonomy\Git\Repository(__DIR__);
-//$repo->run('checkout', ['main']);
-//$repo->run('pull');
+$repo = new \Gitonomy\Git\Repository(__DIR__);
+$repo->run('checkout', ['main']);
+$repo->run('pull');
 
 // download the yaml file and save it
 $url = 'https://api.cc.email/v3/swagger.yaml';
@@ -21,6 +21,9 @@ if (empty($yaml))
 	exit;
 	}
 $file = __DIR__ . '/yaml/swagger.yaml';
+
+echo "Update {$file}\n";
+
 file_put_contents($file, $yaml);
 
 // assume it has changed and run Generator
@@ -31,22 +34,31 @@ $generator->makeClasses($yaml['basePath'], $yaml['paths']);
 $generator->deleteDefinitions();
 $generator->makeDefinitions($yaml['definitions']);
 
+echo "Generated files\n";
+
 // don't update git if running under Windows
 if ('php' == $php)
 	{
+	echo "running under Windows, exiting\n";
 	exit;
 	}
 
 // style the code
 exec($php . ' vendor\bin\php-cs-fixer fix -vv --allow-risky=yes');
 
+echo "Cleaned code\n";
+
 // Stage all changed files
 $repo->run('add', ['.']);
 
 // if any files are staged, then make new version, else bail as we are done
 $output = $repo->run('status', ['--porcelain']);
+
+echo "Git output {$output}\n";
+
 if (! strlen(trim($output)))
 	{
+	echo "No changes found, exiting\n";
 	exit;
 	}
 
@@ -73,6 +85,8 @@ $proposed = "{$proposed}";
 $version = 'V' . substr($proposed, 0, 2) . '.' . substr($proposed, 2, 2) . '.' . substr($proposed, 4, 2);
 $version = str_replace('.0', '.', $version);
 
+echo "Proposed version: {$version}\n";
+
 // commit and tag it with version number
 $date = date('Y-m-d');
 $repo->run('commit', ['-m', "{$version} - {$date}"]);
@@ -80,3 +94,5 @@ $repo->run('tag', ['-a', $version, '-m', "Auto generated on {$date}"]);
 
 // push and publish
 $repo->run('push', ['--follow-tags']);
+
+echo "Updated to {$version}\n";
