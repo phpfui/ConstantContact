@@ -19,14 +19,14 @@ class EmailAddressPut extends \PHPFUI\ConstantContact\Definition\Base
 	{
 	protected static array $fields = [
 		'address' => 'string',
-		'permission_to_send' => ['implicit', 'explicit', 'pending_confirmation', 'unsubscribed', 'temp_hold', 'not_set'],
+		'permission_to_send' => 'string',
 		'created_at' => '\PHPFUI\ConstantContact\DateTime',
 		'updated_at' => '\PHPFUI\ConstantContact\DateTime',
 		'opt_in_date' => '\PHPFUI\ConstantContact\DateTime',
-		'opt_out_source' => ['Account', 'Contact'],
+		'opt_out_source' => 'string',
 		'opt_out_date' => '\PHPFUI\ConstantContact\DateTime',
 		'opt_out_reason' => 'string',
-		'confirm_status' => ['pending', 'confirmed', 'off'],
+		'confirm_status' => 'string',
 
 	];
 

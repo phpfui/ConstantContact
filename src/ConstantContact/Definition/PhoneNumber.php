@@ -18,11 +18,11 @@ class PhoneNumber extends \PHPFUI\ConstantContact\Definition\Base
 	protected static array $fields = [
 		'phone_number_id' => '\PHPFUI\ConstantContact\UUID',
 		'phone_number' => 'string',
-		'kind' => ['home', 'work', 'mobile', 'other'],
+		'kind' => 'string',
 		'created_at' => '\PHPFUI\ConstantContact\DateTime',
 		'updated_at' => '\PHPFUI\ConstantContact\DateTime',
-		'update_source' => ['Account', 'Contact'],
-		'create_source' => ['Account', 'Contact'],
+		'update_source' => 'string',
+		'create_source' => 'string',
 
 	];
 

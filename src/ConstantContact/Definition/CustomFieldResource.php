@@ -18,7 +18,7 @@ class CustomFieldResource extends \PHPFUI\ConstantContact\Definition\Base
 		'custom_field_id' => '\PHPFUI\ConstantContact\UUID',
 		'label' => 'string',
 		'name' => 'string',
-		'type' => ['date', 'string'],
+		'type' => 'string',
 		'updated_at' => '\PHPFUI\ConstantContact\DateTime',
 		'created_at' => '\PHPFUI\ConstantContact\DateTime',
 

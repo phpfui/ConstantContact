@@ -6,13 +6,13 @@ namespace PHPFUI\ConstantContact\Definition;
 
 /**
  * @property array<\PHPFUI\ConstantContact\Definition\OptoutsTrackingActivity> $tracking_activities The list of opt-out tracking activities
- * @property \PHPFUI\ConstantContact\Definition\Links2 $_links HAL property that contains the next link, if applicable.
+ * @property \PHPFUI\ConstantContact\Definition\ReportingLinks $_links HAL property that contains the next link, if applicable.
  */
 class OptoutsTrackingActivitiesPage extends \PHPFUI\ConstantContact\Definition\Base
 	{
 	protected static array $fields = [
 		'tracking_activities' => 'array<\PHPFUI\ConstantContact\Definition\OptoutsTrackingActivity>',
-		'_links' => '\PHPFUI\ConstantContact\Definition\Links2',
+		'_links' => '\PHPFUI\ConstantContact\Definition\ReportingLinks',
 
 	];
 	}

@@ -12,7 +12,7 @@ class CustomFieldInput extends \PHPFUI\ConstantContact\Definition\Base
 	{
 	protected static array $fields = [
 		'label' => 'string',
-		'type' => ['string', 'date'],
+		'type' => 'string',
 
 	];
 

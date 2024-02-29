@@ -16,7 +16,7 @@ class PartnerAccountOperationsRequest extends \PHPFUI\ConstantContact\Definition
 	{
 	protected static array $fields = [
 		'account_operation_url' => 'string',
-		'account_operation_method' => ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+		'account_operation_method' => 'string',
 		'account_operation_payload' => 'string',
 		'account_operation_query_parameters' => 'array<\PHPFUI\ConstantContact\Definition\QueryParamObject>',
 		'account_operation_path_parameters' => 'array<\PHPFUI\ConstantContact\Definition\PathParamObject>',

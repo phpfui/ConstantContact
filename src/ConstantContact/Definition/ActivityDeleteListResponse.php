@@ -25,7 +25,7 @@ class ActivityDeleteListResponse extends \PHPFUI\ConstantContact\Definition\Base
 	{
 	protected static array $fields = [
 		'activity_id' => '\PHPFUI\ConstantContact\UUID',
-		'state' => ['initialized', 'processing', 'completed', 'cancelled', 'failed', 'timed_out'],
+		'state' => 'string',
 		'created_at' => '\PHPFUI\ConstantContact\DateTime',
 		'updated_at' => '\PHPFUI\ConstantContact\DateTime',
 		'percent_done' => 'int',

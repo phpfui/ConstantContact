@@ -21,7 +21,7 @@ class TrackingActivitySmsChannelDTO extends \PHPFUI\ConstantContact\Definition\B
 	{
 	protected static array $fields = [
 		'country_code' => 'string',
-		'state' => ['N', 'T', 'P', 'I', 'E', 'O', 'D'],
+		'state' => 'string',
 		'formatted_international' => 'string',
 		'formatted_national' => 'string',
 

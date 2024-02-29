@@ -12,7 +12,7 @@ class EmailAddressPost extends \PHPFUI\ConstantContact\Definition\Base
 	{
 	protected static array $fields = [
 		'address' => 'string',
-		'permission_to_send' => ['implicit', 'explicit', 'pending_confirmation', 'unsubscribed', 'temp_hold', 'not_set'],
+		'permission_to_send' => 'string',
 
 	];
 

@@ -14,7 +14,7 @@ class AccountEmailCreateResponse extends \PHPFUI\ConstantContact\Definition\Base
 	protected static array $fields = [
 		'email_address' => 'string',
 		'email_id' => 'int',
-		'confirm_status' => ['CONFIRMED', 'UNCONFIRMED'],
+		'confirm_status' => 'string',
 
 	];
 

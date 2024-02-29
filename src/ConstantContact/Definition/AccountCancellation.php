@@ -22,7 +22,7 @@ namespace PHPFUI\ConstantContact\Definition;
 class AccountCancellation extends \PHPFUI\ConstantContact\Definition\Base
 	{
 	protected static array $fields = [
-		'reason_id' => [1, 2, 3, 11, 12, 14, 21, 27, 30],
+		'reason_id' => 'int',
 		'effective_date' => '\PHPFUI\ConstantContact\DateTime',
 
 	];

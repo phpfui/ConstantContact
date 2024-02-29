@@ -29,7 +29,7 @@ class ContactPostRequest extends \PHPFUI\ConstantContact\Definition\Base
 		'last_name' => 'string',
 		'job_title' => 'string',
 		'company_name' => 'string',
-		'create_source' => ['Account', 'Contact'],
+		'create_source' => 'string',
 		'birthday_month' => 'int',
 		'birthday_day' => 'int',
 		'anniversary' => 'string',

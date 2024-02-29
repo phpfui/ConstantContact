@@ -25,19 +25,19 @@ class DocumentProperties extends \PHPFUI\ConstantContact\Definition\Base
 	{
 	protected static array $fields = [
 		'style_content' => 'string',
-		'letter_format' => ['HTML', 'XHTML'],
+		'letter_format' => 'string',
 		'greeting_salutation' => 'string',
-		'greeting_name_type' => ['F', 'L', 'B', 'N'],
+		'greeting_name_type' => 'string',
 		'greeting_secondary' => 'string',
-		'subscribe_link_enabled' => ['true', 'false'],
+		'subscribe_link_enabled' => 'string',
 		'subscribe_link_name' => 'string',
 		'text_content' => 'string',
-		'permission_reminder_enabled' => ['false', 'true'],
+		'permission_reminder_enabled' => 'string',
 		'permission_reminder' => 'string',
 		'view_as_webpage_enabled' => 'string',
 		'view_as_webpage_text' => 'string',
 		'view_as_webpage_link_name' => 'string',
-		'forward_email_link_enabled' => ['true', 'false'],
+		'forward_email_link_enabled' => 'string',
 		'forward_email_link_name' => 'string',
 
 	];

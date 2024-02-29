@@ -20,8 +20,8 @@ class SmsChannel extends \PHPFUI\ConstantContact\Definition\Base
 		'sms_address' => 'string',
 		'dial_code' => 'string',
 		'country_code' => 'string',
-		'update_source' => ['Account', 'Contact'],
-		'create_source' => ['Account', 'Contact'],
+		'update_source' => 'string',
+		'create_source' => 'string',
 		'sms_channel_consents' => 'array<\PHPFUI\ConstantContact\Definition\SmsChannelConsentDetails>',
 
 	];

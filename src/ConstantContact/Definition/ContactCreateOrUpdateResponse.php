@@ -12,7 +12,7 @@ class ContactCreateOrUpdateResponse extends \PHPFUI\ConstantContact\Definition\B
 	{
 	protected static array $fields = [
 		'contact_id' => '\PHPFUI\ConstantContact\UUID',
-		'action' => ['created', 'updated'],
+		'action' => 'string',
 
 	];
 	}

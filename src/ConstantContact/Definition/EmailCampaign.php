@@ -45,9 +45,9 @@ class EmailCampaign extends \PHPFUI\ConstantContact\Definition\Base
 		'campaign_activities' => 'array<\PHPFUI\ConstantContact\Definition\ActivityReference>',
 		'campaign_id' => 'string',
 		'created_at' => '\PHPFUI\ConstantContact\DateTime',
-		'current_status' => ['Draft', 'Scheduled', 'Executing', 'Done', 'Removed', 'Error'],
+		'current_status' => 'string',
 		'name' => 'string',
-		'type' => ['Newsletter', 'Custom Code Email', 'Announcement', 'Product/Service News', 'Business Letter', 'Card', 'Press release', 'Flyer', 'Feedback Request', 'Ratings and Reviews', 'Event Announcement', 'Simple Coupon', 'Sale Promotion', 'Product Promotion', 'Membership Drive', 'Fundraiser'],
+		'type' => 'string',
 		'type_code' => 'int',
 		'updated_at' => '\PHPFUI\ConstantContact\DateTime',
 

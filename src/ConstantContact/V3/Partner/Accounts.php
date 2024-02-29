@@ -63,8 +63,12 @@ class Accounts extends \PHPFUI\ConstantContact\Base
 	 * By default, the client account provision data is stored and processed
 	 * when provisioning becomes available.
 	 *
-	 * Some client account features will be supported in future releases, such
-	 * as Single Sign On (SSO).
+	 * If the partner client account has the Single Sign On (SSO) for all users
+	 * feature enabled, all users in the client account can sign into the account
+	 * using SSO. This feature must be set up through the Constant Contact
+	 * Partner team. For feature details, see [Configuring Identity Provider
+	 * Initiated SSO](https://v3.developer.constantcontact.com/api_guide/partner_sso_config.html).
+	 * Some client account features will be supported in future releases.
 	 *
 	 * For more use case information, see [Create a new Partner Client Account](https://v3.developer.constantcontact.com/api_guide/partners_accts_create.html)
 	 * in the API guide.

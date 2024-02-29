@@ -32,7 +32,7 @@ class ContactPutRequest extends \PHPFUI\ConstantContact\Definition\Base
 		'birthday_month' => 'int',
 		'birthday_day' => 'int',
 		'anniversary' => 'string',
-		'update_source' => ['Account', 'Contact'],
+		'update_source' => 'string',
 		'custom_fields' => 'array<\PHPFUI\ConstantContact\Definition\ContactCustomField>',
 		'phone_numbers' => 'array<\PHPFUI\ConstantContact\Definition\PhoneNumberPut>',
 		'street_addresses' => 'array<\PHPFUI\ConstantContact\Definition\StreetAddressPut>',

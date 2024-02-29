@@ -26,7 +26,7 @@ class ClicksTrackingActivity extends \PHPFUI\ConstantContact\Definition\Base
 		'email_address' => 'string',
 		'first_name' => 'string',
 		'last_name' => 'string',
-		'device_type' => ['computer', 'mobile', 'tablet', 'other'],
+		'device_type' => 'string',
 		'url_id' => 'string',
 		'link_url' => 'string',
 		'created_time' => '\PHPFUI\ConstantContact\DateTime',

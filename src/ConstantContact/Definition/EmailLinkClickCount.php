@@ -18,7 +18,7 @@ class EmailLinkClickCount extends \PHPFUI\ConstantContact\Definition\Base
 		'link_url' => 'string',
 		'url_id' => 'string',
 		'unique_clicks' => 'int',
-		'list_action' => ['add'],
+		'list_action' => 'string',
 		'list_id' => '\PHPFUI\ConstantContact\UUID',
 		'link_tag' => 'string',
 

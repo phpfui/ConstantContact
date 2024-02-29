@@ -16,7 +16,7 @@ class Contacts extends \PHPFUI\ConstantContact\Definition\Base
 		'contacts' => 'array<\PHPFUI\ConstantContact\Definition\ContactResource>',
 		'contacts_count' => 'int',
 		'_links' => '\PHPFUI\ConstantContact\Definition\PagingLinks',
-		'status' => ['processing'],
+		'status' => 'string',
 
 	];
 	}

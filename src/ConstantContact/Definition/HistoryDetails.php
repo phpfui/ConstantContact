@@ -20,17 +20,17 @@ namespace PHPFUI\ConstantContact\Definition;
 class HistoryDetails extends \PHPFUI\ConstantContact\Definition\Base
 	{
 	protected static array $fields = [
-		'state' => ['E', 'O'],
-		'source' => ['A', 'C', 'S'],
-		'consent_type' => ['promotional_sms', 'transactional_sms'],
+		'state' => 'string',
+		'source' => 'string',
+		'consent_type' => 'string',
 		'consent_action_time' => '\PHPFUI\ConstantContact\DateTime',
-		'consent_action_type' => ['opt_out', 're_opt_in', 'delete', 'confirmed_opt_in', 'deactivate', 'suspend', 'resubscribe'],
-		'consent_medium_type' => ['MD', 'LF', 'CD', 'FI', 'SY'],
+		'consent_action_type' => 'string',
+		'consent_medium_type' => 'string',
 		'source_consent_timestamp' => 'string',
 		'source_ip' => 'string',
 		'source_sms_number' => 'string',
 		'advertised_frequency' => 'int',
-		'advertised_interval' => ['M', 'D', 'W'],
+		'advertised_interval' => 'string',
 
 	];
 	}

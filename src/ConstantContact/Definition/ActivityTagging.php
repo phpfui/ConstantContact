@@ -20,7 +20,7 @@ class ActivityTagging extends \PHPFUI\ConstantContact\Definition\Base
 	{
 	protected static array $fields = [
 		'activity_id' => 'string',
-		'state' => ['initialized', 'processing', 'completed', 'cancelled', 'failed', 'timed_out'],
+		'state' => 'string',
 		'started_at' => '\PHPFUI\ConstantContact\DateTime',
 		'completed_at' => '\PHPFUI\ConstantContact\DateTime',
 		'created_at' => '\PHPFUI\ConstantContact\DateTime',

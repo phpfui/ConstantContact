@@ -24,7 +24,7 @@ class OpensTrackingActivity extends \PHPFUI\ConstantContact\Definition\Base
 		'email_address' => 'string',
 		'first_name' => 'string',
 		'last_name' => 'string',
-		'device_type' => ['computer', 'mobile', 'tablet', 'other'],
+		'device_type' => 'string',
 		'created_time' => '\PHPFUI\ConstantContact\DateTime',
 		'deleted_at' => '\PHPFUI\ConstantContact\Date',
 
