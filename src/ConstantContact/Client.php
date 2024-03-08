@@ -454,6 +454,7 @@ class Client
 
 	private function process(\Psr\Http\Message\ResponseInterface $response) : array
 		{
+		$this->next = '';
 		$this->lastError = $response->getReasonPhrase();
 		$this->statusCode = $response->getStatusCode();
 		$this->body = $response->getBody();
