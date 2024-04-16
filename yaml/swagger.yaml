@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.2381"
+  version: "3.0.2400"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -50,6 +50,9 @@ tags:
 - name: "Landing Pages Reporting"
   description: "Use landing pages reporting endpoints and methods to get reporting\
     \ data about how a contact interacted with a campaign activity."
+- name: "SMS Reporting"
+  description: "Use SMS reporting endpoints and methods to get reporting data about\
+    \ SMS campaigns."
 - name: "Technology Partners"
   description: "Use partner endpoints to manage client Constant Contact accounts under\
     \ your partner account."
@@ -5589,6 +5592,58 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
+  /reports/summary_reports/sms_campaign_summaries:
+    get:
+      tags:
+      - "SMS Reporting"
+      summary: "GET an SMS Campaigns Summary Report"
+      description: "Use this method to get a summary of aggregate tracking statistics\
+        \ for up to 500 SMS campaigns. \nThe response results include the total number\
+        \ of times that each contact uniquely interacted with each tracked campaign\
+        \ activity. Results are sorted in descending order by the date the SMS was\
+        \ last sent (`last_sent_date`). Use the `limit` query parameter to limit the\
+        \ number of results returned per page. For example, if you may want to compare\
+        \ the tracking statistics for the last five SMS campaigns to those in the\
+        \ previous five SMS campaigns, set the `limit` parameter to `5`."
+      operationId: "getAllBulkSmsCampaignSummaries"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "limit"
+        in: "query"
+        description: "Use to limit the number of results to return on a single page.\
+          \ The default is `50` and the maximum is `500` per page."
+        required: false
+        type: "string"
+        default: "50"
+        x-example: "100"
+      responses:
+        "200":
+          description: "Request was successful."
+          schema:
+            $ref: "#/definitions/SmsCampaignSummariesPage"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "The requested resource was not found."
+        "500":
+          description: "There was a problem with our internal service."
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      - api_key: []
+      x-authorization-privileges:
+      - "ui:campaign:metrics"
   /partner/accounts:
     get:
       tags:
@@ -5978,7 +6033,7 @@ paths:
       - "Technology Partners"
       summary: "POST a User Under a Partner's SSO-Enabled Client Account"
       description: "Use this endpoint to create a new user under a partner client\
-        \ account that has the Single Sign On (SSO) for all users feature is enabled."
+        \ account that has the Single Sign On (SSO) for all users feature enabled."
       operationId: "createSSOUser"
       consumes:
       - "application/json"
@@ -12052,6 +12107,111 @@ definitions:
       _links:
         description: "HAL property that contains next link if applicable"
         $ref: "#/definitions/lpreportingLinks"
+  UniqueSmsCounts:
+    type: "object"
+    required:
+    - "bounces"
+    - "clicks"
+    - "delivers"
+    - "optouts"
+    - "sends"
+    properties:
+      sends:
+        type: "integer"
+        format: "int32"
+        example: 550
+        description: "The total number of unique sends."
+      clicks:
+        type: "integer"
+        format: "int32"
+        example: 294
+        description: "The total number of unique clicks."
+      optouts:
+        type: "integer"
+        format: "int32"
+        example: 3
+        description: "The total number of unique opt-outs (unsubscribes)."
+      delivers:
+        type: "integer"
+        format: "int32"
+        example: 530
+        description: "The total number of SMS delivered."
+      bounces:
+        type: "integer"
+        format: "int32"
+        example: 2
+        description: "The total number of unique bounces."
+  BulkCampaignSummary:
+    type: "object"
+    required:
+    - "campaign_id"
+    - "campaign_name"
+    - "campaign_type"
+    - "last_sent_date"
+    - "unique_counts"
+    properties:
+      campaign_id:
+        type: "string"
+        format: "uuid"
+        example: "a2fdc285-f4bc-408c-9e64-f3f89038ec82"
+        description: "The ID that uniquely identifies the campaign."
+      campaign_name:
+        type: "string"
+        example: "Spring Clearance Sale"
+        description: "The name to associate with this campaign."
+      last_sent_date:
+        type: "string"
+        format: "date-time"
+        example: "2019-04-25T11:08:00.000Z"
+        description: "The date that the campaign was last sent."
+      unique_counts:
+        description: "Aggregate counts for email tracking metrics unique across contacts\
+          \ and channels"
+        $ref: "#/definitions/UniqueSmsCounts"
+      campaign_type:
+        type: "string"
+        example: "SMS"
+        description: "The campaign type."
+  BulkSmsCampaignSummariesPercents:
+    type: "object"
+    properties:
+      deliver:
+        type: "number"
+        example: 23.0
+        description: "The aggregated SMS delivery rate for all campaigns on the current\
+          \ results page."
+      click:
+        type: "number"
+        example: 43.0
+        description: "The aggregated click rate for all campaigns on the current results\
+          \ page."
+      bounce:
+        type: "number"
+        example: 21.0
+        description: "The aggregated bounce rate for all campaigns on the current\
+          \ results page."
+      unsubscribe:
+        type: "number"
+        example: 2.0
+        description: "The aggregated unsubscribe (opt-out) rate for all campaigns\
+          \ on the current results page."
+  SmsCampaignSummariesPage:
+    type: "object"
+    properties:
+      bulk_sms_campaign_summaries:
+        type: "array"
+        description: "Provides details about each SMS campaign, including the total\
+          \ unique counts for each tracked campaign activity."
+        items:
+          $ref: "#/definitions/BulkCampaignSummary"
+      aggregate_percents:
+        description: "Campaign activity aggregate percents, including <code>click</code>,\
+          \ <code> deliver</code>, <code> bounce</code>, and <code>unsubscribe</code>,\
+          \ for all SMS campaigns returned on a page of results."
+        $ref: "#/definitions/BulkSmsCampaignSummariesPercents"
+      _links:
+        description: "HAL property that contains next link if applicable"
+        $ref: "#/definitions/reportingsmsLinks"
   PaginationLinks:
     type: "object"
     properties:
@@ -12896,6 +13056,14 @@ definitions:
     properties:
       href:
         type: "string"
+  reportingsmsLinks:
+    type: "object"
+    required:
+    - "next"
+    properties:
+      next:
+        description: "Contains the next link if it is available."
+        $ref: "#/definitions/reportingsmsNext"
   lpreportingLinks:
     type: "object"
     required:
@@ -12904,6 +13072,15 @@ definitions:
       next:
         description: "Contains the next link if it is available."
         $ref: "#/definitions/lpreportingNext"
+  reportingsmsNext:
+    type: "object"
+    required:
+    - "href"
+    properties:
+      href:
+        type: "string"
+        description: "The next link in the page or null if there are no additional\
+          \ pages."
   tagsPagingLinks:
     type: "object"
     properties:

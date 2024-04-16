@@ -15,8 +15,7 @@ class Sso extends \PHPFUI\ConstantContact\Base
 	 * POST a User Under a Partner's SSO-Enabled Client Account
 	 *
 	 * Use this endpoint to create a new user under a partner client account
-	 * that has the Single Sign On (SSO) for all users feature is enabled.
-	 *
+	 * that has the Single Sign On (SSO) for all users feature enabled.
 	 *
 	 * @param string $encoded_account_id The encoded account ID that identifies the partner's client account to which to add the new user. 
 	 * @param \PHPFUI\ConstantContact\Definition\SSOUser $SSO_User The JSON payload used to create a new user under the specified partner's client account. All request body properties are required (`first_name`, `last_name`, `role_name`, `contact_email`, `login_name`, `external_id`, `external_provider`).
