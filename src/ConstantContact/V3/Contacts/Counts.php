@@ -16,12 +16,13 @@ class Counts extends \PHPFUI\ConstantContact\Base
 	 *
 	 * Use to get the total contacts count for the account and the total contact-consent
 	 * counts for each consent state. Optionally, to include the total number
-	 * of new subscribers in the results, use `new_subscribers` in the `include`
-	 * query parameter. To optimize open rates, reduce spam reports, and help
-	 * grow your business,  you must value your contact's consent to receive
-	 * or to not receive your emails.
+	 * of contacts that subscribed within the last 30 days in the results,
+	 * use `new_subscribers` in the `include` query parameter. To optimize
+	 * open rates, reduce spam reports, and help grow your business,  you must
+	 * value your contact's consent to receive or to not receive your emails.
 	 *
-	 * @param string $include Use to return the total number of new contact subscribers in the results.
+	 *
+	 * @param string $include Use to return the total number of contacts that subscribed within the last 30 days in the results.
 	 */
 	public function get(?string $include = null) : array
 		{

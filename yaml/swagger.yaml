@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.2400"
+  version: "3.0.2430"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -863,9 +863,11 @@ paths:
       - "Bulk Activities"
       summary: "Remove Contacts from Lists"
       description: "Use this method to create an activity that removes contacts from\
-        \ one or more lists. Use the properties in the `source` object to remove specific\
-        \ contacts from your targeted lists. Use the `list_ids` array to specify the\
-        \ lists from which you want to remove the source contacts."
+        \ one or more contact lists. Use the properties in the `source` object to\
+        \ remove specific contacts from your lists. Use the `list_ids` array to specify\
+        \ the target lists from which contacts are removed. Optionally, if the source\
+        \ is  `all_active_contacts` (billable) or `list_ids`, use the `exclude` object\
+        \ to exclude specific contacts from being removed from the destination lists."
       operationId: "postListRemoveContact"
       consumes:
       - "application/json"
@@ -874,7 +876,7 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "The JSON payload used to create the 'remove contacts from lists'\
+        description: "The JSON payload used to create the Remove Contacts from Lists'\
           \ activity"
         required: true
         schema:
@@ -2759,10 +2761,10 @@ paths:
       summary: "GET Contact Consent Counts"
       description: "Use to get the total contacts count for the account and the total\
         \ contact-consent counts for each consent state. Optionally, to include the\
-        \ total number of new subscribers in the results, use `new_subscribers` in\
-        \ the `include` query parameter. To optimize open rates, reduce spam reports,\
-        \ and help grow your business,  you must value your contact's consent to receive\
-        \ or to not receive your emails."
+        \ total number of contacts that subscribed within the last 30 days in the\
+        \ results, use `new_subscribers` in the `include` query parameter. To optimize\
+        \ open rates, reduce spam reports, and help grow your business,  you must\
+        \ value your contact's consent to receive or to not receive your emails."
       operationId: "countContact"
       consumes:
       - "application/json"
@@ -2771,8 +2773,8 @@ paths:
       parameters:
       - name: "include"
         in: "query"
-        description: "Use to return the total number of new contact subscribers in\
-          \ the results."
+        description: "Use to return the total number of contacts that subscribed within\
+          \ the last 30 days in the results."
         required: false
         type: "string"
         enum:
@@ -5592,58 +5594,6 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
-  /reports/summary_reports/sms_campaign_summaries:
-    get:
-      tags:
-      - "SMS Reporting"
-      summary: "GET an SMS Campaigns Summary Report"
-      description: "Use this method to get a summary of aggregate tracking statistics\
-        \ for up to 500 SMS campaigns. \nThe response results include the total number\
-        \ of times that each contact uniquely interacted with each tracked campaign\
-        \ activity. Results are sorted in descending order by the date the SMS was\
-        \ last sent (`last_sent_date`). Use the `limit` query parameter to limit the\
-        \ number of results returned per page. For example, if you may want to compare\
-        \ the tracking statistics for the last five SMS campaigns to those in the\
-        \ previous five SMS campaigns, set the `limit` parameter to `5`."
-      operationId: "getAllBulkSmsCampaignSummaries"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "limit"
-        in: "query"
-        description: "Use to limit the number of results to return on a single page.\
-          \ The default is `50` and the maximum is `500` per page."
-        required: false
-        type: "string"
-        default: "50"
-        x-example: "100"
-      responses:
-        "200":
-          description: "Request was successful."
-          schema:
-            $ref: "#/definitions/SmsCampaignSummariesPage"
-        "400":
-          description: "Bad request. Either the JSON was malformed or there was a\
-            \ data validation error."
-        "401":
-          description: "The Access Token used is invalid."
-        "403":
-          description: "Forbidden request. You lack the necessary scopes, you lack\
-            \ the necessary user privileges, or the application is deactivated."
-        "404":
-          description: "The requested resource was not found."
-        "500":
-          description: "There was a problem with our internal service."
-      security:
-      - oauth2_implicit:
-        - "campaign_data"
-      - oauth2_access_code:
-        - "campaign_data"
-      - api_key: []
-      x-authorization-privileges:
-      - "ui:campaign:metrics"
   /partner/accounts:
     get:
       tags:
@@ -6964,14 +6914,15 @@ definitions:
         type: "string"
         example: "unsubscribed"
         description: "Allows you to export only contacts that have a specific status\
-          \ value. Possible values are <code>active</code>, <code>unsubscribed</code>,\
+          \ value. Possible values are <code>active</code> (billable), <code>unsubscribed</code>,\
           \ or <code>removed</code>"
     description: "You can export contact objects to a CSV file. By default, all contacts\
       \ in the user's account are exported if none of the following properties are\
       \ included: <br/><li> By contact_id - you can specify up to 500 specific contacts.\
       \ <li>list_id - you can specify up to 50 lists. You can use the status parameter\
-      \ with list_id<li>status - you can export contacts by status (unsubscribed,\
-      \ active, removed); this property can be used with list_ids."
+      \ with list_id<li>status - you can export contacts by status. Status values\
+      \ include unsubscribed, active (billable), and removed. This property can be\
+      \ used with list_ids."
   ActivityExportStatus:
     type: "object"
     properties:
@@ -7522,44 +7473,76 @@ definitions:
     properties:
       source:
         type: "object"
-        description: "The <code>source</code> object specifies which contacts to remove\
-          \ from your targeted lists using one of three mutually exclusive properties."
+        description: "Specifies the contacts to remove from your target list(s) using\
+          \ one of several mutually exclusive properties."
         properties:
           list_ids:
             type: "array"
-            description: "Specifies which contacts to remove from your target lists\
-              \ as an array of up to 50 contact <code>list_id</code> values. This\
-              \ property is mutually exclusive with <code>contact_ids</code> and <code>all_active_contacts</code>."
+            description: "Include up to 50 <code>list_id</code> values to remove all\
+              \ contact list members from your target list(s). This property is mutually\
+              \ exclusive with all other <code>source</code> properties."
             items:
               type: "string"
               format: "uuid"
               example: "5bbf758c-d8ce-11e9-8d3a-fa163e56c9b0"
-            maxItems: 50
-          all_active_contacts:
-            type: "boolean"
-            example: true
-            description: "Removes all active contacts from your targeted lists. This\
-              \ property is mutually exclusive with <code>contact_ids</code> and <code>list_ids</code>."
-            default: false
+            maxItems: 0
           contact_ids:
             type: "array"
-            description: "Specifies which contacts to remove from your target lists\
-              \ as an array of <code>contact_id</code> values. This property is mutually\
-              \ exclusive with <code>list_ids</code> and <code>all_active_contacts</code>."
+            description: "Include up to 500 <code>contact_id</code> values to remove\
+              \ the contacts from your target lists. This property is mutually exclusive\
+              \ with all other <code>source</code> properties."
             items:
               type: "string"
               format: "uuid"
               example: "4d88f172-21d1-11ea-b5ae-fa163e56c9b0"
-            maxItems: 500
+            maxItems: 0
+          all_active_contacts:
+            type: "boolean"
+            example: true
+            description: "Removes all active (billable) contacts from your targeted\
+              \ lists. This property is mutually exclusive with all other <code>source</code>\
+              \ properties."
+            default: false
+          engagement_level:
+            type: "string"
+            example: "high"
+            description: "Removes all contacts that meet the selected  <code>engagement_level\
+              \ </code> to your target lists. This property is mutually exclusive\
+              \ with all other <code>source</code> properties."
+          tag_ids:
+            type: "array"
+            description: "Removes all contacts assigned with the specified <code>tag_id</code>s\
+              \ from your target lists. This property is mutually exclusive with all\
+              \ other <code>source</code> properties."
+            items:
+              type: "string"
+              format: "uuid"
+              example: "5e88f172-21d1-11ea-b5ae-fa163e56c9b9"
+            maxItems: 0
+      exclude:
+        type: "object"
+        properties:
+          contact_ids:
+            type: "array"
+            description: "Excludes specified contacts (<code>contact_id</code>) from\
+              \ being deleted from the target list and only applicable if using either\
+              \ the <code>all_active_contacts</code> (billable) or <code>list_ids</code>\
+              \ as the source."
+            items:
+              type: "string"
+              format: "uuid"
+              example: "4d88f172-21d1-11ea-b5ae-fa163e56c9b0"
+              description: "An array of <code>contact_id</code>s to exclude."
       list_ids:
         type: "array"
-        description: "Specifies which lists (up to 50) to remove your source contacts\
-          \ from."
+        description: "Specify up to 50 target <code>list_id</code>s from which to\
+          \ remove contacts."
         items:
           type: "string"
           format: "uuid"
           example: "04fe9a97-a579-43c5-bb1a-58ed29bf0a6a"
-        maxItems: 50
+          description: "Target list from which to remove contacts."
+        maxItems: 0
   ActivityListsMembership:
     type: "object"
     properties:
@@ -7654,8 +7637,8 @@ definitions:
             type: "array"
             description: "Specifies which contacts you are adding to lists as an array\
               \ of up to 50 contact <code>list_id</code> values. This property is\
-              \ mutually exclusive with <code>contact_ids</code>, <code>all_active_contacts</code>,\
-              \ and <code>segment_id</code>."
+              \ mutually exclusive with <code>contact_ids</code>, <code>all_active_contacts</code>\
+              \ (billable), and <code>segment_id</code>."
             items:
               type: "string"
               format: "uuid"
@@ -7664,28 +7647,57 @@ definitions:
           all_active_contacts:
             type: "boolean"
             example: true
-            description: "Adds all active contacts to your targeted lists. This property\
-              \ is mutually exclusive with <code>contact_ids</code>, <code>list_ids</code>,\
-              \ and <code>segment_id</code>."
+            description: "Adds all active (billable) contacts to your targeted lists.\
+              \ This property is mutually exclusive with <code>contact_ids</code>,\
+              \ <code>list_ids</code>, and <code>segment_id</code>."
             default: false
           contact_ids:
             type: "array"
             description: "Specifies which contacts (up to 500) you are adding to lists\
               \ as an array of <code>contact_id</code> values. This property is mutually\
-              \ exclusive with <code>list_ids</code>, <code>all_active_contacts</code>,\
-              \ and <code>segment_id</code>."
+              \ exclusive with <code>list_ids</code>, <code>all_active_contacts</code>\
+              \ (billable), and <code>segment_id</code>."
             items:
               type: "string"
               format: "uuid"
               example: "04fe9a97-a579-43c5-bb1a-58ed29bf0a6a"
             maxItems: 500
+          tag_ids:
+            type: "array"
+            description: "Adds all contacts assigned with the specified <code>tag_id</code>s\
+              \ to your target lists. This property is mutually exclusive with all\
+              \ other <code>source</code> properties."
+            items:
+              type: "string"
+              format: "uuid"
+              example: "5e88f172-21d1-11ea-b5ae-fa163e56c9b9"
+            maxItems: 0
+          engagement_level:
+            type: "string"
+            example: "high"
+            description: "Adds all contacts that meet the selected  <code>engagement_level\
+              \ </code> to your target lists. This property is mutually exclusive\
+              \ with all other <code>source</code> properties."
           segment_id:
             type: "integer"
             example: 12
             description: "Specifies which contacts you are adding to lists as a single\
               \ <code>segment_id</code> value. This property is mutually exclusive\
-              \ with <code>list_ids</code>, <code>all_active_contacts</code>, and\
-              \ <code>contact_ids</code>."
+              \ with <code>list_ids</code>, <code>all_active_contacts</code> (billable),\
+              \ and <code>contact_ids</code>."
+      exclude:
+        type: "object"
+        properties:
+          contact_ids:
+            type: "array"
+            description: "Excludes specified contacts (<code>contact_id</code>) from\
+              \ being added to the target list. Applicable if using either the <code>all_active_contacts</code>\
+              \ (billable) or <code>list_ids</code> as the source."
+            items:
+              type: "string"
+              format: "uuid"
+              example: "4d88f172-21d1-11ea-b5ae-fa163e56c9b0"
+              description: "An array of <code>contact_id</code>s to exclude."
       list_ids:
         type: "array"
         description: "Specifies which lists (up to 50) you are adding your source\
@@ -7820,7 +7832,7 @@ definitions:
           all_active_contacts:
             type: "boolean"
             example: false
-            description: "Use to identify contacts with an active status."
+            description: "Use to identify contacts with an active (billable) status."
           new_subscriber:
             type: "boolean"
             example: true
@@ -7829,7 +7841,7 @@ definitions:
         type: "object"
         description: "Use to exclude specified contacts from being added or removed\
           \ from a tag. Only applicable if the specified source is either <code>all_active_contacts</code>\
-          \ or <code>list_ids</code>."
+          \ (billable) or <code>list_ids</code>."
         properties:
           contact_ids:
             type: "array"
@@ -10918,7 +10930,7 @@ definitions:
         description: "The ID that uniquely identifies an email campaign activity."
       tracking_activity_type:
         type: "string"
-        example: "em_sends"
+        example: "em_didnotopens"
         description: "The type of tracking activity that is associated with this <code>campaign_activity_id</code>\
           \ and used for reporting purposes."
       email_address:
@@ -12107,111 +12119,6 @@ definitions:
       _links:
         description: "HAL property that contains next link if applicable"
         $ref: "#/definitions/lpreportingLinks"
-  UniqueSmsCounts:
-    type: "object"
-    required:
-    - "bounces"
-    - "clicks"
-    - "delivers"
-    - "optouts"
-    - "sends"
-    properties:
-      sends:
-        type: "integer"
-        format: "int32"
-        example: 550
-        description: "The total number of unique sends."
-      clicks:
-        type: "integer"
-        format: "int32"
-        example: 294
-        description: "The total number of unique clicks."
-      optouts:
-        type: "integer"
-        format: "int32"
-        example: 3
-        description: "The total number of unique opt-outs (unsubscribes)."
-      delivers:
-        type: "integer"
-        format: "int32"
-        example: 530
-        description: "The total number of SMS delivered."
-      bounces:
-        type: "integer"
-        format: "int32"
-        example: 2
-        description: "The total number of unique bounces."
-  BulkCampaignSummary:
-    type: "object"
-    required:
-    - "campaign_id"
-    - "campaign_name"
-    - "campaign_type"
-    - "last_sent_date"
-    - "unique_counts"
-    properties:
-      campaign_id:
-        type: "string"
-        format: "uuid"
-        example: "a2fdc285-f4bc-408c-9e64-f3f89038ec82"
-        description: "The ID that uniquely identifies the campaign."
-      campaign_name:
-        type: "string"
-        example: "Spring Clearance Sale"
-        description: "The name to associate with this campaign."
-      last_sent_date:
-        type: "string"
-        format: "date-time"
-        example: "2019-04-25T11:08:00.000Z"
-        description: "The date that the campaign was last sent."
-      unique_counts:
-        description: "Aggregate counts for email tracking metrics unique across contacts\
-          \ and channels"
-        $ref: "#/definitions/UniqueSmsCounts"
-      campaign_type:
-        type: "string"
-        example: "SMS"
-        description: "The campaign type."
-  BulkSmsCampaignSummariesPercents:
-    type: "object"
-    properties:
-      deliver:
-        type: "number"
-        example: 23.0
-        description: "The aggregated SMS delivery rate for all campaigns on the current\
-          \ results page."
-      click:
-        type: "number"
-        example: 43.0
-        description: "The aggregated click rate for all campaigns on the current results\
-          \ page."
-      bounce:
-        type: "number"
-        example: 21.0
-        description: "The aggregated bounce rate for all campaigns on the current\
-          \ results page."
-      unsubscribe:
-        type: "number"
-        example: 2.0
-        description: "The aggregated unsubscribe (opt-out) rate for all campaigns\
-          \ on the current results page."
-  SmsCampaignSummariesPage:
-    type: "object"
-    properties:
-      bulk_sms_campaign_summaries:
-        type: "array"
-        description: "Provides details about each SMS campaign, including the total\
-          \ unique counts for each tracked campaign activity."
-        items:
-          $ref: "#/definitions/BulkCampaignSummary"
-      aggregate_percents:
-        description: "Campaign activity aggregate percents, including <code>click</code>,\
-          \ <code> deliver</code>, <code> bounce</code>, and <code>unsubscribe</code>,\
-          \ for all SMS campaigns returned on a page of results."
-        $ref: "#/definitions/BulkSmsCampaignSummariesPercents"
-      _links:
-        description: "HAL property that contains next link if applicable"
-        $ref: "#/definitions/reportingsmsLinks"
   PaginationLinks:
     type: "object"
     properties:
@@ -12346,12 +12253,16 @@ definitions:
         type: "string"
         example: "123456789"
         description: "Required if not using Single Sign On (SSO) or external authenticator.\
-          \ The password to associate with the client account. Passwords must be a\
-          \ minimum of six characters in length and have no spaces. The password is\
-          \ not returned in the response payload for security reasons. If using SSO\
-          \ authentication, use <code>external_provider</code> and <code>external_id</code>\
-          \ instead of <code>password</code>."
-        minLength: 6
+          \ The password to associate with the client account. Passwords must be at\
+          \ least 8 characters and no more than 80 characters in length. Passwords\
+          \ can contain alphabetical letters (A-Z) and (a-z), numbers (0-9), special\
+          \ characters (! @ # $ etc.) and spaces. Passwords should not contain any\
+          \ part of your username and cannot be the same as your last password, or\
+          \ be listed on an industry database; we check for easily guessed or compromised\
+          \ passwords. Your new password is not returned in the response payload for\
+          \ security reasons. If using SSO authentication, use <code>idp_provider</code>\
+          \ and <code>idp_provider_id</code> instead of <code>password</code>."
+        minLength: 8
         maxLength: 80
       first_name:
         type: "string"
@@ -13056,14 +12967,6 @@ definitions:
     properties:
       href:
         type: "string"
-  reportingsmsLinks:
-    type: "object"
-    required:
-    - "next"
-    properties:
-      next:
-        description: "Contains the next link if it is available."
-        $ref: "#/definitions/reportingsmsNext"
   lpreportingLinks:
     type: "object"
     required:
@@ -13072,15 +12975,6 @@ definitions:
       next:
         description: "Contains the next link if it is available."
         $ref: "#/definitions/lpreportingNext"
-  reportingsmsNext:
-    type: "object"
-    required:
-    - "href"
-    properties:
-      href:
-        type: "string"
-        description: "The next link in the page or null if there are no additional\
-          \ pages."
   tagsPagingLinks:
     type: "object"
     properties:

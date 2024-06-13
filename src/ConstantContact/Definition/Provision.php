@@ -14,7 +14,7 @@ namespace PHPFUI\ConstantContact\Definition;
  * @property string $time_zone_id The offical time zone to use to represent the physical location associated with the client account.
  * @property string $website The client's website URL. Specifying the website URL eliminates the need for clients to provide that information. Requires a valid URL starting with http:// or https://.
  * @property string $login_name A unique login name to associate with the client account. The name must only contain alphanumeric characters and '-', '_', '@','.','+'.
- * @property string $password Required if not using Single Sign On (SSO) or external authenticator. The password to associate with the client account. Passwords must be a minimum of six characters in length and have no spaces. The password is not returned in the response payload for security reasons. If using SSO authentication, use <code>external_provider</code> and <code>external_id</code> instead of <code>password</code>.
+ * @property string $password Required if not using Single Sign On (SSO) or external authenticator. The password to associate with the client account. Passwords must be at least 8 characters and no more than 80 characters in length. Passwords can contain alphabetical letters (A-Z) and (a-z), numbers (0-9), special characters (! @ # $ etc.) and spaces. Passwords should not contain any part of your username and cannot be the same as your last password, or be listed on an industry database; we check for easily guessed or compromised passwords. Your new password is not returned in the response payload for security reasons. If using SSO authentication, use <code>idp_provider</code> and <code>idp_provider_id</code> instead of <code>password</code>.
  * @property string $first_name The client account owner's first name.
  * @property string $last_name The client account owner's last name.
  * @property string $partner_account_id The unique client account identifier that partners define and use for billing and reporting purposes.
@@ -72,7 +72,7 @@ class Provision extends \PHPFUI\ConstantContact\Definition\Base
 		'organization_name' => 1,
 		'organization_phone' => 5,
 		'login_name' => 6,
-		'password' => 6,
+		'password' => 8,
 		'first_name' => 2,
 		'last_name' => 2,
 
