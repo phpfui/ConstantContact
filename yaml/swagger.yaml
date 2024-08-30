@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.2430"
+  version: "3.0.2475"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -237,6 +237,63 @@ paths:
       x-authorization-privileges:
       - "account:read"
       x-sdk-methodName: "getAccountPhysicalAddress"
+    post:
+      tags:
+      - "Account Services"
+      summary: "POST the Physical Address for the Account"
+      description: "Use this method to add the address where the account's organization\
+        \ physically resides. The physical address is required to send emails and\
+        \ displays on the footer of every email that is sent from the account. The\
+        \ country (<code>country_code</code>) where the account organization resides\
+        \ determines whether you use the <code>state_code</code> to specify United\
+        \ States (<code>US</code>) and Canada (<code>CA</code>) addresses, or use\
+        \ the <code>state_name</code> to specify all other countries."
+      operationId: "addPhysicalAddress"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Include all `AccountPhysicalAddress` properties required for\
+          \ the specified `country_code` and then update only those properties that\
+          \ you want to change. Excluding a non-read only field from the request body\
+          \ removes it from the physical address."
+        required: true
+        schema:
+          $ref: "#/definitions/AccountPhysicalAddress"
+      responses:
+        "201":
+          description: "Request successful"
+          schema:
+            $ref: "#/definitions/AccountPhysicalAddress"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "409":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "415":
+          description: "Unsupported Media Type."
+        "500":
+          description: "There was a problem with our internal service."
+        "503":
+          description: "Our internal service is temporarily unavailable."
+      security:
+      - oauth2_implicit:
+        - "account_update"
+      - oauth2_access_code:
+        - "account_update"
+      - api_key: []
+      x-authorization-privileges:
+      - "account:update"
     put:
       tags:
       - "Account Services"
@@ -5787,26 +5844,26 @@ paths:
       description: "Use this PUT method to update the type of billing plan to assign\
         \ to the Constant Contact client account. The type of billing plan determines\
         \ which Constant Contact product features that the client account can access.\
-        \ The billing plan type (`plan_type`) that you enter must already exist in\
-        \ the plan group. Attempting to change to a plan that is currently not available\
-        \ within your partner plan group results in a 400 error response code.\n\n\
-        When you create a new client account, the `plan_type` defaults to `TRIAL`\
-        \ and the `billing_day_of_month` defaults to `null`. The `billing_day_of_month`\
-        \ property is required if a client account is not set up to use single billing.\
-        \ You can change the day of month (`billing_day_of_month`) in which to bill\
-        \ a client account only when changing the `plan_type` value from `TRIAL` to\
-        \ a different `plan_type`, otherwise the `billing_day_of_month` value you\
-        \ enter is ignored. You can choose to enter a specific day of the month or\
-        \ accept the default value, which is the day on which the `plan_type` value\
-        \ changes from a `TRIAL` plan to a different `plan_type`. Changing the `plan_type`\
-        \ from `TRIAL` to another `plan_type` automatically changes the `billing_status`\
-        \ from `Trial` to `Open`.\n\nOnly technology partners can access partner endpoints\
-        \ and partner endpoints cannot be tested using the API reference tester. If\
-        \ you are not on the latest billing plan, contact the Constant Contact Partner\
-        \ Team. However, older billing plans and `plan_type` enum values will continue\
-        \ to be supported.\n\nFor more use case information, see [PUT Billing Plan\
-        \ Details for a Client Account](/api_guide/partners_plans_update.html) in\
-        \ the API guide."
+        \ The billing plan that you specify in the request body (`plan_type`) must\
+        \ already exist in the plan group. Attempting to change to a plan that is\
+        \ currently not available within your partner plan group results in a 400\
+        \ error response code.\n\nWhen you create a new client account, the `plan_type`\
+        \ defaults to `TRIAL` and the `billing_day_of_month` defaults to `null`. The\
+        \ `billing_day_of_month` property is required if a client account is not set\
+        \ up to use single billing. You can change the day of month (`billing_day_of_month`)\
+        \ in which to bill a client account only when changing the `plan_type` value\
+        \ from `TRIAL` to a different `plan_type`, otherwise the `billing_day_of_month`\
+        \ value you enter is ignored. You can choose to enter a specific day of the\
+        \ month or accept the default value, which is the day on which the `plan_type`\
+        \ value changes from a `TRIAL` plan to a different `plan_type`. Changing the\
+        \ `plan_type` from `TRIAL` to another `plan_type` automatically changes the\
+        \ `billing_status` from `Trial` to `Open`.\n\nOnly technology partners can\
+        \ access partner endpoints and partner endpoints cannot be tested using the\
+        \ API reference tester. If you are not on the latest billing plan, contact\
+        \ the Constant Contact Partner Team. However, older billing plans and `plan_type`\
+        \ enum values will continue to be supported.\n\nFor more use case information,\
+        \ see [PUT Billing Plan Details for a Client Account](/api_guide/partners_plans_update.html)\
+        \ in the API guide."
       operationId: "setPlan"
       consumes:
       - "application/json"
@@ -5821,21 +5878,18 @@ paths:
         x-example: "a07e1lxqqqo0"
       - in: "body"
         name: "body"
-        description: "Update the billing plan (`plan_type`) for an existing Constant\
-          \ Contact client account. Options include:\n  - `TRIAL`: A non-billed account\
-          \ with an expiration date that allows clients to try Constant Contact product\
-          \ features.\n\n  - `GOLD`: A billable plan that provides all available product\
-          \ features.\n\n  - `SILVER`: A billable plan that provides all features\
-          \ available in the <code>BRONZE</code> plan, and adds some additional email\
-          \ campaign feature such as contact segmentation and social media advertisements.\n\
-          \n  - `BRONZE`: A billable plan that provides basic email and marketing\
-          \ tools. \n\nIf updating from a `TRIAL` plan (`plan_type`) to another type\
-          \ of billing plan, you have the option to update the day of month (`billing_day_of_month`)\
-          \ in which to bill the client account. Valid values include `1` through\
-          \ to and including `31`. Any additional billing plan properties and values\
-          \ that you include in the request body are ignored. If you are not on the\
-          \ latest billing plan, contact the Constant Contact Partner Team. However,\
-          \ older billing plans and `plan_type` enum values will continue to be supported."
+        description: "`plan_type`: Updates the billing plan assigned to a client account\
+          \ to a different `plan_type`.   \n\n`plan_group_id`: To update an older\
+          \ `plan_type` to a current a `plan_type`, use the `plan_group_id` parameter\
+          \ to specify the older billing `plan_type` number. \n\n- If the specified\
+          \ `plan_group_id` does not exist under the account's current plan group,\
+          \ the default partner plan group is used.\n- If the specified `plan_group_id`\
+          \ exists but does not match the account's current plan group, an error is\
+          \ returned.\n- If the `plan_group_id` parameter is not included in the request,\
+          \ the accounts current plan group is used.\n\n`billing_day_of _month`: \
+          \  Updates the day of month in which to bill the client account. This property\
+          \ is required if a client account is not set up to use single billing. \
+          \     "
         required: false
         schema:
           $ref: "#/definitions/PlanInfo"
@@ -6915,7 +6969,8 @@ definitions:
         example: "unsubscribed"
         description: "Allows you to export only contacts that have a specific status\
           \ value. Possible values are <code>active</code> (billable), <code>unsubscribed</code>,\
-          \ or <code>removed</code>"
+          \ or <code>removed</code>. Applicable with either `contact_ids` or `list_ids`\
+          \ as the source."
     description: "You can export contact objects to a CSV file. By default, all contacts\
       \ in the user's account are exported if none of the following properties are\
       \ included: <br/><li> By contact_id - you can specify up to 500 specific contacts.\
@@ -7189,7 +7244,8 @@ definitions:
           items_total_count:
             type: "integer"
             example: 87
-            description: "The total number of rows in the import file."
+            description: "The total number of rows, including the header row, in the\
+              \ import file."
             readOnly: true
           person_count:
             type: "integer"
@@ -7444,6 +7500,21 @@ definitions:
           \ you can use <code>\"cf:first_name\":\"Joe\"</code>. Each contact can contain\
           \ up to 25 different custom fields."
         maxLength: 255
+      sms_number:
+        type: "string"
+        example: "5081231235"
+        description: "The US phone number to associate with the contact's SMS-enabled\
+          \ phone. The country code must be valid. Valid formats are <code>1231231234</code>\
+          \ or <code>123-123-1234</code>."
+        maxLength: 16
+      sms_consent_date:
+        type: "string"
+        example: "07-03-2024"
+        description: "Required if the SMS permission is set to `explict`. The date\
+          \ that the contact consented to receiving SMS messages. Valid date formats\
+          \ are MM/DD/YYYY, M/D/YYYY, YYYY/MM/DD, YYYY/M/D, YYYY-MM-DD, YYYY-M-D,M-D-YYYY,\
+          \ or M-DD-YYYY ."
+        maxLength: 16
   ContactsJsonImport:
     type: "object"
     required:
@@ -7465,6 +7536,12 @@ definitions:
           example: "04fe9a97-a579-43c5-bb1a-58ed29bf0a6a"
         maxItems: 50
         minItems: 1
+      sms_permission_to_send:
+        type: "string"
+        example: "explicit"
+        description: "Specifies if the contact gave <code>explicit</code> SMS permission\
+          \ or if the SMS permission was not set (<code>not_set</code>). If `explicit,\
+          \ the <code>sms_consent_date</code> must be provided."
   ListActivityRemoveContacts:
     type: "object"
     required:
@@ -12450,11 +12527,8 @@ definitions:
       plan_type:
         type: "string"
         example: "GOLD"
-        description: "The type of billing plan (<code>plan_type</code>) to associate\
-          \ with a client's Constant Contact account. The type of billing plan determines\
-          \ which Constant Contact product features that the client account can access.\
-          \ The billing plan type that you enter must already exist in your plan group\
-          \ or a 400 error message is returned. After changing the <code>plan_type</code>\
+        description: "Use this property to update the client account billing plan\
+          \ to a different billing plan. After changing the <code>plan_type</code>\
           \ from <code>TRIAL</code> to any other billing plan type, you cannot change\
           \ it back to <code>TRIAL</code>.\n  <ul>\n    <li><code>TRIAL</code>: A\
           \ non-billable account with an expiration date that allows clients to try\
@@ -12462,6 +12536,13 @@ definitions:
           \ billable client account plan.</li>\n     <li><code>SILVER</code>: A billable\
           \ client account plan.</li>\n     <li><code>BRONZE</code>: A billable client\
           \ account plan.</li>\n  </ul>"
+      plan_group_id:
+        type: "integer"
+        format: "int32"
+        example: 152
+        description: "Updates an existing client account billing plan group to a new\
+          \ billing plan group. If you don't know the `plan_group_id` to use, contact\
+          \ our API support team."
       billing_day_of_month:
         type: "integer"
         format: "int32"
@@ -12474,8 +12555,8 @@ definitions:
           \ <code>billing_day_of_month</code> when changing the <code>plan_type</code>\
           \ value from <code>TRIAL</code> to a different <code>plan_type</code>, otherwise\
           \ the value you enter is ignored."
-    description: "Specifies the type of billing plan (`plan_type`) and the billing\
-      \ date (`billing_day_of_month`) used for a client account."
+    description: "Specifies the type of billing plan and the billing date to use for\
+      \ a client account."
   AccountCancellation:
     type: "object"
     properties:

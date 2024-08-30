@@ -27,6 +27,25 @@ class PhysicalAddress extends \PHPFUI\ConstantContact\Base
 		}
 
 	/**
+	 * POST the Physical Address for the Account
+	 *
+	 * Use this method to add the address where the account's organization
+	 * physically resides. The physical address is required to send emails
+	 * and displays on the footer of every email that is sent from the account.
+	 * The country (<code>country_code</code>) where the account organization
+	 * resides determines whether you use the <code>state_code</code> to specify
+	 * United States (<code>US</code>) and Canada (<code>CA</code>) addresses,
+	 * or use the <code>state_name</code> to specify all other countries.
+	 *
+	 * @param \PHPFUI\ConstantContact\Definition\AccountPhysicalAddress $body Include all `AccountPhysicalAddress` properties required for the specified `country_code` and then update only those properties that you want to change. Excluding a non-read only field from the request body removes it from the physical address.
+	 */
+	public function post(\PHPFUI\ConstantContact\Definition\AccountPhysicalAddress $body) : array
+		{
+
+		return $this->doPost(['body' => $body->getData(), ]);
+		}
+
+	/**
 	 * PUT (update) the Physical Address for an Account
 	 *
 	 * Use this method to update the organization's physical address for the

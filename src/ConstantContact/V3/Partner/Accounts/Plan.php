@@ -39,10 +39,10 @@ class Plan extends \PHPFUI\ConstantContact\Base
 	 * Use this PUT method to update the type of billing plan to assign to
 	 * the Constant Contact client account. The type of billing plan determines
 	 * which Constant Contact product features that the client account can
-	 * access. The billing plan type (`plan_type`) that you enter must already
-	 * exist in the plan group. Attempting to change to a plan that is currently
-	 * not available within your partner plan group results in a 400 error
-	 * response code.
+	 * access. The billing plan that you specify in the request body (`plan_type`)
+	 * must already exist in the plan group. Attempting to change to a plan
+	 * that is currently not available within your partner plan group results
+	 * in a 400 error response code.
 	 *
 	 * When you create a new client account, the `plan_type` defaults to `TRIAL`
 	 * and the `billing_day_of_month` defaults to `null`. The `billing_day_of_month`
@@ -67,16 +67,15 @@ class Plan extends \PHPFUI\ConstantContact\Base
 	 * in the API guide.
 	 *
 	 * @param string $encoded_account_id Specify the client's unique `encoded_account_id`.
-	 * @param \PHPFUI\ConstantContact\Definition\PlanInfo $body Update the billing plan (`plan_type`) for an existing Constant Contact client account. Options include:
-  - `TRIAL`: A non-billed account with an expiration date that allows clients to try Constant Contact product features.
+	 * @param \PHPFUI\ConstantContact\Definition\PlanInfo $body `plan_type`: Updates the billing plan assigned to a client account to a different `plan_type`.   
 
-  - `GOLD`: A billable plan that provides all available product features.
+`plan_group_id`: To update an older `plan_type` to a current a `plan_type`, use the `plan_group_id` parameter to specify the older billing `plan_type` number. 
 
-  - `SILVER`: A billable plan that provides all features available in the <code>BRONZE</code> plan, and adds some additional email campaign feature such as contact segmentation and social media advertisements.
+- If the specified `plan_group_id` does not exist under the account's current plan group, the default partner plan group is used.
+- If the specified `plan_group_id` exists but does not match the account's current plan group, an error is returned.
+- If the `plan_group_id` parameter is not included in the request, the accounts current plan group is used.
 
-  - `BRONZE`: A billable plan that provides basic email and marketing tools. 
-
-If updating from a `TRIAL` plan (`plan_type`) to another type of billing plan, you have the option to update the day of month (`billing_day_of_month`) in which to bill the client account. Valid values include `1` through to and including `31`. Any additional billing plan properties and values that you include in the request body are ignored. If you are not on the latest billing plan, contact the Constant Contact Partner Team. However, older billing plans and `plan_type` enum values will continue to be supported.
+`billing_day_of _month`:   Updates the day of month in which to bill the client account. This property is required if a client account is not set up to use single billing.      
 	 */
 	public function put(string $encoded_account_id, ?\PHPFUI\ConstantContact\Definition\PlanInfo $body = null) : array
 		{

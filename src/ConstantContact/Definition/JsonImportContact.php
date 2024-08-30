@@ -43,6 +43,8 @@ namespace PHPFUI\ConstantContact\Definition;
  * @property string $other_zip The zip or postal code associated with the contact's other address.
  * @property string $other_country The name of another country where the contact is located.
  * @property string $cf:custom_field_name The name of this property is dynamic based on the custom fields you want to import. Use a key-value pair where the key is an existing custom field name prefixed with <code>cf:</code>, and the value is a custom field string value. For example, if you have a custom field named <code>first_name</code> you can use <code>"cf:first_name":"Joe"</code>. Each contact can contain up to 25 different custom fields.
+ * @property string $sms_number The US phone number to associate with the contact's SMS-enabled phone. The country code must be valid. Valid formats are <code>1231231234</code> or <code>123-123-1234</code>.
+ * @property string $sms_consent_date Required if the SMS permission is set to `explict`. The date that the contact consented to receiving SMS messages. Valid date formats are MM/DD/YYYY, M/D/YYYY, YYYY/MM/DD, YYYY/M/D, YYYY-MM-DD, YYYY-M-D,M-D-YYYY, or M-DD-YYYY .
  */
 class JsonImportContact extends \PHPFUI\ConstantContact\Definition\Base
 	{
@@ -85,6 +87,8 @@ class JsonImportContact extends \PHPFUI\ConstantContact\Definition\Base
 		'other_zip' => 'string',
 		'other_country' => 'string',
 		'cf:custom_field_name' => 'string',
+		'sms_number' => 'string',
+		'sms_consent_date' => 'string',
 
 	];
 
@@ -124,6 +128,8 @@ class JsonImportContact extends \PHPFUI\ConstantContact\Definition\Base
 		'other_zip' => 50,
 		'other_country' => 50,
 		'cf:custom_field_name' => 255,
+		'sms_number' => 16,
+		'sms_consent_date' => 16,
 
 	];
 	}
