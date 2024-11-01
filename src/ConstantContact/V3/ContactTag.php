@@ -22,10 +22,15 @@ class ContactTag extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $tag_id The ID that uniquely identifies a tag in UUID format.
 	 */
-	public function delete(string $tag_id) : bool
+	public function delete(string $tag_id) : array
 		{
 
 		return $this->doDelete(['tag_id' => $tag_id, ]);
+		}
+
+	public function deleteReturnSchema(string $tag_id) : \PHPFUI\ConstantContact\Definition\ActivityGeneric
+		{
+		return new \PHPFUI\ConstantContact\Definition\ActivityGeneric($this->delete($tag_id));
 		}
 
 	/**
@@ -46,6 +51,11 @@ class ContactTag extends \PHPFUI\ConstantContact\Base
 		return $this->doGet(['tag_id' => $tag_id, 'include_count' => $include_count, ]);
 		}
 
+	public function getReturnSchema(string $tag_id, ?bool $include_count = null) : \PHPFUI\ConstantContact\Definition\Tag
+		{
+		return new \PHPFUI\ConstantContact\Definition\Tag($this->get($tag_id, $include_count));
+		}
+
 	/**
 	 * PUT (Update) a Tag
 	 *
@@ -62,5 +72,10 @@ class ContactTag extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doPut(['tag_id' => $tag_id, 'body' => $body->getData(), ]);
+		}
+
+	public function putReturnSchema(string $tag_id, \PHPFUI\ConstantContact\Definition\TagPut $body) : \PHPFUI\ConstantContact\Definition\Tag
+		{
+		return new \PHPFUI\ConstantContact\Definition\Tag($this->put($tag_id, $body));
 		}
 	}

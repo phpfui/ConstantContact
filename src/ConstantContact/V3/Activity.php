@@ -23,4 +23,9 @@ class Activity extends \PHPFUI\ConstantContact\Base
 
 		return $this->doGet(['activity_id' => $activity_id, ]);
 		}
+
+	public function getReturnSchema(string $activity_id) : \PHPFUI\ConstantContact\Definition\Activity
+		{
+		return new \PHPFUI\ConstantContact\Definition\Activity($this->get($activity_id));
+		}
 	}

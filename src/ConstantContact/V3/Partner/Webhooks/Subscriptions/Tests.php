@@ -34,4 +34,9 @@ class Tests extends \PHPFUI\ConstantContact\Base
 
 		return $this->doPost(['topic_id' => $topic_id, ]);
 		}
+
+	public function postReturnSchema(string $topic_id) : \PHPFUI\ConstantContact\Definition\WebhooksTestSend
+		{
+		return new \PHPFUI\ConstantContact\Definition\WebhooksTestSend($this->post($topic_id));
+		}
 	}

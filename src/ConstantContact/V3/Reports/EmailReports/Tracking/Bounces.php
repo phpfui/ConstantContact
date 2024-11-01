@@ -34,4 +34,9 @@ class Bounces extends \PHPFUI\ConstantContact\Base
 
 		return $this->doGet(['campaign_activity_id' => $campaign_activity_id, 'bounce_code' => $bounce_code, 'limit' => $limit, ]);
 		}
+
+	public function getReturnSchema(string $campaign_activity_id, ?array $bounce_code = null, ?string $limit = null) : \PHPFUI\ConstantContact\Definition\BouncesTrackingActivitiesPage
+		{
+		return new \PHPFUI\ConstantContact\Definition\BouncesTrackingActivitiesPage($this->get($campaign_activity_id, $bounce_code, $limit));
+		}
 	}

@@ -44,4 +44,9 @@ class ContactsJsonImport extends \PHPFUI\ConstantContact\Base
 
 		return $this->doPost(['body' => $body->getData(), ]);
 		}
+
+	public function postReturnSchema(\PHPFUI\ConstantContact\Definition\ContactsJsonImport $body) : \PHPFUI\ConstantContact\Definition\ActivityImport
+		{
+		return new \PHPFUI\ConstantContact\Definition\ActivityImport($this->post($body));
+		}
 	}

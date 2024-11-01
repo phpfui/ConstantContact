@@ -24,7 +24,7 @@ class Subscription extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $topic_id Identifies a webhook topic.
 	 */
-	public function delete(string $topic_id) : bool
+	public function delete(string $topic_id) : array
 		{
 
 		return $this->doDelete(['topic_id' => $topic_id, ]);
@@ -47,6 +47,11 @@ class Subscription extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doGet(['topic_id' => $topic_id, ]);
+		}
+
+	public function getReturnSchema(string $topic_id) : \PHPFUI\ConstantContact\Definition\WebhooksSubscriptionResponse
+		{
+		return new \PHPFUI\ConstantContact\Definition\WebhooksSubscriptionResponse($this->get($topic_id));
 		}
 
 	/**
@@ -84,5 +89,10 @@ class Subscription extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doPut(['topic_id' => $topic_id, 'body' => $body->getData(), ]);
+		}
+
+	public function putReturnSchema(string $topic_id, \PHPFUI\ConstantContact\Definition\WebhooksSubscriptionBody $body) : \PHPFUI\ConstantContact\Definition\WebhooksSubscriptionPutResp
+		{
+		return new \PHPFUI\ConstantContact\Definition\WebhooksSubscriptionPutResp($this->put($topic_id, $body));
 		}
 	}

@@ -21,7 +21,7 @@ class Schedules extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $campaign_activity_id The unique ID for an email campaign activity.
 	 */
-	public function delete(string $campaign_activity_id) : bool
+	public function delete(string $campaign_activity_id) : array
 		{
 
 		return $this->doDelete(['campaign_activity_id' => $campaign_activity_id, ]);
@@ -42,6 +42,21 @@ class Schedules extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doGet(['campaign_activity_id' => $campaign_activity_id, ]);
+		}
+
+	/**
+	 * @return array<\PHPFUI\ConstantContact\Definition\EmailScheduleResponse>
+	 */
+	public function getReturnSchema(string $campaign_activity_id) : array
+		{
+		$array = [];
+
+		foreach ($this->get($campaign_activity_id) as $object)
+			{
+			$array[] = new \PHPFUI\ConstantContact\Definition\EmailScheduleResponse($object);
+			}
+
+		return $array;
 		}
 
 	/**
@@ -73,5 +88,20 @@ class Schedules extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doPost(['campaign_activity_id' => $campaign_activity_id, 'body' => $body->getData(), ]);
+		}
+
+	/**
+	 * @return array<\PHPFUI\ConstantContact\Definition\EmailScheduleResponse>
+	 */
+	public function postReturnSchema(string $campaign_activity_id, \PHPFUI\ConstantContact\Definition\EmailScheduleInput $body) : array
+		{
+		$array = [];
+
+		foreach ($this->post($campaign_activity_id, $body) as $object)
+			{
+			$array[] = new \PHPFUI\ConstantContact\Definition\EmailScheduleResponse($object);
+			}
+
+		return $array;
 		}
 	}

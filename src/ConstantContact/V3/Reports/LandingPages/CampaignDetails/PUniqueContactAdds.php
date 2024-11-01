@@ -28,4 +28,9 @@ class PUniqueContactAdds extends \PHPFUI\ConstantContact\Base
 
 		return $this->doGet(['campaign_activity_id' => $campaign_activity_id, 'limit' => $limit, 'contacts_filter' => $contacts_filter, ]);
 		}
+
+	public function getReturnSchema(string $campaign_activity_id, ?string $limit = null, ?string $contacts_filter = null) : \PHPFUI\ConstantContact\Definition\PContactAddTrackingActivitiesPage
+		{
+		return new \PHPFUI\ConstantContact\Definition\PContactAddTrackingActivitiesPage($this->get($campaign_activity_id, $limit, $contacts_filter));
+		}
 	}

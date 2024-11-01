@@ -31,4 +31,9 @@ class OpenAndClickRates extends \PHPFUI\ConstantContact\Base
 
 		return $this->doGet(['contact_id' => $contact_id, 'start' => $start, 'end' => $end, ]);
 		}
+
+	public function getReturnSchema(string $contact_id, string $start, string $end) : \PHPFUI\ConstantContact\Definition\ContactOpenAndClickRates
+		{
+		return new \PHPFUI\ConstantContact\Definition\ContactOpenAndClickRates($this->get($contact_id, $start, $end));
+		}
 	}

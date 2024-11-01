@@ -30,9 +30,9 @@ file_put_contents($file, $yaml);
 $yaml = \Symfony\Component\Yaml\Yaml::parseFile($file);
 $generator = new \Tool\Generator();
 $generator->deleteClasses(strtoupper($yaml['basePath']));
-$generator->makeClasses($yaml['basePath'], $yaml['paths']);
 $generator->deleteDefinitions();
 $generator->makeDefinitions($yaml['definitions']);
+$generator->makeClasses($yaml['basePath'], $yaml['paths']);
 
 echo "Generated files\n";
 

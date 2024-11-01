@@ -28,4 +28,9 @@ class Clicks extends \PHPFUI\ConstantContact\Base
 
 		return $this->doGet(['campaign_activity_id' => $campaign_activity_id, 'url_id' => $url_id, 'limit' => $limit, ]);
 		}
+
+	public function getReturnSchema(string $campaign_activity_id, ?int $url_id = null, ?string $limit = null) : \PHPFUI\ConstantContact\Definition\ClicksTrackingActivitiesPage
+		{
+		return new \PHPFUI\ConstantContact\Definition\ClicksTrackingActivitiesPage($this->get($campaign_activity_id, $url_id, $limit));
+		}
 	}

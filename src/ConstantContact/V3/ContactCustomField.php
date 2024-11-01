@@ -18,7 +18,7 @@ class ContactCustomField extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $custom_field_id Unique ID of the custom_field on which to operate.
 	 */
-	public function delete(string $custom_field_id) : bool
+	public function delete(string $custom_field_id) : array
 		{
 
 		return $this->doDelete(['custom_field_id' => $custom_field_id, ]);
@@ -38,6 +38,11 @@ class ContactCustomField extends \PHPFUI\ConstantContact\Base
 		return $this->doGet(['custom_field_id' => $custom_field_id, ]);
 		}
 
+	public function getReturnSchema(string $custom_field_id) : \PHPFUI\ConstantContact\Definition\CustomFieldResource
+		{
+		return new \PHPFUI\ConstantContact\Definition\CustomFieldResource($this->get($custom_field_id));
+		}
+
 	/**
 	 * PUT (update) a custom_field
 	 *
@@ -50,5 +55,10 @@ class ContactCustomField extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doPut(['custom_field_id' => $custom_field_id, 'body' => $body->getData(), ]);
+		}
+
+	public function putReturnSchema(string $custom_field_id, \PHPFUI\ConstantContact\Definition\CustomFieldInput $body) : \PHPFUI\ConstantContact\Definition\CustomFieldResource
+		{
+		return new \PHPFUI\ConstantContact\Definition\CustomFieldResource($this->put($custom_field_id, $body));
 		}
 	}

@@ -46,6 +46,11 @@ class Activities extends \PHPFUI\ConstantContact\Base
 		return $this->doGet(['campaign_activity_id' => $campaign_activity_id, 'include' => $include, ]);
 		}
 
+	public function getReturnSchema(string $campaign_activity_id, ?string $include = null) : \PHPFUI\ConstantContact\Definition\EmailCampaignActivity
+		{
+		return new \PHPFUI\ConstantContact\Definition\EmailCampaignActivity($this->get($campaign_activity_id, $include));
+		}
+
 	/**
 	 * PUT (Update) An Email Campaign Activity
 	 *
@@ -71,5 +76,10 @@ class Activities extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doPut(['campaign_activity_id' => $campaign_activity_id, 'body' => $body->getData(), ]);
+		}
+
+	public function putReturnSchema(string $campaign_activity_id, \PHPFUI\ConstantContact\Definition\EmailCampaignActivity $body) : \PHPFUI\ConstantContact\Definition\EmailCampaignActivity
+		{
+		return new \PHPFUI\ConstantContact\Definition\EmailCampaignActivity($this->put($campaign_activity_id, $body));
 		}
 	}

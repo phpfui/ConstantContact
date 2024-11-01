@@ -14,7 +14,7 @@ namespace PHPFUI\ConstantContact\Definition;
  * @property int $percent_done The processing percent complete for the activity.
  * @property array $activity_errors An array of error message strings describing the errors that occurred.
  * @property \PHPFUI\ConstantContact\Definition\Status $status
- * @property \PHPFUI\ConstantContact\Definition\Link $_links
+ * @property \PHPFUI\ConstantContact\Definition\Links $_links
  */
 class ActivityDeleteListsResponse extends \PHPFUI\ConstantContact\Definition\Base
 	{
@@ -28,7 +28,7 @@ class ActivityDeleteListsResponse extends \PHPFUI\ConstantContact\Definition\Bas
 		'percent_done' => 'int',
 		'activity_errors' => 'array',
 		'status' => '\PHPFUI\ConstantContact\Definition\Status',
-		'_links' => '\PHPFUI\ConstantContact\Definition\Link',
+		'_links' => '\PHPFUI\ConstantContact\Definition\Links',
 
 	];
 	}

@@ -4,7 +4,7 @@
 
 namespace PHPFUI\ConstantContact\V3\Reports\EmailReports;
 
-class Link extends \PHPFUI\ConstantContact\Base
+class Links extends \PHPFUI\ConstantContact\Base
 	{
 	public function __construct(\PHPFUI\ConstantContact\Client $client)
 		{
@@ -32,5 +32,10 @@ class Link extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doGet(['campaign_activity_id' => $campaign_activity_id, 'no_clicks' => $no_clicks, ]);
+		}
+
+	public function getReturnSchema(string $campaign_activity_id, ?bool $no_clicks = null) : \PHPFUI\ConstantContact\Definition\EmailLinks
+		{
+		return new \PHPFUI\ConstantContact\Definition\EmailLinks($this->get($campaign_activity_id, $no_clicks));
 		}
 	}

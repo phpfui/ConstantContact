@@ -21,10 +21,15 @@ class ContactList extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $list_id Unique ID of the list to delete
 	 */
-	public function delete(string $list_id) : bool
+	public function delete(string $list_id) : array
 		{
 
 		return $this->doDelete(['list_id' => $list_id, ]);
+		}
+
+	public function deleteReturnSchema(string $list_id) : \PHPFUI\ConstantContact\Definition\ActivityDeleteListResponse
+		{
+		return new \PHPFUI\ConstantContact\Definition\ActivityDeleteListResponse($this->delete($list_id));
 		}
 
 	/**
@@ -52,6 +57,11 @@ class ContactList extends \PHPFUI\ConstantContact\Base
 		return $this->doGet(['list_id' => $list_id, 'include_membership_count' => $include_membership_count, ]);
 		}
 
+	public function getReturnSchema(string $list_id, ?string $include_membership_count = null) : \PHPFUI\ConstantContact\Definition\ContactList
+		{
+		return new \PHPFUI\ConstantContact\Definition\ContactList($this->get($list_id, $include_membership_count));
+		}
+
 	/**
 	 * PUT (update) a List
 	 *
@@ -64,5 +74,10 @@ class ContactList extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doPut(['list_id' => $list_id, 'JSON_PUT_body' => $JSON_PUT_body->getData(), ]);
+		}
+
+	public function putReturnSchema(string $list_id, \PHPFUI\ConstantContact\Definition\ListInput $JSON_PUT_body) : \PHPFUI\ConstantContact\Definition\ContactListPutPost
+		{
+		return new \PHPFUI\ConstantContact\Definition\ContactListPutPost($this->put($list_id, $JSON_PUT_body));
 		}
 	}

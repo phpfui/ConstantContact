@@ -31,4 +31,9 @@ class Forwards extends \PHPFUI\ConstantContact\Base
 
 		return $this->doGet(['campaign_activity_id' => $campaign_activity_id, 'limit' => $limit, ]);
 		}
+
+	public function getReturnSchema(string $campaign_activity_id, ?string $limit = null) : \PHPFUI\ConstantContact\Definition\ForwardsTrackingActivitiesPage
+		{
+		return new \PHPFUI\ConstantContact\Definition\ForwardsTrackingActivitiesPage($this->get($campaign_activity_id, $limit));
+		}
 	}

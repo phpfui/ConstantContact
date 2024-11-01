@@ -32,4 +32,9 @@ class ContactsTaggingsRemove extends \PHPFUI\ConstantContact\Base
 
 		return $this->doPost(['body' => $body->getData(), ]);
 		}
+
+	public function postReturnSchema(\PHPFUI\ConstantContact\Definition\TagAddRemoveContacts $body) : \PHPFUI\ConstantContact\Definition\ActivityTagging
+		{
+		return new \PHPFUI\ConstantContact\Definition\ActivityTagging($this->post($body));
+		}
 	}

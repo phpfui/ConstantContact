@@ -36,4 +36,9 @@ class CampaignIdXrefs extends \PHPFUI\ConstantContact\Base
 
 		return $this->doGet(['v2_email_campaign_ids' => $v2_email_campaign_ids, ]);
 		}
+
+	public function getReturnSchema(string $v2_email_campaign_ids) : \PHPFUI\ConstantContact\Definition\CrossReferenceResponse
+		{
+		return new \PHPFUI\ConstantContact\Definition\CrossReferenceResponse($this->get($v2_email_campaign_ids));
+		}
 	}

@@ -27,4 +27,9 @@ class AddListMemberships extends \PHPFUI\ConstantContact\Base
 
 		return $this->doPost(['body' => $body->getData(), ]);
 		}
+
+	public function postReturnSchema(\PHPFUI\ConstantContact\Definition\ListActivityAddContacts $body) : \PHPFUI\ConstantContact\Definition\ActivityListsMembership
+		{
+		return new \PHPFUI\ConstantContact\Definition\ActivityListsMembership($this->post($body));
+		}
 	}

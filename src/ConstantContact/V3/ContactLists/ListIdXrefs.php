@@ -36,4 +36,9 @@ class ListIdXrefs extends \PHPFUI\ConstantContact\Base
 
 		return $this->doGet(['sequence_ids' => $sequence_ids, ]);
 		}
+
+	public function getReturnSchema(string $sequence_ids) : \PHPFUI\ConstantContact\Definition\ListXrefs
+		{
+		return new \PHPFUI\ConstantContact\Definition\ListXrefs($this->get($sequence_ids));
+		}
 	}

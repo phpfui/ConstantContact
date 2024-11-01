@@ -92,6 +92,11 @@ class Contacts extends \PHPFUI\ConstantContact\Base
 		return $this->doGet(['status' => $status, 'email' => $email, 'lists' => $lists, 'segment_id' => $segment_id, 'tags' => $tags, 'updated_after' => $updated_after, 'updated_before' => $updated_before, 'created_after' => $created_after, 'created_before' => $created_before, 'optout_after' => $optout_after, 'optout_before' => $optout_before, 'include' => $include, 'sms_status' => $sms_status, 'include_count' => $include_count, 'limit' => $limit, ]);
 		}
 
+	public function getReturnSchema(?string $status = null, ?string $email = null, ?string $lists = null, ?string $segment_id = null, ?string $tags = null, ?string $updated_after = null, ?string $updated_before = null, ?string $created_after = null, ?string $created_before = null, ?string $optout_after = null, ?string $optout_before = null, ?string $include = null, ?string $sms_status = null, ?bool $include_count = null, ?int $limit = null) : \PHPFUI\ConstantContact\Definition\Contacts
+		{
+		return new \PHPFUI\ConstantContact\Definition\Contacts($this->get($status, $email, $lists, $segment_id, $tags, $updated_after, $updated_before, $created_after, $created_before, $optout_after, $optout_before, $include, $sms_status, $include_count, $limit));
+		}
+
 	/**
 	 * POST (create) a Contact
 	 *
@@ -106,5 +111,10 @@ class Contacts extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doPost(['body' => $body->getData(), ]);
+		}
+
+	public function postReturnSchema(\PHPFUI\ConstantContact\Definition\ContactPostRequest $body) : \PHPFUI\ConstantContact\Definition\ContactResource
+		{
+		return new \PHPFUI\ConstantContact\Definition\ContactResource($this->post($body));
 		}
 	}

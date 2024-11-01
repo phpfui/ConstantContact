@@ -24,7 +24,7 @@ class Email extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $campaign_id The unique ID for the email campaign you are deleting.
 	 */
-	public function delete(string $campaign_id) : bool
+	public function delete(string $campaign_id) : array
 		{
 
 		return $this->doDelete(['campaign_id' => $campaign_id, ]);
@@ -46,6 +46,11 @@ class Email extends \PHPFUI\ConstantContact\Base
 		return $this->doGet(['campaign_id' => $campaign_id, ]);
 		}
 
+	public function getReturnSchema(string $campaign_id) : \PHPFUI\ConstantContact\Definition\EmailCampaign
+		{
+		return new \PHPFUI\ConstantContact\Definition\EmailCampaign($this->get($campaign_id));
+		}
+
 	/**
 	 * PATCH (Update) an Email Campaign Name
 	 *
@@ -60,5 +65,10 @@ class Email extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doPatch(['campaign_id' => $campaign_id, 'body' => $body->getData(), ]);
+		}
+
+	public function patchReturnSchema(string $campaign_id, \PHPFUI\ConstantContact\Definition\EmailCampaignName $body) : \PHPFUI\ConstantContact\Definition\EmailCampaign
+		{
+		return new \PHPFUI\ConstantContact\Definition\EmailCampaign($this->patch($campaign_id, $body));
 		}
 	}

@@ -26,4 +26,9 @@ class ContactsTagsDelete extends \PHPFUI\ConstantContact\Base
 
 		return $this->doPost(['body' => $body->getData(), ]);
 		}
+
+	public function postReturnSchema(\PHPFUI\ConstantContact\Definition\TagIdList500Limit $body) : \PHPFUI\ConstantContact\Definition\ActivityTagging
+		{
+		return new \PHPFUI\ConstantContact\Definition\ActivityTagging($this->post($body));
+		}
 	}

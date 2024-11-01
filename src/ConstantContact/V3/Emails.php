@@ -38,6 +38,11 @@ class Emails extends \PHPFUI\ConstantContact\Base
 		return $this->doGet(['limit' => $limit, 'before_date' => $before_date, 'after_date' => $after_date, ]);
 		}
 
+	public function getReturnSchema(?int $limit = null, ?string $before_date = null, ?string $after_date = null) : \PHPFUI\ConstantContact\Definition\PagedEmailCampaignResponse
+		{
+		return new \PHPFUI\ConstantContact\Definition\PagedEmailCampaignResponse($this->get($limit, $before_date, $after_date));
+		}
+
 	/**
 	 * POST (Create) a New Email Campaign
 	 *
@@ -61,5 +66,10 @@ class Emails extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doPost(['body' => $body->getData(), ]);
+		}
+
+	public function postReturnSchema(\PHPFUI\ConstantContact\Definition\EmailCampaignComplete $body) : \PHPFUI\ConstantContact\Definition\EmailCampaign
+		{
+		return new \PHPFUI\ConstantContact\Definition\EmailCampaign($this->post($body));
 		}
 	}

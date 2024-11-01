@@ -44,6 +44,11 @@ class Accounts extends \PHPFUI\ConstantContact\Base
 		return $this->doGet(['offset' => $offset, 'limit' => $limit, 'account_type' => $account_type, ]);
 		}
 
+	public function getReturnSchema(?string $offset = null, ?string $limit = null, ?string $account_type = null) : \PHPFUI\ConstantContact\Definition\PartnerAccount
+		{
+		return new \PHPFUI\ConstantContact\Definition\PartnerAccount($this->get($offset, $limit, $account_type));
+		}
+
 	/**
 	 * POST (create) a Partner Client Account
 	 *
@@ -79,5 +84,10 @@ class Accounts extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doPost(['provision' => $provision->getData(), ]);
+		}
+
+	public function postReturnSchema(\PHPFUI\ConstantContact\Definition\Provision $provision) : \PHPFUI\ConstantContact\Definition\ProvisionResponse
+		{
+		return new \PHPFUI\ConstantContact\Definition\ProvisionResponse($this->post($provision));
 		}
 	}

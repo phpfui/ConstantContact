@@ -20,7 +20,7 @@ class NonOpenerResend extends \PHPFUI\ConstantContact\Base
 	 * @param string $campaign_activity_id The unique ID for the primary email campaign activity.
 	 * @param string $resend_request_id The unique ID associated with the resend for the email campaign activity (for example: `389093`). If the email campaign activity is currently in draft status, specify `DRAFT` as the ID.
 	 */
-	public function delete(string $campaign_activity_id, string $resend_request_id) : bool
+	public function delete(string $campaign_activity_id, string $resend_request_id) : array
 		{
 
 		return $this->doDelete(['campaign_activity_id' => $campaign_activity_id, 'resend_request_id' => $resend_request_id, ]);

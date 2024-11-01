@@ -25,4 +25,9 @@ class ContactExports extends \PHPFUI\ConstantContact\Base
 
 		return $this->doGet(['file_export_id' => $file_export_id, ]);
 		}
+
+	public function getReturnSchema(string $file_export_id) : \PHPFUI\ConstantContact\Definition\ActivityExportStatus
+		{
+		return new \PHPFUI\ConstantContact\Definition\ActivityExportStatus($this->get($file_export_id));
+		}
 	}

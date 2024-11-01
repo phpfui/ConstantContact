@@ -42,6 +42,11 @@ class Summary extends \PHPFUI\ConstantContact\Base
 		return $this->doGet(['extra_fields' => $extra_fields, ]);
 		}
 
+	public function getReturnSchema(?string $extra_fields = null) : \PHPFUI\ConstantContact\Definition\Customer
+		{
+		return new \PHPFUI\ConstantContact\Definition\Customer($this->get($extra_fields));
+		}
+
 	/**
 	 * PUT (update) Account Details
 	 *
@@ -58,5 +63,10 @@ class Summary extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doPut(['body' => $body->getData(), ]);
+		}
+
+	public function putReturnSchema(\PHPFUI\ConstantContact\Definition\CustomerPut $body) : \PHPFUI\ConstantContact\Definition\CustomerPut
+		{
+		return new \PHPFUI\ConstantContact\Definition\CustomerPut($this->put($body));
 		}
 	}

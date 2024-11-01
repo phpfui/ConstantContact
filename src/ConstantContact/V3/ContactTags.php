@@ -36,6 +36,11 @@ class ContactTags extends \PHPFUI\ConstantContact\Base
 		return $this->doGet(['limit' => $limit, 'include_count' => $include_count, ]);
 		}
 
+	public function getReturnSchema(?int $limit = null, ?bool $include_count = null) : \PHPFUI\ConstantContact\Definition\Tags
+		{
+		return new \PHPFUI\ConstantContact\Definition\Tags($this->get($limit, $include_count));
+		}
+
 	/**
 	 * POST (Create) a Tag
 	 *
@@ -51,5 +56,10 @@ class ContactTags extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doPost(['body' => $body->getData(), ]);
+		}
+
+	public function postReturnSchema(\PHPFUI\ConstantContact\Definition\TagPost $body) : \PHPFUI\ConstantContact\Definition\Tag
+		{
+		return new \PHPFUI\ConstantContact\Definition\Tag($this->post($body));
 		}
 	}

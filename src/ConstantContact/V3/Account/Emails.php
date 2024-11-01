@@ -28,7 +28,7 @@ class Emails extends \PHPFUI\ConstantContact\Base
 	 *
 	 *
 	 * @param string $confirm_status Use the `confirm_status` query parameter to search for account emails using the email status. Possible values are `CONFIRMED` or `UNCONFIRMED`. You can also abbreviate the values of this query parameter and use `C` or `U`.
-
+	 *
 	 * @param string $role_code Use the `role_code` query parameter to search for account emails that have a specific role. Each each email address in an account can have multiple roles or no role. Possible values are `CONTACT`, `BILLING`, `REPLY_TO`, `JOURNALING`, or `OTHER`. You can also abbreviate the value of this query parameter and use `C`,`B`,`R`,`J`, or `O`.
 	 * @param string $email_address Use the `email_address` query parameter to search for a specific account email address.
 	 */
@@ -59,6 +59,21 @@ class Emails extends \PHPFUI\ConstantContact\Base
 		}
 
 	/**
+	 * @return array<\PHPFUI\ConstantContact\Definition\AccountEmails>
+	 */
+	public function getReturnSchema(?string $confirm_status = null, ?string $role_code = null, ?string $email_address = null) : array
+		{
+		$array = [];
+
+		foreach ($this->get($confirm_status, $role_code, $email_address) as $object)
+			{
+			$array[] = new \PHPFUI\ConstantContact\Definition\AccountEmails($object);
+			}
+
+		return $array;
+		}
+
+	/**
 	 * POST Add an Account Email Address
 	 *
 	 * Use this method to add a new email address to a Constant Contact account.
@@ -80,5 +95,10 @@ class Emails extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doPost(['body' => $body->getData(), ]);
+		}
+
+	public function postReturnSchema(\PHPFUI\ConstantContact\Definition\AccountEmailInput $body) : \PHPFUI\ConstantContact\Definition\AccountEmailCreateResponse
+		{
+		return new \PHPFUI\ConstantContact\Definition\AccountEmailCreateResponse($this->post($body));
 		}
 	}

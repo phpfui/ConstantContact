@@ -31,4 +31,9 @@ class Optouts extends \PHPFUI\ConstantContact\Base
 
 		return $this->doGet(['campaign_activity_id' => $campaign_activity_id, 'limit' => $limit, ]);
 		}
+
+	public function getReturnSchema(string $campaign_activity_id, ?string $limit = null) : \PHPFUI\ConstantContact\Definition\OptoutsTrackingActivitiesPage
+		{
+		return new \PHPFUI\ConstantContact\Definition\OptoutsTrackingActivitiesPage($this->get($campaign_activity_id, $limit));
+		}
 	}

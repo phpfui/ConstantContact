@@ -29,4 +29,9 @@ class ContactDelete extends \PHPFUI\ConstantContact\Base
 
 		return $this->doPost(['body' => $body->getData(), ]);
 		}
+
+	public function postReturnSchema(\PHPFUI\ConstantContact\Definition\ContactDelete $body) : \PHPFUI\ConstantContact\Definition\ActivityDeleteStatus
+		{
+		return new \PHPFUI\ConstantContact\Definition\ActivityDeleteStatus($this->post($body));
+		}
 	}

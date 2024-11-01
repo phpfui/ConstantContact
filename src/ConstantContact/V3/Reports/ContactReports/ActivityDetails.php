@@ -51,4 +51,9 @@ class ActivityDetails extends \PHPFUI\ConstantContact\Base
 
 		return $this->doGet(['contact_id' => $contact_id, 'tracking_activities_list' => $tracking_activities_list, 'tracking_activity_type' => $tracking_activity_type, 'include_campaign_activity_names' => $include_campaign_activity_names, 'limit' => $limit, ]);
 		}
+
+	public function getReturnSchema(string $contact_id, ?string $tracking_activities_list = null, ?array $tracking_activity_type = null, ?bool $include_campaign_activity_names = null, ?string $limit = null) : \PHPFUI\ConstantContact\Definition\ContactTrackingActivitiesPage
+		{
+		return new \PHPFUI\ConstantContact\Definition\ContactTrackingActivitiesPage($this->get($contact_id, $tracking_activities_list, $tracking_activity_type, $include_campaign_activity_names, $limit));
+		}
 	}

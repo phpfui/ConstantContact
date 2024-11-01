@@ -32,4 +32,9 @@ class ContactExports extends \PHPFUI\ConstantContact\Base
 
 		return $this->doPost(['body' => $body->getData(), ]);
 		}
+
+	public function postReturnSchema(\PHPFUI\ConstantContact\Definition\ContactsExport $body) : \PHPFUI\ConstantContact\Definition\ActivityExportStatus
+		{
+		return new \PHPFUI\ConstantContact\Definition\ActivityExportStatus($this->post($body));
+		}
 	}

@@ -26,6 +26,11 @@ class PhysicalAddress extends \PHPFUI\ConstantContact\Base
 		return $this->doGet([]);
 		}
 
+	public function getReturnSchema() : \PHPFUI\ConstantContact\Definition\AccountPhysicalAddress
+		{
+		return new \PHPFUI\ConstantContact\Definition\AccountPhysicalAddress($this->get());
+		}
+
 	/**
 	 * POST the Physical Address for the Account
 	 *
@@ -43,6 +48,11 @@ class PhysicalAddress extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doPost(['body' => $body->getData(), ]);
+		}
+
+	public function postReturnSchema(\PHPFUI\ConstantContact\Definition\AccountPhysicalAddress $body) : \PHPFUI\ConstantContact\Definition\AccountPhysicalAddress
+		{
+		return new \PHPFUI\ConstantContact\Definition\AccountPhysicalAddress($this->post($body));
 		}
 
 	/**
@@ -66,5 +76,10 @@ class PhysicalAddress extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doPut(['body' => $body->getData(), ]);
+		}
+
+	public function putReturnSchema(\PHPFUI\ConstantContact\Definition\AccountPhysicalAddress $body) : \PHPFUI\ConstantContact\Definition\AccountPhysicalAddress
+		{
+		return new \PHPFUI\ConstantContact\Definition\AccountPhysicalAddress($this->put($body));
 		}
 	}

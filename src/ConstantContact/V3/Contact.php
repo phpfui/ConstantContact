@@ -22,7 +22,7 @@ class Contact extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $contact_id Unique ID of contact to DELETE
 	 */
-	public function delete(string $contact_id) : bool
+	public function delete(string $contact_id) : array
 		{
 
 		return $this->doDelete(['contact_id' => $contact_id, ]);
@@ -58,6 +58,11 @@ class Contact extends \PHPFUI\ConstantContact\Base
 		return $this->doGet(['contact_id' => $contact_id, 'include' => $include, ]);
 		}
 
+	public function getReturnSchema(string $contact_id, ?string $include = null) : \PHPFUI\ConstantContact\Definition\ContactResource
+		{
+		return new \PHPFUI\ConstantContact\Definition\ContactResource($this->get($contact_id, $include));
+		}
+
 	/**
 	 * PUT (update) a Contact
 	 *
@@ -78,5 +83,10 @@ class Contact extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doPut(['contact_id' => $contact_id, 'body' => $body->getData(), ]);
+		}
+
+	public function putReturnSchema(string $contact_id, \PHPFUI\ConstantContact\Definition\ContactPutRequest $body) : \PHPFUI\ConstantContact\Definition\ContactResource
+		{
+		return new \PHPFUI\ConstantContact\Definition\ContactResource($this->put($contact_id, $body));
 		}
 	}

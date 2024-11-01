@@ -36,4 +36,9 @@ class EmailCampaignSummaries extends \PHPFUI\ConstantContact\Base
 
 		return $this->doGet(['limit' => $limit, ]);
 		}
+
+	public function getReturnSchema(?string $limit = null) : \PHPFUI\ConstantContact\Definition\BulkEmailCampaignSummariesPage
+		{
+		return new \PHPFUI\ConstantContact\Definition\BulkEmailCampaignSummariesPage($this->get($limit));
+		}
 	}

@@ -52,6 +52,11 @@ class ContactLists extends \PHPFUI\ConstantContact\Base
 		return $this->doGet(['limit' => $limit, 'include_count' => $include_count, 'include_membership_count' => $include_membership_count, 'name' => $name, 'status' => $status, ]);
 		}
 
+	public function getReturnSchema(?int $limit = null, ?bool $include_count = null, ?string $include_membership_count = null, ?string $name = null, ?string $status = null) : \PHPFUI\ConstantContact\Definition\ContactListArray
+		{
+		return new \PHPFUI\ConstantContact\Definition\ContactListArray($this->get($limit, $include_count, $include_membership_count, $name, $status));
+		}
+
 	/**
 	 * POST (create) a List
 	 *
@@ -63,5 +68,10 @@ class ContactLists extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doPost(['body' => $body->getData(), ]);
+		}
+
+	public function postReturnSchema(\PHPFUI\ConstantContact\Definition\ListInput $body) : \PHPFUI\ConstantContact\Definition\ContactListPutPost
+		{
+		return new \PHPFUI\ConstantContact\Definition\ContactListPutPost($this->post($body));
 		}
 	}

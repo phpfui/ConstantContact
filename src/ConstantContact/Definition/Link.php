@@ -5,12 +5,12 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @property \PHPFUI\ConstantContact\Definition\Link $Link Link to the activity status to use in tracking the request status.
+ * @property string $href
  */
 class Link extends \PHPFUI\ConstantContact\Definition\Base
 	{
 	protected static array $fields = [
-		'Link' => '\PHPFUI\ConstantContact\Definition\Link',
+		'href' => 'string',
 
 	];
 	}

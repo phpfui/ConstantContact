@@ -38,4 +38,9 @@ class Activities extends \PHPFUI\ConstantContact\Base
 
 		return $this->doGet(['limit' => $limit, 'state' => $state, ]);
 		}
+
+	public function getReturnSchema(?int $limit = null, ?string $state = null) : \PHPFUI\ConstantContact\Definition\Activities
+		{
+		return new \PHPFUI\ConstantContact\Definition\Activities($this->get($limit, $state));
+		}
 	}

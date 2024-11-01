@@ -37,4 +37,9 @@ class EmailCampaignActivities extends \PHPFUI\ConstantContact\Base
 
 		return $this->doGet(['campaign_activity_ids' => $campaign_activity_ids, ]);
 		}
+
+	public function getReturnSchema(string $campaign_activity_ids) : \PHPFUI\ConstantContact\Definition\CampaignActivityStatsQueryResultEmail
+		{
+		return new \PHPFUI\ConstantContact\Definition\CampaignActivityStatsQueryResultEmail($this->get($campaign_activity_ids));
+		}
 	}

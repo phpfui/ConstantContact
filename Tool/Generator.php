@@ -4,20 +4,13 @@ namespace Tool;
 
 class Generator
 	{
+	private array $arrayReturns = [];
+
 	private string $definitionNamespace = '\\PHPFUI\\ConstantContact\\Definition';
 
 	private array $duplicateClasses = [
-		'CustomFieldResource2' => 'CustomFieldResource',
-		'ContactResource2' => 'ContactResource',
-		'ContactList2' => 'ContactList',
-		'Lin' => 'Link',
-		'Link2' => 'Link',
-		'Links' => 'Link',
-		'PagingLinks2' => 'PagingLinks',
 		'Results' => 'Result',
-		'Tag2' => 'Tag',
-		'Status' => 'Status',
-		'Source' => 'Source',
+		'ActivityGetExport' => 'ActivityExportStatus',
 	];
 
 	private array $generatedClasses = [];
@@ -65,11 +58,9 @@ class Generator
 		$parts = \explode('\\', $namespacedClass);
 		$class = \array_pop($parts);
 		$namespace = \implode('\\', $parts);
-		$originalType = '';
 
 		if (! isset($properties['type']))
 			{
-
 			if (\str_contains($namespacedClass, 'ResendToNonOpenersInput'))
 				{
 				$properties['type'] = 'object';
@@ -84,112 +75,12 @@ class Generator
 
 		if ('object' === $properties['type'])
 			{
-			$fields = [];
-			$readonly = [];
-			$minLength = [];
-			$maxLength = [];
-			$docBlock = [];
-			$required = [];
-			$dollar = '$';
-
-			foreach ($properties['properties'] ?? [] as $name => $details)
-				{
-				if ('self' == $name)
-					{
-					$name = $class;
-					}
-
-				if (isset($details['$ref']))
-					{
-					$docType = $type = $this->getTypeNameFromRef($details['$ref']);
-					}
-				else
-					{
-					$type = $details['type'];
-
-					if ('object' == $type)
-						{
-						$namespace = $this->definitionNamespace;
-						$type = $this->getUniqueClassName($this->definitionNamespace, $name);
-						$this->generateDefinition($type, $details);
-						}
-
-					if (isset($details['format']))
-						{
-						$type = $details['format'];
-						}
-
-					$docType = $type = $this->getPHPType($type);
-
-					if (isset($details['enum']))
-						{
-						$originalType = $type;
-						$type = $details['enum'];
-						}
-
-					if (isset($details['items']))
-						{
-						$items = $details['items'];
-						$itemType = '';
-
-						if (isset($items['$ref']))
-							{
-							$itemType = $this->getTypeNameFromRef($items['$ref']);
-							}
-						elseif (isset($items['type']) && ($items['format'] ?? '') == 'uuid')
-							{
-							$itemType = '\PHPFUI\ConstantContact\UUID';
-							}
-
-						if ('array' == $type && $itemType)
-							{
-							$type = 'array<' . $itemType . '>';
-
-							if ($details['maxItems'] ?? false)
-								{
-								$maxLength[$name] = (int)$details['maxItems'];
-								}
-
-							if ($details['minItems'] ?? false)
-								{
-								$minLength[$name] = (int)$details['minItems'];
-								}
-							}
-						}
-
-					}
-				$fields[$name] = $type;
-
-				if (isset($details['minLength']))
-					{
-					$minLength[$name] = (int)$details['minLength'];
-					}
-
-				if (isset($details['maxLength']))
-					{
-					$maxLength[$name] = (int)$details['maxLength'];
-					}
-
-				if (isset($details['required']))
-					{
-					$required = $details['required'];
-					}
-
-				$description = '';
-
-				if (isset($details['description']))
-					{
-					$description = $this->cleanDescription(\trim($details['description']));
-					}
-
-				if (\is_array($type))
-					{
-					$type = $originalType;
-					}
-				$type = \str_replace('\\\\', '\\', $type);
-				$docBlock[] = \trim("{$type} {$dollar}{$name} {$description}");
-				}
-			$this->generateFromTemplate($class, ['fields' => $fields, 'maxLength' => $maxLength, 'minLength' => $minLength, 'requiredFields' => $required], $docBlock);
+			$this->generateObject($class, $properties['properties'] ?? []);
+			}
+		elseif ('array' === $properties['type'])
+			{
+			$this->arrayReturns[$class] = 'array';
+			$this->generateObject($class, $properties['items']['properties'] ?? []);
 			}
 		}
 
@@ -360,15 +251,126 @@ class ~class~ extends {$this->definitionNamespace}\Base
 			$output .= "\n\t];\n";
 			$template .= $output;
 			}
-			$template = \str_replace('~class~', $name, $template) . "\t}\n";
-			$template = \str_replace("/**{$this->nl} */{$this->nl}", '', $template);
+		$template = \str_replace('~class~', $name, $template) . "\t}\n";
+		$template = \str_replace("/**{$this->nl} */{$this->nl}", '', $template);
 
-			$path = __DIR__ . "/../src/ConstantContact/Definition/{$name}.php";
+		$path = __DIR__ . "/../src/ConstantContact/Definition/{$name}.php";
 
-			if (! \file_put_contents($path, $template))
+		if (! \file_put_contents($path, $template))
+			{
+			throw new \Exception("Error writing file {$path}");
+			}
+		}
+
+	private function generateObject(string $class, array $properties) : void
+		{
+		$originalType = '';
+		$fields = [];
+		$readonly = [];
+		$minLength = [];
+		$maxLength = [];
+		$docBlock = [];
+		$required = [];
+		$dollar = '$';
+
+		foreach ($properties as $name => $details)
+			{
+			if ('self' == $name)
 				{
-				throw new \Exception("Error writing file {$path}");
+				$name = $class;
 				}
+
+			if (isset($details['$ref']))
+				{
+				$docType = $type = $this->getTypeNameFromRef($details['$ref']);
+				}
+			else
+				{
+				$type = $details['type'];
+
+				if ('object' == $type)
+					{
+					$namespace = $this->definitionNamespace;
+					$type = $this->getUniqueClassName($this->definitionNamespace, $name);
+					$this->generateDefinition($type, $details);
+					}
+
+				if (isset($details['format']))
+					{
+					$type = $details['format'];
+					}
+
+				$docType = $type = $this->getPHPType($type);
+
+				if (isset($details['enum']))
+					{
+					$originalType = $type;
+					$type = $details['enum'];
+					}
+
+				if (isset($details['items']))
+					{
+					$items = $details['items'];
+					$itemType = '';
+
+					if (isset($items['$ref']))
+						{
+						$itemType = $this->getTypeNameFromRef($items['$ref']);
+						}
+					elseif (isset($items['type']) && ($items['format'] ?? '') == 'uuid')
+						{
+						$itemType = '\PHPFUI\ConstantContact\UUID';
+						}
+
+					if ('array' == $type && $itemType)
+						{
+						$type = 'array<' . $itemType . '>';
+
+						if ($details['maxItems'] ?? false)
+							{
+							$maxLength[$name] = (int)$details['maxItems'];
+							}
+
+						if ($details['minItems'] ?? false)
+							{
+							$minLength[$name] = (int)$details['minItems'];
+							}
+						}
+					}
+
+				}
+			$fields[$name] = $type;
+
+			if (isset($details['minLength']))
+				{
+				$minLength[$name] = (int)$details['minLength'];
+				}
+
+			if (isset($details['maxLength']))
+				{
+				$maxLength[$name] = (int)$details['maxLength'];
+				}
+
+			if (isset($details['required']))
+				{
+				$required = $details['required'];
+				}
+
+			$description = '';
+
+			if (isset($details['description']))
+				{
+				$description = $this->cleanDescription(\trim($details['description']));
+				}
+
+			if (\is_array($type))
+				{
+				$type = $originalType;
+				}
+			$type = \str_replace('\\\\', '\\', $type);
+			$docBlock[] = \trim("{$type} {$dollar}{$name} {$description}");
+			}
+		$this->generateFromTemplate($class, ['fields' => $fields, 'maxLength' => $maxLength, 'minLength' => $minLength, 'requiredFields' => $required], $docBlock);
 		}
 
 	private function getClassName(string $path) : string
@@ -491,6 +493,7 @@ class ~class~ extends {$this->definitionNamespace}\Base
 			$enums = [];
 			$csv = [];
 			$parameters = [];
+			$passedParameters = [];
 			$docblock = '';
 
 			foreach ($specs['parameters'] ?? [] as $parameter)
@@ -516,6 +519,7 @@ class ~class~ extends {$this->definitionNamespace}\Base
 					}
 
 				$description = $parameter['description'] ?? '';
+				$passedParameters[] = "{$dollar}{$name}";
 				$docblock .= "\n\t * @param {$type} {$dollar}{$name} {$description}";
 				$required = $parameter['required'] ?? false;
 				$parameterString = $required ? '' : '?';
@@ -536,7 +540,7 @@ class ~class~ extends {$this->definitionNamespace}\Base
 ~description~
 	 *~docblock~
 	 */
-	public function ~method~(~parameters~) : ~returnType~
+	public function ~method~(~parameters~) : array
 		{
 ~code~
 METHOD;
@@ -602,9 +606,70 @@ ACTION;
 			$code .= "\n";
 			$summary = $this->formatDescription($specs['summary']);
 			$description = $this->formatDescription($specs['description']);
+
+			// add in ReturnSchema methods
+			foreach ($specs['responses'] ?? [] as $returnCode => $parameter)
+				{
+				$returnCode = (int)$returnCode;
+
+				if ($returnCode >= 200 && $returnCode <= 299 && isset($parameter['schema']['$ref']))
+					{
+					$baseName = \str_replace('#/definitions/', '', $parameter['schema']['$ref']);
+					$schema = $this->getUniqueClassName($this->definitionNamespace, $baseName);
+					$returnType = $this->arrayReturns[$baseName] ?? '';
+
+					if ('array' === $returnType)
+						{
+						$returnSchema = <<<SCHEMA
+
+	/**
+	 * @return array<{$schema}>
+	 */
+	public function ~method~ReturnSchema(~parameters~) : array
+		{
+		{$dollar}array = [];
+		foreach ({$dollar}this->~method~(~passedParameters~) as {$dollar}object)
+			{
+			{$dollar}array[] = new {$schema}({$dollar}object);
+			}
+
+		return {$dollar}array;
+		}
+
+SCHEMA;
+						}
+//					else if ('string' === $returnType)
+//						{
+//						$returnSchema = <<<SCHEMA
+//
+//
+//	public function ~method~ReturnSchema(~parameters~) : string
+//		{
+//		return {$dollar}this->~method~(~passedParameters~);
+//		}
+//
+//SCHEMA;
+//						}
+					else
+						{
+						$returnSchema = <<<SCHEMA
+
+
+	public function ~method~ReturnSchema(~parameters~) : {$schema}
+		{
+		return new {$schema}({$dollar}this->~method~(~passedParameters~));
+		}
+
+SCHEMA;
+						}
+					$methodBody .= $returnSchema;
+
+					break;	// just generate the first one found
+					}
+				}
 			$methods .= \str_replace(
-				['~method~', '~parameters~', '~docblock~', '~summary~', '~description~', '~code~', '~returnType~'],
-				[$method, \implode(', ', $parameters), $docblock, $summary, $description, $code, 'delete' != $method ? 'array' : 'bool'],
+				['~method~', '~parameters~', '~docblock~', '~summary~', '~description~', '~code~', '~passedParameters~'],
+				[$method, \implode(', ', $parameters), $docblock, $summary, $description, $code, \implode(', ', $passedParameters)],
 				$methodBody
 			);
 			$methods .= "\n";

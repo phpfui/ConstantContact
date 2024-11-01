@@ -39,4 +39,9 @@ class Counts extends \PHPFUI\ConstantContact\Base
 
 		return $this->doGet(['include' => $include, ]);
 		}
+
+	public function getReturnSchema(?string $include = null) : \PHPFUI\ConstantContact\Definition\ContactsCounts
+		{
+		return new \PHPFUI\ConstantContact\Definition\ContactsCounts($this->get($include));
+		}
 	}

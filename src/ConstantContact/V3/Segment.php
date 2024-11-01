@@ -28,7 +28,7 @@ class Segment extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param int $segment_id The system generated ID that uniquely identifies the segment.
 	 */
-	public function delete(int $segment_id) : bool
+	public function delete(int $segment_id) : array
 		{
 
 		return $this->doDelete(['segment_id' => $segment_id, ]);
@@ -49,6 +49,11 @@ class Segment extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doGet(['segment_id' => $segment_id, ]);
+		}
+
+	public function getReturnSchema(int $segment_id) : \PHPFUI\ConstantContact\Definition\SegmentDetail
+		{
+		return new \PHPFUI\ConstantContact\Definition\SegmentDetail($this->get($segment_id));
 		}
 
 	/**
@@ -72,5 +77,10 @@ class Segment extends \PHPFUI\ConstantContact\Base
 		{
 
 		return $this->doPut(['segment_id' => $segment_id, 'body' => $body->getData(), ]);
+		}
+
+	public function putReturnSchema(int $segment_id, \PHPFUI\ConstantContact\Definition\SegmentData $body) : \PHPFUI\ConstantContact\Definition\SegmentDetail
+		{
+		return new \PHPFUI\ConstantContact\Definition\SegmentDetail($this->put($segment_id, $body));
 		}
 	}

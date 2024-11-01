@@ -30,4 +30,9 @@ class Didnotopens extends \PHPFUI\ConstantContact\Base
 
 		return $this->doGet(['campaign_activity_id' => $campaign_activity_id, 'limit' => $limit, ]);
 		}
+
+	public function getReturnSchema(string $campaign_activity_id, ?string $limit = null) : \PHPFUI\ConstantContact\Definition\DidNotOpensTrackingActivitiesPage
+		{
+		return new \PHPFUI\ConstantContact\Definition\DidNotOpensTrackingActivitiesPage($this->get($campaign_activity_id, $limit));
+		}
 	}

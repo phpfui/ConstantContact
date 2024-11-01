@@ -40,7 +40,7 @@ class Base
 		return $status >= 200 && $status < 300;
 		}
 
-	protected function doDelete(array $parameters) : bool
+	protected function doDelete(array $parameters) : array
 		{
 		$url = $this->getUrl($parameters);
 

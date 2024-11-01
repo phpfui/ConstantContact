@@ -120,16 +120,14 @@ class Client
 	/**
 	 * Issue a delete request.  This is not normally called directly, but by the V3 namespace classes.
 	 */
-	public function delete(string $url) : bool
+	public function delete(string $url) : array
 		{
 		try
 			{
 			$guzzle = new \GuzzleHttp\Client(['headers' => $this->getHeaders(), 'handler' => $this->guzzleHandler, ]);
 			$response = $guzzle->request('DELETE', $url);
 
-			$this->process($response);
-
-			return $this->statusCode >= 200 && $this->statusCode < 300;
+			return $this->process($response);
 			}
 		catch (\GuzzleHttp\Exception\RequestException $e)
 			{
@@ -137,7 +135,7 @@ class Client
 			$this->statusCode = $e->getResponse()->getStatusCode();
 			}
 
-		return false;
+		return [];
 		}
 
 	/**
