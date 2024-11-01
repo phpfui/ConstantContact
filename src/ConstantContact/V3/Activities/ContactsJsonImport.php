@@ -39,15 +39,16 @@ class ContactsJsonImport extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param \PHPFUI\ConstantContact\Definition\ContactsJsonImport $body The JSON request payload that contains the contact data and contact lists for the import.
 	 */
-	public function post(\PHPFUI\ConstantContact\Definition\ContactsJsonImport $body) : array
+	public function post(\PHPFUI\ConstantContact\Definition\ContactsJsonImport $body) : ?array
 		{
 
 		return $this->doPost(['body' => $body->getData(), ]);
 		}
 
-	public function postReturnSchema(\PHPFUI\ConstantContact\Definition\ContactsJsonImport $body) : \PHPFUI\ConstantContact\Definition\ActivityImport
+	public function postTyped(\PHPFUI\ConstantContact\Definition\ContactsJsonImport $body) : ?\PHPFUI\ConstantContact\Definition\ActivityImport
 		{
-		return new \PHPFUI\ConstantContact\Definition\ActivityImport($this->post($body));
-		}
+		$data = $this->post($body);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\ActivityImport($data) : null;
+		}
 	}

@@ -28,11 +28,11 @@ class Emails extends \PHPFUI\ConstantContact\Base
 	 *
 	 *
 	 * @param string $confirm_status Use the `confirm_status` query parameter to search for account emails using the email status. Possible values are `CONFIRMED` or `UNCONFIRMED`. You can also abbreviate the values of this query parameter and use `C` or `U`.
-
+	 *
 	 * @param string $role_code Use the `role_code` query parameter to search for account emails that have a specific role. Each each email address in an account can have multiple roles or no role. Possible values are `CONTACT`, `BILLING`, `REPLY_TO`, `JOURNALING`, or `OTHER`. You can also abbreviate the value of this query parameter and use `C`,`B`,`R`,`J`, or `O`.
 	 * @param string $email_address Use the `email_address` query parameter to search for a specific account email address.
 	 */
-	public function get(?string $confirm_status = null, ?string $role_code = null, ?string $email_address = null) : array
+	public function get(?string $confirm_status = null, ?string $role_code = null, ?string $email_address = null) : ?array
 		{
 
 		if (null !== $confirm_status)
@@ -57,20 +57,28 @@ class Emails extends \PHPFUI\ConstantContact\Base
 
 		return $this->doGet(['confirm_status' => $confirm_status, 'role_code' => $role_code, 'email_address' => $email_address, ]);
 		}
+
 	/**
-	 * @return array<\PHPFUI\ConstantContact\Definition\AccountEmails>
+	 * @return ?array<\PHPFUI\ConstantContact\Definition\AccountEmails>
 	 */
-	public function getReturnSchema(?string $confirm_status = null, ?string $role_code = null, ?string $email_address = null) : array
+	public function getTyped(?string $confirm_status = null, ?string $role_code = null, ?string $email_address = null) : ?array
 		{
+		$data = $this->get($confirm_status, $role_code, $email_address);
+
+		if (null === $data)
+			{
+			return null;
+			}
+
 		$array = [];
-		foreach ($this->get($confirm_status, $role_code, $email_address) as $object)
+
+		foreach ($data as $object)
 			{
 			$array[] = new \PHPFUI\ConstantContact\Definition\AccountEmails($object);
 			}
 
 		return $array;
 		}
-
 
 	/**
 	 * POST Add an Account Email Address
@@ -90,15 +98,16 @@ class Emails extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param \PHPFUI\ConstantContact\Definition\AccountEmailInput $body A JSON request payload containing the new email address you want to add to the Constant Contact account.
 	 */
-	public function post(\PHPFUI\ConstantContact\Definition\AccountEmailInput $body) : array
+	public function post(\PHPFUI\ConstantContact\Definition\AccountEmailInput $body) : ?array
 		{
 
 		return $this->doPost(['body' => $body->getData(), ]);
 		}
 
-	public function postReturnSchema(\PHPFUI\ConstantContact\Definition\AccountEmailInput $body) : \PHPFUI\ConstantContact\Definition\AccountEmailCreateResponse
+	public function postTyped(\PHPFUI\ConstantContact\Definition\AccountEmailInput $body) : ?\PHPFUI\ConstantContact\Definition\AccountEmailCreateResponse
 		{
-		return new \PHPFUI\ConstantContact\Definition\AccountEmailCreateResponse($this->post($body));
-		}
+		$data = $this->post($body);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\AccountEmailCreateResponse($data) : null;
+		}
 	}

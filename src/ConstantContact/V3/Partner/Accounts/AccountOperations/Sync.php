@@ -27,7 +27,7 @@ class Sync extends \PHPFUI\ConstantContact\Base
 	 * @param string $encoded_account_id An encoded account id for a managed account in your partnership.
 	 * @param \PHPFUI\ConstantContact\Definition\PartnerAccountOperationsRequest $body A JSON request body that contains the structure of the HTTP request you are instructing Constant Contact to send on behalf of specific managed account in your partnership.
 	 */
-	public function post(string $encoded_account_id, ?\PHPFUI\ConstantContact\Definition\PartnerAccountOperationsRequest $body = null) : array
+	public function post(string $encoded_account_id, ?\PHPFUI\ConstantContact\Definition\PartnerAccountOperationsRequest $body = null) : ?array
 		{
 
 		return $this->doPost(['encoded_account_id' => $encoded_account_id, 'body' => $body->getData(), ]);

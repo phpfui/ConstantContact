@@ -24,7 +24,7 @@ class Subscription extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $topic_id Identifies a webhook topic.
 	 */
-	public function delete(string $topic_id) : array
+	public function delete(string $topic_id) : ?array
 		{
 
 		return $this->doDelete(['topic_id' => $topic_id, ]);
@@ -43,17 +43,18 @@ class Subscription extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $topic_id Identifies a webhook topic.
 	 */
-	public function get(string $topic_id) : array
+	public function get(string $topic_id) : ?array
 		{
 
 		return $this->doGet(['topic_id' => $topic_id, ]);
 		}
 
-	public function getReturnSchema(string $topic_id) : \PHPFUI\ConstantContact\Definition\WebhooksSubscriptionResponse
+	public function getTyped(string $topic_id) : ?\PHPFUI\ConstantContact\Definition\WebhooksSubscriptionResponse
 		{
-		return new \PHPFUI\ConstantContact\Definition\WebhooksSubscriptionResponse($this->get($topic_id));
-		}
+		$data = $this->get($topic_id);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\WebhooksSubscriptionResponse($data) : null;
+		}
 
 	/**
 	 * PUT Webhook Topic Subscription
@@ -86,15 +87,16 @@ class Subscription extends \PHPFUI\ConstantContact\Base
 	 * @param string $topic_id Identifies a webhook topic.
 	 * @param \PHPFUI\ConstantContact\Definition\WebhooksSubscriptionBody $body A JSON payload containing a callback URI. Constant Contact uses this callback URI to notify you about your chosen topic.
 	 */
-	public function put(string $topic_id, \PHPFUI\ConstantContact\Definition\WebhooksSubscriptionBody $body) : array
+	public function put(string $topic_id, \PHPFUI\ConstantContact\Definition\WebhooksSubscriptionBody $body) : ?array
 		{
 
 		return $this->doPut(['topic_id' => $topic_id, 'body' => $body->getData(), ]);
 		}
 
-	public function putReturnSchema(string $topic_id, \PHPFUI\ConstantContact\Definition\WebhooksSubscriptionBody $body) : \PHPFUI\ConstantContact\Definition\WebhooksSubscriptionPutResp
+	public function putTyped(string $topic_id, \PHPFUI\ConstantContact\Definition\WebhooksSubscriptionBody $body) : ?\PHPFUI\ConstantContact\Definition\WebhooksSubscriptionPutResp
 		{
-		return new \PHPFUI\ConstantContact\Definition\WebhooksSubscriptionPutResp($this->put($topic_id, $body));
-		}
+		$data = $this->put($topic_id, $body);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\WebhooksSubscriptionPutResp($data) : null;
+		}
 	}

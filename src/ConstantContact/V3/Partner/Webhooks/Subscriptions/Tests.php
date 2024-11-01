@@ -29,15 +29,16 @@ class Tests extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $topic_id Identifies a webhook topic.
 	 */
-	public function post(string $topic_id) : array
+	public function post(string $topic_id) : ?array
 		{
 
 		return $this->doPost(['topic_id' => $topic_id, ]);
 		}
 
-	public function postReturnSchema(string $topic_id) : \PHPFUI\ConstantContact\Definition\WebhooksTestSend
+	public function postTyped(string $topic_id) : ?\PHPFUI\ConstantContact\Definition\WebhooksTestSend
 		{
-		return new \PHPFUI\ConstantContact\Definition\WebhooksTestSend($this->post($topic_id));
-		}
+		$data = $this->post($topic_id);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\WebhooksTestSend($data) : null;
+		}
 	}

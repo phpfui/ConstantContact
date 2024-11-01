@@ -32,15 +32,16 @@ class EmailCampaignActivities extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $campaign_activity_ids A comma-separated list of `campaign_activity_id`s (UUID's).
 	 */
-	public function get(string $campaign_activity_ids) : array
+	public function get(string $campaign_activity_ids) : ?array
 		{
 
 		return $this->doGet(['campaign_activity_ids' => $campaign_activity_ids, ]);
 		}
 
-	public function getReturnSchema(string $campaign_activity_ids) : \PHPFUI\ConstantContact\Definition\CampaignActivityStatsQueryResultEmail
+	public function getTyped(string $campaign_activity_ids) : ?\PHPFUI\ConstantContact\Definition\CampaignActivityStatsQueryResultEmail
 		{
-		return new \PHPFUI\ConstantContact\Definition\CampaignActivityStatsQueryResultEmail($this->get($campaign_activity_ids));
-		}
+		$data = $this->get($campaign_activity_ids);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\CampaignActivityStatsQueryResultEmail($data) : null;
+		}
 	}

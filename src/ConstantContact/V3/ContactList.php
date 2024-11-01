@@ -21,17 +21,18 @@ class ContactList extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $list_id Unique ID of the list to delete
 	 */
-	public function delete(string $list_id) : array
+	public function delete(string $list_id) : ?array
 		{
 
 		return $this->doDelete(['list_id' => $list_id, ]);
 		}
 
-	public function deleteReturnSchema(string $list_id) : \PHPFUI\ConstantContact\Definition\ActivityDeleteListResponse
+	public function deleteTyped(string $list_id) : ?\PHPFUI\ConstantContact\Definition\ActivityDeleteListResponse
 		{
-		return new \PHPFUI\ConstantContact\Definition\ActivityDeleteListResponse($this->delete($list_id));
-		}
+		$data = $this->delete($list_id);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\ActivityDeleteListResponse($data) : null;
+		}
 
 	/**
 	 * GET a List
@@ -42,7 +43,7 @@ class ContactList extends \PHPFUI\ConstantContact\Base
 	 * @param string $list_id The system generated ID that uniquely identifies a contact list.
 	 * @param string $include_membership_count Returns the total number of contacts per list that meet your selection criteria. Set the `include_membership_count` to `active`, to count only active contacts, or `all` to include all contacts in the count.
 	 */
-	public function get(string $list_id, ?string $include_membership_count = null) : array
+	public function get(string $list_id, ?string $include_membership_count = null) : ?array
 		{
 
 		if (null !== $include_membership_count)
@@ -58,11 +59,12 @@ class ContactList extends \PHPFUI\ConstantContact\Base
 		return $this->doGet(['list_id' => $list_id, 'include_membership_count' => $include_membership_count, ]);
 		}
 
-	public function getReturnSchema(string $list_id, ?string $include_membership_count = null) : \PHPFUI\ConstantContact\Definition\ContactList
+	public function getTyped(string $list_id, ?string $include_membership_count = null) : ?\PHPFUI\ConstantContact\Definition\ContactList
 		{
-		return new \PHPFUI\ConstantContact\Definition\ContactList($this->get($list_id, $include_membership_count));
-		}
+		$data = $this->get($list_id, $include_membership_count);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\ContactList($data) : null;
+		}
 
 	/**
 	 * PUT (update) a List
@@ -72,15 +74,16 @@ class ContactList extends \PHPFUI\ConstantContact\Base
 	 * @param string $list_id Unique ID of the contact list to update
 	 * @param \PHPFUI\ConstantContact\Definition\ListInput $JSON_PUT_body JSON payload containing updates to the specified contact list
 	 */
-	public function put(string $list_id, \PHPFUI\ConstantContact\Definition\ListInput $JSON_PUT_body) : array
+	public function put(string $list_id, \PHPFUI\ConstantContact\Definition\ListInput $JSON_PUT_body) : ?array
 		{
 
 		return $this->doPut(['list_id' => $list_id, 'JSON_PUT_body' => $JSON_PUT_body->getData(), ]);
 		}
 
-	public function putReturnSchema(string $list_id, \PHPFUI\ConstantContact\Definition\ListInput $JSON_PUT_body) : \PHPFUI\ConstantContact\Definition\ContactListPutPost
+	public function putTyped(string $list_id, \PHPFUI\ConstantContact\Definition\ListInput $JSON_PUT_body) : ?\PHPFUI\ConstantContact\Definition\ContactListPutPost
 		{
-		return new \PHPFUI\ConstantContact\Definition\ContactListPutPost($this->put($list_id, $JSON_PUT_body));
-		}
+		$data = $this->put($list_id, $JSON_PUT_body);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\ContactListPutPost($data) : null;
+		}
 	}

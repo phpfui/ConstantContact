@@ -18,15 +18,16 @@ class ListDelete extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param \PHPFUI\ConstantContact\Definition\ListIdList100 $body An array of `list_id`'s to delete.
 	 */
-	public function post(\PHPFUI\ConstantContact\Definition\ListIdList100 $body) : array
+	public function post(\PHPFUI\ConstantContact\Definition\ListIdList100 $body) : ?array
 		{
 
 		return $this->doPost(['body' => $body->getData(), ]);
 		}
 
-	public function postReturnSchema(\PHPFUI\ConstantContact\Definition\ListIdList100 $body) : \PHPFUI\ConstantContact\Definition\ActivityDeleteListsResponse
+	public function postTyped(\PHPFUI\ConstantContact\Definition\ListIdList100 $body) : ?\PHPFUI\ConstantContact\Definition\ActivityDeleteListsResponse
 		{
-		return new \PHPFUI\ConstantContact\Definition\ActivityDeleteListsResponse($this->post($body));
-		}
+		$data = $this->post($body);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\ActivityDeleteListsResponse($data) : null;
+		}
 	}

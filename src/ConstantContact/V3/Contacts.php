@@ -44,7 +44,7 @@ class Contacts extends \PHPFUI\ConstantContact\Base
 	 * @param bool $include_count Set `include_count=true` to include the total number of contacts (`contacts_count`) that meet all search criteria in the response body.
 	 * @param int $limit Specifies the number of results displayed per page of output in the response, from 1 - 500, default = 50.
 	 */
-	public function get(?string $status = null, ?string $email = null, ?string $lists = null, ?string $segment_id = null, ?string $tags = null, ?string $updated_after = null, ?string $updated_before = null, ?string $created_after = null, ?string $created_before = null, ?string $optout_after = null, ?string $optout_before = null, ?string $include = null, ?string $sms_status = null, ?bool $include_count = null, ?int $limit = null) : array
+	public function get(?string $status = null, ?string $email = null, ?string $lists = null, ?string $segment_id = null, ?string $tags = null, ?string $updated_after = null, ?string $updated_before = null, ?string $created_after = null, ?string $created_before = null, ?string $optout_after = null, ?string $optout_before = null, ?string $include = null, ?string $sms_status = null, ?bool $include_count = null, ?int $limit = null) : ?array
 		{
 
 		if (null !== $status)
@@ -92,11 +92,12 @@ class Contacts extends \PHPFUI\ConstantContact\Base
 		return $this->doGet(['status' => $status, 'email' => $email, 'lists' => $lists, 'segment_id' => $segment_id, 'tags' => $tags, 'updated_after' => $updated_after, 'updated_before' => $updated_before, 'created_after' => $created_after, 'created_before' => $created_before, 'optout_after' => $optout_after, 'optout_before' => $optout_before, 'include' => $include, 'sms_status' => $sms_status, 'include_count' => $include_count, 'limit' => $limit, ]);
 		}
 
-	public function getReturnSchema(?string $status = null, ?string $email = null, ?string $lists = null, ?string $segment_id = null, ?string $tags = null, ?string $updated_after = null, ?string $updated_before = null, ?string $created_after = null, ?string $created_before = null, ?string $optout_after = null, ?string $optout_before = null, ?string $include = null, ?string $sms_status = null, ?bool $include_count = null, ?int $limit = null) : \PHPFUI\ConstantContact\Definition\Contacts
+	public function getTyped(?string $status = null, ?string $email = null, ?string $lists = null, ?string $segment_id = null, ?string $tags = null, ?string $updated_after = null, ?string $updated_before = null, ?string $created_after = null, ?string $created_before = null, ?string $optout_after = null, ?string $optout_before = null, ?string $include = null, ?string $sms_status = null, ?bool $include_count = null, ?int $limit = null) : ?\PHPFUI\ConstantContact\Definition\Contacts
 		{
-		return new \PHPFUI\ConstantContact\Definition\Contacts($this->get($status, $email, $lists, $segment_id, $tags, $updated_after, $updated_before, $created_after, $created_before, $optout_after, $optout_before, $include, $sms_status, $include_count, $limit));
-		}
+		$data = $this->get($status, $email, $lists, $segment_id, $tags, $updated_after, $updated_before, $created_after, $created_before, $optout_after, $optout_before, $include, $sms_status, $include_count, $limit);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\Contacts($data) : null;
+		}
 
 	/**
 	 * POST (create) a Contact
@@ -108,15 +109,16 @@ class Contacts extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param \PHPFUI\ConstantContact\Definition\ContactPostRequest $body The JSON payload defining the contact
 	 */
-	public function post(\PHPFUI\ConstantContact\Definition\ContactPostRequest $body) : array
+	public function post(\PHPFUI\ConstantContact\Definition\ContactPostRequest $body) : ?array
 		{
 
 		return $this->doPost(['body' => $body->getData(), ]);
 		}
 
-	public function postReturnSchema(\PHPFUI\ConstantContact\Definition\ContactPostRequest $body) : \PHPFUI\ConstantContact\Definition\ContactResource
+	public function postTyped(\PHPFUI\ConstantContact\Definition\ContactPostRequest $body) : ?\PHPFUI\ConstantContact\Definition\ContactResource
 		{
-		return new \PHPFUI\ConstantContact\Definition\ContactResource($this->post($body));
-		}
+		$data = $this->post($body);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\ContactResource($data) : null;
+		}
 	}

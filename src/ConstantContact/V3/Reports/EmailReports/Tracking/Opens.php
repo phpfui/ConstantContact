@@ -25,15 +25,16 @@ class Opens extends \PHPFUI\ConstantContact\Base
 	 * @param string $campaign_activity_id The unique ID for an email campaign activity to use for this report.
 	 * @param string $limit The number of tracking activities to return on a page.
 	 */
-	public function get(string $campaign_activity_id, ?string $limit = null) : array
+	public function get(string $campaign_activity_id, ?string $limit = null) : ?array
 		{
 
 		return $this->doGet(['campaign_activity_id' => $campaign_activity_id, 'limit' => $limit, ]);
 		}
 
-	public function getReturnSchema(string $campaign_activity_id, ?string $limit = null) : \PHPFUI\ConstantContact\Definition\OpensTrackingActivitiesPage
+	public function getTyped(string $campaign_activity_id, ?string $limit = null) : ?\PHPFUI\ConstantContact\Definition\OpensTrackingActivitiesPage
 		{
-		return new \PHPFUI\ConstantContact\Definition\OpensTrackingActivitiesPage($this->get($campaign_activity_id, $limit));
-		}
+		$data = $this->get($campaign_activity_id, $limit);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\OpensTrackingActivitiesPage($data) : null;
+		}
 	}

@@ -23,7 +23,7 @@ class Abtest extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $campaign_activity_id The unique ID for the primary email campaign activity.
 	 */
-	public function delete(string $campaign_activity_id) : array
+	public function delete(string $campaign_activity_id) : ?array
 		{
 
 		return $this->doDelete(['campaign_activity_id' => $campaign_activity_id, ]);
@@ -40,17 +40,18 @@ class Abtest extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $campaign_activity_id The unique ID for the primary email campaign activity.
 	 */
-	public function get(string $campaign_activity_id) : array
+	public function get(string $campaign_activity_id) : ?array
 		{
 
 		return $this->doGet(['campaign_activity_id' => $campaign_activity_id, ]);
 		}
 
-	public function getReturnSchema(string $campaign_activity_id) : \PHPFUI\ConstantContact\Definition\ABTestData
+	public function getTyped(string $campaign_activity_id) : ?\PHPFUI\ConstantContact\Definition\ABTestData
 		{
-		return new \PHPFUI\ConstantContact\Definition\ABTestData($this->get($campaign_activity_id));
-		}
+		$data = $this->get($campaign_activity_id);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\ABTestData($data) : null;
+		}
 
 	/**
 	 * POST (Create) an A/B Test for an Email Campaign Activity
@@ -66,15 +67,16 @@ class Abtest extends \PHPFUI\ConstantContact\Base
 	 * @param string $campaign_activity_id The unique ID for the primary email campaign activity.
 	 * @param \PHPFUI\ConstantContact\Definition\ABTestData $abtest Specify the `alternative_subject` line, `test_size` percentage of contacts (value must from `5` to `50` inclusively), and the `winner_wait_duration` (value must be `6`, `12`, `24`, or `48` hours).
 	 */
-	public function post(string $campaign_activity_id, \PHPFUI\ConstantContact\Definition\ABTestData $abtest) : array
+	public function post(string $campaign_activity_id, \PHPFUI\ConstantContact\Definition\ABTestData $abtest) : ?array
 		{
 
 		return $this->doPost(['campaign_activity_id' => $campaign_activity_id, 'abtest' => $abtest->getData(), ]);
 		}
 
-	public function postReturnSchema(string $campaign_activity_id, \PHPFUI\ConstantContact\Definition\ABTestData $abtest) : \PHPFUI\ConstantContact\Definition\ABTestData
+	public function postTyped(string $campaign_activity_id, \PHPFUI\ConstantContact\Definition\ABTestData $abtest) : ?\PHPFUI\ConstantContact\Definition\ABTestData
 		{
-		return new \PHPFUI\ConstantContact\Definition\ABTestData($this->post($campaign_activity_id, $abtest));
-		}
+		$data = $this->post($campaign_activity_id, $abtest);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\ABTestData($data) : null;
+		}
 	}

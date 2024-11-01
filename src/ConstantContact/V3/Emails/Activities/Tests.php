@@ -31,7 +31,7 @@ class Tests extends \PHPFUI\ConstantContact\Base
 	 * @param string $campaign_activity_id The unique ID for an email campaign activity. You can only test send email campaign activities that have the `primary_email` role.
 	 * @param \PHPFUI\ConstantContact\Definition\EmailTestSendInput $email_test_send_input A JSON request body that contains the recipients of the test email and an optional personal message.
 	 */
-	public function post(string $campaign_activity_id, \PHPFUI\ConstantContact\Definition\EmailTestSendInput $email_test_send_input) : array
+	public function post(string $campaign_activity_id, \PHPFUI\ConstantContact\Definition\EmailTestSendInput $email_test_send_input) : ?array
 		{
 
 		return $this->doPost(['campaign_activity_id' => $campaign_activity_id, 'email_test_send_input' => $email_test_send_input->getData(), ]);

@@ -18,15 +18,16 @@ class Activity extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $activity_id The unique ID of the activity to GET
 	 */
-	public function get(string $activity_id) : array
+	public function get(string $activity_id) : ?array
 		{
 
 		return $this->doGet(['activity_id' => $activity_id, ]);
 		}
 
-	public function getReturnSchema(string $activity_id) : \PHPFUI\ConstantContact\Definition\Activity
+	public function getTyped(string $activity_id) : ?\PHPFUI\ConstantContact\Definition\Activity
 		{
-		return new \PHPFUI\ConstantContact\Definition\Activity($this->get($activity_id));
-		}
+		$data = $this->get($activity_id);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\Activity($data) : null;
+		}
 	}

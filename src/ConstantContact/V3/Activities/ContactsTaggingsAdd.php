@@ -27,15 +27,16 @@ class ContactsTaggingsAdd extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param \PHPFUI\ConstantContact\Definition\TagAddRemoveContacts $body The JSON payload used to create an asynchronous activity that adds tags to contacts that meet your specified contact filtering criteria.
 	 */
-	public function post(\PHPFUI\ConstantContact\Definition\TagAddRemoveContacts $body) : array
+	public function post(\PHPFUI\ConstantContact\Definition\TagAddRemoveContacts $body) : ?array
 		{
 
 		return $this->doPost(['body' => $body->getData(), ]);
 		}
 
-	public function postReturnSchema(\PHPFUI\ConstantContact\Definition\TagAddRemoveContacts $body) : \PHPFUI\ConstantContact\Definition\ActivityTagging
+	public function postTyped(\PHPFUI\ConstantContact\Definition\TagAddRemoveContacts $body) : ?\PHPFUI\ConstantContact\Definition\ActivityTagging
 		{
-		return new \PHPFUI\ConstantContact\Definition\ActivityTagging($this->post($body));
-		}
+		$data = $this->post($body);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\ActivityTagging($data) : null;
+		}
 	}

@@ -26,7 +26,7 @@ class ContactLists extends \PHPFUI\ConstantContact\Base
 	 * @param string $name Use to get details for a single list by entering the full name of the list.
 	 * @param string $status Use to get lists by status. Accepts comma-separated status values.
 	 */
-	public function get(?int $limit = null, ?bool $include_count = null, ?string $include_membership_count = null, ?string $name = null, ?string $status = null) : array
+	public function get(?int $limit = null, ?bool $include_count = null, ?string $include_membership_count = null, ?string $name = null, ?string $status = null) : ?array
 		{
 
 		if (null !== $include_membership_count)
@@ -52,11 +52,12 @@ class ContactLists extends \PHPFUI\ConstantContact\Base
 		return $this->doGet(['limit' => $limit, 'include_count' => $include_count, 'include_membership_count' => $include_membership_count, 'name' => $name, 'status' => $status, ]);
 		}
 
-	public function getReturnSchema(?int $limit = null, ?bool $include_count = null, ?string $include_membership_count = null, ?string $name = null, ?string $status = null) : \PHPFUI\ConstantContact\Definition\ContactListArray
+	public function getTyped(?int $limit = null, ?bool $include_count = null, ?string $include_membership_count = null, ?string $name = null, ?string $status = null) : ?\PHPFUI\ConstantContact\Definition\ContactListArray
 		{
-		return new \PHPFUI\ConstantContact\Definition\ContactListArray($this->get($limit, $include_count, $include_membership_count, $name, $status));
-		}
+		$data = $this->get($limit, $include_count, $include_membership_count, $name, $status);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\ContactListArray($data) : null;
+		}
 
 	/**
 	 * POST (create) a List
@@ -65,15 +66,16 @@ class ContactLists extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param \PHPFUI\ConstantContact\Definition\ListInput $body JSON payload defining the new contact list
 	 */
-	public function post(\PHPFUI\ConstantContact\Definition\ListInput $body) : array
+	public function post(\PHPFUI\ConstantContact\Definition\ListInput $body) : ?array
 		{
 
 		return $this->doPost(['body' => $body->getData(), ]);
 		}
 
-	public function postReturnSchema(\PHPFUI\ConstantContact\Definition\ListInput $body) : \PHPFUI\ConstantContact\Definition\ContactListPutPost
+	public function postTyped(\PHPFUI\ConstantContact\Definition\ListInput $body) : ?\PHPFUI\ConstantContact\Definition\ContactListPutPost
 		{
-		return new \PHPFUI\ConstantContact\Definition\ContactListPutPost($this->post($body));
-		}
+		$data = $this->post($body);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\ContactListPutPost($data) : null;
+		}
 	}

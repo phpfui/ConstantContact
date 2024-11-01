@@ -32,23 +32,31 @@ class SendHistory extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $campaign_activity_id The unique ID for an email campaign activity. You can return the send history for `primary_email` and `resend` role email campaign activities.
 	 */
-	public function get(string $campaign_activity_id) : array
+	public function get(string $campaign_activity_id) : ?array
 		{
 
 		return $this->doGet(['campaign_activity_id' => $campaign_activity_id, ]);
 		}
+
 	/**
-	 * @return array<\PHPFUI\ConstantContact\Definition\EmailSendHistory>
+	 * @return ?array<\PHPFUI\ConstantContact\Definition\EmailSendHistory>
 	 */
-	public function getReturnSchema(string $campaign_activity_id) : array
+	public function getTyped(string $campaign_activity_id) : ?array
 		{
+		$data = $this->get($campaign_activity_id);
+
+		if (null === $data)
+			{
+			return null;
+			}
+
 		$array = [];
-		foreach ($this->get($campaign_activity_id) as $object)
+
+		foreach ($data as $object)
 			{
 			$array[] = new \PHPFUI\ConstantContact\Definition\EmailSendHistory($object);
 			}
 
 		return $array;
 		}
-
 	}

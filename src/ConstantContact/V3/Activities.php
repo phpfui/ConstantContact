@@ -23,7 +23,7 @@ class Activities extends \PHPFUI\ConstantContact\Base
 	 * @param int $limit Specifies the number of results displayed per page of output, from 1 - 500, default = 50.
 	 * @param string $state Use this parameter to filter the response to include only activities in one of the following states: cancelled, completed, failed, processing, or timed_out.
 	 */
-	public function get(?int $limit = null, ?string $state = null) : array
+	public function get(?int $limit = null, ?string $state = null) : ?array
 		{
 
 		if (null !== $state)
@@ -39,9 +39,10 @@ class Activities extends \PHPFUI\ConstantContact\Base
 		return $this->doGet(['limit' => $limit, 'state' => $state, ]);
 		}
 
-	public function getReturnSchema(?int $limit = null, ?string $state = null) : \PHPFUI\ConstantContact\Definition\Activities
+	public function getTyped(?int $limit = null, ?string $state = null) : ?\PHPFUI\ConstantContact\Definition\Activities
 		{
-		return new \PHPFUI\ConstantContact\Definition\Activities($this->get($limit, $state));
-		}
+		$data = $this->get($limit, $state);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\Activities($data) : null;
+		}
 	}

@@ -31,15 +31,16 @@ class EmailCampaignSummaries extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $limit Use the `limit` query parameter to limit the number of email campaign summaries to return on a single page. The default is `50` and the maximum is `500` per page.
 	 */
-	public function get(?string $limit = null) : array
+	public function get(?string $limit = null) : ?array
 		{
 
 		return $this->doGet(['limit' => $limit, ]);
 		}
 
-	public function getReturnSchema(?string $limit = null) : \PHPFUI\ConstantContact\Definition\BulkEmailCampaignSummariesPage
+	public function getTyped(?string $limit = null) : ?\PHPFUI\ConstantContact\Definition\BulkEmailCampaignSummariesPage
 		{
-		return new \PHPFUI\ConstantContact\Definition\BulkEmailCampaignSummariesPage($this->get($limit));
-		}
+		$data = $this->get($limit);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\BulkEmailCampaignSummariesPage($data) : null;
+		}
 	}

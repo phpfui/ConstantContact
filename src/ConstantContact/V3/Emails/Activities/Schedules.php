@@ -21,7 +21,7 @@ class Schedules extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $campaign_activity_id The unique ID for an email campaign activity.
 	 */
-	public function delete(string $campaign_activity_id) : array
+	public function delete(string $campaign_activity_id) : ?array
 		{
 
 		return $this->doDelete(['campaign_activity_id' => $campaign_activity_id, ]);
@@ -38,25 +38,33 @@ class Schedules extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $campaign_activity_id The unique ID for an email campaign activity.
 	 */
-	public function get(string $campaign_activity_id) : array
+	public function get(string $campaign_activity_id) : ?array
 		{
 
 		return $this->doGet(['campaign_activity_id' => $campaign_activity_id, ]);
 		}
+
 	/**
-	 * @return array<\PHPFUI\ConstantContact\Definition\EmailScheduleResponse>
+	 * @return ?array<\PHPFUI\ConstantContact\Definition\EmailScheduleResponse>
 	 */
-	public function getReturnSchema(string $campaign_activity_id) : array
+	public function getTyped(string $campaign_activity_id) : ?array
 		{
+		$data = $this->get($campaign_activity_id);
+
+		if (null === $data)
+			{
+			return null;
+			}
+
 		$array = [];
-		foreach ($this->get($campaign_activity_id) as $object)
+
+		foreach ($data as $object)
 			{
 			$array[] = new \PHPFUI\ConstantContact\Definition\EmailScheduleResponse($object);
 			}
 
 		return $array;
 		}
-
 
 	/**
 	 * POST (Create) an Email Campaign Activity Schedule
@@ -83,23 +91,31 @@ class Schedules extends \PHPFUI\ConstantContact\Base
 	 * @param string $campaign_activity_id The unique ID for an email campaign activity. You can only schedule email campaign activities that have the `primary_email` role.
 	 * @param \PHPFUI\ConstantContact\Definition\EmailScheduleInput $body A request body payload that contains the date that you want Constant Contact to send your email campaign activity on. Use `"0"` as the date to have Constant Contact immediately send the email campaign activity.
 	 */
-	public function post(string $campaign_activity_id, \PHPFUI\ConstantContact\Definition\EmailScheduleInput $body) : array
+	public function post(string $campaign_activity_id, \PHPFUI\ConstantContact\Definition\EmailScheduleInput $body) : ?array
 		{
 
 		return $this->doPost(['campaign_activity_id' => $campaign_activity_id, 'body' => $body->getData(), ]);
 		}
+
 	/**
-	 * @return array<\PHPFUI\ConstantContact\Definition\EmailScheduleResponse>
+	 * @return ?array<\PHPFUI\ConstantContact\Definition\EmailScheduleResponse>
 	 */
-	public function postReturnSchema(string $campaign_activity_id, \PHPFUI\ConstantContact\Definition\EmailScheduleInput $body) : array
+	public function postTyped(string $campaign_activity_id, \PHPFUI\ConstantContact\Definition\EmailScheduleInput $body) : ?array
 		{
+		$data = $this->post($campaign_activity_id, $body);
+
+		if (null === $data)
+			{
+			return null;
+			}
+
 		$array = [];
-		foreach ($this->post($campaign_activity_id, $body) as $object)
+
+		foreach ($data as $object)
 			{
 			$array[] = new \PHPFUI\ConstantContact\Definition\EmailScheduleResponse($object);
 			}
 
 		return $array;
 		}
-
 	}

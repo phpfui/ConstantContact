@@ -26,15 +26,16 @@ class OpenAndClickRates extends \PHPFUI\ConstantContact\Base
 	 * @param string $start The starting date, in ISO 8601 format, to use to get campaigns. For example: 2019-01-01T00:00:00-0500.
 	 * @param string $end The ending date, in ISO 8601 format, to use to get campaigns. For example: 2019-12-01T00:00:00-0500.
 	 */
-	public function get(string $contact_id, string $start, string $end) : array
+	public function get(string $contact_id, string $start, string $end) : ?array
 		{
 
 		return $this->doGet(['contact_id' => $contact_id, 'start' => $start, 'end' => $end, ]);
 		}
 
-	public function getReturnSchema(string $contact_id, string $start, string $end) : \PHPFUI\ConstantContact\Definition\ContactOpenAndClickRates
+	public function getTyped(string $contact_id, string $start, string $end) : ?\PHPFUI\ConstantContact\Definition\ContactOpenAndClickRates
 		{
-		return new \PHPFUI\ConstantContact\Definition\ContactOpenAndClickRates($this->get($contact_id, $start, $end));
-		}
+		$data = $this->get($contact_id, $start, $end);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\ContactOpenAndClickRates($data) : null;
+		}
 	}

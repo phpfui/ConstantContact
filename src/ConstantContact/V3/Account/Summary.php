@@ -22,7 +22,7 @@ class Summary extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $extra_fields Use the `extra_fields` query parameter to include the `physical_address` and/or `company_logo` details in the response body. Use a comma separated list to include both (physical_address, company logo).
 	 */
-	public function get(?string $extra_fields = null) : array
+	public function get(?string $extra_fields = null) : ?array
 		{
 
 		if (null !== $extra_fields)
@@ -42,11 +42,12 @@ class Summary extends \PHPFUI\ConstantContact\Base
 		return $this->doGet(['extra_fields' => $extra_fields, ]);
 		}
 
-	public function getReturnSchema(?string $extra_fields = null) : \PHPFUI\ConstantContact\Definition\Customer
+	public function getTyped(?string $extra_fields = null) : ?\PHPFUI\ConstantContact\Definition\Customer
 		{
-		return new \PHPFUI\ConstantContact\Definition\Customer($this->get($extra_fields));
-		}
+		$data = $this->get($extra_fields);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\Customer($data) : null;
+		}
 
 	/**
 	 * PUT (update) Account Details
@@ -60,15 +61,16 @@ class Summary extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param \PHPFUI\ConstantContact\Definition\CustomerPut $body In the request body, specify changes to account details by including and modifying all or select `CustomerPut` properties. Changes to read-only fields (`encoded_account_id`) are ignored.
 	 */
-	public function put(\PHPFUI\ConstantContact\Definition\CustomerPut $body) : array
+	public function put(\PHPFUI\ConstantContact\Definition\CustomerPut $body) : ?array
 		{
 
 		return $this->doPut(['body' => $body->getData(), ]);
 		}
 
-	public function putReturnSchema(\PHPFUI\ConstantContact\Definition\CustomerPut $body) : \PHPFUI\ConstantContact\Definition\CustomerPut
+	public function putTyped(\PHPFUI\ConstantContact\Definition\CustomerPut $body) : ?\PHPFUI\ConstantContact\Definition\CustomerPut
 		{
-		return new \PHPFUI\ConstantContact\Definition\CustomerPut($this->put($body));
-		}
+		$data = $this->put($body);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\CustomerPut($data) : null;
+		}
 	}

@@ -22,7 +22,7 @@ class Contact extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $contact_id Unique ID of contact to DELETE
 	 */
-	public function delete(string $contact_id) : array
+	public function delete(string $contact_id) : ?array
 		{
 
 		return $this->doDelete(['contact_id' => $contact_id, ]);
@@ -38,7 +38,7 @@ class Contact extends \PHPFUI\ConstantContact\Base
 	 * @param string $contact_id Unique ID of contact to GET
 	 * @param string $include Use `include` to specify which contact sub-resources to include in the response. Use a comma to separate multiple sub-resources. Valid values: `custom_fields`, `list_memberships`, `phone_numbers`, `street_addresses`, `notes`, `sms_channel`, and `taggings`.
 	 */
-	public function get(string $contact_id, ?string $include = null) : array
+	public function get(string $contact_id, ?string $include = null) : ?array
 		{
 
 		if (null !== $include)
@@ -58,11 +58,12 @@ class Contact extends \PHPFUI\ConstantContact\Base
 		return $this->doGet(['contact_id' => $contact_id, 'include' => $include, ]);
 		}
 
-	public function getReturnSchema(string $contact_id, ?string $include = null) : \PHPFUI\ConstantContact\Definition\ContactResource
+	public function getTyped(string $contact_id, ?string $include = null) : ?\PHPFUI\ConstantContact\Definition\ContactResource
 		{
-		return new \PHPFUI\ConstantContact\Definition\ContactResource($this->get($contact_id, $include));
-		}
+		$data = $this->get($contact_id, $include);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\ContactResource($data) : null;
+		}
 
 	/**
 	 * PUT (update) a Contact
@@ -80,15 +81,16 @@ class Contact extends \PHPFUI\ConstantContact\Base
 	 * @param string $contact_id Unique ID of contact to update
 	 * @param \PHPFUI\ConstantContact\Definition\ContactPutRequest $body JSON payload defining the contact object, with updates. Any properties left blank or not included in the PUT payload are overwritten with null value - does not apply to contact subresources.
 	 */
-	public function put(string $contact_id, \PHPFUI\ConstantContact\Definition\ContactPutRequest $body) : array
+	public function put(string $contact_id, \PHPFUI\ConstantContact\Definition\ContactPutRequest $body) : ?array
 		{
 
 		return $this->doPut(['contact_id' => $contact_id, 'body' => $body->getData(), ]);
 		}
 
-	public function putReturnSchema(string $contact_id, \PHPFUI\ConstantContact\Definition\ContactPutRequest $body) : \PHPFUI\ConstantContact\Definition\ContactResource
+	public function putTyped(string $contact_id, \PHPFUI\ConstantContact\Definition\ContactPutRequest $body) : ?\PHPFUI\ConstantContact\Definition\ContactResource
 		{
-		return new \PHPFUI\ConstantContact\Definition\ContactResource($this->put($contact_id, $body));
-		}
+		$data = $this->put($contact_id, $body);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\ContactResource($data) : null;
+		}
 	}

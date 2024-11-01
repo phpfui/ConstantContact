@@ -31,15 +31,16 @@ class CampaignIdXrefs extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $v2_email_campaign_ids Comma separated list of V2 API `campaignId` values. You can enter up to 50 V2 `campaignId` values in each request.
 	 */
-	public function get(string $v2_email_campaign_ids) : array
+	public function get(string $v2_email_campaign_ids) : ?array
 		{
 
 		return $this->doGet(['v2_email_campaign_ids' => $v2_email_campaign_ids, ]);
 		}
 
-	public function getReturnSchema(string $v2_email_campaign_ids) : \PHPFUI\ConstantContact\Definition\CrossReferenceResponse
+	public function getTyped(string $v2_email_campaign_ids) : ?\PHPFUI\ConstantContact\Definition\CrossReferenceResponse
 		{
-		return new \PHPFUI\ConstantContact\Definition\CrossReferenceResponse($this->get($v2_email_campaign_ids));
-		}
+		$data = $this->get($v2_email_campaign_ids);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\CrossReferenceResponse($data) : null;
+		}
 	}

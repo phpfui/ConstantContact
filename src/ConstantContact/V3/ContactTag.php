@@ -22,17 +22,18 @@ class ContactTag extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $tag_id The ID that uniquely identifies a tag in UUID format.
 	 */
-	public function delete(string $tag_id) : array
+	public function delete(string $tag_id) : ?array
 		{
 
 		return $this->doDelete(['tag_id' => $tag_id, ]);
 		}
 
-	public function deleteReturnSchema(string $tag_id) : \PHPFUI\ConstantContact\Definition\ActivityGeneric
+	public function deleteTyped(string $tag_id) : ?\PHPFUI\ConstantContact\Definition\ActivityGeneric
 		{
-		return new \PHPFUI\ConstantContact\Definition\ActivityGeneric($this->delete($tag_id));
-		}
+		$data = $this->delete($tag_id);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\ActivityGeneric($data) : null;
+		}
 
 	/**
 	 * GET Tag Details
@@ -46,17 +47,18 @@ class ContactTag extends \PHPFUI\ConstantContact\Base
 	 * @param string $tag_id The ID that uniquely identifies a tag (UUID format).
 	 * @param bool $include_count Use to include (`true`) or exclude (`false`) the total number of tagged contacts (`contacts_count`) from the results.
 	 */
-	public function get(string $tag_id, ?bool $include_count = null) : array
+	public function get(string $tag_id, ?bool $include_count = null) : ?array
 		{
 
 		return $this->doGet(['tag_id' => $tag_id, 'include_count' => $include_count, ]);
 		}
 
-	public function getReturnSchema(string $tag_id, ?bool $include_count = null) : \PHPFUI\ConstantContact\Definition\Tag
+	public function getTyped(string $tag_id, ?bool $include_count = null) : ?\PHPFUI\ConstantContact\Definition\Tag
 		{
-		return new \PHPFUI\ConstantContact\Definition\Tag($this->get($tag_id, $include_count));
-		}
+		$data = $this->get($tag_id, $include_count);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\Tag($data) : null;
+		}
 
 	/**
 	 * PUT (Update) a Tag
@@ -70,15 +72,16 @@ class ContactTag extends \PHPFUI\ConstantContact\Base
 	 * @param string $tag_id The system generated ID used to uniquely identify the tag that you want to rename (UUID format).
 	 * @param \PHPFUI\ConstantContact\Definition\TagPut $body The JSON payload used to update the tag name (`name`).
 	 */
-	public function put(string $tag_id, \PHPFUI\ConstantContact\Definition\TagPut $body) : array
+	public function put(string $tag_id, \PHPFUI\ConstantContact\Definition\TagPut $body) : ?array
 		{
 
 		return $this->doPut(['tag_id' => $tag_id, 'body' => $body->getData(), ]);
 		}
 
-	public function putReturnSchema(string $tag_id, \PHPFUI\ConstantContact\Definition\TagPut $body) : \PHPFUI\ConstantContact\Definition\Tag
+	public function putTyped(string $tag_id, \PHPFUI\ConstantContact\Definition\TagPut $body) : ?\PHPFUI\ConstantContact\Definition\Tag
 		{
-		return new \PHPFUI\ConstantContact\Definition\Tag($this->put($tag_id, $body));
-		}
+		$data = $this->put($tag_id, $body);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\Tag($data) : null;
+		}
 	}

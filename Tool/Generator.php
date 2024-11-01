@@ -540,7 +540,7 @@ class ~class~ extends {$this->definitionNamespace}\Base
 ~description~
 	 *~docblock~
 	 */
-	public function ~method~(~parameters~) : array
+	public function ~method~(~parameters~) : ?array
 		{
 ~code~
 METHOD;
@@ -607,7 +607,7 @@ ACTION;
 			$summary = $this->formatDescription($specs['summary']);
 			$description = $this->formatDescription($specs['description']);
 
-			// add in ReturnSchema methods
+			// add in Typed return methods
 			foreach ($specs['responses'] ?? [] as $returnCode => $parameter)
 				{
 				$returnCode = (int)$returnCode;
@@ -623,12 +623,18 @@ ACTION;
 						$returnSchema = <<<SCHEMA
 
 	/**
-	 * @return array<{$schema}>
+	 * @return ?array<{$schema}>
 	 */
-	public function ~method~ReturnSchema(~parameters~) : array
+	public function ~method~Typed(~parameters~) : ?array
 		{
+		{$dollar}data = {$dollar}this->~method~(~passedParameters~);
+		if (is_null({$dollar}data))
+			{
+			return null;
+			}
+
 		{$dollar}array = [];
-		foreach ({$dollar}this->~method~(~passedParameters~) as {$dollar}object)
+		foreach ({$dollar}data as {$dollar}object)
 			{
 			{$dollar}array[] = new {$schema}({$dollar}object);
 			}
@@ -638,26 +644,16 @@ ACTION;
 
 SCHEMA;
 						}
-//					else if ('string' === $returnType)
-//						{
-//						$returnSchema = <<<SCHEMA
-//
-//
-//	public function ~method~ReturnSchema(~parameters~) : string
-//		{
-//		return {$dollar}this->~method~(~passedParameters~);
-//		}
-//
-//SCHEMA;
-//						}
 					else
 						{
 						$returnSchema = <<<SCHEMA
 
 
-	public function ~method~ReturnSchema(~parameters~) : {$schema}
+	public function ~method~Typed(~parameters~) : ?{$schema}
 		{
-		return new {$schema}({$dollar}this->~method~(~passedParameters~));
+		{$dollar}data = {$dollar}this->~method~(~passedParameters~);
+
+		return {$dollar}data ? new {$schema}({$dollar}data) : null;
 		}
 
 SCHEMA;

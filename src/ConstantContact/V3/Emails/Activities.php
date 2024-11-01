@@ -26,7 +26,7 @@ class Activities extends \PHPFUI\ConstantContact\Base
 	 * @param string $campaign_activity_id The unique ID for an email campaign activity.
 	 * @param string $include Use the `include` query parameter to enter a comma separated list of additional email campaign activity properties for the V3 API to return. Valid values are `physical_address_in_footer`, `permalink_url`, `html_content`, and `document_properties`.
 	 */
-	public function get(string $campaign_activity_id, ?string $include = null) : array
+	public function get(string $campaign_activity_id, ?string $include = null) : ?array
 		{
 
 		if (null !== $include)
@@ -46,11 +46,12 @@ class Activities extends \PHPFUI\ConstantContact\Base
 		return $this->doGet(['campaign_activity_id' => $campaign_activity_id, 'include' => $include, ]);
 		}
 
-	public function getReturnSchema(string $campaign_activity_id, ?string $include = null) : \PHPFUI\ConstantContact\Definition\EmailCampaignActivity
+	public function getTyped(string $campaign_activity_id, ?string $include = null) : ?\PHPFUI\ConstantContact\Definition\EmailCampaignActivity
 		{
-		return new \PHPFUI\ConstantContact\Definition\EmailCampaignActivity($this->get($campaign_activity_id, $include));
-		}
+		$data = $this->get($campaign_activity_id, $include);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\EmailCampaignActivity($data) : null;
+		}
 
 	/**
 	 * PUT (Update) An Email Campaign Activity
@@ -73,15 +74,16 @@ class Activities extends \PHPFUI\ConstantContact\Base
 	 * @param string $campaign_activity_id The unique ID for the email campaign activity you are updating.
 	 * @param \PHPFUI\ConstantContact\Definition\EmailCampaignActivity $body A request body payload that contains the complete email campaign activity with your changes.
 	 */
-	public function put(string $campaign_activity_id, \PHPFUI\ConstantContact\Definition\EmailCampaignActivity $body) : array
+	public function put(string $campaign_activity_id, \PHPFUI\ConstantContact\Definition\EmailCampaignActivity $body) : ?array
 		{
 
 		return $this->doPut(['campaign_activity_id' => $campaign_activity_id, 'body' => $body->getData(), ]);
 		}
 
-	public function putReturnSchema(string $campaign_activity_id, \PHPFUI\ConstantContact\Definition\EmailCampaignActivity $body) : \PHPFUI\ConstantContact\Definition\EmailCampaignActivity
+	public function putTyped(string $campaign_activity_id, \PHPFUI\ConstantContact\Definition\EmailCampaignActivity $body) : ?\PHPFUI\ConstantContact\Definition\EmailCampaignActivity
 		{
-		return new \PHPFUI\ConstantContact\Definition\EmailCampaignActivity($this->put($campaign_activity_id, $body));
-		}
+		$data = $this->put($campaign_activity_id, $body);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\EmailCampaignActivity($data) : null;
+		}
 	}

@@ -26,15 +26,16 @@ class Optouts extends \PHPFUI\ConstantContact\Base
 	 * @param string $campaign_activity_id The ID that uniquely identifies the email campaign activity to use for this report.
 	 * @param string $limit The number of tracking activities to return on a page.
 	 */
-	public function get(string $campaign_activity_id, ?string $limit = null) : array
+	public function get(string $campaign_activity_id, ?string $limit = null) : ?array
 		{
 
 		return $this->doGet(['campaign_activity_id' => $campaign_activity_id, 'limit' => $limit, ]);
 		}
 
-	public function getReturnSchema(string $campaign_activity_id, ?string $limit = null) : \PHPFUI\ConstantContact\Definition\OptoutsTrackingActivitiesPage
+	public function getTyped(string $campaign_activity_id, ?string $limit = null) : ?\PHPFUI\ConstantContact\Definition\OptoutsTrackingActivitiesPage
 		{
-		return new \PHPFUI\ConstantContact\Definition\OptoutsTrackingActivitiesPage($this->get($campaign_activity_id, $limit));
-		}
+		$data = $this->get($campaign_activity_id, $limit);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\OptoutsTrackingActivitiesPage($data) : null;
+		}
 	}

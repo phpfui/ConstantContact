@@ -27,15 +27,16 @@ class EmailCampaigns extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $campaign_ids A comma-separated list of `campaign_id`s (UUID's).
 	 */
-	public function get(string $campaign_ids) : array
+	public function get(string $campaign_ids) : ?array
 		{
 
 		return $this->doGet(['campaign_ids' => $campaign_ids, ]);
 		}
 
-	public function getReturnSchema(string $campaign_ids) : \PHPFUI\ConstantContact\Definition\CampaignStatsQueryResultEmail
+	public function getTyped(string $campaign_ids) : ?\PHPFUI\ConstantContact\Definition\CampaignStatsQueryResultEmail
 		{
-		return new \PHPFUI\ConstantContact\Definition\CampaignStatsQueryResultEmail($this->get($campaign_ids));
-		}
+		$data = $this->get($campaign_ids);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\CampaignStatsQueryResultEmail($data) : null;
+		}
 	}

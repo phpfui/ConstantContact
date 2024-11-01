@@ -24,7 +24,7 @@ class Counts extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $include Use to return the total number of contacts that subscribed within the last 30 days in the results.
 	 */
-	public function get(?string $include = null) : array
+	public function get(?string $include = null) : ?array
 		{
 
 		if (null !== $include)
@@ -40,9 +40,10 @@ class Counts extends \PHPFUI\ConstantContact\Base
 		return $this->doGet(['include' => $include, ]);
 		}
 
-	public function getReturnSchema(?string $include = null) : \PHPFUI\ConstantContact\Definition\ContactsCounts
+	public function getTyped(?string $include = null) : ?\PHPFUI\ConstantContact\Definition\ContactsCounts
 		{
-		return new \PHPFUI\ConstantContact\Definition\ContactsCounts($this->get($include));
-		}
+		$data = $this->get($include);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\ContactsCounts($data) : null;
+		}
 	}

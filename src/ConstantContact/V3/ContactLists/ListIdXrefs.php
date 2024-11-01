@@ -31,15 +31,16 @@ class ListIdXrefs extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $sequence_ids Comma delimited list of V2 API list `ids` to cross-reference with the V3 API `list_id` value. Endpoint accepts a maximum of 500 ids at a time.
 	 */
-	public function get(string $sequence_ids) : array
+	public function get(string $sequence_ids) : ?array
 		{
 
 		return $this->doGet(['sequence_ids' => $sequence_ids, ]);
 		}
 
-	public function getReturnSchema(string $sequence_ids) : \PHPFUI\ConstantContact\Definition\ListXrefs
+	public function getTyped(string $sequence_ids) : ?\PHPFUI\ConstantContact\Definition\ListXrefs
 		{
-		return new \PHPFUI\ConstantContact\Definition\ListXrefs($this->get($sequence_ids));
-		}
+		$data = $this->get($sequence_ids);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\ListXrefs($data) : null;
+		}
 	}

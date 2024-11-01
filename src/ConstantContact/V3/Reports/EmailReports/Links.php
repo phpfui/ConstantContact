@@ -28,15 +28,16 @@ class Links extends \PHPFUI\ConstantContact\Base
 	 * @param string $campaign_activity_id The unique ID for an email campaign activity.
 	 * @param bool $no_clicks Set this query parameter to `true` to  return details for links that were not clicked in the response results.
 	 */
-	public function get(string $campaign_activity_id, ?bool $no_clicks = null) : array
+	public function get(string $campaign_activity_id, ?bool $no_clicks = null) : ?array
 		{
 
 		return $this->doGet(['campaign_activity_id' => $campaign_activity_id, 'no_clicks' => $no_clicks, ]);
 		}
 
-	public function getReturnSchema(string $campaign_activity_id, ?bool $no_clicks = null) : \PHPFUI\ConstantContact\Definition\EmailLinks
+	public function getTyped(string $campaign_activity_id, ?bool $no_clicks = null) : ?\PHPFUI\ConstantContact\Definition\EmailLinks
 		{
-		return new \PHPFUI\ConstantContact\Definition\EmailLinks($this->get($campaign_activity_id, $no_clicks));
-		}
+		$data = $this->get($campaign_activity_id, $no_clicks);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\EmailLinks($data) : null;
+		}
 	}

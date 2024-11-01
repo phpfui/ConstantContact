@@ -120,7 +120,7 @@ class Client
 	/**
 	 * Issue a delete request.  This is not normally called directly, but by the V3 namespace classes.
 	 */
-	public function delete(string $url) : array
+	public function delete(string $url) : ?array
 		{
 		try
 			{
@@ -135,13 +135,13 @@ class Client
 			$this->statusCode = $e->getResponse()->getStatusCode();
 			}
 
-		return [];
+		return null;
 		}
 
 	/**
 	 * Issue a get request.  This is not normally called directly, but by the V3 namespace classes.
 	 */
-	public function get(string $url, array $parameters) : array
+	public function get(string $url, array $parameters) : ?array
 		{
 		try
 			{
@@ -167,7 +167,7 @@ class Client
 			$this->statusCode = $e->getResponse()->getStatusCode();
 			}
 
-		return [];
+		return null;
 		}
 
 	/**
@@ -244,7 +244,7 @@ class Client
 	/**
 	 * Issue a patch request.  This is not normally called directly, but by the V3 namespace classes.
 	 */
-	public function patch(string $url, array $parameters) : array
+	public function patch(string $url, array $parameters) : ?array
 		{
 		return $this->put($url, $parameters, 'PATCH');
 		}
@@ -252,7 +252,7 @@ class Client
 	/**
 	 * Issue a post request.  This is not normally called directly, but by the V3 namespace classes.
 	 */
-	public function post(string $url, array $parameters) : array
+	public function post(string $url, array $parameters) : ?array
 		{
 		try
 			{
@@ -270,13 +270,13 @@ class Client
 			$this->statusCode = $e->getResponse()->getStatusCode();
 			}
 
-		return [];
+		return null;
 		}
 
 	/**
 	 * Issue a put request.  This is not normally called directly, but by the V3 namespace classes.
 	 */
-	public function put(string $url, array $parameters, string $method = 'PUT') : array
+	public function put(string $url, array $parameters, string $method = 'PUT') : ?array
 		{
 		try
 			{
@@ -303,7 +303,7 @@ class Client
 			$this->statusCode = $e->getResponse()->getStatusCode();
 			}
 
-		return [];
+		return null;
 		}
 
 	/**
@@ -450,7 +450,7 @@ class Client
 		], $additional);
 		}
 
-	private function process(\Psr\Http\Message\ResponseInterface $response) : array
+	private function process(\Psr\Http\Message\ResponseInterface $response) : ?array
 		{
 		$this->next = '';
 		$this->lastError = $response->getReasonPhrase();
@@ -470,7 +470,7 @@ class Client
 		$this->lastError = \json_last_error_msg();
 		$this->statusCode = \json_last_error();
 
-		return [];
+		return null;
 		}
 
 	private function session(string $key, ?string $value) : string

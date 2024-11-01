@@ -28,7 +28,7 @@ class Segment extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param int $segment_id The system generated ID that uniquely identifies the segment.
 	 */
-	public function delete(int $segment_id) : array
+	public function delete(int $segment_id) : ?array
 		{
 
 		return $this->doDelete(['segment_id' => $segment_id, ]);
@@ -45,17 +45,18 @@ class Segment extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param int $segment_id The system-generated unique ID that identifies a segment.
 	 */
-	public function get(int $segment_id) : array
+	public function get(int $segment_id) : ?array
 		{
 
 		return $this->doGet(['segment_id' => $segment_id, ]);
 		}
 
-	public function getReturnSchema(int $segment_id) : \PHPFUI\ConstantContact\Definition\SegmentDetail
+	public function getTyped(int $segment_id) : ?\PHPFUI\ConstantContact\Definition\SegmentDetail
 		{
-		return new \PHPFUI\ConstantContact\Definition\SegmentDetail($this->get($segment_id));
-		}
+		$data = $this->get($segment_id);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\SegmentDetail($data) : null;
+		}
 
 	/**
 	 * PUT (update) a Segment
@@ -74,15 +75,16 @@ class Segment extends \PHPFUI\ConstantContact\Base
 	 * @param int $segment_id The system generated ID that uniquely identifies the segment that you want to modify.
 	 * @param \PHPFUI\ConstantContact\Definition\SegmentData $body Include both the `name` and `segment_criteria` (single-string escaped JSON) in the body request, then make updates to either or both.
 	 */
-	public function put(int $segment_id, \PHPFUI\ConstantContact\Definition\SegmentData $body) : array
+	public function put(int $segment_id, \PHPFUI\ConstantContact\Definition\SegmentData $body) : ?array
 		{
 
 		return $this->doPut(['segment_id' => $segment_id, 'body' => $body->getData(), ]);
 		}
 
-	public function putReturnSchema(int $segment_id, \PHPFUI\ConstantContact\Definition\SegmentData $body) : \PHPFUI\ConstantContact\Definition\SegmentDetail
+	public function putTyped(int $segment_id, \PHPFUI\ConstantContact\Definition\SegmentData $body) : ?\PHPFUI\ConstantContact\Definition\SegmentDetail
 		{
-		return new \PHPFUI\ConstantContact\Definition\SegmentDetail($this->put($segment_id, $body));
-		}
+		$data = $this->put($segment_id, $body);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\SegmentDetail($data) : null;
+		}
 	}

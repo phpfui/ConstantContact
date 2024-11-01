@@ -19,15 +19,16 @@ class CustomFieldsDelete extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param \PHPFUI\ConstantContact\Definition\CustomFieldId100 $body An array of `custom_field_id`'s to delete.
 	 */
-	public function post(\PHPFUI\ConstantContact\Definition\CustomFieldId100 $body) : array
+	public function post(\PHPFUI\ConstantContact\Definition\CustomFieldId100 $body) : ?array
 		{
 
 		return $this->doPost(['body' => $body->getData(), ]);
 		}
 
-	public function postReturnSchema(\PHPFUI\ConstantContact\Definition\CustomFieldId100 $body) : \PHPFUI\ConstantContact\Definition\ActivityDeleteCustomFields
+	public function postTyped(\PHPFUI\ConstantContact\Definition\CustomFieldId100 $body) : ?\PHPFUI\ConstantContact\Definition\ActivityDeleteCustomFields
 		{
-		return new \PHPFUI\ConstantContact\Definition\ActivityDeleteCustomFields($this->post($body));
-		}
+		$data = $this->post($body);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\ActivityDeleteCustomFields($data) : null;
+		}
 	}

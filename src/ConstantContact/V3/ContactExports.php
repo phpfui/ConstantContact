@@ -20,15 +20,16 @@ class ContactExports extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $file_export_id The unique ID of the exported file provided in the results: section of the export contacts activity response.
 	 */
-	public function get(string $file_export_id) : array
+	public function get(string $file_export_id) : ?array
 		{
 
 		return $this->doGet(['file_export_id' => $file_export_id, ]);
 		}
 
-	public function getReturnSchema(string $file_export_id) : \PHPFUI\ConstantContact\Definition\ActivityExportStatus
+	public function getTyped(string $file_export_id) : ?\PHPFUI\ConstantContact\Definition\ActivityExportStatus
 		{
-		return new \PHPFUI\ConstantContact\Definition\ActivityExportStatus($this->get($file_export_id));
-		}
+		$data = $this->get($file_export_id);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\ActivityExportStatus($data) : null;
+		}
 	}

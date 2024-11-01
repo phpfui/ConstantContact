@@ -7,10 +7,13 @@ exec($php . ' composer.phar update');
 
 include 'vendor/autoload.php';
 
-// get the latest
-$repo = new \Gitonomy\Git\Repository(__DIR__);
-$repo->run('checkout', ['main']);
-$repo->run('pull');
+if ('php' != $php)
+	{
+	// get the latest
+	$repo = new \Gitonomy\Git\Repository(__DIR__);
+	$repo->run('checkout', ['main']);
+	$repo->run('pull');
+	}
 
 // download the yaml file and save it
 $url = 'https://api.cc.email/v3/swagger.yaml';

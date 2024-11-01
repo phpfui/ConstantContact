@@ -27,15 +27,16 @@ class ContactExports extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param \PHPFUI\ConstantContact\Definition\ContactsExport $body A JSON payload that specifies the contacts (rows in the CSV file) and contact properties (columns in the CSV file) you want to export.
 	 */
-	public function post(\PHPFUI\ConstantContact\Definition\ContactsExport $body) : array
+	public function post(\PHPFUI\ConstantContact\Definition\ContactsExport $body) : ?array
 		{
 
 		return $this->doPost(['body' => $body->getData(), ]);
 		}
 
-	public function postReturnSchema(\PHPFUI\ConstantContact\Definition\ContactsExport $body) : \PHPFUI\ConstantContact\Definition\ActivityExportStatus
+	public function postTyped(\PHPFUI\ConstantContact\Definition\ContactsExport $body) : ?\PHPFUI\ConstantContact\Definition\ActivityExportStatus
 		{
-		return new \PHPFUI\ConstantContact\Definition\ActivityExportStatus($this->post($body));
-		}
+		$data = $this->post($body);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\ActivityExportStatus($data) : null;
+		}
 	}

@@ -310,4 +310,14 @@ abstract class Base
 		{
 		return \json_encode($this->getData(), JSON_PRETTY_PRINT);
 		}
+
+	/**
+	 * More descriptive alternative to getData()
+	 *
+	 * @return array representation of data
+	 */
+	public function toArray() : array
+		{
+		return $this->getData();
+		}
 	}

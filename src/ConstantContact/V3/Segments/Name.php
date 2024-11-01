@@ -22,15 +22,16 @@ class Name extends \PHPFUI\ConstantContact\Base
 	 * @param int $segment_id The system generated ID that uniquely identifies the segment that you want to modify.
 	 * @param \PHPFUI\ConstantContact\Definition\SegmentName $body Include the existing segment `name` in the body request, then rename the segment using a unique new name.
 	 */
-	public function patch(int $segment_id, \PHPFUI\ConstantContact\Definition\SegmentName $body) : array
+	public function patch(int $segment_id, \PHPFUI\ConstantContact\Definition\SegmentName $body) : ?array
 		{
 
 		return $this->doPatch(['segment_id' => $segment_id, 'body' => $body->getData(), ]);
 		}
 
-	public function patchReturnSchema(int $segment_id, \PHPFUI\ConstantContact\Definition\SegmentName $body) : \PHPFUI\ConstantContact\Definition\SegmentDetail
+	public function patchTyped(int $segment_id, \PHPFUI\ConstantContact\Definition\SegmentName $body) : ?\PHPFUI\ConstantContact\Definition\SegmentDetail
 		{
-		return new \PHPFUI\ConstantContact\Definition\SegmentDetail($this->patch($segment_id, $body));
-		}
+		$data = $this->patch($segment_id, $body);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\SegmentDetail($data) : null;
+		}
 	}

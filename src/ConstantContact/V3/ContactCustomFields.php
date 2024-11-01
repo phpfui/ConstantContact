@@ -22,17 +22,18 @@ class ContactCustomFields extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param int $limit Specifies the number of results displayed per page of output, from 1 - 100, default = 50.
 	 */
-	public function get(?int $limit = null) : array
+	public function get(?int $limit = null) : ?array
 		{
 
 		return $this->doGet(['limit' => $limit, ]);
 		}
 
-	public function getReturnSchema(?int $limit = null) : \PHPFUI\ConstantContact\Definition\CustomFields
+	public function getTyped(?int $limit = null) : ?\PHPFUI\ConstantContact\Definition\CustomFields
 		{
-		return new \PHPFUI\ConstantContact\Definition\CustomFields($this->get($limit));
-		}
+		$data = $this->get($limit);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\CustomFields($data) : null;
+		}
 
 	/**
 	 * POST (create) a custom_field
@@ -42,15 +43,16 @@ class ContactCustomFields extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param \PHPFUI\ConstantContact\Definition\CustomFieldInput $body The JSON payload required to create a new `custom_field`
 	 */
-	public function post(\PHPFUI\ConstantContact\Definition\CustomFieldInput $body) : array
+	public function post(\PHPFUI\ConstantContact\Definition\CustomFieldInput $body) : ?array
 		{
 
 		return $this->doPost(['body' => $body->getData(), ]);
 		}
 
-	public function postReturnSchema(\PHPFUI\ConstantContact\Definition\CustomFieldInput $body) : \PHPFUI\ConstantContact\Definition\CustomFieldResource
+	public function postTyped(\PHPFUI\ConstantContact\Definition\CustomFieldInput $body) : ?\PHPFUI\ConstantContact\Definition\CustomFieldResource
 		{
-		return new \PHPFUI\ConstantContact\Definition\CustomFieldResource($this->post($body));
-		}
+		$data = $this->post($body);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\CustomFieldResource($data) : null;
+		}
 	}

@@ -18,7 +18,7 @@ class ContactCustomField extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $custom_field_id Unique ID of the custom_field on which to operate.
 	 */
-	public function delete(string $custom_field_id) : array
+	public function delete(string $custom_field_id) : ?array
 		{
 
 		return $this->doDelete(['custom_field_id' => $custom_field_id, ]);
@@ -32,17 +32,18 @@ class ContactCustomField extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param string $custom_field_id Unique ID of the `custom_field` on which to operate.
 	 */
-	public function get(string $custom_field_id) : array
+	public function get(string $custom_field_id) : ?array
 		{
 
 		return $this->doGet(['custom_field_id' => $custom_field_id, ]);
 		}
 
-	public function getReturnSchema(string $custom_field_id) : \PHPFUI\ConstantContact\Definition\CustomFieldResource
+	public function getTyped(string $custom_field_id) : ?\PHPFUI\ConstantContact\Definition\CustomFieldResource
 		{
-		return new \PHPFUI\ConstantContact\Definition\CustomFieldResource($this->get($custom_field_id));
-		}
+		$data = $this->get($custom_field_id);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\CustomFieldResource($data) : null;
+		}
 
 	/**
 	 * PUT (update) a custom_field
@@ -52,15 +53,16 @@ class ContactCustomField extends \PHPFUI\ConstantContact\Base
 	 * @param string $custom_field_id Unique ID of the `custom_field` on which to operate.
 	 * @param \PHPFUI\ConstantContact\Definition\CustomFieldInput $body The JSON payload used to update an existing custom field. Any properties omitted in the PUT request are overwritten with a null value.
 	 */
-	public function put(string $custom_field_id, \PHPFUI\ConstantContact\Definition\CustomFieldInput $body) : array
+	public function put(string $custom_field_id, \PHPFUI\ConstantContact\Definition\CustomFieldInput $body) : ?array
 		{
 
 		return $this->doPut(['custom_field_id' => $custom_field_id, 'body' => $body->getData(), ]);
 		}
 
-	public function putReturnSchema(string $custom_field_id, \PHPFUI\ConstantContact\Definition\CustomFieldInput $body) : \PHPFUI\ConstantContact\Definition\CustomFieldResource
+	public function putTyped(string $custom_field_id, \PHPFUI\ConstantContact\Definition\CustomFieldInput $body) : ?\PHPFUI\ConstantContact\Definition\CustomFieldResource
 		{
-		return new \PHPFUI\ConstantContact\Definition\CustomFieldResource($this->put($custom_field_id, $body));
-		}
+		$data = $this->put($custom_field_id, $body);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\CustomFieldResource($data) : null;
+		}
 	}

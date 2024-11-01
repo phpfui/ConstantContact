@@ -32,17 +32,18 @@ class Emails extends \PHPFUI\ConstantContact\Base
 	 * @param string $before_date Use to return email campaigns with `updated_at` timestamps that are before a specific date and time (in ISO-8601 format). Use with the `after_date` query parameter to get email campaigns sent within a specific date range.
 	 * @param string $after_date Use to return email campaigns with last `updated_at` timestamps that are after a specific date and time (in ISO-8601 format). Use with the `before_date` query parameter to get email campaigns sent within a specific date range.
 	 */
-	public function get(?int $limit = null, ?string $before_date = null, ?string $after_date = null) : array
+	public function get(?int $limit = null, ?string $before_date = null, ?string $after_date = null) : ?array
 		{
 
 		return $this->doGet(['limit' => $limit, 'before_date' => $before_date, 'after_date' => $after_date, ]);
 		}
 
-	public function getReturnSchema(?int $limit = null, ?string $before_date = null, ?string $after_date = null) : \PHPFUI\ConstantContact\Definition\PagedEmailCampaignResponse
+	public function getTyped(?int $limit = null, ?string $before_date = null, ?string $after_date = null) : ?\PHPFUI\ConstantContact\Definition\PagedEmailCampaignResponse
 		{
-		return new \PHPFUI\ConstantContact\Definition\PagedEmailCampaignResponse($this->get($limit, $before_date, $after_date));
-		}
+		$data = $this->get($limit, $before_date, $after_date);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\PagedEmailCampaignResponse($data) : null;
+		}
 
 	/**
 	 * POST (Create) a New Email Campaign
@@ -63,15 +64,16 @@ class Emails extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param \PHPFUI\ConstantContact\Definition\EmailCampaignComplete $body A JSON request body that contains the email content.
 	 */
-	public function post(\PHPFUI\ConstantContact\Definition\EmailCampaignComplete $body) : array
+	public function post(\PHPFUI\ConstantContact\Definition\EmailCampaignComplete $body) : ?array
 		{
 
 		return $this->doPost(['body' => $body->getData(), ]);
 		}
 
-	public function postReturnSchema(\PHPFUI\ConstantContact\Definition\EmailCampaignComplete $body) : \PHPFUI\ConstantContact\Definition\EmailCampaign
+	public function postTyped(\PHPFUI\ConstantContact\Definition\EmailCampaignComplete $body) : ?\PHPFUI\ConstantContact\Definition\EmailCampaign
 		{
-		return new \PHPFUI\ConstantContact\Definition\EmailCampaign($this->post($body));
-		}
+		$data = $this->post($body);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\EmailCampaign($data) : null;
+		}
 	}

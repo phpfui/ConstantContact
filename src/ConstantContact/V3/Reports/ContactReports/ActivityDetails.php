@@ -46,15 +46,16 @@ class ActivityDetails extends \PHPFUI\ConstantContact\Base
 	 * @param bool $include_campaign_activity_names Default (`true`) returns campaign activity names in the results. Not including campaign activity names in the results (`false`), is more efficient.
 	 * @param string $limit The number of tracking activities to return in a single page. Valid values are 1 to 100. Default is 100.
 	 */
-	public function get(string $contact_id, ?string $tracking_activities_list = null, ?array $tracking_activity_type = null, ?bool $include_campaign_activity_names = null, ?string $limit = null) : array
+	public function get(string $contact_id, ?string $tracking_activities_list = null, ?array $tracking_activity_type = null, ?bool $include_campaign_activity_names = null, ?string $limit = null) : ?array
 		{
 
 		return $this->doGet(['contact_id' => $contact_id, 'tracking_activities_list' => $tracking_activities_list, 'tracking_activity_type' => $tracking_activity_type, 'include_campaign_activity_names' => $include_campaign_activity_names, 'limit' => $limit, ]);
 		}
 
-	public function getReturnSchema(string $contact_id, ?string $tracking_activities_list = null, ?array $tracking_activity_type = null, ?bool $include_campaign_activity_names = null, ?string $limit = null) : \PHPFUI\ConstantContact\Definition\ContactTrackingActivitiesPage
+	public function getTyped(string $contact_id, ?string $tracking_activities_list = null, ?array $tracking_activity_type = null, ?bool $include_campaign_activity_names = null, ?string $limit = null) : ?\PHPFUI\ConstantContact\Definition\ContactTrackingActivitiesPage
 		{
-		return new \PHPFUI\ConstantContact\Definition\ContactTrackingActivitiesPage($this->get($contact_id, $tracking_activities_list, $tracking_activity_type, $include_campaign_activity_names, $limit));
-		}
+		$data = $this->get($contact_id, $tracking_activities_list, $tracking_activity_type, $include_campaign_activity_names, $limit);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\ContactTrackingActivitiesPage($data) : null;
+		}
 	}

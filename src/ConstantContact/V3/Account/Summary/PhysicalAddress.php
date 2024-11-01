@@ -20,17 +20,18 @@ class PhysicalAddress extends \PHPFUI\ConstantContact\Base
 	 *
 	 *
 	 */
-	public function get() : array
+	public function get() : ?array
 		{
 
 		return $this->doGet([]);
 		}
 
-	public function getReturnSchema() : \PHPFUI\ConstantContact\Definition\AccountPhysicalAddress
+	public function getTyped() : ?\PHPFUI\ConstantContact\Definition\AccountPhysicalAddress
 		{
-		return new \PHPFUI\ConstantContact\Definition\AccountPhysicalAddress($this->get());
-		}
+		$data = $this->get();
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\AccountPhysicalAddress($data) : null;
+		}
 
 	/**
 	 * POST the Physical Address for the Account
@@ -45,17 +46,18 @@ class PhysicalAddress extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param \PHPFUI\ConstantContact\Definition\AccountPhysicalAddress $body Include all `AccountPhysicalAddress` properties required for the specified `country_code` and then update only those properties that you want to change. Excluding a non-read only field from the request body removes it from the physical address.
 	 */
-	public function post(\PHPFUI\ConstantContact\Definition\AccountPhysicalAddress $body) : array
+	public function post(\PHPFUI\ConstantContact\Definition\AccountPhysicalAddress $body) : ?array
 		{
 
 		return $this->doPost(['body' => $body->getData(), ]);
 		}
 
-	public function postReturnSchema(\PHPFUI\ConstantContact\Definition\AccountPhysicalAddress $body) : \PHPFUI\ConstantContact\Definition\AccountPhysicalAddress
+	public function postTyped(\PHPFUI\ConstantContact\Definition\AccountPhysicalAddress $body) : ?\PHPFUI\ConstantContact\Definition\AccountPhysicalAddress
 		{
-		return new \PHPFUI\ConstantContact\Definition\AccountPhysicalAddress($this->post($body));
-		}
+		$data = $this->post($body);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\AccountPhysicalAddress($data) : null;
+		}
 
 	/**
 	 * PUT (update) the Physical Address for an Account
@@ -74,15 +76,16 @@ class PhysicalAddress extends \PHPFUI\ConstantContact\Base
 	 *
 	 * @param \PHPFUI\ConstantContact\Definition\AccountPhysicalAddress $body Include all `AccountPhysicalAddress` properties required for the specified `country_code` and then update only those properties that you want to change. Excluding a non-read only field from the request body removes it from the physical address.
 	 */
-	public function put(\PHPFUI\ConstantContact\Definition\AccountPhysicalAddress $body) : array
+	public function put(\PHPFUI\ConstantContact\Definition\AccountPhysicalAddress $body) : ?array
 		{
 
 		return $this->doPut(['body' => $body->getData(), ]);
 		}
 
-	public function putReturnSchema(\PHPFUI\ConstantContact\Definition\AccountPhysicalAddress $body) : \PHPFUI\ConstantContact\Definition\AccountPhysicalAddress
+	public function putTyped(\PHPFUI\ConstantContact\Definition\AccountPhysicalAddress $body) : ?\PHPFUI\ConstantContact\Definition\AccountPhysicalAddress
 		{
-		return new \PHPFUI\ConstantContact\Definition\AccountPhysicalAddress($this->put($body));
-		}
+		$data = $this->put($body);
 
+		return $data ? new \PHPFUI\ConstantContact\Definition\AccountPhysicalAddress($data) : null;
+		}
 	}
