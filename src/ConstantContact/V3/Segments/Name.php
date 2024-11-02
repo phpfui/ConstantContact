@@ -32,4 +32,5 @@ class Name extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\SegmentDetail($this->patch($segment_id, $body));
 		}
+
 	}

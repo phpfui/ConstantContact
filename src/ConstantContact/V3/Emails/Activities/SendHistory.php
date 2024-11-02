@@ -38,18 +38,9 @@ class SendHistory extends \PHPFUI\ConstantContact\Base
 		return $this->doGet(['campaign_activity_id' => $campaign_activity_id, ]);
 		}
 
-	/**
-	 * @return array<\PHPFUI\ConstantContact\Definition\EmailSendHistory>
-	 */
-	public function getReturnSchema(string $campaign_activity_id) : array
+	public function getReturnSchema(string $campaign_activity_id) : \PHPFUI\ConstantContact\Definition\EmailSendHistory
 		{
-		$array = [];
-
-		foreach ($this->get($campaign_activity_id) as $object)
-			{
-			$array[] = new \PHPFUI\ConstantContact\Definition\EmailSendHistory($object);
-			}
-
-		return $array;
+		return new \PHPFUI\ConstantContact\Definition\EmailSendHistory($this->get($campaign_activity_id));
 		}
+
 	}

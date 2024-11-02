@@ -63,6 +63,7 @@ class Contact extends \PHPFUI\ConstantContact\Base
 		return new \PHPFUI\ConstantContact\Definition\ContactResource($this->get($contact_id, $include));
 		}
 
+
 	/**
 	 * PUT (update) a Contact
 	 *
@@ -89,4 +90,5 @@ class Contact extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\ContactResource($this->put($contact_id, $body));
 		}
+
 	}

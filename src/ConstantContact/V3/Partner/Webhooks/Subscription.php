@@ -54,6 +54,7 @@ class Subscription extends \PHPFUI\ConstantContact\Base
 		return new \PHPFUI\ConstantContact\Definition\WebhooksSubscriptionResponse($this->get($topic_id));
 		}
 
+
 	/**
 	 * PUT Webhook Topic Subscription
 	 *
@@ -95,4 +96,5 @@ class Subscription extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\WebhooksSubscriptionPutResp($this->put($topic_id, $body));
 		}
+
 	}

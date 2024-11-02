@@ -62,4 +62,5 @@ class SignUpForm extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\ContactCreateOrUpdateResponse($this->post($body));
 		}
+
 	}

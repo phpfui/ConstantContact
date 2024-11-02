@@ -28,4 +28,5 @@ class ListDelete extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\ActivityDeleteListsResponse($this->post($body));
 		}
+
 	}

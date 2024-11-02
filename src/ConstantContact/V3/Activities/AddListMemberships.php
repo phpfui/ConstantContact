@@ -32,4 +32,5 @@ class AddListMemberships extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\ActivityListsMembership($this->post($body));
 		}
+
 	}

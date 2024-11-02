@@ -51,6 +51,7 @@ class Activities extends \PHPFUI\ConstantContact\Base
 		return new \PHPFUI\ConstantContact\Definition\EmailCampaignActivity($this->get($campaign_activity_id, $include));
 		}
 
+
 	/**
 	 * PUT (Update) An Email Campaign Activity
 	 *
@@ -82,4 +83,5 @@ class Activities extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\EmailCampaignActivity($this->put($campaign_activity_id, $body));
 		}
+
 	}

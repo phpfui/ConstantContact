@@ -42,4 +42,5 @@ class EmailCampaignActivities extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\CampaignActivityStatsQueryResultEmail($this->get($campaign_activity_ids));
 		}
+
 	}

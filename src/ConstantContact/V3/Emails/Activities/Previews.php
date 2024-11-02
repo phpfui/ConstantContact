@@ -38,4 +38,5 @@ class Previews extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\EmailCampaignActivityPreview($this->get($campaign_activity_id));
 		}
+
 	}

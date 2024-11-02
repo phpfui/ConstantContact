@@ -25,18 +25,9 @@ class SmsEngagementHistory extends \PHPFUI\ConstantContact\Base
 		return $this->doGet(['contact_id' => $contact_id, ]);
 		}
 
-	/**
-	 * @return array<\PHPFUI\ConstantContact\Definition\SmsEngagementHistory>
-	 */
-	public function getReturnSchema(string $contact_id) : array
+	public function getReturnSchema(string $contact_id) : \PHPFUI\ConstantContact\Definition\SmsEngagementHistory
 		{
-		$array = [];
-
-		foreach ($this->get($contact_id) as $object)
-			{
-			$array[] = new \PHPFUI\ConstantContact\Definition\SmsEngagementHistory($object);
-			}
-
-		return $array;
+		return new \PHPFUI\ConstantContact\Definition\SmsEngagementHistory($this->get($contact_id));
 		}
+
 	}

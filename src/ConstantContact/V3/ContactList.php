@@ -32,6 +32,7 @@ class ContactList extends \PHPFUI\ConstantContact\Base
 		return new \PHPFUI\ConstantContact\Definition\ActivityDeleteListResponse($this->delete($list_id));
 		}
 
+
 	/**
 	 * GET a List
 	 *
@@ -62,6 +63,7 @@ class ContactList extends \PHPFUI\ConstantContact\Base
 		return new \PHPFUI\ConstantContact\Definition\ContactList($this->get($list_id, $include_membership_count));
 		}
 
+
 	/**
 	 * PUT (update) a List
 	 *
@@ -80,4 +82,5 @@ class ContactList extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\ContactListPutPost($this->put($list_id, $JSON_PUT_body));
 		}
+
 	}

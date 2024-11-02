@@ -97,6 +97,7 @@ class Contacts extends \PHPFUI\ConstantContact\Base
 		return new \PHPFUI\ConstantContact\Definition\Contacts($this->get($status, $email, $lists, $segment_id, $tags, $updated_after, $updated_before, $created_after, $created_before, $optout_after, $optout_before, $include, $sms_status, $include_count, $limit));
 		}
 
+
 	/**
 	 * POST (create) a Contact
 	 *
@@ -117,4 +118,5 @@ class Contacts extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\ContactResource($this->post($body));
 		}
+
 	}

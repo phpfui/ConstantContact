@@ -49,6 +49,7 @@ class Accounts extends \PHPFUI\ConstantContact\Base
 		return new \PHPFUI\ConstantContact\Definition\PartnerAccount($this->get($offset, $limit, $account_type));
 		}
 
+
 	/**
 	 * POST (create) a Partner Client Account
 	 *
@@ -90,4 +91,5 @@ class Accounts extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\ProvisionResponse($this->post($provision));
 		}
+
 	}

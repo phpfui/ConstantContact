@@ -43,6 +43,7 @@ class Emails extends \PHPFUI\ConstantContact\Base
 		return new \PHPFUI\ConstantContact\Definition\PagedEmailCampaignResponse($this->get($limit, $before_date, $after_date));
 		}
 
+
 	/**
 	 * POST (Create) a New Email Campaign
 	 *
@@ -72,4 +73,5 @@ class Emails extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\EmailCampaign($this->post($body));
 		}
+
 	}

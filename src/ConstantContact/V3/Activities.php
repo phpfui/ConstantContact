@@ -43,4 +43,5 @@ class Activities extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\Activities($this->get($limit, $state));
 		}
+
 	}

@@ -56,6 +56,7 @@ class Segment extends \PHPFUI\ConstantContact\Base
 		return new \PHPFUI\ConstantContact\Definition\SegmentDetail($this->get($segment_id));
 		}
 
+
 	/**
 	 * PUT (update) a Segment
 	 *
@@ -83,4 +84,5 @@ class Segment extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\SegmentDetail($this->put($segment_id, $body));
 		}
+
 	}

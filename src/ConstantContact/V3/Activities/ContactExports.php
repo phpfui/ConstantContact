@@ -37,4 +37,5 @@ class ContactExports extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\ActivityExportStatus($this->post($body));
 		}
+
 	}

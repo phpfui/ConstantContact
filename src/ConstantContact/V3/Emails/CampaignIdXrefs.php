@@ -41,4 +41,5 @@ class CampaignIdXrefs extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\CrossReferenceResponse($this->get($v2_email_campaign_ids));
 		}
+
 	}

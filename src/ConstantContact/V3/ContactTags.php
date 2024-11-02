@@ -41,6 +41,7 @@ class ContactTags extends \PHPFUI\ConstantContact\Base
 		return new \PHPFUI\ConstantContact\Definition\Tags($this->get($limit, $include_count));
 		}
 
+
 	/**
 	 * POST (Create) a Tag
 	 *
@@ -62,4 +63,5 @@ class ContactTags extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\Tag($this->post($body));
 		}
+
 	}

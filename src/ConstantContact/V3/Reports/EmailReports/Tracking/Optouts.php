@@ -36,4 +36,5 @@ class Optouts extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\OptoutsTrackingActivitiesPage($this->get($campaign_activity_id, $limit));
 		}
+
 	}

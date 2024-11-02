@@ -44,4 +44,5 @@ class Cancel extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\AccountCancellation($this->put($encoded_account_id, $body));
 		}
+
 	}

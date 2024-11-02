@@ -28,4 +28,5 @@ class Activity extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\Activity($this->get($activity_id));
 		}
+
 	}

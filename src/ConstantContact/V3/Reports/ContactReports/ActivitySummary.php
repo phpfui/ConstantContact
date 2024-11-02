@@ -32,4 +32,5 @@ class ActivitySummary extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\ContactCampaignActivitiesSummary($this->get($contact_id, $start, $end));
 		}
+
 	}

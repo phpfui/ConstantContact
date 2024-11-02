@@ -38,4 +38,5 @@ class Links extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\EmailLinks($this->get($campaign_activity_id, $no_clicks));
 		}
+
 	}

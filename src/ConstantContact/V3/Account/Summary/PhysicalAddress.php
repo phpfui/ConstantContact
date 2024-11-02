@@ -31,6 +31,7 @@ class PhysicalAddress extends \PHPFUI\ConstantContact\Base
 		return new \PHPFUI\ConstantContact\Definition\AccountPhysicalAddress($this->get());
 		}
 
+
 	/**
 	 * POST the Physical Address for the Account
 	 *
@@ -54,6 +55,7 @@ class PhysicalAddress extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\AccountPhysicalAddress($this->post($body));
 		}
+
 
 	/**
 	 * PUT (update) the Physical Address for an Account
@@ -82,4 +84,5 @@ class PhysicalAddress extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\AccountPhysicalAddress($this->put($body));
 		}
+
 	}

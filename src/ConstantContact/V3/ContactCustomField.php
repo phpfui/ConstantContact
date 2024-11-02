@@ -43,6 +43,7 @@ class ContactCustomField extends \PHPFUI\ConstantContact\Base
 		return new \PHPFUI\ConstantContact\Definition\CustomFieldResource($this->get($custom_field_id));
 		}
 
+
 	/**
 	 * PUT (update) a custom_field
 	 *
@@ -61,4 +62,5 @@ class ContactCustomField extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\CustomFieldResource($this->put($custom_field_id, $body));
 		}
+
 	}

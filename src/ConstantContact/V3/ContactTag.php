@@ -33,6 +33,7 @@ class ContactTag extends \PHPFUI\ConstantContact\Base
 		return new \PHPFUI\ConstantContact\Definition\ActivityGeneric($this->delete($tag_id));
 		}
 
+
 	/**
 	 * GET Tag Details
 	 *
@@ -56,6 +57,7 @@ class ContactTag extends \PHPFUI\ConstantContact\Base
 		return new \PHPFUI\ConstantContact\Definition\Tag($this->get($tag_id, $include_count));
 		}
 
+
 	/**
 	 * PUT (Update) a Tag
 	 *
@@ -78,4 +80,5 @@ class ContactTag extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\Tag($this->put($tag_id, $body));
 		}
+
 	}

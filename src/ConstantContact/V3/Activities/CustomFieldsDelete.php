@@ -29,4 +29,5 @@ class CustomFieldsDelete extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\ActivityDeleteCustomFields($this->post($body));
 		}
+
 	}

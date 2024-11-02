@@ -33,4 +33,5 @@ class PUniqueContactSmsOptins extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\PContactSMSOptInTrackingActivitiesPage($this->get($campaign_activity_id, $limit, $contacts_filter));
 		}
+
 	}

@@ -33,4 +33,5 @@ class PUniqueContactUpdates extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\PContactUpdateTrackingActivitiesPage($this->get($campaign_activity_id, $limit, $contacts_filter));
 		}
+
 	}

@@ -51,6 +51,7 @@ class Email extends \PHPFUI\ConstantContact\Base
 		return new \PHPFUI\ConstantContact\Definition\EmailCampaign($this->get($campaign_id));
 		}
 
+
 	/**
 	 * PATCH (Update) an Email Campaign Name
 	 *
@@ -71,4 +72,5 @@ class Email extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\EmailCampaign($this->patch($campaign_id, $body));
 		}
+
 	}

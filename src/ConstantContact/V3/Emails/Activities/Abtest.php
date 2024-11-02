@@ -51,6 +51,7 @@ class Abtest extends \PHPFUI\ConstantContact\Base
 		return new \PHPFUI\ConstantContact\Definition\ABTestData($this->get($campaign_activity_id));
 		}
 
+
 	/**
 	 * POST (Create) an A/B Test for an Email Campaign Activity
 	 *
@@ -75,4 +76,5 @@ class Abtest extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\ABTestData($this->post($campaign_activity_id, $abtest));
 		}
+
 	}

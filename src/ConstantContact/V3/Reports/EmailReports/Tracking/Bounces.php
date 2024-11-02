@@ -39,4 +39,5 @@ class Bounces extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\BouncesTrackingActivitiesPage($this->get($campaign_activity_id, $bounce_code, $limit));
 		}
+
 	}

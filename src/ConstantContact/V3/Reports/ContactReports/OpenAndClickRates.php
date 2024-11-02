@@ -36,4 +36,5 @@ class OpenAndClickRates extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\ContactOpenAndClickRates($this->get($contact_id, $start, $end));
 		}
+
 	}

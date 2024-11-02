@@ -31,4 +31,5 @@ class ContactsTagsDelete extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\ActivityTagging($this->post($body));
 		}
+
 	}

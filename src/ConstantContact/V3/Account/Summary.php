@@ -47,6 +47,7 @@ class Summary extends \PHPFUI\ConstantContact\Base
 		return new \PHPFUI\ConstantContact\Definition\Customer($this->get($extra_fields));
 		}
 
+
 	/**
 	 * PUT (update) Account Details
 	 *
@@ -69,4 +70,5 @@ class Summary extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\CustomerPut($this->put($body));
 		}
+
 	}

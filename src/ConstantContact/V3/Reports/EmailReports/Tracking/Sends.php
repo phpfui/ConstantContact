@@ -35,4 +35,5 @@ class Sends extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\SendsTrackingActivitiesPage($this->get($campaign_activity_id, $limit));
 		}
+
 	}

@@ -41,4 +41,5 @@ class EmailCampaignSummaries extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\BulkEmailCampaignSummariesPage($this->get($limit));
 		}
+
 	}

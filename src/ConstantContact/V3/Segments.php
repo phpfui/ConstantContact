@@ -34,6 +34,7 @@ class Segments extends \PHPFUI\ConstantContact\Base
 		return new \PHPFUI\ConstantContact\Definition\SegmentsDTO($this->get($limit, $sort_by));
 		}
 
+
 	/**
 	 * POST (create) a Segment
 	 *
@@ -76,4 +77,5 @@ class Segments extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\SegmentDetail($this->post($body));
 		}
+
 	}

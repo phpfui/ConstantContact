@@ -33,4 +33,5 @@ class Clicks extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\ClicksTrackingActivitiesPage($this->get($campaign_activity_id, $url_id, $limit));
 		}
+
 	}

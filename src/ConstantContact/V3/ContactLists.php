@@ -57,6 +57,7 @@ class ContactLists extends \PHPFUI\ConstantContact\Base
 		return new \PHPFUI\ConstantContact\Definition\ContactListArray($this->get($limit, $include_count, $include_membership_count, $name, $status));
 		}
 
+
 	/**
 	 * POST (create) a List
 	 *
@@ -74,4 +75,5 @@ class ContactLists extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\ContactListPutPost($this->post($body));
 		}
+
 	}

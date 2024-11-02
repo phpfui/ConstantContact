@@ -41,4 +41,5 @@ class ContactIdXrefs extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\ContactXrefs($this->get($sequence_ids));
 		}
+
 	}

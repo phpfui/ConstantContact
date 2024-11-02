@@ -36,4 +36,5 @@ class Forwards extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\ForwardsTrackingActivitiesPage($this->get($campaign_activity_id, $limit));
 		}
+
 	}

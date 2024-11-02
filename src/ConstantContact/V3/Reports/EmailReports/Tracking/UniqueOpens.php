@@ -36,4 +36,5 @@ class UniqueOpens extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\OpensTrackingActivitiesPage($this->get($campaign_activity_id, $limit));
 		}
+
 	}

@@ -35,4 +35,5 @@ class Didnotopens extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\DidNotOpensTrackingActivitiesPage($this->get($campaign_activity_id, $limit));
 		}
+
 	}

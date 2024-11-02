@@ -56,4 +56,5 @@ class ActivityDetails extends \PHPFUI\ConstantContact\Base
 		{
 		return new \PHPFUI\ConstantContact\Definition\ContactTrackingActivitiesPage($this->get($contact_id, $tracking_activities_list, $tracking_activity_type, $include_campaign_activity_names, $limit));
 		}
+
 	}
