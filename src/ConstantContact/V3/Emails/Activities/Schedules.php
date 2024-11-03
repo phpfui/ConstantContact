@@ -43,10 +43,18 @@ class Schedules extends \PHPFUI\ConstantContact\Base
 
 		return $this->doGet(['campaign_activity_id' => $campaign_activity_id, ]);
 		}
-
-	public function getReturnSchema(string $campaign_activity_id) : \PHPFUI\ConstantContact\Definition\EmailScheduleResponse
+	/**
+	 * @return array<\PHPFUI\ConstantContact\Definition\EmailScheduleResponse>
+	 */
+	public function getReturnSchema(string $campaign_activity_id) : array
 		{
-		return new \PHPFUI\ConstantContact\Definition\EmailScheduleResponse($this->get($campaign_activity_id));
+		$array = [];
+		foreach ($this->get($campaign_activity_id) as $object)
+			{
+			$array[] = new \PHPFUI\ConstantContact\Definition\EmailScheduleResponse($object);
+			}
+
+		return $array;
 		}
 
 
@@ -80,10 +88,18 @@ class Schedules extends \PHPFUI\ConstantContact\Base
 
 		return $this->doPost(['campaign_activity_id' => $campaign_activity_id, 'body' => $body->getData(), ]);
 		}
-
-	public function postReturnSchema(string $campaign_activity_id, \PHPFUI\ConstantContact\Definition\EmailScheduleInput $body) : \PHPFUI\ConstantContact\Definition\EmailScheduleResponse
+	/**
+	 * @return array<\PHPFUI\ConstantContact\Definition\EmailScheduleResponse>
+	 */
+	public function postReturnSchema(string $campaign_activity_id, \PHPFUI\ConstantContact\Definition\EmailScheduleInput $body) : array
 		{
-		return new \PHPFUI\ConstantContact\Definition\EmailScheduleResponse($this->post($campaign_activity_id, $body));
+		$array = [];
+		foreach ($this->post($campaign_activity_id, $body) as $object)
+			{
+			$array[] = new \PHPFUI\ConstantContact\Definition\EmailScheduleResponse($object);
+			}
+
+		return $array;
 		}
 
 	}

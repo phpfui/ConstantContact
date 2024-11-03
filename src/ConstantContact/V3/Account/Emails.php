@@ -57,10 +57,18 @@ class Emails extends \PHPFUI\ConstantContact\Base
 
 		return $this->doGet(['confirm_status' => $confirm_status, 'role_code' => $role_code, 'email_address' => $email_address, ]);
 		}
-
-	public function getReturnSchema(?string $confirm_status = null, ?string $role_code = null, ?string $email_address = null) : \PHPFUI\ConstantContact\Definition\AccountEmails
+	/**
+	 * @return array<\PHPFUI\ConstantContact\Definition\AccountEmails>
+	 */
+	public function getReturnSchema(?string $confirm_status = null, ?string $role_code = null, ?string $email_address = null) : array
 		{
-		return new \PHPFUI\ConstantContact\Definition\AccountEmails($this->get($confirm_status, $role_code, $email_address));
+		$array = [];
+		foreach ($this->get($confirm_status, $role_code, $email_address) as $object)
+			{
+			$array[] = new \PHPFUI\ConstantContact\Definition\AccountEmails($object);
+			}
+
+		return $array;
 		}
 
 
