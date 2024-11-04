@@ -40,35 +40,35 @@ class Base
 		return $status >= 200 && $status < 300;
 		}
 
-	protected function doDelete(array $parameters) : array
+	protected function doDelete(array $parameters) : ?array
 		{
 		$url = $this->getUrl($parameters);
 
 		return $this->client->delete($url);
 		}
 
-	protected function doGet(array $parameters) : array
+	protected function doGet(array $parameters) : ?array
 		{
 		$url = $this->getUrl($parameters);
 
 		return $this->client->get($url, $parameters);
 		}
 
-	protected function doPatch(array $parameters) : array
+	protected function doPatch(array $parameters) : ?array
 		{
 		$url = $this->getUrl($parameters);
 
 		return $this->client->patch($url, $parameters);
 		}
 
-	protected function doPost(array $parameters) : array
+	protected function doPost(array $parameters) : ?array
 		{
 		$url = $this->getUrl($parameters);
 
 		return $this->client->post($url, $parameters);
 		}
 
-	protected function doPut(array $parameters) : array
+	protected function doPut(array $parameters) : ?array
 		{
 		$url = $this->getUrl($parameters);
 
