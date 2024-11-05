@@ -36,6 +36,7 @@ class Segments extends \PHPFUI\ConstantContact\Base
 		return $data ? new \PHPFUI\ConstantContact\Definition\SegmentsDTO($data) : null;
 		}
 
+
 	/**
 	 * POST (create) a Segment
 	 *
@@ -80,4 +81,5 @@ class Segments extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\SegmentDetail($data) : null;
 		}
+
 	}

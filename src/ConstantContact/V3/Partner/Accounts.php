@@ -51,6 +51,7 @@ class Accounts extends \PHPFUI\ConstantContact\Base
 		return $data ? new \PHPFUI\ConstantContact\Definition\PartnerAccount($data) : null;
 		}
 
+
 	/**
 	 * POST (create) a Partner Client Account
 	 *
@@ -94,4 +95,5 @@ class Accounts extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\ProvisionResponse($data) : null;
 		}
+
 	}

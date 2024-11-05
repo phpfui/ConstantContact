@@ -99,6 +99,7 @@ class Contacts extends \PHPFUI\ConstantContact\Base
 		return $data ? new \PHPFUI\ConstantContact\Definition\Contacts($data) : null;
 		}
 
+
 	/**
 	 * POST (create) a Contact
 	 *
@@ -121,4 +122,5 @@ class Contacts extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\ContactResource($data) : null;
 		}
+
 	}
