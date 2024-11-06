@@ -45,7 +45,7 @@ class PhysicalAddress extends \PHPFUI\ConstantContact\Base
 	 * United States (<code>US</code>) and Canada (<code>CA</code>) addresses,
 	 * or use the <code>state_name</code> to specify all other countries.
 	 *
-	 * @param \PHPFUI\ConstantContact\Definition\AccountPhysicalAddress $body Include all `AccountPhysicalAddress` properties required for the specified `country_code` and then update only those properties that you want to change. Excluding a non-read only field from the request body removes it from the physical address.
+	 * @param \PHPFUI\ConstantContact\Definition\AccountPhysicalAddress $body Include all `AccountPhysicalAddress` properties required for the specified `country_code`. If a required property is not included or incorrectly formatted, a 400 error message is returned. If the address already exists, a 409 error message is returned.
 	 */
 	public function post(\PHPFUI\ConstantContact\Definition\AccountPhysicalAddress $body) : ?array
 		{

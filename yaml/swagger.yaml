@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.2475"
+  version: "3.0.15"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -255,9 +255,9 @@ paths:
       - in: "body"
         name: "body"
         description: "Include all `AccountPhysicalAddress` properties required for\
-          \ the specified `country_code` and then update only those properties that\
-          \ you want to change. Excluding a non-read only field from the request body\
-          \ removes it from the physical address."
+          \ the specified `country_code`. If a required property is not included or\
+          \ incorrectly formatted, a 400 error message is returned. If the address\
+          \ already exists, a 409 error message is returned."
         required: true
         schema:
           $ref: "#/definitions/AccountPhysicalAddress"
@@ -272,9 +272,6 @@ paths:
         "401":
           description: "The Access Token used is invalid."
         "403":
-          description: "Forbidden request. You lack the necessary scopes, you lack\
-            \ the necessary user privileges, or the application is deactivated."
-        "404":
           description: "Forbidden request. You lack the necessary scopes, you lack\
             \ the necessary user privileges, or the application is deactivated."
         "409":
@@ -610,14 +607,10 @@ paths:
       - "Bulk Activities"
       summary: "Export Contacts to a File"
       description: "Use this method to create an activity that exports contacts and\
-        \ contact details to a CSV file. By default, all contacts are exported. To\
-        \ filter contacts to export, specify the source to use, `contact_id`, `list_id`,\
-        \ or `segment_id` (all mutually exclusive).\nBy default, all contact related\
-        \ fields are exported. Use the fields array to only export specific contact\
-        \ fields. You must export `email_address` to successfully export `email_optin_source`,\
-        \ `email_optin_date`, `email_optout_source`, `email_optout_date`, or `email_optout_reason`.\n\
-        After Constant Contact finishes processing the activity, use the `results`\
-        \ link in the response body to retrieve the CSV file."
+        \ contact details to a CSV file.  You can choose to export all contacts in\
+        \ your account (default) or you can use parameters to filter on which contacts\
+        \ to export. After Constant Contact finishes processing the activity, use\
+        \ the `results` link in the response body to retrieve the CSV file."
       operationId: "postContactsExport"
       consumes:
       - "application/json"
@@ -5651,6 +5644,74 @@ paths:
       - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
+  /reports/summary_reports/sms_campaign_summaries:
+    get:
+      tags:
+      - "SMS Reporting"
+      summary: "GET an SMS Campaigns Summary Report"
+      description: "Use this method to get SMS campaign summary details, including\
+        \ the total number of times that each contact uniquely interacted with each\
+        \ tracked campaign activity and aggregate tracking statistics. Results are\
+        \ sorted in descending order by the date the SMS was last sent (`last_sent_date`).\n\
+        The `start_at` date is required. Use both the `start_at` and `end_at` date\
+        \ query parameters to return only SMS campaign summary details that occurred\
+        \ within a specified date range.\nUse the `limit` query parameter to limit\
+        \ the number of results returned per page. "
+      operationId: "getAllBulkSmsCampaignSummaries"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "limit"
+        in: "query"
+        description: "Use to limit the number of results to return on a single page\
+          \ (from 1 to 50). The default setting is 50."
+        required: false
+        type: "string"
+        default: "50"
+        x-example: "15"
+      - name: "start_at"
+        in: "query"
+        description: "Use to limit the results to include SMS campaign summary details\
+          \ for SMS campaigns sent on or after the required `start_at` date you specify.\
+          \ ISO 8601 format."
+        required: true
+        type: "string"
+        x-example: "2023-01-27T21:56:37.011Z"
+      - name: "end_at"
+        in: "query"
+        description: "Use to limit the results to include SMS campaign summary details\
+          \ for SMS campaigns sent on or before the `end_at` date you specify. ISO\
+          \ 8601 format."
+        required: false
+        type: "string"
+        x-example: "2024-01-27T21:56:37.011Z"
+      responses:
+        "200":
+          description: "Request was successful."
+          schema:
+            $ref: "#/definitions/SmsCampaignSummariesPage"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "The requested resource was not found."
+        "500":
+          description: "There was a problem with our internal service."
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      - api_key: []
+      x-authorization-privileges:
+      - "ui:campaign:metrics"
   /partner/accounts:
     get:
       tags:
@@ -6932,8 +6993,8 @@ definitions:
     properties:
       contact_ids:
         type: "array"
-        description: "Exports up to 500 specific contacts. This property is mutually\
-          \ exclusive with <code>list_ids</code>."
+        description: "Exports up to 500 specific contacts.  This property is mutually\
+          \ exclusive with all other filtering criteria except with<code>status</code>."
         items:
           type: "string"
           format: "uuid"
@@ -6942,25 +7003,43 @@ definitions:
       list_ids:
         type: "array"
         description: "Exports all of the contacts inside of up to 50 contact lists.\
-          \ This property is mutually exclusive with <code>contact_ids</code>."
+          \ This property is mutually exclusive with all other filtering criteria\
+          \ except with either <code>status</code> or <code>exclude</code>."
         items:
           type: "string"
           format: "uuid"
           example: "04fe9a97-a579-43c5-bb1a-58ed29bf0a6a"
         maxItems: 50
+      tag_ids:
+        type: "array"
+        description: "Exports contacts assigned one or more of the tags (<code>tag_id</code>)\
+          \ specified. This property is mutually exclusive with all other filtering\
+          \ criteria."
+        items:
+          type: "string"
+          format: "uuid"
+          example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        maxItems: 50
+      new_subscriber:
+        type: "boolean"
+        example: true
+        description: "Set to <code>true</code> to only export contacts that subscribed\
+          \ within the last 30 days. Default setting is <code>false</code>. This property\
+          \ is mutually exclusive with all other filtering criteria except  with either\
+          \  <code>list_ids</code> or <code>exclude</code>. "
       segment_id:
         type: "integer"
         example: 12
         description: "Specify the <code>segment_id</code> from which you want to export\
-          \ all contacts that meet the specified <code>segment_criteria</code>. This\
-          \ property is mutually exclusive with <code>contact_ids</code> and <code>list_ids</code>.\
-          \ You can only specify one <code>segment_id</code>."
+          \ all contacts that meet the specified <code>segment_criteria</code>. You\
+          \ can only specify one <code>segment_id</code>. This property is mutually\
+          \ exclusive with all other filtering criteria."
       fields:
         type: "array"
-        description: "Use this array to export specific contact fields. You must export\
-          \ <code>email_address</code> to successfully export <code>email_optin_source</code>,\
-          \ <code>email_optin_date</code>, <code>email_optout_source</code>, <code>email_optout_date</code>,\
-          \ or <code>email_optout_reason</code>."
+        description: "By default , all fields are returned. Use this array to only\
+          \ export specific contact fields. You must export <code>email_address</code>\
+          \ to successfully export <code>email_optin_source</code>, <code>email_optin_date</code>,\
+          \ <code>email_optout_source</code>, <code>email_optout_date</code>, or <code>email_optout_reason</code>."
         items:
           type: "string"
           example: "email_address"
@@ -6968,16 +7047,24 @@ definitions:
         type: "string"
         example: "unsubscribed"
         description: "Allows you to export only contacts that have a specific status\
-          \ value. Possible values are <code>active</code> (billable), <code>unsubscribed</code>,\
-          \ or <code>removed</code>. Applicable with either `contact_ids` or `list_ids`\
-          \ as the source."
-    description: "You can export contact objects to a CSV file. By default, all contacts\
-      \ in the user's account are exported if none of the following properties are\
-      \ included: <br/><li> By contact_id - you can specify up to 500 specific contacts.\
-      \ <li>list_id - you can specify up to 50 lists. You can use the status parameter\
-      \ with list_id<li>status - you can export contacts by status. Status values\
-      \ include unsubscribed, active (billable), and removed. This property can be\
-      \ used with list_ids."
+          \ value. This property is mutually exclusive with all other filtering criteria\
+          \ except with either  <code>contact_ids</code> or <code>list_ids</code>."
+      exclude:
+        type: "object"
+        properties:
+          contact_ids:
+            type: "array"
+            description: "Excludes up to 50 specified contacts (<code>contact_id</code>)\
+              \ from being exported. This property is mutually exclusive with all\
+              \ other filtering criteria except  with either <code>list_ids</code>\
+              \ or <code>new_subscriber</code> ."
+            items:
+              type: "string"
+              format: "uuid"
+              example: "4d88f172-21d1-11ea-b5ae-fa163e56c9b0"
+              description: "An array of <code>contact_id</code>s to exclude."
+    description: "Export contact objects to a CSV file. By default, all contacts in\
+      \ the user's account are exported unless a filtering parameter is specified."
   ActivityExportStatus:
     type: "object"
     properties:
@@ -12196,6 +12283,110 @@ definitions:
       _links:
         description: "HAL property that contains next link if applicable"
         $ref: "#/definitions/lpreportingLinks"
+  UniqueSmsCounts:
+    type: "object"
+    required:
+    - "clicks"
+    - "delivers"
+    - "optouts"
+    - "sends"
+    properties:
+      sends:
+        type: "integer"
+        format: "int32"
+        example: 100
+        description: "The total number of unique sends."
+      delivers:
+        type: "integer"
+        format: "int32"
+        example: 100
+        description: "The total number of SMS delivered."
+      opens:
+        type: "integer"
+        format: "int32"
+        example: 75
+        description: "The total number of unique opens."
+      clicks:
+        type: "integer"
+        format: "int32"
+        example: 294
+        description: "The total number of unique clicks."
+      optouts:
+        type: "integer"
+        format: "int32"
+        example: 0
+        description: "The total number of unique opt-outs (unsubscribes)."
+  BulkCampaignSummary:
+    type: "object"
+    required:
+    - "campaign_id"
+    - "campaign_name"
+    - "campaign_type"
+    - "last_sent_date"
+    - "unique_counts"
+    properties:
+      campaign_id:
+        type: "string"
+        format: "uuid"
+        example: "a2fdc285-f4bc-408c-9e64-f3f89038ec82"
+        description: "The ID that uniquely identifies the campaign."
+      campaign_name:
+        type: "string"
+        example: "Spring Clearance Sale"
+        description: "The name to associate with this campaign."
+      last_sent_date:
+        type: "string"
+        format: "date-time"
+        example: "2019-04-25T11:08:00.000Z"
+        description: "The date that the campaign was last sent."
+      unique_counts:
+        description: "The total number of times each unique contact interacted with\
+          \ a tracked SMS campaign activity."
+        $ref: "#/definitions/UniqueSmsCounts"
+      campaign_type:
+        type: "string"
+        example: "SMS"
+        description: "The campaign type."
+  BulkSmsCampaignSummariesPercents:
+    type: "object"
+    properties:
+      deliver:
+        type: "number"
+        example: 23.0
+        description: "The aggregated SMS delivery rate for all campaigns on the current\
+          \ results page."
+      click:
+        type: "number"
+        example: 43.0
+        description: "The aggregated click rate for all campaigns on the current results\
+          \ page."
+      bounce:
+        type: "number"
+        example: 0.0
+        description: "The aggregated bounce rate for all campaigns on the current\
+          \ results page."
+      unsubscribe:
+        type: "number"
+        example: 0.0
+        description: "The aggregated unsubscribe (opt-out) rate for all campaigns\
+          \ on the current results page."
+  SmsCampaignSummariesPage:
+    type: "object"
+    properties:
+      bulk_sms_campaign_summaries:
+        type: "array"
+        description: "Provides details about each SMS campaign, including the total\
+          \ unique counts for each tracked campaign activity."
+        items:
+          $ref: "#/definitions/BulkCampaignSummary"
+      aggregate_percents:
+        description: "Campaign activity aggregate percents, including <code>click</code>,\
+          \ <code> deliver</code>, <code> bounce</code>, and <code>unsubscribe</code>,\
+          \ for all SMS campaigns returned on a page of results."
+        $ref: "#/definitions/BulkSmsCampaignSummariesPercents"
+      _links:
+        description: "HAL property that contains next link if applicable"
+        $ref: "#/definitions/reportingsmsLinks"
   PaginationLinks:
     type: "object"
     properties:
@@ -13048,6 +13239,14 @@ definitions:
     properties:
       href:
         type: "string"
+  reportingsmsLinks:
+    type: "object"
+    required:
+    - "next"
+    properties:
+      next:
+        description: "Contains the next link if it is available."
+        $ref: "#/definitions/reportingsmsNext"
   lpreportingLinks:
     type: "object"
     required:
@@ -13056,6 +13255,15 @@ definitions:
       next:
         description: "Contains the next link if it is available."
         $ref: "#/definitions/lpreportingNext"
+  reportingsmsNext:
+    type: "object"
+    required:
+    - "href"
+    properties:
+      href:
+        type: "string"
+        description: "The next link in the page or null if there are no additional\
+          \ pages."
   tagsPagingLinks:
     type: "object"
     properties:
