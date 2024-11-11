@@ -23,18 +23,21 @@ class Subscriptions extends \PHPFUI\ConstantContact\Base
 
 		return $this->doGet([]);
 		}
+
 	/**
 	 * @return ?array<\PHPFUI\ConstantContact\Definition\WebhooksSubscriptionCollection>
 	 */
 	public function getTyped() : ?array
 		{
 		$data = $this->get();
-		if (is_null($data))
+
+		if (null === $data)
 			{
 			return null;
 			}
 
 		$array = [];
+
 		foreach ($data as $object)
 			{
 			$array[] = new \PHPFUI\ConstantContact\Definition\WebhooksSubscriptionCollection($object);
@@ -42,5 +45,4 @@ class Subscriptions extends \PHPFUI\ConstantContact\Base
 
 		return $array;
 		}
-
 	}

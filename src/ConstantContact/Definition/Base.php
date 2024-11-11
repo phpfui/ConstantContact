@@ -273,10 +273,6 @@ abstract class Base
 					}
 				elseif (\is_array($value))
 					{
-					if (! \count($value))
-						{
-						continue;
-						}
 					$result[$field] = [];
 
 					foreach ($value as $name => $item)
