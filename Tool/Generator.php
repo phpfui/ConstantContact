@@ -495,6 +495,7 @@ class ~class~ extends {$this->definitionNamespace}\Base
 			$parameters = [];
 			$passedParameters = [];
 			$docblock = '';
+			$restDefault = false;
 
 			foreach ($specs['parameters'] ?? [] as $parameter)
 				{
@@ -521,13 +522,14 @@ class ~class~ extends {$this->definitionNamespace}\Base
 				$description = $parameter['description'] ?? '';
 				$passedParameters[] = "{$dollar}{$name}";
 				$docblock .= "\n\t * @param {$type} {$dollar}{$name} {$description}";
-				$required = $parameter['required'] ?? false;
+				$required = ($parameter['required'] ?? false) && ! $restDefault;
 				$parameterString = $required ? '' : '?';
 				$parameterString .= $type . ' $' . $name;
 
 				if (! $required)
 					{
 					$parameterString .= ' = null';
+					$restDefault = true;
 					}
 				$parameters[$name] = $parameterString;
 				}

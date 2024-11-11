@@ -29,17 +29,16 @@ class SmsCampaignSummaries extends \PHPFUI\ConstantContact\Base
 	 * @param string $start_at Use to limit the results to include SMS campaign summary details for SMS campaigns sent on or after the required `start_at` date you specify. ISO 8601 format.
 	 * @param string $end_at Use to limit the results to include SMS campaign summary details for SMS campaigns sent on or before the `end_at` date you specify. ISO 8601 format.
 	 */
-	public function get(?string $limit = null, string $start_at, ?string $end_at = null) : ?array
+	public function get(?string $limit = null, ?string $start_at = null, ?string $end_at = null) : ?array
 		{
 
 		return $this->doGet(['limit' => $limit, 'start_at' => $start_at, 'end_at' => $end_at, ]);
 		}
 
-	public function getTyped(?string $limit = null, string $start_at, ?string $end_at = null) : ?\PHPFUI\ConstantContact\Definition\SmsCampaignSummariesPage
+	public function getTyped(?string $limit = null, ?string $start_at = null, ?string $end_at = null) : ?\PHPFUI\ConstantContact\Definition\SmsCampaignSummariesPage
 		{
 		$data = $this->get($limit, $start_at, $end_at);
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\SmsCampaignSummariesPage($data) : null;
 		}
-
 	}
