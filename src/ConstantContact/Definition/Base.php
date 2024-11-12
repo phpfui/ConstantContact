@@ -185,7 +185,7 @@ abstract class Base
 				}
 			elseif (\str_starts_with($expectedType, 'PHPFUI'))
 				{
-				if (\is_array($value))
+				if (\is_array($value) || $expectedType != $type)
 					{
 					$value = new $expectedType($value);
 					}

@@ -9,6 +9,6 @@ class DateTime extends \DateTime
 	{
 	public function __toString() : string
 		{
-		return $this->format(\DateTimeInterface::ATOM);
+		return $this->format('Y-m-d\TH:i:s\Z');
 		}
 	}
