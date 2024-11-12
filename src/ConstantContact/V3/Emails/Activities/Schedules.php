@@ -43,21 +43,18 @@ class Schedules extends \PHPFUI\ConstantContact\Base
 
 		return $this->doGet(['campaign_activity_id' => $campaign_activity_id, ]);
 		}
-
 	/**
 	 * @return ?array<\PHPFUI\ConstantContact\Definition\EmailScheduleResponse>
 	 */
 	public function getTyped(string $campaign_activity_id) : ?array
 		{
 		$data = $this->get($campaign_activity_id);
-
-		if (null === $data)
+		if (is_null($data))
 			{
 			return null;
 			}
 
 		$array = [];
-
 		foreach ($data as $object)
 			{
 			$array[] = new \PHPFUI\ConstantContact\Definition\EmailScheduleResponse($object);
@@ -65,6 +62,7 @@ class Schedules extends \PHPFUI\ConstantContact\Base
 
 		return $array;
 		}
+
 
 	/**
 	 * POST (Create) an Email Campaign Activity Schedule
@@ -96,21 +94,18 @@ class Schedules extends \PHPFUI\ConstantContact\Base
 
 		return $this->doPost(['campaign_activity_id' => $campaign_activity_id, 'body' => $body->getData(), ]);
 		}
-
 	/**
 	 * @return ?array<\PHPFUI\ConstantContact\Definition\EmailScheduleResponse>
 	 */
 	public function postTyped(string $campaign_activity_id, \PHPFUI\ConstantContact\Definition\EmailScheduleInput $body) : ?array
 		{
 		$data = $this->post($campaign_activity_id, $body);
-
-		if (null === $data)
+		if (is_null($data))
 			{
 			return null;
 			}
 
 		$array = [];
-
 		foreach ($data as $object)
 			{
 			$array[] = new \PHPFUI\ConstantContact\Definition\EmailScheduleResponse($object);
@@ -118,4 +113,5 @@ class Schedules extends \PHPFUI\ConstantContact\Base
 
 		return $array;
 		}
+
 	}

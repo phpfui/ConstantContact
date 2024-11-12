@@ -51,4 +51,5 @@ class ContactsJsonImport extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\ActivityImport($data) : null;
 		}
+
 	}

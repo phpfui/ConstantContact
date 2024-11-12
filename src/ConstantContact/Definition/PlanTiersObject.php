@@ -7,7 +7,7 @@ namespace PHPFUI\ConstantContact\Definition;
 /**
  * @property string $plan_type The billing plan that is associated with a client's Constant Contact account. The billing plan determines which Constant Contact product features that the client account can access. If you are not on the latest billing plan, contact the Constant Contact Partner Team. However, older billing plans and <code>plan_type</code> enum values will continue to be supported. <ul>
  * <li><code>TRIAL</code>: Provides limited product features for a non-billed account and the account has an expiration date.</li>
- * <li><code>BRONZE</code>: Billable plan that provides basic email and marketing tools.</li>
+ * <li><code>BRONZE</code>: Billable plan that provides basic email and marketing tools.</li>  
  * <li><code>SILVER</code>: Billable plan that provides all features available in the <code>BRONZE</code> plan, and adds some additional email campaign to features, such as contact segmentation and social media ads integration.</li>
  * <li><code>GOLD</code>: Billable plan that provides all available product features.</li> * </ul>
  * @property array<\PHPFUI\ConstantContact\Definition\TierObject> $current_tiers Lists the billing plan tiers that are currently associated with a client account.
