@@ -23,7 +23,8 @@
         "roave/security-advisories": "dev-latest",
         "friendsofphp/php-cs-fixer": "^3.0",
         "symfony/yaml": "^7.0",
-        "phpstan/phpstan": "^2.0"
+        "phpstan/phpstan": "^2.0",
+        "graham-campbell/guzzle-factory": "^7.0"
     },
     "autoload": {
         "psr-4": {"PHPFUI\\ConstantContact\\": "src/ConstantContact/"}

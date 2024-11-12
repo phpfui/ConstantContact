@@ -20,6 +20,8 @@ class Client
 
 	private string $body = '';
 
+	private static $guzzleFactory = null;
+
 	private \GuzzleHttp\HandlerStack $guzzleHandler;
 
 	private string $host = '';
@@ -124,8 +126,7 @@ class Client
 		{
 		try
 			{
-			$guzzle = new \GuzzleHttp\Client(['headers' => $this->getHeaders(), 'handler' => $this->guzzleHandler, ]);
-			$response = $guzzle->request('DELETE', $url);
+			$response = $this->getGuzzleClient()->request('DELETE', $url);
 
 			return $this->process($response);
 			}
@@ -156,8 +157,7 @@ class Client
 					}
 				}
 
-			$guzzle = new \GuzzleHttp\Client(['headers' => $this->getHeaders(), 'handler' => $this->guzzleHandler, ]);
-			$response = $guzzle->request('GET', $url);
+			$response = $this->getGuzzleClient()->request('GET', $url);
 
 			return $this->process($response);
 			}
@@ -213,9 +213,33 @@ class Client
 		return $this->body;
 		}
 
+	public function getGuzzleClient(string $body = '', array $headers = []) : \GuzzleHttp\Client
+		{
+		$config = [
+			'headers' => $this->getHeaders($headers),
+			'handler' => $this->guzzleHandler, ];
+
+		if (\strlen($body))
+			{
+			$config['body'] = $body;
+			}
+
+		return self::$guzzleFactory ? \call_user_func(self::$guzzleFactory, $config) : new \GuzzleHttp\Client($config);
+		}
+
+	public static function getGuzzleFactory() : ?callable
+		{
+		return self::$guzzleFactory;
+		}
+
 	public function getLastError() : string
 		{
 		return $this->lastError;
+		}
+
+	public function getSessionCallback() : ?callable
+		{
+		return $this->sessionCallback;
 		}
 
 	public function getStatusCode() : int
@@ -235,8 +259,7 @@ class Client
 			return [];
 			}
 
-		$guzzle = new \GuzzleHttp\Client(['headers' => $this->getHeaders(), 'handler' => $this->guzzleHandler, ]);
-		$response = $guzzle->request('GET', 'https://api.cc.email' . $this->next);
+		$response = $this->getGuzzleClient()->request('GET', 'https://api.cc.email' . $this->next);
 
 		return $this->process($response);
 		}
@@ -257,10 +280,7 @@ class Client
 		try
 			{
 			$json = \json_encode($parameters['body'], JSON_PRETTY_PRINT);
-			$guzzle = new \GuzzleHttp\Client(['headers' => $this->getHeaders(),
-				'handler' => $this->guzzleHandler,
-				'body' => $json, ]);
-			$response = $guzzle->request('POST', $url);
+			$response = $this->getGuzzleClient()->request('POST', $url);
 
 			return $this->process($response);
 			}
@@ -281,7 +301,8 @@ class Client
 		try
 			{
 			$json = \json_encode($parameters['body'], JSON_PRETTY_PRINT);
-			$guzzle = new \GuzzleHttp\Client(['headers' => $this->getHeaders(
+			$guzzle = $this->getGuzzleClient(
+				$json,
 				[
 					'Connection' => 'keep-alive',
 					'Content-Length' => \strlen($json),
@@ -289,10 +310,7 @@ class Client
 					'Host' => $this->host,
 					'Accept' => '*/*'
 				]
-			),
-				'handler' => $this->guzzleHandler,
-				'body' => $json, ]);
-
+			);
 			$response = $guzzle->request($method, $url);
 
 			return $this->process($response);
@@ -339,6 +357,11 @@ class Client
 		unset($this->scopes[$scope]);
 
 		return $this;
+		}
+
+	public static function setGuzzleFactory(?callable $factory) : void
+		{
+		self::$guzzleFactory = $factory;
 		}
 
 	public function setHost(string $host) : self

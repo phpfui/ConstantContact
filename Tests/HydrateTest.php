@@ -67,8 +67,8 @@ class HydrateTest extends \PHPUnit\Framework\TestCase
 		$this->assertEquals('xxxx@mailinator.com', $contacts->contacts[0]->email_address->address);
 		$this->assertEquals('xxxx@mailinator.com', $contacts->contacts[1]->email_address->address);
 		$time = new \PHPFUI\ConstantContact\DateTime("2024-11-08T10:54:32Z");
-		$this->assertEquals("{$time}", "{$contacts->contacts[0]->created_at}");
-		$this->assertEquals("{$time}", "{$contacts->contacts[1]->created_at}");
+		$this->assertEquals((string)$time, (string)$contacts->contacts[0]->created_at);
+		$this->assertEquals((string)$time, (string)$contacts->contacts[1]->created_at);
 		$newJson = $contacts->getJSON();
 		$this->assertJson($newJson);
 		$newDataArray = $contacts->toArray();
