@@ -100,6 +100,16 @@ The library methods will return either raw PHP arrays, objects in the **\Constan
 
 If a raw or typed method returns null, then an error occured and you should check $client->getStatusCode() or $client->getLastError() for more information.
 
+## Using a GuzzleHttp factory
+This library uses **\GuzzleHttp\Client** to make CC API calls.  If you want to use your own **\GuzzleHttp\Client**, you should create a factory callable method and set it.
+
+If the factory callable is set, it will be called with the appropriate $config array passed as the first parameter.
+
+Callback function signature:
+ - function(array $config) : \GuzzleHttp\Client
+
+See [graham-campbell/guzzle-factory](https://packagist.org/packages/graham-campbell/guzzle-factory) for an example factory.
+
 ## Versioning
 Since the [Constant Contact API](https://v3.developer.constantcontact.com/api_guide/index.html) is constantly being updated, this library will track all updates on a calendar based versioning schema. The major version will be the last two digits of the year the update was released. The minor version will be the month it was released. Any bug fixes will be a patch version.  So V21.8.0 would be the first August 2021 version, and V21.8.1 would be a bug fix to V21.8.  All bug fixes will be included in subsequent versions, so V21.9.0 would include all fixes from the V21.8 version. YAML changes are tracked nightly and a new version will be generated automatically. Multiple YAML changes in a month will be tracked as patch versions.
 

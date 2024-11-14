@@ -20,7 +20,7 @@ class Client
 
 	private string $body = '';
 
-	private static $guzzleFactory = null;
+	private $guzzleFactory = null;
 
 	private \GuzzleHttp\HandlerStack $guzzleHandler;
 
@@ -213,6 +213,13 @@ class Client
 		return $this->body;
 		}
 
+	/**
+	 * Return a new GuzzleHttp\Client with the appropriate headers and handlers set.
+	 *
+	 * If a Guzzle factory has been set, then the factory method will be called.
+	 *
+	 * @param array<string, string> $headers override the default headers
+	 */
 	public function getGuzzleClient(string $body = '', array $headers = []) : \GuzzleHttp\Client
 		{
 		$config = [
@@ -224,12 +231,12 @@ class Client
 			$config['body'] = $body;
 			}
 
-		return self::$guzzleFactory ? \call_user_func(self::$guzzleFactory, $config) : new \GuzzleHttp\Client($config);
+		return $this->guzzleFactory ? \call_user_func($this->guzzleFactory, $config) : new \GuzzleHttp\Client($config);
 		}
 
-	public static function getGuzzleFactory() : ?callable
+	public function getGuzzleFactory() : ?callable
 		{
-		return self::$guzzleFactory;
+		return $this->guzzleFactory;
 		}
 
 	public function getLastError() : string
@@ -359,9 +366,20 @@ class Client
 		return $this;
 		}
 
-	public static function setGuzzleFactory(?callable $factory) : void
+	/**
+	 * This library uses GuzzleHttp\Client to make CC API calls.  If you want to use your own GuzzleHttp\Client, you should create a factory callable method and set it.
+	 *
+	 * If the factory callable is set, it will be called with the appropriate $config array passed as the first parameter.
+	 *
+	 * Callback function signature:
+	 *
+	 *  - function(array $config) : \GuzzleHttp\Client
+	 *
+	 * @see [graham-campbell/guzzle-factory](https://packagist.org/packages/graham-campbell/guzzle-factory) for an example factory
+	 */
+	public function setGuzzleFactory(?callable $factory) : void
 		{
-		self::$guzzleFactory = $factory;
+		$this->guzzleFactory = $factory;
 		}
 
 	public function setHost(string $host) : self
