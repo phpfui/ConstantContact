@@ -25,7 +25,7 @@ This library normalizes the [Constant Contact API](https://v3.developer.constant
 Due to a mistake in naming conventions by Constant Contact API designers, several end points are duplicated between the end point that returns all objects, and the end point that just works with one object. Normally this is dealt with by using the singular form of the noun for CRUD type operations on a single object, and the plural noun form returns a list of objects. This library follows the correct naming convention (single nouns for CRUD and plural nouns for collections) and not the Constant Contact naming convention.
 
 ## Definitions
-This Constant Contact API defines all types of objects to interact with the API. They are defined in the **PHPFUI\ConstantContact\Definition** namespace. Only valid fields are allowed to be accessed. Types are fully validated as to the best ability of PHP.  Min and max lengths are enforced for strings. Invalid values will throw exceptions for type safety.
+This Constant Contact API defines all types of objects to interact with the API. They are defined in the **\PHPFUI\ConstantContact\Definition** namespace. Only valid fields are allowed to be accessed. Types are fully validated as to the best ability of PHP.  Min and max lengths are enforced for strings. Invalid values will throw exceptions for type safety.
 
 ## Usage Once Authorized (see below)
 ```php
@@ -96,7 +96,7 @@ $client->refreshToken();
 The token will expire requiring your user to reauthorize your app unless you refresh the token.  You should refresh the token on a regular basis to avoid reauthorization.
 
 ## Method Return Values
-The library methods will return either raw PHP arrays, objects in the **\ConstantContact\Definition** namespace, or a null value. The plain end points like get(), post(), update(), etc. return plain PHP arrays. The end points suffixed with Typed will return a fully formed object in the **\ConstantContact\Definition** namespace. Some Typed() methods will return an array of typed **\ConstantContact\Definition** objects.
+The library methods will return either raw PHP arrays, objects in the **\PHPFUI\ConstantContact\Definition** namespace, or a null value. The plain end points like get(), post(), update(), etc. return plain PHP arrays. The end points suffixed with Typed will return a fully formed object in the **\PHPFUI\ConstantContact\Definition** namespace. Some Typed() methods will return an array of typed **\ConstantContact\Definition** objects.
 
 If a raw or typed method returns null, then an error occured and you should check $client->getStatusCode() or $client->getLastError() for more information.
 
