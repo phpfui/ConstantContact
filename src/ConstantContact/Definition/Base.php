@@ -301,7 +301,7 @@ abstract class Base
 	/**
 	 * @return array all the valid fields for the object. Index is field name and value is the type.
 	 */
-	public function getfields() : array
+	public function getFields() : array
 		{
 		return static::$fields;
 		}

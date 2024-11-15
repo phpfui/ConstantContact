@@ -218,7 +218,7 @@ class Client
 	 *
 	 * If a Guzzle factory has been set, then the factory method will be called.
 	 *
-	 * @param array<string, string> $headers override the default headers
+	 * @param array<string, int|string> $headers override the default headers
 	 */
 	public function getGuzzleClient(string $body = '', array $headers = []) : \GuzzleHttp\Client
 		{
@@ -377,9 +377,11 @@ class Client
 	 *
 	 * @see [graham-campbell/guzzle-factory](https://packagist.org/packages/graham-campbell/guzzle-factory) for an example factory
 	 */
-	public function setGuzzleFactory(?callable $factory) : void
+	public function setGuzzleFactory(?callable $factory) : self
 		{
 		$this->guzzleFactory = $factory;
+
+		return $this;
 		}
 
 	public function setHost(string $host) : self
