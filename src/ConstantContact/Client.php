@@ -286,8 +286,7 @@ class Client
 		{
 		try
 			{
-			$json = \json_encode($parameters['body'], JSON_PRETTY_PRINT);
-			$response = $this->getGuzzleClient()->request('POST', $url);
+			$response = $this->getGuzzleClient(\json_encode($parameters['body'], JSON_PRETTY_PRINT))->request('POST', $url);
 
 			return $this->process($response);
 			}
