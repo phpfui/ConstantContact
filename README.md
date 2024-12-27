@@ -121,3 +121,5 @@ Since the [Constant Contact API](https://v3.developer.constantcontact.com/api_gu
 
 ### PHP Versions
 This library only supports PHP 8.0 and higher versions of PHP. While we would love to support PHP from the late Ming Dynasty, the advantages of modern PHP versions far out weigh quaint notions of backward compatibility. Time to upgrade.
+
+There are other versions of this library that support older versions of PHP. Be aware they may not autoupdate to the latest Constant Contact API. To do so, they should automate calling update.php script in the project root.

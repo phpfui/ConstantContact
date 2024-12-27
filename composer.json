@@ -1,6 +1,6 @@
 {
     "name": "phpfui/constantcontact",
-    "description": "Object Oriented Wrapper for Constant Contact API V3",
+    "description": "Object Oriented Wrapper for Constant Contact API V3 for PHP 8+",
     "minimum-stability": "stable",
     "keywords": ["Constant", "Contact", "API", "V3", "Object Oriented", "Object-Oriented"],
     "homepage": "http://www.phpfui.com",
@@ -21,9 +21,9 @@
        	"gitonomy/gitlib": ">=1.2",
         "phpfui/phpunit-syntax-coverage": "^1.0",
         "roave/security-advisories": "dev-latest",
-        "friendsofphp/php-cs-fixer": "^3.0",
+        "friendsofphp/php-cs-fixer": "*",
         "symfony/yaml": "^7.0",
-        "phpstan/phpstan": "^2.0",
+        "phpstan/phpstan": "*",
         "graham-campbell/guzzle-factory": "^7.0"
     },
     "autoload": {
