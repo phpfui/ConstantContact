@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.15"
+  version: "3.0.16"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
