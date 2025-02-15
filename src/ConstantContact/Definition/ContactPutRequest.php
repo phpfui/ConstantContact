@@ -20,6 +20,7 @@ namespace PHPFUI\ConstantContact\Definition;
  * @property array<\PHPFUI\ConstantContact\UUID> $list_memberships Array of up to 50 <code>list_ids</code> to which the contact is subscribed.
  * @property array<\PHPFUI\ConstantContact\UUID> $taggings Array of tags (<code>tag_id</code>) assigned to the contact, up to a maximum of 50.
  * @property array<\PHPFUI\ConstantContact\Definition\Note> $notes An array of notes about the contact listed by most recent note first.
+ * @property \PHPFUI\ConstantContact\Definition\ContactSmsChannel $sms_channel
  */
 class ContactPutRequest extends \PHPFUI\ConstantContact\Definition\Base
 	{
@@ -39,6 +40,7 @@ class ContactPutRequest extends \PHPFUI\ConstantContact\Definition\Base
 		'list_memberships' => 'array<\PHPFUI\ConstantContact\UUID>',
 		'taggings' => 'array<\PHPFUI\ConstantContact\UUID>',
 		'notes' => 'array<\PHPFUI\ConstantContact\Definition\Note>',
+		'sms_channel' => '\PHPFUI\ConstantContact\Definition\ContactSmsChannel',
 
 	];
 

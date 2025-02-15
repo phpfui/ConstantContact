@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.16"
+  version: "3.0.47"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -96,7 +96,6 @@ paths:
       security:
       - oauth2_implicit: []
       - oauth2_access_code: []
-      - api_key: []
   /account/summary:
     get:
       tags:
@@ -144,7 +143,6 @@ paths:
         - "account_read"
       - oauth2_access_code:
         - "account_read"
-      - api_key: []
       x-authorization-privileges:
       - "account:read"
       x-sdk-methodName: "getAccountDetails"
@@ -193,7 +191,6 @@ paths:
         - "account_update"
       - oauth2_access_code:
         - "account_update"
-      - api_key: []
       x-authorization-privileges:
       - "account:update"
       x-sdk-methodName: "updateAccount"
@@ -233,7 +230,6 @@ paths:
         - "account_read"
       - oauth2_access_code:
         - "account_read"
-      - api_key: []
       x-authorization-privileges:
       - "account:read"
       x-sdk-methodName: "getAccountPhysicalAddress"
@@ -288,7 +284,6 @@ paths:
         - "account_update"
       - oauth2_access_code:
         - "account_update"
-      - api_key: []
       x-authorization-privileges:
       - "account:update"
     put:
@@ -345,7 +340,6 @@ paths:
         - "account_update"
       - oauth2_access_code:
         - "account_update"
-      - api_key: []
       x-authorization-privileges:
       - "account:update"
       x-sdk-methodName: "updateAccountPhysicalAddress"
@@ -430,7 +424,6 @@ paths:
         - "account_read"
       - oauth2_access_code:
         - "account_read"
-      - api_key: []
       x-authorization-privileges:
       - "account:read"
       x-sdk-methodName: "getAllAccountEmailAddresses"
@@ -485,7 +478,6 @@ paths:
         - "account_update"
       - oauth2_access_code:
         - "account_update"
-      - api_key: []
       x-authorization-privileges:
       - "account:update"
   /activities:
@@ -551,7 +543,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:write"
       x-sdk-methodName: "getAllActivities"
@@ -597,7 +588,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:write"
       x-sdk-methodName: "getActivityById"
@@ -651,7 +641,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:write"
       x-sdk-methodName: "createExportActivity"
@@ -703,7 +692,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:write"
       x-sdk-methodName: "getCSVExportFile"
@@ -757,7 +745,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:write"
       x-sdk-methodName: "createDeleteActivity"
@@ -769,14 +756,20 @@ paths:
       description: "This multipart method creates an asynchronous background job that\
         \ adds or updates contacts by importing a CSV file containing contact information.\
         \ Do not use a Content-Type header value with this method.\n\nImporting a\
-        \ new contact automatically sets the contact's `permission_to_send` property\
-        \ as `implicit` and the `opt_in_source` property as `Account`. Importing an\
-        \ existing contact only updates the contact properties you include in the\
-        \ request.\n\nThe CSV file has a maximum of 40,000 lines including the header\
-        \ row (39,999 contacts) and a maximum file size of 4 megabytes (MB).  Lines\
-        \ above the 40,000 line maximum are not processed. If the request body exceeds\
-        \ 4 MB, only the contacts contained in the first 4 MB are imported and the\
-        \ remaining data is dropped."
+        \ new contact email address automatically sets the contact's `permission_to_send`\
+        \ property as `implicit` and the `opt_in_source` property as `Account`. Importing\
+        \ an existing contact only updates the contact properties you include in the\
+        \ request.\nImporting contacts with `sms_number`s requires using the `sms_permission_to_send`\
+        \ parameter  to specify permissions for all contacts being imported. Set to\
+        \ `explicit` to specify that all contacts either provided explicit permission.\
+        \ Set to `not_set` if permission was not provided. If `explicit`, you must\
+        \ also include the `sms_consent_date` as a column header to include the date\
+        \ the contact consented to receiving SMS messages.\nContacts must have either\
+        \ an email address or an SMS number defined.\n \nThe CSV file has a maximum\
+        \ of 40,000 lines including the header row (39,999 contacts) and a maximum\
+        \ file size of 4 megabytes (MB).  Lines above the 40,000 line maximum are\
+        \ not processed. If the request body exceeds 4 MB, only the contacts contained\
+        \ in the first 4 MB are imported and the remaining data is dropped."
       operationId: "contactsCSVImport"
       consumes:
       - "multipart/form-data"
@@ -785,17 +778,22 @@ paths:
       parameters:
       - name: "file"
         in: "formData"
-        description: "The CSV file you are importing. The column headings that you\
-          \ can use in the file are: `first_name`, `last_name`, `email`, `phone`,\
-          \ `job_title`, `anniversary`, `birthday_day`, `birthday_month`, `company_name`,\
-          \ `street`, `street2`, `city`, `state`, `zip`, and `country`. The only required\
-          \ column heading is `email`.\n\nYou can also use custom fields as column\
-          \ headings. Enter the custom field name prefixed with `cf:` as the column\
-          \ heading. For example, use `cf:first_name` as the header name if you have\
-          \ a custom field named \"first_name\". The custom field must already exist\
-          \ in the Constant Contact account you are using. Depending on the custom\
-          \ field data type, you can enter dates or strings as the value of the custom\
-          \ field. Each contact can contain up to 25 different custom fields."
+        description: "The CSV file you are importing  must include either `email`\
+          \ or `sms_number` as a column heading. Other properties you can include\
+          \ using column headings are: `first_name`.  `last_name`, `phone`, `job_title`,\
+          \ `anniversary`, `birthday_day`, `birthday_month`, `company_name`, `street`,\
+          \ `street2`, `city`, `state`, `zip`, `country`, and `sms_consent_date`.\
+          \ \n\nIf adding an `sms_number`, you must also include the `sms_permission_to_send`\
+          \ parameter and set it to either `not_set` or `explicit`. If `explicit`,\
+          \ requires including `sms_consent_date` as a column header to specify the\
+          \ date the contact consented to receiving SMS messages. \n\nYou can also\
+          \ use custom fields as column headings. Enter the custom field name prefixed\
+          \ with `cf:` as the column heading. For example, use `cf:first_name` as\
+          \ the header name if you have a custom field named \"first_name\". The custom\
+          \ field must already exist in the Constant Contact account you are using.\
+          \ Depending on the custom field data type, you can enter dates or strings\
+          \ as the value of the custom field. Each contact can contain up to 25 different\
+          \ custom fields."
         required: true
         type: "file"
         x-example: "new_contacts_import.csv"
@@ -809,6 +807,20 @@ paths:
           type: "string"
         maxItems: 50
         x-example: "8c077f20-1586-11e4-bcb3-00163e56be7c"
+      - name: "sms_permission_to_send"
+        in: "formData"
+        description: "If importing contact `sms_number`s, use this parameter to specify\
+          \ how SMS consent was provided. If all contacts in the file provided their\
+          \ consent, set to `explicit` and include each contact's `sms_consent_date`.\
+          \ If all contacts in the file have not yet provided consent, set to `not_set`\
+          \ (`sms_consent_date` is not required). You cannot message a contact that\
+          \ does not have a sms consent date set."
+        required: false
+        type: "string"
+        enum:
+        - "not_set"
+        - "explicit"
+        x-example: "not_set"
       responses:
         "201":
           description: "Request successful. Activity queued for processing."
@@ -839,7 +851,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:write"
       x-sdk-methodName: "createCSVImportActivity"
@@ -851,20 +862,32 @@ paths:
       description: "Use this method to create an asynchronous background job that\
         \ adds new contacts or updates existing contacts by importing a JSON payload.\
         \ This method requires a request body that contains the contact data you are\
-        \ importing and the contact lists to which you want to add the imported contacts.\n\
-        Importing a new contact automatically sets the contact's `permission_to_send`\
-        \ property as `implicit` and the `opt_in_source` property as `Account`. Importing\
-        \ an existing contact only updates the contact properties you include in the\
-        \ request.\nFor each contact, you can import up to three addresses and three\
-        \ phone numbers. International phone numbers are currently not supported.\n\
-        To import custom fields, prefix the custom field name with `cf:` and add it\
-        \ as a contact property. For example, use the property name `cf:first_name`\
-        \ if you have a custom field named first_name. The custom field must already\
+        \ importing and the contact lists to which you want to add the imported contacts.\
+        \ A contact's data must include an `email` address and/or `sms_number`. The\
+        \ `sms_number` must be a US phone number to associate with the contact's SMS-enabled\
+        \ phone. Valid formats are <code>1231231234</code> or <code>123-123-1234</code>\
+        \ (the country code must be valid).\n\nImporting a new contact using this\
+        \ method automatically sets the contact's email `permission_to_send` property\
+        \ to `implicit` and the `opt_in_source` property as `Account`. Importing an\
+        \ existing contact only updates the contact properties you include in the\
+        \ request. For each contact, you can import up to three addresses and three\
+        \ phone numbers. International phone numbers are currently not supported.\
+        \      \n\nTo import custom fields, prefix the custom field name with `cf:`\
+        \ and add it as a contact property. For example, use the property name `cf:first_name`\
+        \ if you have a custom field named `first_name`. The custom field must already\
         \ exist in the Constant Contact account you are using. Each contact can contain\
-        \ up to 25 custom fields.\n\nThe request body payload has a maximum size of\
-        \ 4 megabytes (MB). If the request body exceeds 4 MB, this method only imports\
-        \ the first 4 MB and drops the remaining data.\nUse the activity URL to check\
-        \ the status of the import activity request."
+        \ up to 25 custom fields.\n\nTo include a contact's `sms_number`, if the contact\
+        \ provided explicit permission to receive SMS messages, you must set the `sms_permission_to_send`\
+        \ property to `explicit` and specify the date of consent using the `sms_consent_date`\
+        \ column header. If explicit permission was not provided, set `sms_permission_to_send`\
+        \ to `not_set` (the `sms_consent_date` is not required). If the `sms_consent_date`\
+        \ is not set, SMS messages cannot be sent to contacts and `sms_permission_to_send`\
+        \ defaults to `not_set. Valid value formats for `sms_consent_date` include\
+        \ MM/DD/YYYY, M/D/YYYY, YYYY/MM/DD, YYYY/M/D, YYYY-MM-DD, YYYY-M-D,M-D-YYYY,\
+        \ or M-DD-YYYY. \n\nThe request body payload has a maximum size of 4 megabytes\
+        \ (MB). If the request body exceeds 4 MB, this method only imports the first\
+        \ 4 MB and drops the remaining data. Use the activity URL to check the status\
+        \ of the import activity request."
       operationId: "bulkImportContactsJSON"
       consumes:
       - "application/json"
@@ -903,7 +926,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:write"
       x-sdk-methodName: "createImportJSONActivity"
@@ -958,7 +980,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:write"
       x-sdk-methodName: "createListRemoveActivity"
@@ -1010,7 +1031,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:write"
       x-sdk-methodName: "createListAddActivity"
@@ -1057,9 +1077,8 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
-      - "contacts_write"
+      - "contacts:write"
       x-sdk-methodName: "createListDeleteActivity"
   /activities/contacts_taggings_remove:
     post:
@@ -1115,7 +1134,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:write"
       x-sdk-methodName: "createTagRemoveActivity"
@@ -1171,7 +1189,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:write"
       x-sdk-methodName: "createTagAddContactActivity"
@@ -1221,7 +1238,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:write"
       x-sdk-methodName: "createTagDeleteActivity"
@@ -1271,7 +1287,7 @@ paths:
       - oauth2_access_code:
         - "contact_data"
       x-authorization-privileges:
-      - "contacts_write"
+      - "contacts:write"
   /segments:
     get:
       tags:
@@ -1328,7 +1344,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:lists:read"
       x-sdk-methodName: "getAllSegments"
@@ -1390,7 +1405,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:lists:write"
   /segments/{segment_id}:
@@ -1436,7 +1450,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:lists:read"
       x-sdk-methodName: "getSegmentById"
@@ -1501,7 +1514,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:lists:write"
     delete:
@@ -1550,7 +1562,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:lists:write"
   /segments/{segment_id}/name:
@@ -1609,7 +1620,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:lists:write"
   /contacts/{contact_id}:
@@ -1635,7 +1645,7 @@ paths:
         description: "Use `include` to specify which contact sub-resources to include\
           \ in the response. Use a comma to separate multiple sub-resources. Valid\
           \ values: `custom_fields`, `list_memberships`, `phone_numbers`, `street_addresses`,\
-          \ `notes`, `sms_channel`, and `taggings`."
+          \ `notes`, and `taggings`."
         required: false
         type: "string"
         format: "csv"
@@ -1671,7 +1681,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:read"
       x-sdk-methodName: "getContactById"
@@ -1684,10 +1693,21 @@ paths:
         \ contact you must specify the `update_source` as `Account`. When updating\
         \ any resource using PUT, all properties are updated, overwriting all previous\
         \ values. Any properties left blank or not included in the request are overwritten\
-        \ with null value - however this does not apply to contact subresources. Add\
-        \ or change any of the subresources by including them in the PUT request payload.\
-        \ Omitted subresources are not overwritten with null. If the contact being\
-        \ updated is deleted, the contact will be revived."
+        \ with null value - however this does not apply to contact subresources. \n\
+        \nAdd or change any of the subresources by including them in the PUT request\
+        \ payload. Omitted subresources are not overwritten with null. If the contact\
+        \ being updated is deleted, the contact will be revived.\nIf `email_address`\
+        \ is specified: <div class=\"Msg\"><p class=\"note-text\"> **Only use this\
+        \ method when a contact gives you their explicit permission to send them an\
+        \ email. It is a violation of anti-spam and telemarketing laws, as well as\
+        \ a serious violation of the Constant Contact Terms of Service to use the\
+        \ Opt-in features of the API to opt a contact back in without his or her own\
+        \ action and consent.</p></div>\n\nIf `sms_channel` is specified: <div class=\"\
+        Msg\"><p class=\"note-text\">Only use this method when a contact gives you\
+        \ their explicit permission to send them an SMS. It is a violation of anti-spam\
+        \ and telemarketing laws, as well as a serious violation of the Constant Contact\
+        \ Terms of Service to use the Opt-in features of the API to opt a contact\
+        \ back in without his or her own action and consent.</p></div>"
       operationId: "putContact"
       consumes:
       - "application/json"
@@ -1735,7 +1755,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:write"
       x-sdk-methodName: "updateContact"
@@ -1783,7 +1802,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:write"
   /contacts:
@@ -1793,7 +1811,7 @@ paths:
       summary: "GET Contacts Collection"
       description: "Use this method to return a collection of contacts. Use the query\
         \ parameters to search for contacts that match specific contact properties\
-        \ and subresourse properties as criteria. For example, you can search using\
+        \ and sub-resource properties as criteria. For example, you can search using\
         \ the contact's `email` address, `lists` memberships, and by the date range\
         \ that a contact was created or updated. Use the `limit` query parameter to\
         \ limit the number of results returned per page. Use the `include` query parameter\
@@ -1921,7 +1939,7 @@ paths:
         description: "Use `include` to specify which contact sub-resources to include\
           \ in the response. Use a comma to separate multiple sub-resources. Valid\
           \ values: `custom_fields`, `list_memberships`, `taggings`, `notes`,`phone_numbers`,\
-          \ `street_addresses`, `sms_channel`."
+          \ `street_addresses`."
         required: false
         type: "string"
         format: "csv"
@@ -1932,7 +1950,6 @@ paths:
         - "street_addresses"
         - "taggings"
         - "notes"
-        - "sms_channel"
         x-example: "custom_fields,list_memberships"
       - name: "sms_status"
         in: "query"
@@ -1993,7 +2010,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:read"
       x-sdk-methodName: "getAllContacts"
@@ -2001,10 +2017,21 @@ paths:
       tags:
       - "Contacts"
       summary: "POST (create) a Contact"
-      description: "Creates a new contact resource; you must include the `create_source`\
-        \ property and at least one of the following properties when creating a new\
-        \ contact: `first_name`, `last_name`, or `email_address` (`email_address`\
-        \ must be unique for each contact)."
+      description: "\nCreates a new contact resource. You must include the `create_source`\
+        \ property and at least one of the following properties: `first_name`, `last_name`,\
+        \ a unique `email_address` (specified using the `EmailAddress` object), or\
+        \ the `sms_channel` property (specified using the `ContactSmsChannel` object).\n\
+        \n<div class=\"Msg\"><p class=\"note-text\">If `email_address` is specified:\
+        \ **Only use this method when a contact gives you their explicit permission\
+        \ to send them an email. It is a violation of anti-spam and telemarketing\
+        \ laws, as well as a serious violation of the Constant Contact Terms of Service\
+        \ to use the Opt-in features of the API to opt a contact back in without his\
+        \ or her own action and consent.</p></div>\n\nIf `sms_channel` is specified:\
+        \ <div class=\"Msg\"><p class=\"note-text\">Only use this method when a contact\
+        \ gives you their explicit permission to send them an SMS. It is a violation\
+        \ of anti-spam and telemarketing laws, as well as a serious violation of the\
+        \ Constant Contact Terms of Service to use the Opt-in features of the API\
+        \ to opt a contact back in without his or her own action and consent.</p></div>"
       operationId: "createContact"
       consumes:
       - "application/json"
@@ -2045,7 +2072,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:write"
   /contacts/sign_up_form:
@@ -2054,29 +2080,38 @@ paths:
       - "Contacts"
       summary: "Create or Update a Contact"
       description: "Use this method to create a new contact or update an existing\
-        \ contact. This method uses the `email_address` string value you include in\
-        \ the request body to determine if it should create an new contact or update\
-        \ an existing contact.\n\nUpdates to existing contacts are partial updates.\
-        \ This method only updates the contact properties you include in the request\
-        \ body. Updates append new contact lists or custom fields to the existing\
-        \ `list_memberships` or `custom_fields` arrays.\n<div class=\"Msg\"><p class=\"\
+        \ contact. In the request body, this method requires including the `list_memberships`\
+        \ array as well as either the contact's `email_address` string or `sms_channel`\
+        \ object which includes the contact's SMS number. The information you specify\
+        \ determines if a new contact is either created (the email address or SMS\
+        \ number does not already exist in the account), or if an existing contact\
+        \ is updated (the email address or SMS number already exists). The SMS product\
+        \ feature does not need to be enabled to include a contacts SMS details.\n\
+        \nUpdates to existing contacts are partial updates. This method only updates\
+        \ the contact properties you include in the request body. Updates append new\
+        \ contact lists or custom fields to the existing `list_memberships` or `custom_fields`\
+        \ arrays.\nIf `email_address` is specified: <div class=\"Msg\"><p class=\"\
         note-text\">Only use this method when a contact gives you their explicit permission\
-        \ to send them emails. It is a violation of US and Canadian anti-spam laws,\
-        \ as well as a serious violation of the Constant Contact Terms of Service\
+        \ to send them an email. It is a violation of anti-spam and telemarketing\
+        \ laws, as well as a serious violation of the Constant Contact Terms of Service\
         \ to use the Opt-in features of the API to opt a contact back in without his\
-        \ or her own action and consent.</p></div>\n\nWhen this method creates a new\
-        \ contact, it returns a 201 response code.\n\nWhen this method updates an\
-        \ existing contact, it returns a 200 response code. Updating a deleted contact\
-        \ restores the contact.\n\nThe method automatically modifies the contact's\
-        \ `permission_to_send` and `opt_in_source` properties depending on the [Confirmed\
-        \ Opt-In](https://knowledgebase.constantcontact.com/articles/KnowledgeBase/5533-obtain-permission-to-send-email-campaigns-to-your-contacts-by-using-confirmed-opt-in)\
+        \ or her own action and consent.</p></div>\n\nIf `sms_channel` is specified:\
+        \ <div class=\"Msg\"><p class=\"note-text\">Only use this method when a contact\
+        \ gives you their explicit permission to send them an SMS. It is a violation\
+        \ of anti-spam and telemarketing laws, as well as a serious violation of the\
+        \ Constant Contact Terms of Service to use the Opt-in features of the API\
+        \ to opt a contact back in without his or her own action and consent.</p></div>\n\
+        When this method creates a new contact, it returns a 201 response code.When\
+        \ this method updates an existing contact, it returns a 200 response code.\
+        \ Updating a deleted contact restores the contact.\n\nThe method automatically\
+        \ modifies the contact's `permission_to_send` and `opt_in_source` properties\
+        \ depending on the [Confirmed Opt-In](https://knowledgebase.constantcontact.com/articles/KnowledgeBase/5533-obtain-permission-to-send-email-campaigns-to-your-contacts-by-using-confirmed-opt-in)\
         \ Constant Contact account setting:\n\nIf Confirmed Opt-in is _enabled_, this\
-        \ method automatically sets the `permission_to_send` property as pending\\\
-        _confirmation for new contacts. \n\nIf Confirmed Opt-in is _disabled_, this\
-        \ method automatically sets the `permission_to_send` property as explicit\
-        \ and the `opt_in_source` property as `Contact` for new contacts. Updated\
-        \ contacts have their `permission_to_send` property set as explicit.\n   \
-        \   "
+        \ method automatically sets the `permission_to_send` property as `pending_confirmation`\
+        \ for new contacts. If Confirmed Opt-in is _disabled_, this method automatically\
+        \ sets the `permission_to_send` property as explicit and the `opt_in_source`\
+        \ property as `Contact` for new contacts. Updated contacts have their `permission_to_send`\
+        \ property set as explicit.\n      "
       operationId: "createOrUpdateContact"
       consumes:
       - "application/json"
@@ -2087,7 +2122,7 @@ paths:
         name: "body"
         description: "A JSON request body payload that contains the contact resource\
           \ you are creating or updating. The request body must contain the `email_address`\
-          \ property and the `list_memberships` array."
+          \ property and `list_memberships` array, or the `sms_channel` object."
         required: true
         schema:
           $ref: "#/definitions/ContactCreateOrUpdateInput"
@@ -2122,7 +2157,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:write"
   /contacts/contact_id_xrefs:
@@ -2181,7 +2215,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:read"
   /contact_custom_fields/{custom_field_id}:
@@ -2225,7 +2258,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:read"
     put:
@@ -2276,7 +2308,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:write"
       x-sdk-methodName: "updateCustomField"
@@ -2316,7 +2347,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:write"
   /contact_custom_fields:
@@ -2362,7 +2392,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:read"
       x-sdk-methodName: "getAllCustomFields"
@@ -2412,7 +2441,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:write"
       x-sdk-methodName: "createCustomFields"
@@ -2465,7 +2493,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:lists:read"
     put:
@@ -2516,7 +2543,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:lists:write"
       x-sdk-methodName: "updateList"
@@ -2568,7 +2594,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:lists:write"
       x-sdk-methodName: "deleteList"
@@ -2651,7 +2676,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:lists:read"
       x-sdk-methodName: "getAllLists"
@@ -2697,7 +2721,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:lists:write"
   /contact_lists/list_id_xrefs:
@@ -2755,7 +2778,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:lists:read"
   /contacts/sms_engagement_history/{contact_id}:
@@ -2801,7 +2823,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:read"
   /contacts/counts:
@@ -2854,10 +2875,65 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:read"
       x-sdk-methodName: "getContactCounts"
+  /contacts/resubscribe/{contact_id}:
+    put:
+      tags:
+      - "Contacts"
+      summary: "PUT Resubscribe a Contact"
+      description: "Use this endpoint to send a confirmation resubscribe email to\
+        \ a contact in order to get their confirmation to resubscribe. This endpoint\
+        \ also adds the resubscribed contact to the contact lists you specify in the\
+        \ request body. You can only send a resubscribe email to the unsubscribed\
+        \ contact once. The contact is not resubscribed until after you receive their\
+        \ confirmation. "
+      operationId: "resubscribeContact"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "contact_id"
+        in: "path"
+        description: "The ID that uniquely identifies the contact to resubscribe."
+        required: true
+        type: "string"
+        x-example: "04fe9a-a579-43c5-bb1a-58ed29bf0a6a"
+      - in: "body"
+        name: "body"
+        description: "The JSON payload used to specify one (or more) contact lists\
+          \ to which the contact requested to be resubscribed."
+        required: true
+        schema:
+          $ref: "#/definitions/ContactResubscribeRequest"
+        x-example: "50429486-338f-11ed-a355-fa163ef30863"
+      responses:
+        "200":
+          description: "Contact resource has been updated."
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "The requested resource was not found."
+        "409":
+          description: "Conflict. The resource you are creating or updating conflicts\
+            \ with an existing resource."
+        "500":
+          description: "There was a problem with our internal service."
+        "503":
+          description: "Our internal service is temporarily unavailable."
+      security:
+      - oauth2_implicit:
+        - "contact_data"
+      - oauth2_access_code:
+        - "contact_data"
+      x-authorization-privileges:
+      - "contacts:write"
   /contact_tags/{tag_id}:
     get:
       tags:
@@ -2908,9 +2984,8 @@ paths:
       security:
       - oauth2_implicit:
         - "contact_data"
-      - oauth2_access_code:
+        oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:read"
     put:
@@ -2966,7 +3041,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:write"
     delete:
@@ -3014,9 +3088,8 @@ paths:
       security:
       - oauth2_implicit:
         - "contact_data"
-      - oauth2_access_code:
+        oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:write"
   /contact_tags:
@@ -3075,9 +3148,8 @@ paths:
       security:
       - oauth2_implicit:
         - "contact_data"
-      - oauth2_access_code:
+        oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:read"
       x-sdk-methodName: "getAllTags"
@@ -3126,7 +3198,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "contacts:write"
   /emails:
@@ -3202,7 +3273,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "campaign:read"
       x-sdk-methodName: "getAllEmailCampaigns"
@@ -3261,7 +3331,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "campaign:write"
       x-sdk-methodName: "createEmailCampaign"
@@ -3310,7 +3379,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "campaign:read"
       x-sdk-methodName: "getEmailCampaignById"
@@ -3354,7 +3422,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "campaign:delete"
       x-sdk-methodName: "deleteEmailCampaign"
@@ -3412,7 +3479,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "campaign:write"
       x-sdk-methodName: "patchEmailCampaignName"
@@ -3471,7 +3537,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "campaign:read"
       x-sdk-methodName: "getEmailCampaignXrefs"
@@ -3536,7 +3601,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "campaign:read"
       x-sdk-methodName: "getEmailCampaignActivity"
@@ -3600,7 +3664,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "campaign:write"
       x-sdk-methodName: "updateEmailCampaignActivity"
@@ -3649,7 +3712,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "campaign:read"
       x-sdk-methodName: "getEmailCampaignActivitySchedule"
@@ -3715,7 +3777,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "campaign:send"
       x-sdk-methodName: "scheduleEmailCampaignActivity"
@@ -3763,7 +3824,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "campaign:send"
       x-sdk-methodName: "unscheduleEmailCampaignActivity"
@@ -3823,7 +3883,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "campaign:send"
       x-sdk-methodName: "testSendEmailCampaignActivity"
@@ -3874,7 +3933,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "campaign:read"
       x-sdk-methodName: "getEmailCampaignActivityPreview"
@@ -3929,7 +3987,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "campaign:read"
       x-sdk-methodName: "getEmailCampaignActivitySendHistory"
@@ -3978,7 +4035,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "campaign:read"
       x-sdk-methodName: "getResendEmailCampaign"
@@ -4042,7 +4098,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "campaign:send"
       x-sdk-methodName: "createResendEmailCampaign"
@@ -4098,7 +4153,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "campaign:send"
       x-sdk-methodName: "deleteResendEmailCampaign"
@@ -4150,7 +4204,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "campaign:read"
       x-sdk-methodName: "getABTestEmailCampaign"
@@ -4212,7 +4265,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "campaign:write"
       x-sdk-methodName: "createABTestEmailCampaign"
@@ -4263,7 +4315,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "campaign:write"
       x-sdk-methodName: "deleteABTestEmailCampaign"
@@ -4377,7 +4428,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
       x-sdk-methodName: "getContactTrackingReport"
@@ -4441,7 +4491,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
       x-sdk-methodName: "getContactOpenClickRateReport"
@@ -4502,7 +4551,6 @@ paths:
         - "contact_data"
       - oauth2_access_code:
         - "contact_data"
-      - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
       x-sdk-methodName: "getContactTrackingCountReport"
@@ -4563,7 +4611,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
       x-sdk-methodName: "getCampaignActivityLinkReport"
@@ -4625,7 +4672,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
       x-sdk-methodName: "getEmailSendsReport"
@@ -4687,7 +4733,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
       x-sdk-methodName: "getEmailOpensReport"
@@ -4750,7 +4795,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
       x-sdk-methodName: "getUniqueOpensReport"
@@ -4812,7 +4856,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
       x-sdk-methodName: "getDidNotOpensReport"
@@ -4879,7 +4922,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
       x-sdk-methodName: "getClicksReport"
@@ -4940,7 +4982,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
       x-sdk-methodName: "getForwardsReport"
@@ -5001,7 +5042,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
       x-sdk-methodName: "getOptoutsReport"
@@ -5081,7 +5121,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
       x-sdk-methodName: "getBouncesReport"
@@ -5135,7 +5174,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
       x-sdk-methodName: "getEmailCampaignReport"
@@ -5187,7 +5225,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
       x-sdk-methodName: "getEmailStatsReport"
@@ -5242,7 +5279,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
       x-sdk-methodName: "getEmailCampaignActivityReport"
@@ -5310,7 +5346,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
   /reports/landing_pages/campaign_details/{campaign_activity_id}/p_unique_contact_opens:
@@ -5376,7 +5411,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
   /reports/landing_pages/campaign_details/{campaign_activity_id}/p_contact_opens:
@@ -5442,7 +5476,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
   /reports/landing_pages/campaign_details/{campaign_activity_id}/p_unique_contact_updates:
@@ -5509,7 +5542,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
   /reports/landing_pages/campaign_details/{campaign_activity_id}/p_unique_contact_adds:
@@ -5575,7 +5607,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
   /reports/landing_pages/campaign_details/{campaign_activity_id}/p_unique_contact_sms_optins:
@@ -5641,7 +5672,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
   /reports/summary_reports/sms_campaign_summaries:
@@ -5709,7 +5739,6 @@ paths:
         - "campaign_data"
       - oauth2_access_code:
         - "campaign_data"
-      - api_key: []
       x-authorization-privileges:
       - "ui:campaign:metrics"
   /partner/accounts:
@@ -5783,7 +5812,7 @@ paths:
           description: "There was a problem with our internal service."
       security:
       - ctctPartnerAuthorizer: []
-      - api_key: []
+        api_key: []
       x-sdk-methodName: "getAccounts"
     post:
       tags:
@@ -5846,7 +5875,7 @@ paths:
           description: "Our internal service is temporarily unavailable."
       security:
       - ctctPartnerAuthorizer: []
-      - api_key: []
+        api_key: []
       x-sdk-methodName: "createAccount"
   /partner/accounts/{encoded_account_id}/plan:
     get:
@@ -5896,7 +5925,7 @@ paths:
           description: "There was a problem with our internal service."
       security:
       - ctctPartnerAuthorizer: []
-      - api_key: []
+        api_key: []
       x-sdk-methodName: "getAccountBillingPlan"
     put:
       tags:
@@ -5977,7 +6006,7 @@ paths:
           description: "There was a problem with our internal service."
       security:
       - ctctPartnerAuthorizer: []
-      - api_key: []
+        api_key: []
       x-sdk-methodName: "updateAccountBillingPlan"
   /partner/accounts/{encoded_account_id}/status/cancel:
     put:
@@ -6035,7 +6064,7 @@ paths:
           description: "There was a problem with our internal service."
       security:
       - ctctPartnerAuthorizer: []
-      - api_key: []
+        api_key: []
       x-sdk-methodName: "cancelAccountBillingPlan"
   /partner/accounts/{encoded_account_id}/account_operations/sync:
     post:
@@ -6090,7 +6119,7 @@ paths:
           description: "There was a problem with our internal service."
       security:
       - ctctPartnerAuthorizer: []
-      - api_key: []
+        api_key: []
       x-sdk-methodName: "sendRequestUsingManagedAccount"
   /partner/accounts/{encoded_account_id}/users/sso:
     post:
@@ -6139,7 +6168,7 @@ paths:
           description: "There was a problem with our internal service."
       security:
       - ctctPartnerAuthorizer: []
-      - api_key: []
+        api_key: []
   /partner/webhooks/subscriptions:
     get:
       tags:
@@ -6172,7 +6201,7 @@ paths:
           description: "There was a problem with our internal service."
       security:
       - ctctPartnerAuthorizer: []
-      - api_key: []
+        api_key: []
       x-sdk-methodName: "getAllWebhooks"
   /partner/webhooks/subscriptions/{topic_id}:
     get:
@@ -6214,7 +6243,7 @@ paths:
           description: "There was a problem with our internal service."
       security:
       - ctctPartnerAuthorizer: []
-      - api_key: []
+        api_key: []
       x-sdk-methodName: "getWebhooksTopicById"
     put:
       tags:
@@ -6270,7 +6299,7 @@ paths:
           description: "There was a problem with our internal service."
       security:
       - ctctPartnerAuthorizer: []
-      - api_key: []
+        api_key: []
       x-sdk-methodName: "updateWebhooksTopic"
     delete:
       tags:
@@ -6309,7 +6338,7 @@ paths:
           description: "There was a problem with our internal service."
       security:
       - ctctPartnerAuthorizer: []
-      - api_key: []
+        api_key: []
   /partner/webhooks/subscriptions/{topic_id}/tests:
     post:
       tags:
@@ -6353,7 +6382,7 @@ paths:
           description: "There was a problem with our internal service."
       security:
       - ctctPartnerAuthorizer: []
-      - api_key: []
+        api_key: []
 securityDefinitions:
   oauth2_implicit:
     type: "oauth2"
@@ -6375,9 +6404,12 @@ securityDefinitions:
       account_read: "Read account data."
       account_update: "Modify account data."
   ctctPartnerAuthorizer:
-    type: "apiKey"
-    name: "Unnamed"
-    in: "header"
+    description: "Partner Authentication"
+    type: "oauth2"
+    authorizationUrl: "https://v3api-partner.auth.us-east-1.amazoncognito.com/oauth2/token"
+    flow: "implicit"
+    scopes:
+      v3api/general.partner: "Access to general partner API methods"
   api_key:
     type: "apiKey"
     name: "x-api-key"
@@ -7365,14 +7397,13 @@ definitions:
       \ activities"
   JsonImportContact:
     type: "object"
-    required:
-    - "email"
     properties:
       email:
         type: "string"
         example: "joe.jones@example.com"
         description: "The email address of the contact. This method identifies each\
-          \ unique contact using their email address."
+          \ unique contact using their email address. Required if `sms_number` is\
+          \ not specified."
         maxLength: 50
       first_name:
         type: "string"
@@ -7592,15 +7623,15 @@ definitions:
         example: "5081231235"
         description: "The US phone number to associate with the contact's SMS-enabled\
           \ phone. The country code must be valid. Valid formats are <code>1231231234</code>\
-          \ or <code>123-123-1234</code>."
+          \ or <code>123-123-1234</code>. Required if `email` is not specified."
         maxLength: 16
       sms_consent_date:
         type: "string"
         example: "07-03-2024"
-        description: "Required if the SMS permission is set to `explict`. The date\
+        description: "Required if the SMS permission is set to `explicit`. The date\
           \ that the contact consented to receiving SMS messages. Valid date formats\
           \ are MM/DD/YYYY, M/D/YYYY, YYYY/MM/DD, YYYY/M/D, YYYY-MM-DD, YYYY-M-D,M-D-YYYY,\
-          \ or M-DD-YYYY ."
+          \ or M-DD-YYYY."
         maxLength: 16
   ContactsJsonImport:
     type: "object"
@@ -8894,6 +8925,41 @@ definitions:
         example: "United States"
         description: "The name of the country where the contact lives."
         maxLength: 50
+  ContactSmsChannelConsents:
+    type: "object"
+    required:
+    - "consent_type"
+    - "sms_consent_permission"
+    properties:
+      sms_consent_permission:
+        type: "string"
+        example: "explicit"
+        description: "The current status of the SMS channel."
+      consent_type:
+        type: "string"
+        example: "promotional_sms"
+        description: "The type of consent provided."
+      consent_medium_details:
+        type: "string"
+        example: "IPhone 13 device used to provide consent."
+        description: "Additional information about the consent such as the type of\
+          \ device used."
+  ContactSmsChannel:
+    type: "object"
+    required:
+    - "full_sms_address"
+    - "sms_channel_consents"
+    properties:
+      full_sms_address:
+        type: "string"
+        example: "17815551212"
+        description: "The SMS-capable phone number for the Contact, including the\
+          \ dial code"
+      sms_channel_consents:
+        type: "array"
+        description: "The consents for the SMS Channel."
+        items:
+          $ref: "#/definitions/ContactSmsChannelConsents"
   ContactPutRequest:
     type: "object"
     required:
@@ -8988,6 +9054,8 @@ definitions:
         items:
           $ref: "#/definitions/Note"
         maxItems: 150
+      sms_channel:
+        $ref: "#/definitions/ContactSmsChannel"
   Contacts:
     type: "object"
     properties:
@@ -9124,6 +9192,8 @@ definitions:
         items:
           $ref: "#/definitions/Note"
         maxItems: 150
+      sms_channel:
+        $ref: "#/definitions/ContactSmsChannel"
   CreateOrUpdateContactCustomField:
     type: "object"
     properties:
@@ -9137,10 +9207,78 @@ definitions:
         example: "Tesla S 2017"
         description: "The value of the <code>custom_field</code>."
         maxLength: 255
+  JmmlSmsChannelConsents:
+    type: "object"
+    required:
+    - "consent_medium_details"
+    - "consent_medium_type"
+    - "consent_medium_url"
+    - "consent_type"
+    - "sms_consent_permission"
+    properties:
+      sms_consent_permission:
+        type: "string"
+        example: "pending_confirmation"
+        description: "The current consent status of the SMS Channel."
+      consent_type:
+        type: "string"
+        example: "promotional_sms"
+        description: "The type of consent provided."
+      consent_medium_type:
+        type: "string"
+        example: "LF"
+        description: "A code representing where the consent was retrieved."
+      consent_medium_url:
+        type: "string"
+        example: "https://lp.constantcontactpages.com/su/iPtuMuh"
+        description: "The URL for which the consent was gathered, such as a landing\
+          \ page."
+      consent_medium_details:
+        type: "string"
+        example: "Contact used our landing page to consent to SMS."
+        description: "Additional information for the consent"
+      advertised_frequency:
+        type: "integer"
+        example: 1
+        description: "The numeric component used to indicate how often to send advertising.\
+          \ For example, <code>1</code> indicates once. Use with <code>advertised_internal</code>\
+          \ property to indicate when on the calender to send it. For example, to\
+          \ send once (<code>1</code>) daily, weekly, or monthly."
+      advertised_interval:
+        type: "string"
+        example: "weekly"
+        description: "The calender interval used to indicate when advertising is sent.\
+          \ For example <code>weekly</code>."
+  JmmlSmsChannel:
+    type: "object"
+    required:
+    - "country_code"
+    - "dial_code"
+    - "sms_address"
+    - "sms_channel_consents"
+    properties:
+      sms_address:
+        type: "string"
+        example: "7815551212"
+        description: "The contact's SMS-capable phone number, excluding the country\
+          \ code."
+      dial_code:
+        type: "string"
+        example: "1"
+        description: "The dial code the country uses. For example, use <code>1</code>\
+          \ for the United States dial code."
+      country_code:
+        type: "string"
+        example: "US"
+        description: "The two-digit code that identifies the country."
+      sms_channel_consents:
+        type: "array"
+        description: "The consents provided for the SMS Channel."
+        items:
+          $ref: "#/definitions/JmmlSmsChannelConsents"
   ContactCreateOrUpdateInput:
     type: "object"
     required:
-    - "email_address"
     - "list_memberships"
     properties:
       email_address:
@@ -9248,6 +9386,9 @@ definitions:
             maxLength: 50
         required:
         - "kind"
+      sms_channel:
+        type: "string"
+        description: "The contact's SMS compatible phone number."
   ContactCreateOrUpdateResponse:
     type: "object"
     properties:
@@ -9499,7 +9640,7 @@ definitions:
         type: "string"
         format: "date-time"
         example: "2016-03-03T10:53:04-05:00"
-        description: "Date and time that the request was received, in ISO-8601 formmat."
+        description: "Date and time that the request was received, in ISO-8601 format."
       updated_at:
         type: "string"
         format: "date-time"
@@ -9605,10 +9746,6 @@ definitions:
         type: "string"
         example: "2016-03-03T10:53:04-05:0"
         description: "The time that SMS consent was last updated."
-      source_ip:
-        type: "string"
-        example: "123.456.78.9"
-        description: "If applicable, the IP address from which the consent came."
       source_sms_number:
         type: "string"
         example: "6035550239"
@@ -9696,6 +9833,20 @@ definitions:
         type: "integer"
         example: 1
         description: "Total number of newly subscribed contacts."
+  ContactResubscribeRequest:
+    type: "object"
+    required:
+    - "list_ids"
+    properties:
+      list_ids:
+        type: "array"
+        description: "Array of list id values. Constant Contact adds the resubscribed\
+          \ contact to the contact lists you provide in the array."
+        items:
+          type: "string"
+          format: "uuid"
+          example: "04fe9a97-a579-43c5-bb1a-58ed29bf0a6a"
+          description: "Contact list id value."
   Tag:
     type: "object"
     properties:

@@ -5,7 +5,7 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @property string $email The email address of the contact. This method identifies each unique contact using their email address.
+ * @property string $email The email address of the contact. This method identifies each unique contact using their email address. Required if `sms_number` is not specified.
  * @property string $first_name The first name of the contact.
  * @property string $last_name The last name of the contact.
  * @property string $job_title The job title of the contact.
@@ -43,8 +43,8 @@ namespace PHPFUI\ConstantContact\Definition;
  * @property string $other_zip The zip or postal code associated with the contact's other address.
  * @property string $other_country The name of another country where the contact is located.
  * @property string $cf:custom_field_name The name of this property is dynamic based on the custom fields you want to import. Use a key-value pair where the key is an existing custom field name prefixed with <code>cf:</code>, and the value is a custom field string value. For example, if you have a custom field named <code>first_name</code> you can use <code>"cf:first_name":"Joe"</code>. Each contact can contain up to 25 different custom fields.
- * @property string $sms_number The US phone number to associate with the contact's SMS-enabled phone. The country code must be valid. Valid formats are <code>1231231234</code> or <code>123-123-1234</code>.
- * @property string $sms_consent_date Required if the SMS permission is set to `explict`. The date that the contact consented to receiving SMS messages. Valid date formats are MM/DD/YYYY, M/D/YYYY, YYYY/MM/DD, YYYY/M/D, YYYY-MM-DD, YYYY-M-D,M-D-YYYY, or M-DD-YYYY .
+ * @property string $sms_number The US phone number to associate with the contact's SMS-enabled phone. The country code must be valid. Valid formats are <code>1231231234</code> or <code>123-123-1234</code>. Required if `email` is not specified.
+ * @property string $sms_consent_date Required if the SMS permission is set to `explicit`. The date that the contact consented to receiving SMS messages. Valid date formats are MM/DD/YYYY, M/D/YYYY, YYYY/MM/DD, YYYY/M/D, YYYY-MM-DD, YYYY-M-D,M-D-YYYY, or M-DD-YYYY.
  */
 class JsonImportContact extends \PHPFUI\ConstantContact\Definition\Base
 	{

@@ -12,7 +12,6 @@ namespace PHPFUI\ConstantContact\Definition;
  * @property string $consent_action_type The type of consent action provided.
  * @property string $consent_medium_type The code representing the medium used to provide consent. Medium types include mobile device (<code>MD</code>). lead generation form(<code>LF</code>), deactivation by carrier(<code>CD</code>), import_file:(<code>FI</code>), and system (<code>SY</code>).
  * @property string $source_consent_timestamp The time that SMS consent was last updated.
- * @property string $source_ip If applicable, the IP address from which the consent came.
  * @property string $source_sms_number If applicable, the SMS consent number associated with the source.
  * @property int $advertised_frequency If applicable, the advertising numeric component used to advertise to the contact.. For example, if <code>advertised_frequency</code> is set to <code> 2</code> , and  <code>advertised_interval</code> is set to <code>M</code>, the contact receives advertisements twice a month.
  * @property string $advertised_interval If applicable, the interval component used to advertise to the contact. For example, if <code>advertised_frequency</code> is set to <code> 2</code> , and  <code>advertised_interval</code> is set to <code>M</code>, the contact receives advertisements twice a month.
@@ -27,7 +26,6 @@ class HistoryDetails extends \PHPFUI\ConstantContact\Definition\Base
 		'consent_action_type' => 'string',
 		'consent_medium_type' => 'string',
 		'source_consent_timestamp' => 'string',
-		'source_ip' => 'string',
 		'source_sms_number' => 'string',
 		'advertised_frequency' => 'int',
 		'advertised_interval' => 'string',

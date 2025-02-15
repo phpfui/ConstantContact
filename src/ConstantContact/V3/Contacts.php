@@ -15,7 +15,7 @@ class Contacts extends \PHPFUI\ConstantContact\Base
 	 * GET Contacts Collection
 	 *
 	 * Use this method to return a collection of contacts. Use the query parameters
-	 * to search for contacts that match specific contact properties and subresourse
+	 * to search for contacts that match specific contact properties and sub-resource
 	 * properties as criteria. For example, you can search using the contact's
 	 * `email` address, `lists` memberships, and by the date range that a contact
 	 * was created or updated. Use the `limit` query parameter to limit the
@@ -39,7 +39,7 @@ class Contacts extends \PHPFUI\ConstantContact\Base
 	 * @param string $created_before Use `created_before` to search for contacts created before a specified date. To search for contacts created within a date range, specify both `created_after` and `created_before` dates. Accepts ISO-8601 formatted dates.
 	 * @param string $optout_after Use `optout_after` to search for contacts that unsubscribed after a specified date.
 	 * @param string $optout_before Use `optout_before` to search for contacts that unsubscribed before a specified date.
-	 * @param string $include Use `include` to specify which contact sub-resources to include in the response. Use a comma to separate multiple sub-resources. Valid values: `custom_fields`, `list_memberships`, `taggings`, `notes`,`phone_numbers`, `street_addresses`, `sms_channel`.
+	 * @param string $include Use `include` to specify which contact sub-resources to include in the response. Use a comma to separate multiple sub-resources. Valid values: `custom_fields`, `list_memberships`, `taggings`, `notes`,`phone_numbers`, `street_addresses`.
 	 * @param string $sms_status Use to get contacts by their SMS status. This parameter accepts one or more comma separated values: `all`, `explicit`, `unsubscribed`, `pending_confirmation`, `not_set`.
 	 * @param bool $include_count Set `include_count=true` to include the total number of contacts (`contacts_count`) that meet all search criteria in the response body.
 	 * @param int $limit Specifies the number of results displayed per page of output in the response, from 1 - 500, default = 50.
@@ -64,7 +64,7 @@ class Contacts extends \PHPFUI\ConstantContact\Base
 		if (null !== $include)
 			{
 			$parts = \explode(',', $include);
-			$validValues = ['custom_fields', 'list_memberships', 'phone_numbers', 'street_addresses', 'taggings', 'notes', 'sms_channel'];
+			$validValues = ['custom_fields', 'list_memberships', 'phone_numbers', 'street_addresses', 'taggings', 'notes'];
 
 			foreach ($parts as $part)
 				{
@@ -103,10 +103,26 @@ class Contacts extends \PHPFUI\ConstantContact\Base
 	/**
 	 * POST (create) a Contact
 	 *
-	 * Creates a new contact resource; you must include the `create_source`
-	 * property and at least one of the following properties when creating
-	 * a new contact: `first_name`, `last_name`, or `email_address` (`email_address`
-	 * must be unique for each contact).
+	 *
+	 * Creates a new contact resource. You must include the `create_source`
+	 * property and at least one of the following properties: `first_name`,
+	 * `last_name`, a unique `email_address` (specified using the `EmailAddress`
+	 * object), or the `sms_channel` property (specified using the `ContactSmsChannel`
+	 * object).
+	 *
+	 * <div class="Msg"><p class="note-text">If `email_address` is specified:
+	 * **Only use this method when a contact gives you their explicit permission
+	 * to send them an email. It is a violation of anti-spam and telemarketing
+	 * laws, as well as a serious violation of the Constant Contact Terms of
+	 * Service to use the Opt-in features of the API to opt a contact back
+	 * in without his or her own action and consent.</p></div>
+	 *
+	 * If `sms_channel` is specified: <div class="Msg"><p class="note-text">Only
+	 * use this method when a contact gives you their explicit permission to
+	 * send them an SMS. It is a violation of anti-spam and telemarketing laws,
+	 * as well as a serious violation of the Constant Contact Terms of Service
+	 * to use the Opt-in features of the API to opt a contact back in without
+	 * his or her own action and consent.</p></div>
 	 *
 	 * @param \PHPFUI\ConstantContact\Definition\ContactPostRequest $body The JSON payload defining the contact
 	 */
