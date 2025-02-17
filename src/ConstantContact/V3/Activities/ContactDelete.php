@@ -36,5 +36,4 @@ class ContactDelete extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\ActivityDeleteStatus($data) : null;
 		}
-
 	}
