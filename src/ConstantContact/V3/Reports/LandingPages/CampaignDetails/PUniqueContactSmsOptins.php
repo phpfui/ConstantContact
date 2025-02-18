@@ -35,4 +35,5 @@ class PUniqueContactSmsOptins extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\PContactSMSOptInTrackingActivitiesPage($data) : null;
 		}
+
 	}
