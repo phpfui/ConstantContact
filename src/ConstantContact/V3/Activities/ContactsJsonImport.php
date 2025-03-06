@@ -42,7 +42,7 @@ class ContactsJsonImport extends \PHPFUI\ConstantContact\Base
 	 * column header. If explicit permission was not provided, set `sms_permission_to_send`
 	 * to `not_set` (the `sms_consent_date` is not required). If the `sms_consent_date`
 	 * is not set, SMS messages cannot be sent to contacts and `sms_permission_to_send`
-	 * defaults to `not_set. Valid value formats for `sms_consent_date` include
+	 * defaults to `not_set`. Valid value formats for `sms_consent_date` include
 	 * MM/DD/YYYY, M/D/YYYY, YYYY/MM/DD, YYYY/M/D, YYYY-MM-DD, YYYY-M-D,M-D-YYYY,
 	 * or M-DD-YYYY.
 	 *

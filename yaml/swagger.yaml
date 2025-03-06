@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.50"
+  version: "3.0.53"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -882,7 +882,7 @@ paths:
         \ column header. If explicit permission was not provided, set `sms_permission_to_send`\
         \ to `not_set` (the `sms_consent_date` is not required). If the `sms_consent_date`\
         \ is not set, SMS messages cannot be sent to contacts and `sms_permission_to_send`\
-        \ defaults to `not_set. Valid value formats for `sms_consent_date` include\
+        \ defaults to `not_set`. Valid value formats for `sms_consent_date` include\
         \ MM/DD/YYYY, M/D/YYYY, YYYY/MM/DD, YYYY/M/D, YYYY-MM-DD, YYYY-M-D,M-D-YYYY,\
         \ or M-DD-YYYY. \n\nThe request body payload has a maximum size of 4 megabytes\
         \ (MB). If the request body exceeds 4 MB, this method only imports the first\
