@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.53"
+  version: "3.0.62"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -59,6 +59,8 @@ tags:
 - name: "Technology Partners Webhooks"
   description: "Use partner webhooks to subscribe to billing event notifications from\
     \ Constant Contact."
+- name: "Integrations"
+  description: "Endpoints and methods used for integrations."
 schemes:
 - "https"
 consumes:
@@ -802,10 +804,11 @@ paths:
         description: "Specify which contact lists you are adding all imported contacts\
           \ to as an array of up to 50 contact `list_id` values."
         required: true
-        type: "array"
+        type: "string"
         items:
           type: "string"
         maxItems: 50
+        format: "csv"
         x-example: "8c077f20-1586-11e4-bcb3-00163e56be7c"
       - name: "sms_permission_to_send"
         in: "formData"
@@ -2090,7 +2093,7 @@ paths:
         \nUpdates to existing contacts are partial updates. This method only updates\
         \ the contact properties you include in the request body. Updates append new\
         \ contact lists or custom fields to the existing `list_memberships` or `custom_fields`\
-        \ arrays.\nIf `email_address` is specified: <div class=\"Msg\"><p class=\"\
+        \ arrays.\n\nIf `email_address` is specified: <div class=\"Msg\"><p class=\"\
         note-text\">Only use this method when a contact gives you their explicit permission\
         \ to send them an email. It is a violation of anti-spam and telemarketing\
         \ laws, as well as a serious violation of the Constant Contact Terms of Service\
@@ -2101,7 +2104,7 @@ paths:
         \ of anti-spam and telemarketing laws, as well as a serious violation of the\
         \ Constant Contact Terms of Service to use the Opt-in features of the API\
         \ to opt a contact back in without his or her own action and consent.</p></div>\n\
-        When this method creates a new contact, it returns a 201 response code.When\
+        \nWhen this method creates a new contact, it returns a 201 response code.When\
         \ this method updates an existing contact, it returns a 200 response code.\
         \ Updating a deleted contact restores the contact.\n\nThe method automatically\
         \ modifies the contact's `permission_to_send` and `opt_in_source` properties\
@@ -9276,6 +9279,7 @@ definitions:
         description: "The consents provided for the SMS Channel."
         items:
           $ref: "#/definitions/JmmlSmsChannelConsents"
+    description: "The contact's SMS details."
   ContactCreateOrUpdateInput:
     type: "object"
     required:
@@ -9387,8 +9391,7 @@ definitions:
         required:
         - "kind"
       sms_channel:
-        type: "string"
-        description: "The contact's SMS compatible phone number."
+        $ref: "#/definitions/JmmlSmsChannel"
   ContactCreateOrUpdateResponse:
     type: "object"
     properties:

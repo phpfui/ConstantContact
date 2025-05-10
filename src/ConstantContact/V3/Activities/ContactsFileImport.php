@@ -42,10 +42,10 @@ class ContactsFileImport extends \PHPFUI\ConstantContact\Base
 If adding an `sms_number`, you must also include the `sms_permission_to_send` parameter and set it to either `not_set` or `explicit`. If `explicit`, requires including `sms_consent_date` as a column header to specify the date the contact consented to receiving SMS messages. 
 
 You can also use custom fields as column headings. Enter the custom field name prefixed with `cf:` as the column heading. For example, use `cf:first_name` as the header name if you have a custom field named "first_name". The custom field must already exist in the Constant Contact account you are using. Depending on the custom field data type, you can enter dates or strings as the value of the custom field. Each contact can contain up to 25 different custom fields.
-	 * @param array $list_ids Specify which contact lists you are adding all imported contacts to as an array of up to 50 contact `list_id` values.
+	 * @param string $list_ids Specify which contact lists you are adding all imported contacts to as an array of up to 50 contact `list_id` values.
 	 * @param string $sms_permission_to_send If importing contact `sms_number`s, use this parameter to specify how SMS consent was provided. If all contacts in the file provided their consent, set to `explicit` and include each contact's `sms_consent_date`. If all contacts in the file have not yet provided consent, set to `not_set` (`sms_consent_date` is not required). You cannot message a contact that does not have a sms consent date set.
 	 */
-	public function post(string $file, array $list_ids, ?string $sms_permission_to_send = null) : ?array
+	public function post(string $file, string $list_ids, ?string $sms_permission_to_send = null) : ?array
 		{
 
 		if (null !== $sms_permission_to_send)
@@ -61,7 +61,7 @@ You can also use custom fields as column headings. Enter the custom field name p
 		return $this->doPost(['file' => $file, 'list_ids' => $list_ids, 'sms_permission_to_send' => $sms_permission_to_send, ]);
 		}
 
-	public function postTyped(string $file, array $list_ids, ?string $sms_permission_to_send = null) : ?\PHPFUI\ConstantContact\Definition\ActivityImport
+	public function postTyped(string $file, string $list_ids, ?string $sms_permission_to_send = null) : ?\PHPFUI\ConstantContact\Definition\ActivityImport
 		{
 		$data = $this->post($file, $list_ids, $sms_permission_to_send);
 

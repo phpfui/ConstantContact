@@ -17,7 +17,7 @@ namespace PHPFUI\ConstantContact\Definition;
  * @property int $birthday_month The month value for the contact's birthday. Valid values are from 1 through 12. The <code>birthday_month</code> property is required if you use <code>birthday_day</code>.
  * @property int $birthday_day The day value for the contact's birthday. Valid values are from 1 through 31. The <code>birthday_day</code> property is required if you use <code>birthday_month</code>.
  * @property \PHPFUI\ConstantContact\Definition\StreetAddress $street_address
- * @property string $sms_channel The contact's SMS compatible phone number.
+ * @property \PHPFUI\ConstantContact\Definition\JmmlSmsChannel $sms_channel
  */
 class ContactCreateOrUpdateInput extends \PHPFUI\ConstantContact\Definition\Base
 	{
@@ -34,7 +34,7 @@ class ContactCreateOrUpdateInput extends \PHPFUI\ConstantContact\Definition\Base
 		'birthday_month' => 'int',
 		'birthday_day' => 'int',
 		'street_address' => '\PHPFUI\ConstantContact\Definition\StreetAddress',
-		'sms_channel' => 'string',
+		'sms_channel' => '\PHPFUI\ConstantContact\Definition\JmmlSmsChannel',
 
 	];
 

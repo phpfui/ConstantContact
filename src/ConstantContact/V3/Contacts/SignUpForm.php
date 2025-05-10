@@ -28,6 +28,7 @@ class SignUpForm extends \PHPFUI\ConstantContact\Base
 	 * the contact properties you include in the request body. Updates append
 	 * new contact lists or custom fields to the existing `list_memberships`
 	 * or `custom_fields` arrays.
+	 *
 	 * If `email_address` is specified: <div class="Msg"><p class="note-text">Only
 	 * use this method when a contact gives you their explicit permission to
 	 * send them an email. It is a violation of anti-spam and telemarketing
@@ -41,6 +42,7 @@ class SignUpForm extends \PHPFUI\ConstantContact\Base
 	 * as well as a serious violation of the Constant Contact Terms of Service
 	 * to use the Opt-in features of the API to opt a contact back in without
 	 * his or her own action and consent.</p></div>
+	 *
 	 * When this method creates a new contact, it returns a 201 response code.When
 	 * this method updates an existing contact, it returns a 200 response code.
 	 * Updating a deleted contact restores the contact.
