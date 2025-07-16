@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.65"
+  version: "3.0.72"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -44,6 +44,8 @@ tags:
 - name: "Email Scheduling"
   description: "Use email scheduling endpoints and methods to schedule an email campaign\
     \ activity, unschedule an email campaign activity, and GET schedule information."
+- name: "Events"
+  description: "Endpoints and methods used to create and manage events."
 - name: "Segments"
   description: "Use segments to target a subset of your contacts that are most likely\
     \ to engage with a particular campaign."
@@ -6802,6 +6804,115 @@ definitions:
           \ sends an email to that address with a link to confirm it. You can use\
           \ any account email address with a <code>CONFIRMED</code> status to create\
           \ an email campaign.\n"
+  TierObject:
+    type: "object"
+    properties:
+      usage_type:
+        type: "string"
+        example: "CONTACTS"
+        description: "Identifies the tier usage type that is associated with the billing\
+          \ plan."
+        readOnly: true
+        default: "CONTACTS"
+      current_usage:
+        type: "number"
+        format: "float"
+        example: 10.0
+        description: "The number of active contacts (default) used within the current\
+          \ tier."
+        readOnly: true
+      tier:
+        type: "integer"
+        format: "int32"
+        example: 1
+        description: "The billing tier level that is associated with a client account.\
+          \ By default, the system determines the tier level to use based on the number\
+          \ of active contacts currently in the client account at the time of billing.\
+          \ Billing tiers may differ. The following shows an example billing tier:\
+          \ <ul>\n  <li>level <code>1</code> = 0 - 500 contacts</li>\n  <li>level\
+          \ <code>2</code> = 501 - 1000 contacts</li>\n  <li>level <code>3</code>\
+          \ = 1001 - ...</li>\n</ul>"
+        readOnly: true
+      tier_min:
+        type: "number"
+        format: "float"
+        example: 0.0
+        description: "The minimum number of active contacts for the tier level."
+        readOnly: true
+      tier_max:
+        type: "number"
+        format: "float"
+        example: 500.0
+        description: "The maximum number of active contacts for the tier level."
+        readOnly: true
+      price:
+        type: "number"
+        format: "float"
+        example: 20.0
+        description: "The billing price set for the tier used to bill the client account\
+          \ each month."
+        readOnly: true
+      currency_code:
+        type: "string"
+        example: "USD"
+        description: "The currency (ISO currency code) used to price the tier for\
+          \ a client account."
+        readOnly: true
+    description: "The usage tier that is associated with a client's Constant Contact\
+      \ account and is used to calculate the monthly billing price."
+  PlanTiersObject:
+    type: "object"
+    properties:
+      plan_type:
+        type: "string"
+        example: "GOLD"
+        description: "The billing plan that is associated with a client's Constant\
+          \ Contact account. The billing plan determines which Constant Contact product\
+          \ features that the client account can access. If you are not on the latest\
+          \ billing plan, contact the Constant Contact Partner Team. However, older\
+          \ billing plans and <code>plan_type</code> enum values will continue to\
+          \ be supported. <ul>\n  <li><code>TRIAL</code>: Provides limited product\
+          \ features for a non-billed account and the account has an expiration date.</li>\n\
+          \  <li><code>BRONZE</code>: Billable plan that provides basic email and\
+          \ marketing tools.</li>  \n  <li><code>SILVER</code>: Billable plan that\
+          \ provides all features available in the <code>BRONZE</code> plan, and adds\
+          \ some additional email campaign to features, such as contact segmentation\
+          \ and social media ads integration.</li>\n  <li><code>GOLD</code>: Billable\
+          \ plan that provides all available product features.</li>\n</ul>"
+      current_tiers:
+        type: "array"
+        description: "Lists the billing plan tiers that are currently associated with\
+          \ a client account."
+        items:
+          $ref: "#/definitions/TierObject"
+      billing_status:
+        type: "string"
+        example: "Open"
+        description: "The client's account billing status. When you first create a\
+          \ client account the <code>billing_status</code> defaults to <code>Trial</code>.\
+          \ Billing status values include:\n  <ul>\n    <li><code>Trial</code> - A\
+          \ non-paying trial client account (default value).</li>\n    <li><code>Open</code>\
+          \ - An active and paying client account.</li>\n    <li><code>Canceled</code>\
+          \ - A canceled client account.</li>\n    <li><code>Trial End</code> - The\
+          \ trial period has ended for this client account.</li>\n  </ul>"
+      billing_day_of_month:
+        type: "integer"
+        format: "int32"
+        example: 15
+        description: "This property is required when an account is not set up to use\
+          \ single billing. For trial accounts, the value is initially set to <code>null</code>.\
+          \ The value can only be changed when changing the <code>plan_type</code>\
+          \ from a trial account to a different type of plan, otherwise the value\
+          \ you enter is ignored. You can choose to enter a specific day of month\
+          \ or except the default value, which is the day that the <code>plan_type</code>\
+          \ value changes from a trial account plan to a different plan. Valid <code>billing_day_of_month</code>\
+          \ values include <code>1</code> through and including <code>31</code>."
+    description: "Specifies client billing plan details including the type of plan,\
+      \ the plan tiers used, the current billing status, and the day of the month\
+      \ that the client is billed. When a client account is first provisioned, the\
+      \ `plan_type` defaults to a `Trial` account. After you change an account `billing_status`\
+      \ from `Trial` to any other `billing_status`, you cannot change it back to a\
+      \ `Trial` account."
   ActivityStatus:
     type: "object"
     properties:
@@ -8245,6 +8356,1116 @@ definitions:
                 type: "string"
                 example: "/v3/activities/04fe9a97-a579-43c5-bb1a-58ed29bf0a6a"
     description: "Activity status for contact_delete activity"
+  AddressDto:
+    type: "object"
+    required:
+    - "address_type"
+    properties:
+      address_type:
+        type: "string"
+        example: "EVENT"
+        description: "The address type. Only `EVENT` is currently supported."
+      line1:
+        type: "string"
+        example: "100 Seaport Blvd"
+        description: "The first line of the address where the event takes place."
+        minLength: 0
+        maxLength: 80
+      line2:
+        type: "string"
+        example: "100 Seaport Blvd"
+        description: "The second line of the address where the event takes place."
+        minLength: 0
+        maxLength: 80
+      city:
+        type: "string"
+        example: "Boston"
+        description: "The city where the event takes place."
+        minLength: 0
+        maxLength: 80
+      country:
+        type: "string"
+        example: "United States"
+        description: "Name of the country where the event takes place."
+        minLength: 0
+        maxLength: 128
+      country_code:
+        type: "string"
+        example: "US"
+        description: "The country code associated with the country where the event\
+          \ takes place."
+        minLength: 0
+        maxLength: 2
+      create_time:
+        type: "string"
+        example: "2023-11-17T17:33:21.652Z"
+        description: "The create time of the event."
+      last_update_time:
+        type: "string"
+        example: "2023-12-07T13:18:39.681Z"
+        description: "The last modification time of the event."
+      latitude:
+        type: "number"
+        format: "float"
+        example: 42.629368
+        description: "The latitude number indicating where the event takes place."
+      longitude:
+        type: "number"
+        format: "float"
+        example: -71.27594
+        description: "The longitude number indicating where the event takes place."
+      location_name:
+        type: "string"
+        example: "Holiday Market at Snowport"
+        description: "The venue name where the event takes place."
+        minLength: 0
+        maxLength: 100
+      postal_code:
+        type: "string"
+        example: "02451"
+        description: "The address postal code."
+        minLength: 0
+        maxLength: 25
+      state:
+        type: "string"
+        example: "Queensland"
+        description: "The State/Province where the event takes place."
+        minLength: 0
+        maxLength: 80
+      state_code:
+        type: "string"
+        example: "MA"
+        description: "The state code where the event takes place."
+        minLength: 0
+        maxLength: 2
+    title: "AddressDto"
+  EventRegistrationSummaryMetricDto:
+    type: "object"
+    properties:
+      registration_count:
+        type: "integer"
+        format: "int32"
+        description: "The total number of registrants for the event."
+      ticket_sold:
+        type: "integer"
+        format: "int32"
+        description: "The total number of tickets sold for the event."
+      item_sold:
+        type: "integer"
+        format: "int32"
+        description: "The total number of items sold for the event."
+    description: "The event registration summary metrics"
+  EventListingDto:
+    type: "object"
+    properties:
+      event_id:
+        type: "string"
+        example: "05cf4d60-56ea-4023-bf49-b35e56a9c7b5"
+        description: "The unique identifier for the event."
+      title:
+        type: "string"
+        example: "Class of 2015 Reunion"
+        description: "The title of the event."
+      description:
+        type: "string"
+        example: "Join us for a night of reminiscing and celebration"
+        description: "The description of the event."
+      start_time:
+        type: "string"
+        example: "2023-12-01T20:30:00Z"
+        description: "The start time of the event in UTC format."
+      end_time:
+        type: "string"
+        example: "2023-12-01T21:30:00Z"
+        description: "The end time of the event in UTC format."
+      status:
+        type: "string"
+        example: "ACTIVE"
+        description: "The current status of the event."
+      registration_url:
+        type: "string"
+        example: "https://l1.constantcontactpages.com/ev/reg/scrk2u2"
+        description: "The URL for event registration."
+      name:
+        type: "string"
+        example: "Holiday Market at Snowport"
+        description: "The name of the event."
+      event_type:
+        type: "string"
+        example: "PERFORMING_ARTS"
+        description: "The type of event."
+      location_type:
+        type: "string"
+        example: "PHYSICAL"
+        description: "Specifies if this is a physical or virtual event (or both),\
+          \ or if the location is to be specified in the future."
+      time_zone_type:
+        type: "string"
+        description: "The type of time zone."
+      address:
+        $ref: "#/definitions/AddressDto"
+      event_registration_summary_metrics:
+        $ref: "#/definitions/EventRegistrationSummaryMetricDto"
+      create_time:
+        type: "string"
+        description: "The create time of the event in UTC format."
+    description: "Provides information about the event listing."
+  Href:
+    type: "object"
+    properties:
+      href:
+        type: "string"
+  Links:
+    type: "object"
+    properties:
+      self:
+        $ref: "#/definitions/Href"
+      next:
+        $ref: "#/definitions/Href"
+      prev:
+        $ref: "#/definitions/Href"
+    description: "HATEOAS links for navigation. Is null if no additional navigation\
+      \ links are available."
+  PaginationDtoEventListingDto:
+    type: "object"
+    properties:
+      records:
+        type: "array"
+        description: "List of records for the current page"
+        readOnly: true
+        items:
+          $ref: "#/definitions/EventListingDto"
+      next_cursor:
+        type: "string"
+        example: "roBvv-Nidkuxg8gTAJ5joDU6yQufWMDdEHjRqzcTXnZ3qBZYR3jZChnZTC6McJ6j8M70fM4IFT8KNJvA076D0g"
+        description: "Use to get the next page of results."
+        readOnly: true
+      prev_cursor:
+        type: "string"
+        example: "Z83W2HtZsQkzXXStyKDDKs5hkuPz7mQvqcg37Quq-Lb_BXnKqYmUf13Li6ZyeRCY8M70fM4IFT8KNJvA076D0g"
+        description: "Use to get the previous page of results."
+        readOnly: true
+      _links:
+        $ref: "#/definitions/Links"
+      total_records:
+        type: "integer"
+        format: "int32"
+        example: 26
+        description: "Total number of records across all pages."
+        readOnly: true
+    description: "Generic pagination response with cursor-based navigation"
+  ContactDto:
+    type: "object"
+    required:
+    - "name"
+    - "organization_name"
+    properties:
+      create_time:
+        type: "string"
+        example: "2023-11-17T17:33:21.652Z"
+        description: "The create time of the event."
+      email_address:
+        type: "string"
+        example: "john.doe@aol.com"
+        description: "The email address to use to when replying to email, as well\
+          \ as the email that receives SO notifications."
+        minLength: 0
+        maxLength: 128
+      from_email_address:
+        type: "string"
+        example: "john.doe@aol.com"
+        description: "The email address to use for sending confirmation emails."
+        minLength: 0
+        maxLength: 128
+      last_update_time:
+        type: "string"
+        example: "2023-12-07T13:18:39.681Z"
+        description: "The time the event was last modified. ISO format"
+      name:
+        type: "string"
+        example: "John Doe"
+        description: "The contact name to associate with the event."
+        minLength: 0
+        maxLength: 100
+      organization_name:
+        type: "string"
+        example: "Doe Orchards"
+        description: "The organization name to associate with the event."
+        minLength: 0
+        maxLength: 255
+      phone_number:
+        type: "string"
+        example: "781 265 8956"
+        description: "The phone number to associate with the event."
+        minLength: 1
+        maxLength: 25
+    title: "ContactDto"
+  EventMediaAssetDto:
+    type: "object"
+    properties:
+      create_time:
+        type: "string"
+        example: "2023-11-17T17:33:21.652Z"
+        description: "Create time of the event media. ISO format."
+      external_id:
+        type: "string"
+        example: "123456"
+        description: "The external ID to associate with the event media."
+      external_url:
+        type: "string"
+        description: "The event media URL."
+      internal_id:
+        type: "string"
+        example: "123456"
+        description: "The internal ID for the event media."
+      last_update_time:
+        type: "string"
+        example: "2023-12-07T13:18:39.681Z"
+        description: "Last time the media was modified. ISO format."
+      media_type:
+        type: "string"
+        example: "BNR"
+        description: "Identifies the media type."
+    title: "EventMediaAssetDto"
+  ItemSummaryDto:
+    type: "object"
+    required:
+    - "name"
+    properties:
+      associated:
+        type: "boolean"
+        example: true
+        description: "Specifies if the item is associated with the promo code."
+      display_item_on_promo_redemption:
+        type: "boolean"
+        example: true
+        description: "Specifies if the item on promo code redemption displays."
+      hidden_flag:
+        type: "boolean"
+        example: true
+        description: "Specifies if the item is hidden."
+      item_id:
+        type: "string"
+        example: "ITEM123"
+        description: "The unique identifier for the item."
+      name:
+        type: "string"
+        example: "T-shirt"
+        description: "The name of the item."
+    title: "ItemSummaryDto"
+    description: "Summary information for an item."
+  StatusDisplayLabelDto:
+    type: "object"
+    properties:
+      label:
+        type: "string"
+        example: "Sold out"
+        description: "The display text for the status. For example: Available, Sold\
+          \ out."
+        readOnly: true
+      label_key:
+        type: "string"
+        example: "status_label.available"
+        description: "The translation key for the status. For example: status_label.available,\
+          \ status_label.sold_out."
+        readOnly: true
+    title: "StatusDisplayLabelDto"
+    description: "Represents a display label for a status with the translation label\
+      \ key."
+  TicketSummaryDto:
+    type: "object"
+    required:
+    - "name"
+    - "ticket_type"
+    properties:
+      name:
+        type: "string"
+        example: "VIP Ticket"
+        description: "The name to associate with the ticket."
+      ticket_id:
+        type: "string"
+        example: "TICKET123"
+        description: "The unique identifier for the ticket."
+      ticket_type:
+        type: "string"
+        example: "PAID"
+        description: "The type of ticket."
+      associated:
+        type: "boolean"
+        example: false
+        description: "Specifies if the ticket is associated with the promo code."
+      display_ticket_on_promo_redemption:
+        type: "boolean"
+        example: true
+        description: "Specifies if the ticket on the promo code redemption displays."
+      hidden_flag:
+        type: "boolean"
+        example: true
+        description: "Specifies if the ticket is hidden."
+    title: "TicketSummaryDto"
+  PromoCodeDto:
+    type: "object"
+    required:
+    - "name"
+    properties:
+      name:
+        type: "string"
+        example: "WIN95"
+        description: "The name of the promotional code."
+      end_time:
+        type: "string"
+        example: "2026-11-17T17:33:21.652Z"
+        description: "The date to end the promotional code. ISO format"
+      deleted_time:
+        type: "string"
+        example: "2023-11-17T17:33:21.652Z"
+        description: "Delete time of the promo code. ISO format."
+      description:
+        type: "string"
+        example: "JAN_PROMO"
+        description: "Promotional code description."
+      discount_amount:
+        type: "number"
+        example: 10.0
+        description: "The discount dollar amount date to apply to the promotional\
+          \ code."
+      discount_code_scope:
+        type: "string"
+        example: "ORDER_TOTAL"
+        description: "The scope that applies to the discount code."
+      discount_code_type:
+        type: "string"
+        example: "PERCENT"
+        description: "The type of discount code to use for the event."
+      discount_percent:
+        type: "integer"
+        format: "int32"
+        example: 20
+        description: "The promotional discount percentage to apply for the promotional\
+          \ code."
+      id:
+        type: "string"
+        example: "123456"
+        description: "The ID to use for the promotion code."
+      items:
+        type: "array"
+        example:
+        - item_id: "item123"
+          name: "T-shirt"
+        description: "List of items associated with this promo code."
+        items:
+          $ref: "#/definitions/ItemSummaryDto"
+      paused_flag:
+        type: "boolean"
+        example: false
+        description: "Pauses the promotional code."
+      quantity_available:
+        type: "integer"
+        format: "int32"
+        example: 500
+        description: "Total number of promotional codes available for use."
+      quantity_total:
+        type: "integer"
+        format: "int32"
+        example: 1000
+        description: "Total number of promotional codes to accept."
+      quantity_used:
+        type: "integer"
+        format: "int32"
+        description: "Total number of promotional codes used."
+      start_time:
+        type: "string"
+        example: "2026-11-10T17:33:21.652Z"
+        description: "The date the promotional code starts. ISO format"
+      status:
+        type: "string"
+        description: "The status of the promo code."
+      status_labels:
+        type: "array"
+        example:
+        - label: "Available"
+          label_key: "status_label.available"
+        - label: "Sold out"
+          label_key: "status_label.sold_out"
+        description: "Status display labels with display text and translation key."
+        readOnly: true
+        items:
+          $ref: "#/definitions/StatusDisplayLabelDto"
+      tickets:
+        type: "array"
+        items:
+          $ref: "#/definitions/TicketSummaryDto"
+      time_limit_flag:
+        type: "boolean"
+        example: false
+        description: "Indicates a time limit applies to the promotional code."
+    title: "PromoCodeDto"
+    description: "Specifies promotion code details."
+  AttributeDto:
+    type: "object"
+    required:
+    - "name"
+    properties:
+      create_time:
+        type: "string"
+        example: "2023-11-17T17:33:21.652Z"
+        description: "Create time of the event."
+      last_update_time:
+        type: "string"
+        example: "2023-12-07T13:18:39.681Z"
+        description: "Last modification time of the event."
+      attribute_id:
+        type: "string"
+        example: "attr123"
+        description: "The unique identifier for the attribute."
+      display_order:
+        type: "integer"
+        format: "int32"
+        example: 1
+        description: "The order in which the attribute should display."
+      name:
+        type: "string"
+        example: "Size"
+        description: "The name of the attribute"
+      quantity_total:
+        type: "integer"
+        format: "int32"
+        example: 100
+        description: "The total quantity available for this attribute."
+      quantity_remaining:
+        type: "integer"
+        format: "int32"
+        example: 20
+        description: "The total quantity that remains available for this attribute."
+      quantity_sold:
+        type: "integer"
+        format: "int32"
+        example: 40
+        description: "The total quantity sold for this attribute."
+      paused_flag:
+        type: "boolean"
+        example: false
+        description: "Specifies if the attribute is currently paused from sales."
+      deleted_time:
+        type: "string"
+        example: "2025-05-01T00:00:00.000Z"
+        description: "The time when the attribute was deleted."
+      status_labels:
+        type: "array"
+        items:
+          $ref: "#/definitions/StatusDisplayLabelDto"
+    title: "AttributeDto"
+  ItemDto:
+    type: "object"
+    required:
+    - "name"
+    properties:
+      create_time:
+        type: "string"
+        example: "2023-11-17T17:33:21.652Z"
+        description: "The create time of the event is ISO format."
+      last_update_time:
+        type: "string"
+        example: "2023-12-07T13:18:39.681Z"
+        description: "Last modification time of the event."
+      item_id:
+        type: "string"
+        example: "ITEM123"
+        description: "The unique identifier for the item."
+      display_order:
+        type: "integer"
+        format: "int32"
+        example: 1
+        description: "The order in which to display an item."
+      name:
+        type: "string"
+        example: "VIP Ticket"
+        description: "The name of the item."
+      description:
+        type: "string"
+        example: "Premium access to all event areas."
+        description: "The description of the item."
+      price:
+        type: "number"
+        example: 25.0
+        description: "The price per item."
+      quantity_total:
+        type: "integer"
+        format: "int32"
+        example: 100
+        description: "The total number of items available."
+      quantity_remaining:
+        type: "integer"
+        format: "int32"
+        example: 50
+        description: "The total number of items still available."
+      quantity_sold:
+        type: "integer"
+        format: "int32"
+        example: 50
+        description: "The total number of items sold."
+      limit_per_order:
+        type: "integer"
+        format: "int32"
+        example: 2
+        description: "Limits the number of items per order."
+      show_remaining_flag:
+        type: "boolean"
+        example: false
+        description: "Set to display or not to display the number of remaining items\
+          \ to customers."
+      paused_flag:
+        type: "boolean"
+        example: true
+        description: "Specifies if the item is currently paused from sales."
+      deletable_flag:
+        type: "boolean"
+        example: true
+        description: "Specifies if the item can be deleted."
+        readOnly: true
+      media_internal_id:
+        type: "string"
+        example: "rqla5y1"
+        description: "The internal identifier for the item's image."
+      media_url:
+        type: "string"
+        example: "https://example.com/media/image.jpg"
+        description: "The URL to associate with the media."
+      time_limit_flag:
+        type: "boolean"
+        example: false
+        description: "Specifies if the item has time-based availability."
+      start_time:
+        type: "string"
+        example: "2025-04-17T20:00:00.000Z"
+        description: "The start time when the item becomes available."
+      end_time:
+        type: "string"
+        example: "2025-05-17T20:00:00.000Z"
+        description: "The time that the item become unavailable."
+      hidden_flag:
+        type: "boolean"
+        example: false
+        description: "Specifies if the item is hidden from customers."
+      deleted_time:
+        type: "string"
+        example: "2024-05-17T20:00:00.000Z"
+        description: "The time when the item was deleted."
+      status_labels:
+        type: "array"
+        items:
+          $ref: "#/definitions/StatusDisplayLabelDto"
+      attributes:
+        type: "array"
+        items:
+          $ref: "#/definitions/AttributeDto"
+    title: "ItemDto"
+  TrackDto:
+    type: "object"
+    required:
+    - "campaign_activity_id"
+    properties:
+      campaign_activity_id:
+        type: "string"
+        format: "uuid"
+        example: "31bb0c22-1c72-4841-9d2c-8bd41ed526bc"
+        description: "The campaign activity ID associated with the registration form."
+        readOnly: true
+      conf_email_campaign_activity_id:
+        type: "string"
+        format: "uuid"
+        example: "31bb0c22-1c72-4841-9d2c-8bd41ed526bc"
+        description: "The confirmation email campaign activity ID."
+        readOnly: true
+      create_time:
+        type: "string"
+        example: "2023-11-17T17:33:21.652Z"
+        description: "The event's create time."
+        readOnly: true
+      items_header:
+        type: "string"
+        example: "Items"
+        description: "items header"
+      last_update_time:
+        type: "string"
+        example: "2023-12-07T13:18:39.681Z"
+        description: "The event's last modification time."
+        readOnly: true
+      media_assets:
+        type: "array"
+        description: "The list of media assets configured for the event."
+        items:
+          $ref: "#/definitions/EventMediaAssetDto"
+      overall_ticket_capacity:
+        type: "integer"
+        format: "int32"
+        example: 100
+        description: "The total overall ticket capacity."
+      platform_fee_scope_type:
+        type: "string"
+        example: "OWNER"
+        description: "Specifies if the platform fee is passed to registrant or absorbed\
+          \ by the event host."
+      promo_codes:
+        type: "array"
+        description: "The list of <code>promo_codes</code> configured for the event."
+        items:
+          $ref: "#/definitions/PromoCodeDto"
+      reg_manually_closed_flag:
+        type: "boolean"
+        example: true
+        description: "Closes registration to prevent further registrations."
+      registration_end_time:
+        type: "string"
+        example: "2024-01-01T20:30:00Z"
+        description: "The date and time when registration should end. ISO format."
+      registration_type:
+        type: "string"
+        example: "TICKET"
+        description: "The registration type for the event."
+      restrict_to_single_ticket_flag:
+        type: "boolean"
+        example: true
+        description: "Restricts selection to a single ticket."
+      tickets_header:
+        type: "string"
+        example: "Tickets"
+        description: "The header to use for tickets."
+      track_id:
+        type: "string"
+        example: "s8zabc"
+        description: "The ticket <code>track id</code>."
+        readOnly: true
+      items:
+        type: "array"
+        readOnly: true
+        items:
+          $ref: "#/definitions/ItemDto"
+    title: "TrackDto"
+  EventMetaDataDto:
+    type: "object"
+    properties:
+      items_enabled:
+        type: "boolean"
+        example: true
+        description: "Specifies if the items are enabled for the event."
+      paid_event:
+        type: "boolean"
+        example: true
+        description: "Specifies if the event requires payment."
+      promo_codes_enabled:
+        type: "boolean"
+        example: true
+        description: "Specifies if promotion codes are enabled for the event."
+    title: "EventMetaDataDto"
+    description: "Additional information related to event"
+  EventPromotionDto:
+    type: "object"
+    properties:
+      assoc_activity_sub_type:
+        type: "string"
+        example: "EMAIL_INVITATION"
+        description: "The type of associated activity"
+      campaign_activity_id:
+        type: "string"
+        format: "uuid"
+        example: "123e4567-e89b-12d3-a456-426614174000"
+        description: "The unique identifier for the campaign activity."
+      document_id:
+        type: "string"
+        format: "uuid"
+        example: "123e4567-e89b-12d3-a456-426614174000"
+        description: "The unique identifier for the document."
+      ext_id:
+        type: "string"
+        format: "uuid"
+        example: "123e4567-e89b-12d3-a456-426614174000"
+        description: "The external identifier."
+      default:
+        type: "boolean"
+        example: false
+        description: "Whether this is the default promotion."
+    description: "Represents a promotion associated with an event."
+  EventSettingsDto:
+    type: "object"
+    properties:
+      event_requires_payments:
+        type: "boolean"
+        example: true
+        description: "Specifies if the event is configured to require payment."
+      item_configured:
+        type: "boolean"
+        example: false
+        description: "Specifies if items exist for the event."
+      online_payment_configured:
+        type: "boolean"
+        example: false
+        description: "Specifies if online payment is configured for the event."
+      payment_configured:
+        type: "boolean"
+        example: false
+        description: "Specifies if payment is configured for the event."
+      promo_code_configured:
+        type: "boolean"
+        example: false
+        description: "Specifies if promo code is configured for the event."
+      ticket_configured:
+        type: "boolean"
+        example: true
+        description: "Specifies if ticketing is configured for the event"
+  OnlineMeetingDto:
+    type: "object"
+    properties:
+      create_time:
+        type: "string"
+        example: "2023-11-17T17:33:21.652Z"
+        description: "Create time of the event. ISO format."
+      enabled_flag:
+        type: "boolean"
+        example: false
+      instructions:
+        type: "string"
+      label:
+        type: "string"
+      last_update_time:
+        type: "string"
+        example: "2023-12-07T13:18:39.681Z"
+        description: "Last modification time of the event. ISO format."
+      provider_type:
+        type: "string"
+        example: "ZOOM"
+        description: "The type of online meeting provider for the event"
+      url:
+        type: "string"
+        example: "https://meet.google.com/abc-defg-hij"
+        description: "The URL to use for the online meeting."
+    title: "OnlineMeetingDto"
+  Message:
+    type: "object"
+    properties:
+      error_key:
+        type: "string"
+      error_message:
+        type: "string"
+    description: "List of error messages associated with the payment option."
+  PaymentOptionConfigurationDto:
+    type: "object"
+    properties:
+      create_time:
+        type: "string"
+        example: "2023-11-17T17:33:21.652Z"
+        description: "Create time of the event."
+      last_update_time:
+        type: "string"
+        example: "2023-12-07T13:18:39.681Z"
+        description: "Last modification time of the event."
+      payment_account_id:
+        type: "string"
+        format: "uuid"
+        example: "123e4567-e89b-12d3-a456-426614174000"
+        description: "The unique identifier for the payment account."
+      payment_option:
+        type: "string"
+        example: "WEPAY"
+        description: "The type of payment option."
+      visible:
+        type: "boolean"
+        example: true
+        description: "Specifies if the payment option is visible to users."
+      selected:
+        type: "boolean"
+        example: false
+        description: "Specifies if the payment option is selected by default."
+      additional_accounts:
+        type: "boolean"
+        example: false
+        description: "Specifies if additional accounts are available."
+      error_messages:
+        type: "array"
+        description: "List of error messages associated with the payment option."
+        items:
+          $ref: "#/definitions/Message"
+    description: "Base configuration for payment options in an event."
+  CheckPaymentOptionConfigurationDto:
+    allOf:
+    - $ref: "#/definitions/PaymentOptionConfigurationDto"
+    - type: "object"
+      properties:
+        payable_to:
+          type: "string"
+          description: "The name to make the check payable too."
+  PayPalPaymentConfigurationDto:
+    allOf:
+    - $ref: "#/definitions/PaymentOptionConfigurationDto"
+    - type: "object"
+      properties:
+        email_address:
+          type: "string"
+        venmo_enabled:
+          type: "boolean"
+        pay_later_enabled:
+          type: "boolean"
+  OnlinePaymentOptionConfigurationDto:
+    allOf:
+    - $ref: "#/definitions/PaymentOptionConfigurationDto"
+    - type: "object"
+      properties:
+        email_address:
+          type: "string"
+  AdditionalPaymentOptionConfigurationDto:
+    type: "object"
+    properties:
+      payment_option:
+        type: "string"
+        example: "STRIPE"
+        description: "Provides an additional form of payment option."
+      payment_option_configurations:
+        type: "array"
+        example: "./events.yaml#/PaymentOptionConfigurationDto"
+        description: "Provides additional payment option configurations."
+        items: {}
+    title: "AdditionalPaymentOptionConfigurationDto"
+  EventPlatformFeeConfigurationBaseDto:
+    type: "object"
+    properties:
+      currency_type:
+        type: "string"
+        example: "USD"
+        description: "The type of currency to use for the event."
+      exempt:
+        type: "boolean"
+        example: false
+        description: "Specifies if the platform fee is exempt."
+      flat_rate_component:
+        type: "number"
+        example: 1.0
+        description: "Specifies the flat rate component of the platform fee."
+      last_refreshed_time:
+        type: "string"
+        example: "2023-11-17T17:33:21.655Z"
+        description: "The flat rate component of the platform fee"
+      percent_component:
+        type: "number"
+        example: 2.5
+        description: "The percentage component of the platform fee."
+      platform_fee_instruction_keys:
+        type: "array"
+        description: "List of instruction keys for platform fees."
+        items:
+          type: "string"
+          description: "List of instruction keys for platform fees."
+    title: "EventPlatformFeeConfigurationBaseDto"
+  PaymentConfigurationDto:
+    type: "object"
+    properties:
+      currency_type:
+        type: "string"
+        example: "USD"
+        description: "Identifies the currency used for payment."
+      payment_instructions:
+        type: "string"
+        example: "{\"WEPAY\":\"Credit card payment instructions\"}"
+        description: "Payment instructions for each payment option."
+      payment_option_configurations:
+        type: "array"
+        description: "Payment options."
+        items: {}
+        maxItems: 1
+      additional_payment_option_configurations:
+        type: "array"
+        description: "Additional configurations for payment options."
+        items:
+          $ref: "#/definitions/AdditionalPaymentOptionConfigurationDto"
+      platform_fee_configuration:
+        $ref: "#/definitions/EventPlatformFeeConfigurationBaseDto"
+      platform_fee_scope_type:
+        type: "string"
+        example: "REGISTRANT"
+        description: "The scope type for platform fees."
+    title: "PaymentConfigurationDto"
+  EventDto:
+    type: "object"
+    required:
+    - "campaign_id"
+    - "default_track"
+    - "description"
+    - "event_end"
+    - "event_start"
+    - "event_type"
+    - "location_type"
+    - "name"
+    - "time_zone"
+    - "title"
+    properties:
+      description:
+        type: "string"
+        example: "It's time for the High-Class Reunion. A night of reminiscing, networking,\
+          \ and celebrating shared success amongst old friends."
+        description: "Provides the event description."
+        minLength: 0
+        maxLength: 600
+      title:
+        type: "string"
+        example: "Riverdale High - Class of 2015 Reunion"
+        description: "The title for the event. The title does not have to be unique\
+          \ for an account."
+        maxLength: 100
+      name:
+        type: "string"
+        example: "Class of 2015 Reunion"
+        description: "The name of the event, has to be unique for the account."
+        minLength: 1
+        maxLength: 100
+      event_id:
+        type: "string"
+        format: "uuid"
+        example: "05cf4d60-56ea-4023-bf49-b35e56a9c7b5"
+        description: "The ID that uniquely identifies the event."
+      campaign_id:
+        type: "string"
+        format: "uuid"
+        example: "05cf4d60-56ea-4023-bf49-b35e56a9c7b5"
+        description: "The system assigned ID that uniquely identifies the event and\
+          \ is identical to the `event_id`."
+      event_start:
+        type: "string"
+        example: "2023-12-01T20:30:00Z"
+        description: "The date the event starts."
+      event_end:
+        type: "string"
+        example: "2023-12-01T21:30:00Z"
+        description: "The date the event ends."
+      event_type:
+        type: "string"
+        example: "PERFORMING_ARTS"
+        description: "Identifies the event type."
+      eso:
+        type: "string"
+        example: "001wQREZJ98vGM_rGt-fbtpGw=="
+        description: "The encrypted SOId."
+        readOnly: true
+      contact:
+        description: "The contact information associated with the event."
+        $ref: "#/definitions/ContactDto"
+      create_time:
+        type: "string"
+        example: "2023-11-17T17:33:21.652Z"
+        description: "The time the event was created, in ISO format. Read-only."
+      active_time:
+        type: "string"
+        example: "2023-11-17T17:33:21.655Z"
+        description: "The time the event was published, in ISO format."
+        readOnly: true
+      cancelled_time:
+        type: "string"
+        example: "2023-11-17T17:33:21.655Z"
+        description: "The time the event was cancelled, in ISO format. Read-only."
+        readOnly: true
+      deleted_time:
+        type: "string"
+        example: "2023-11-17T17:33:21.655Z"
+        description: "The time the event was deleted, in ISO format. Read-only."
+        readOnly: true
+      last_update_time:
+        type: "string"
+        example: "2023-12-07T13:18:39.681Z"
+        description: "The date and time the event was last modified."
+      address:
+        $ref: "#/definitions/AddressDto"
+      currency_type:
+        type: "string"
+        example: "USD"
+        description: "The accepted currency for payments. Required for events collecting\
+          \ payments ['AUD','BRL','CAD','CHF','CZK','DKK','EUR','GBP','HKD','HUF','ILS','JPY','MXN','MYR','NOK','NZD','PHP','PLN','RUB','SEK','SGD','THB','TRY','TWD','USD']"
+      default_track:
+        $ref: "#/definitions/TrackDto"
+      display_contact_flag:
+        type: "boolean"
+        example: true
+        description: "Display or hide event contact information on the registration\
+          \ form and registration confirmation message."
+      display_end_time_flag:
+        type: "boolean"
+        example: true
+        description: "Display or hide the event end time on the registration form\
+          \ and registration confirmation message."
+      display_on_calendar_flag:
+        type: "boolean"
+        example: true
+        description: "Display the event on the Event Calendar."
+      display_time_zone_flag:
+        type: "boolean"
+        example: true
+        description: "Display the time zone on the registration form and registration\
+          \ confirmation message."
+      event_calendar_url:
+        type: "string"
+        example: "https://lp.constantcontactpages.com/ev/calendar/001wZREXJ98vGM_rGt-fbtpGw=="
+        description: "The event calendar URL."
+        readOnly: true
+      event_metadata:
+        description: "Includes additional event information."
+        $ref: "#/definitions/EventMetaDataDto"
+      event_code:
+        type: "string"
+        example: "EVENT124"
+        description: "The short code to use for the event."
+      event_promotions:
+        type: "array"
+        description: "List of event promotions."
+        readOnly: true
+        items:
+          $ref: "#/definitions/EventPromotionDto"
+      event_settings:
+        $ref: "#/definitions/EventSettingsDto"
+      event_widget_url:
+        type: "string"
+        example: "https://eventsfeed.constantcontact.com/widget/myevents.js?eso=001wZREXJ98vGM_rGt-fbtpGw=="
+        description: "The event widget URL."
+        readOnly: true
+      failed_campaign_activities:
+        type: "array"
+        description: "List of failed campaign activities."
+        readOnly: true
+        items:
+          type: "string"
+          format: "uuid"
+          description: "Lists the campaign activity ID for any failed campaign activities."
+      location_type:
+        type: "string"
+        example: "PHYSICAL"
+        description: "Specifies if the event is physical and/or virtual, or to be\
+          \ determined."
+      notify_owner_on_reg:
+        type: "boolean"
+        example: true
+        description: "If `true`, sends an email to the event owner when a registration\
+          \ is made."
+      online_meeting:
+        description: "The online meeting information for a virtual event."
+        $ref: "#/definitions/OnlineMeetingDto"
+      payment_configuration:
+        description: "The virtual event's payment configuration information."
+        $ref: "#/definitions/PaymentConfigurationDto"
+      registration_url:
+        type: "string"
+        example: "https://l1.constantcontactpages.com/ev/reg/scrk2u2"
+        description: "The event registration URL."
+        readOnly: true
+      status:
+        type: "string"
+        example: "ACTIVE"
+        description: "Specifies the event's current status."
+      time_zone:
+        type: "string"
+        example: "US/Eastern"
+        description: "The time zone where the event takes place."
+      time_zone_abbreviation:
+        type: "string"
+        example: "EST"
+        description: "The abbreviation to use to indicate the time zone where the\
+          \ event takes place."
+        readOnly: true
   SegmentMaster:
     type: "object"
     properties:
@@ -8281,14 +9502,6 @@ definitions:
         type: "string"
         description: "The next link in the page, or null if there are no additional\
           \ pages."
-  Links:
-    type: "object"
-    required:
-    - "next"
-    properties:
-      next:
-        description: "HAL property that contains next link if applicable."
-        $ref: "#/definitions/Next"
   SegmentsDTO:
     type: "object"
     required:
@@ -8301,7 +9514,7 @@ definitions:
           $ref: "#/definitions/SegmentMaster"
       _links:
         description: "HAL property that contains next link if applicable."
-        $ref: "#/definitions/Links"
+        $ref: "#/definitions/segmentsLinks"
   SegmentData:
     type: "object"
     required:
@@ -12755,115 +13968,6 @@ definitions:
         example: "x9xx2ede-5a58-4e23-8168-25930c5x7bxb"
         description: "The system generated ID used to uniquely identify the provisioning\
           \ of a client account."
-  TierObject:
-    type: "object"
-    properties:
-      usage_type:
-        type: "string"
-        example: "CONTACTS"
-        description: "Identifies the tier usage type that is associated with the billing\
-          \ plan."
-        readOnly: true
-        default: "CONTACTS"
-      current_usage:
-        type: "number"
-        format: "float"
-        example: 10.0
-        description: "The number of active contacts (default) used within the current\
-          \ tier."
-        readOnly: true
-      tier:
-        type: "integer"
-        format: "int32"
-        example: 1
-        description: "The billing tier level that is associated with a client account.\
-          \ By default, the system determines the tier level to use based on the number\
-          \ of active contacts currently in the client account at the time of billing.\
-          \ Billing tiers may differ. The following shows an example billing tier:\
-          \ <ul>\n  <li>level <code>1</code> = 0 - 500 contacts</li>\n  <li>level\
-          \ <code>2</code> = 501 - 1000 contacts</li>\n  <li>level <code>3</code>\
-          \ = 1001 - ...</li>\n</ul>"
-        readOnly: true
-      tier_min:
-        type: "number"
-        format: "float"
-        example: 0.0
-        description: "The minimum number of active contacts for the tier level."
-        readOnly: true
-      tier_max:
-        type: "number"
-        format: "float"
-        example: 500.0
-        description: "The maximum number of active contacts for the tier level."
-        readOnly: true
-      price:
-        type: "number"
-        format: "float"
-        example: 20.0
-        description: "The billing price set for the tier used to bill the client account\
-          \ each month."
-        readOnly: true
-      currency_code:
-        type: "string"
-        example: "USD"
-        description: "The currency (ISO currency code) used to price the tier for\
-          \ a client account."
-        readOnly: true
-    description: "The usage tier that is associated with a client's Constant Contact\
-      \ account and is used to calculate the monthly billing price."
-  PlanTiersObject:
-    type: "object"
-    properties:
-      plan_type:
-        type: "string"
-        example: "GOLD"
-        description: "The billing plan that is associated with a client's Constant\
-          \ Contact account. The billing plan determines which Constant Contact product\
-          \ features that the client account can access. If you are not on the latest\
-          \ billing plan, contact the Constant Contact Partner Team. However, older\
-          \ billing plans and <code>plan_type</code> enum values will continue to\
-          \ be supported. <ul>\n  <li><code>TRIAL</code>: Provides limited product\
-          \ features for a non-billed account and the account has an expiration date.</li>\n\
-          \  <li><code>BRONZE</code>: Billable plan that provides basic email and\
-          \ marketing tools.</li>  \n  <li><code>SILVER</code>: Billable plan that\
-          \ provides all features available in the <code>BRONZE</code> plan, and adds\
-          \ some additional email campaign to features, such as contact segmentation\
-          \ and social media ads integration.</li>\n  <li><code>GOLD</code>: Billable\
-          \ plan that provides all available product features.</li>\n</ul>"
-      current_tiers:
-        type: "array"
-        description: "Lists the billing plan tiers that are currently associated with\
-          \ a client account."
-        items:
-          $ref: "#/definitions/TierObject"
-      billing_status:
-        type: "string"
-        example: "Open"
-        description: "The client's account billing status. When you first create a\
-          \ client account the <code>billing_status</code> defaults to <code>Trial</code>.\
-          \ Billing status values include:\n  <ul>\n    <li><code>Trial</code> - A\
-          \ non-paying trial client account (default value).</li>\n    <li><code>Open</code>\
-          \ - An active and paying client account.</li>\n    <li><code>Canceled</code>\
-          \ - A canceled client account.</li>\n    <li><code>Trial End</code> - The\
-          \ trial period has ended for this client account.</li>\n  </ul>"
-      billing_day_of_month:
-        type: "integer"
-        format: "int32"
-        example: 15
-        description: "This property is required when an account is not set up to use\
-          \ single billing. For trial accounts, the value is initially set to <code>null</code>.\
-          \ The value can only be changed when changing the <code>plan_type</code>\
-          \ from a trial account to a different type of plan, otherwise the value\
-          \ you enter is ignored. You can choose to enter a specific day of month\
-          \ or except the default value, which is the day that the <code>plan_type</code>\
-          \ value changes from a trial account plan to a different plan. Valid <code>billing_day_of_month</code>\
-          \ values include <code>1</code> through and including <code>31</code>."
-    description: "Specifies client billing plan details including the type of plan,\
-      \ the plan tiers used, the current billing status, and the day of the month\
-      \ that the client is billed. When a client account is first provisioned, the\
-      \ `plan_type` defaults to a `Trial` account. After you change an account `billing_status`\
-      \ from `Trial` to any other `billing_status`, you cannot change it back to a\
-      \ `Trial` account."
   PlanInfo:
     type: "object"
     properties:
@@ -13331,19 +14435,6 @@ definitions:
         file_id:
           type: "integer"
           description: "Identifies the file in MyLibrary."
-  emailsLink:
-    type: "object"
-    properties:
-      href:
-        type: "string"
-  reportingLinks:
-    type: "object"
-    required:
-    - "next"
-    properties:
-      next:
-        description: "Contains the next page link if it is available."
-        $ref: "#/definitions/reportingNext"
   tagsActivityLinks:
     type: "object"
     properties:
@@ -13355,28 +14446,6 @@ definitions:
           href:
             type: "string"
             example: "/v3/activities/04fe9a97-a579-43c5-bb1a-58ed29bf0a6a"
-  tagsLinks:
-    type: "object"
-    properties:
-      href:
-        type: "string"
-      next:
-        description: "Contains the next page link, if applicable."
-        $ref: "#/definitions/reportingNext"
-  emailsPagingLinks:
-    type: "object"
-    properties:
-      next:
-        $ref: "#/definitions/emailsLink"
-  lpreportingNext:
-    type: "object"
-    required:
-    - "href"
-    properties:
-      href:
-        type: "string"
-        description: "The next link in the page or null if there are no additional\
-          \ pages"
   reportingNext:
     type: "object"
     required:
@@ -13407,6 +14476,55 @@ definitions:
       next:
         description: "Contains the next link if it is available."
         $ref: "#/definitions/lpreportingNext"
+  tagsPagingLinks:
+    type: "object"
+    properties:
+      next:
+        description: "The link to the next page of results."
+        $ref: "#/definitions/tagsLinks"
+  emailsLink:
+    type: "object"
+    properties:
+      href:
+        type: "string"
+  reportingLinks:
+    type: "object"
+    required:
+    - "next"
+    properties:
+      next:
+        description: "Contains the next page link if it is available."
+        $ref: "#/definitions/reportingNext"
+  tagsLinks:
+    type: "object"
+    properties:
+      href:
+        type: "string"
+      next:
+        description: "Contains the next page link, if applicable."
+        $ref: "#/definitions/reportingNext"
+  segmentsLinks:
+    type: "object"
+    required:
+    - "next"
+    properties:
+      next:
+        description: "HAL property that contains next link if applicable."
+        $ref: "#/definitions/Next"
+  emailsPagingLinks:
+    type: "object"
+    properties:
+      next:
+        $ref: "#/definitions/emailsLink"
+  lpreportingNext:
+    type: "object"
+    required:
+    - "href"
+    properties:
+      href:
+        type: "string"
+        description: "The next link in the page or null if there are no additional\
+          \ pages"
   reportingsmsNext:
     type: "object"
     required:
@@ -13416,12 +14534,6 @@ definitions:
         type: "string"
         description: "The next link in the page or null if there are no additional\
           \ pages."
-  tagsPagingLinks:
-    type: "object"
-    properties:
-      next:
-        description: "The link to the next page of results."
-        $ref: "#/definitions/tagsLinks"
 responses:
   Standard405ErrorResponse:
     description: "Unsupported method used."
