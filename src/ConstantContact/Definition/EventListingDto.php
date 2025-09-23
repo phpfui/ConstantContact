@@ -11,10 +11,10 @@ namespace PHPFUI\ConstantContact\Definition;
  * @property string $start_time The start time of the event in UTC format.
  * @property string $end_time The end time of the event in UTC format.
  * @property string $status The current status of the event.
- * @property string $registration_url The URL for event registration.
+ * @property string $registration_url The URL for event registration
  * @property string $name The name of the event.
- * @property string $event_type The type of event.
- * @property string $location_type Specifies if this is a physical or virtual event (or both), or if the location is to be specified in the future.
+ * @property string $event_type Use to specify the type of event.
+ * @property string $location_type Specifies if this is a physical or virtual event (of both), or if the location is to be specified in the future.
  * @property string $time_zone_type The type of time zone.
  * @property \PHPFUI\ConstantContact\Definition\AddressDto $address
  * @property \PHPFUI\ConstantContact\Definition\EventRegistrationSummaryMetricDto $event_registration_summary_metrics

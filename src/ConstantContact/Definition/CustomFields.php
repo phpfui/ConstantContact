@@ -5,13 +5,13 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @property array<\PHPFUI\ConstantContact\Definition\CustomFieldResource> $custom_fields
+ * @property array<\PHPFUI\ConstantContact\Definition\CustomField> $custom_fields
  * @property \PHPFUI\ConstantContact\Definition\PagingLinks $_links
  */
 class CustomFields extends \PHPFUI\ConstantContact\Definition\Base
 	{
 	protected static array $fields = [
-		'custom_fields' => 'array<\PHPFUI\ConstantContact\Definition\CustomFieldResource>',
+		'custom_fields' => 'array<\PHPFUI\ConstantContact\Definition\CustomField>',
 		'_links' => '\PHPFUI\ConstantContact\Definition\PagingLinks',
 
 	];

@@ -14,9 +14,9 @@ class ContactCustomField extends \PHPFUI\ConstantContact\Base
 	/**
 	 * DELETE a custom_field
 	 *
-	 * This DELETE request deletes a custom_field from the user's account
+	 * Delete a custom field from the user's account.
 	 *
-	 * @param string $custom_field_id Unique ID of the custom_field on which to operate.
+	 * @param string $custom_field_id The ID that uniquely identifies the custom field to delete.
 	 */
 	public function delete(string $custom_field_id) : ?array
 		{
@@ -27,10 +27,9 @@ class ContactCustomField extends \PHPFUI\ConstantContact\Base
 	/**
 	 * GET a custom_field
 	 *
-	 * This GET call retrieves a `custom_field` resource, specified by `custom_field_id`.
+	 * Get details for a specified custom field.
 	 *
-	 *
-	 * @param string $custom_field_id Unique ID of the `custom_field` on which to operate.
+	 * @param string $custom_field_id The ID that uniquely identifies the custom field.
 	 */
 	public function get(string $custom_field_id) : ?array
 		{
@@ -38,33 +37,33 @@ class ContactCustomField extends \PHPFUI\ConstantContact\Base
 		return $this->doGet(['custom_field_id' => $custom_field_id, ]);
 		}
 
-	public function getTyped(string $custom_field_id) : ?\PHPFUI\ConstantContact\Definition\CustomFieldResource
+	public function getTyped(string $custom_field_id) : ?\PHPFUI\ConstantContact\Definition\CustomField
 		{
 		$data = $this->get($custom_field_id);
 
-		return $data ? new \PHPFUI\ConstantContact\Definition\CustomFieldResource($data) : null;
+		return $data ? new \PHPFUI\ConstantContact\Definition\CustomField($data) : null;
 		}
 
 
 	/**
-	 * PUT (update) a custom_field
+	 * Update a custom field.
 	 *
-	 * This PUT request updates an existing `custom_field` object.
+	 * Update an existing custom field.
 	 *
-	 * @param string $custom_field_id Unique ID of the `custom_field` on which to operate.
-	 * @param \PHPFUI\ConstantContact\Definition\CustomFieldInput $body The JSON payload used to update an existing custom field. Any properties omitted in the PUT request are overwritten with a null value.
+	 * @param string $custom_field_id The ID that uniquely identifies the custom field to update.
+	 * @param \PHPFUI\ConstantContact\Definition\CustomFieldPutRequest $body The JSON payload used to update an existing custom field. Any properties omitted in the PUT request are overwritten with a null value.
 	 */
-	public function put(string $custom_field_id, \PHPFUI\ConstantContact\Definition\CustomFieldInput $body) : ?array
+	public function put(string $custom_field_id, \PHPFUI\ConstantContact\Definition\CustomFieldPutRequest $body) : ?array
 		{
 
 		return $this->doPut(['custom_field_id' => $custom_field_id, 'body' => $body->getData(), ]);
 		}
 
-	public function putTyped(string $custom_field_id, \PHPFUI\ConstantContact\Definition\CustomFieldInput $body) : ?\PHPFUI\ConstantContact\Definition\CustomFieldResource
+	public function putTyped(string $custom_field_id, \PHPFUI\ConstantContact\Definition\CustomFieldPutRequest $body) : ?\PHPFUI\ConstantContact\Definition\CustomField
 		{
 		$data = $this->put($custom_field_id, $body);
 
-		return $data ? new \PHPFUI\ConstantContact\Definition\CustomFieldResource($data) : null;
+		return $data ? new \PHPFUI\ConstantContact\Definition\CustomField($data) : null;
 		}
 
 	}

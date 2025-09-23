@@ -3,12 +3,13 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.72"
+  version: "3.0.94"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
   license:
     name: "Private"
+    url: "https://www.constantcontact.com/legal/terms-of-use"
 host: "api.cc.email"
 basePath: "/v3"
 tags:
@@ -44,8 +45,6 @@ tags:
 - name: "Email Scheduling"
   description: "Use email scheduling endpoints and methods to schedule an email campaign\
     \ activity, unschedule an email campaign activity, and GET schedule information."
-- name: "Events"
-  description: "Endpoints and methods used to create and manage events."
 - name: "Segments"
   description: "Use segments to target a subset of your contacts that are most likely\
     \ to engage with a particular campaign."
@@ -2225,15 +2224,14 @@ paths:
       tags:
       - "Contacts Custom Fields"
       summary: "GET a custom_field"
-      description: "This GET call retrieves a `custom_field` resource, specified by\
-        \ `custom_field_id`."
+      description: "Get details for a specified custom field."
       operationId: "getCustomField"
       produces:
       - "application/json"
       parameters:
       - name: "custom_field_id"
         in: "path"
-        description: "Unique ID of the `custom_field` on which to operate."
+        description: "The ID that uniquely identifies the custom field."
         required: true
         type: "string"
         x-example: "04fe9a-a579-43c5-bb1a-58ed29bf0a6a"
@@ -2241,7 +2239,7 @@ paths:
         "200":
           description: "Request successful"
           schema:
-            $ref: "#/definitions/CustomFieldResource"
+            $ref: "#/definitions/CustomField"
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
@@ -2266,8 +2264,8 @@ paths:
     put:
       tags:
       - "Contacts Custom Fields"
-      summary: "PUT (update) a custom_field"
-      description: "This PUT request updates an existing `custom_field` object."
+      summary: "Update a custom field."
+      description: "Update an existing custom field."
       operationId: "putCustomField"
       consumes:
       - "application/json"
@@ -2276,7 +2274,7 @@ paths:
       parameters:
       - name: "custom_field_id"
         in: "path"
-        description: "Unique ID of the `custom_field` on which to operate."
+        description: "The ID that uniquely identifies the custom field to update."
         required: true
         type: "string"
         x-example: "04fe9a-a579-43c5-bb1a-58ed29bf0a6a"
@@ -2286,12 +2284,12 @@ paths:
           \ properties omitted in the PUT request are overwritten with a null value."
         required: true
         schema:
-          $ref: "#/definitions/CustomFieldInput"
+          $ref: "#/definitions/CustomFieldPutRequest"
       responses:
         "200":
           description: "Success - custom_field updated"
           schema:
-            $ref: "#/definitions/CustomFieldResource"
+            $ref: "#/definitions/CustomField"
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
@@ -2318,14 +2316,14 @@ paths:
       tags:
       - "Contacts Custom Fields"
       summary: "DELETE a custom_field"
-      description: "This DELETE request deletes a custom_field from the user's account"
+      description: "Delete a custom field from the user's account."
       operationId: "deleteCustomField"
       consumes:
       - "application/json"
       parameters:
       - name: "custom_field_id"
         in: "path"
-        description: "Unique ID of the custom_field on which to operate."
+        description: "The ID that uniquely identifies the custom field to delete."
         required: true
         type: "string"
         x-example: "04fe9a-a579-43c5-bb1a-58ed29bf0a6a"
@@ -2357,9 +2355,9 @@ paths:
       tags:
       - "Contacts Custom Fields"
       summary: "GET custom_fields Collection"
-      description: "This GET request returns all `custom_fields` defined in the user's\
-        \ account.\n<div class=\"Msg\"><p class=\"note-text\">This method does not\
-        \ currently support filtering results using the custom field update date.</p></div>"
+      description: "Get all custom fields defined in the user's account.\n<div class=\"\
+        Msg\"><p class=\"note-text\">This method does not currently support filtering\
+        \ results using the custom field update date.</p></div>"
       operationId: "getCustomFields"
       produces:
       - "application/json"
@@ -2402,8 +2400,13 @@ paths:
       tags:
       - "Contacts Custom Fields"
       summary: "POST (create) a custom_field"
-      description: "This POST request adds a new `custom_field` to the user's account.\
-        \ A user can configure up to 100 `custom_fields` in their account."
+      description: "Custom fields are extra data fields you create to store additional\
+        \ information about your contacts, such as preferences, membership levels,\
+        \ and interests. Use custom fields to organize contacts, send personalized\
+        \ email campaigns, and to identify a targeted audience for a specific campaign.\
+        \ Custom fields types include text, number, date, drop-down lists, radio buttons,\
+        \ and checkboxes. A user can configure up to 100 `custom_fields` in their\
+        \ account."
       operationId: "postCustomFields"
       consumes:
       - "application/json"
@@ -2412,15 +2415,15 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "The JSON payload required to create a new `custom_field`"
+        description: "The JSON payload required to create a new custom field."
         required: true
         schema:
-          $ref: "#/definitions/CustomFieldInput"
+          $ref: "#/definitions/CustomFieldRequest"
       responses:
         "201":
-          description: "New custom_field successfully created"
+          description: "New custom field successfully created"
           schema:
-            $ref: "#/definitions/CustomFieldResource"
+            $ref: "#/definitions/CustomField"
         "400":
           description: "Bad request. Either the JSON was malformed or there was a\
             \ data validation error."
@@ -8454,7 +8457,6 @@ definitions:
         type: "integer"
         format: "int32"
         description: "The total number of items sold for the event."
-    description: "The event registration summary metrics"
   EventListingDto:
     type: "object"
     properties:
@@ -8468,7 +8470,7 @@ definitions:
         description: "The title of the event."
       description:
         type: "string"
-        example: "Join us for a night of reminiscing and celebration"
+        example: "Join us for a night of reminiscing and celebration!"
         description: "The description of the event."
       start_time:
         type: "string"
@@ -8484,8 +8486,8 @@ definitions:
         description: "The current status of the event."
       registration_url:
         type: "string"
-        example: "https://l1.constantcontactpages.com/ev/reg/scrk2u2"
-        description: "The URL for event registration."
+        example: "https://sample_url.com/ev/reg/scrk2u2"
+        description: "The URL for event registration"
       name:
         type: "string"
         example: "Holiday Market at Snowport"
@@ -8493,14 +8495,15 @@ definitions:
       event_type:
         type: "string"
         example: "PERFORMING_ARTS"
-        description: "The type of event."
+        description: "Use to specify the type of event."
       location_type:
         type: "string"
         example: "PHYSICAL"
-        description: "Specifies if this is a physical or virtual event (or both),\
+        description: "Specifies if this is a physical or virtual event (of both),\
           \ or if the location is to be specified in the future."
       time_zone_type:
         type: "string"
+        example: "EST"
         description: "The type of time zone."
       address:
         $ref: "#/definitions/AddressDto"
@@ -8508,6 +8511,7 @@ definitions:
         $ref: "#/definitions/EventRegistrationSummaryMetricDto"
       create_time:
         type: "string"
+        example: "2023-09-01T20:30:00Z"
         description: "The create time of the event in UTC format."
     description: "Provides information about the event listing."
   Href:
@@ -8531,10 +8535,16 @@ definitions:
     properties:
       records:
         type: "array"
-        description: "List of records for the current page"
+        description: "List of events for the current page."
         readOnly: true
         items:
           $ref: "#/definitions/EventListingDto"
+      total_records:
+        type: "integer"
+        format: "int32"
+        example: 26
+        description: "The total number of events across all pages."
+        readOnly: true
       next_cursor:
         type: "string"
         example: "roBvv-Nidkuxg8gTAJ5joDU6yQufWMDdEHjRqzcTXnZ3qBZYR3jZChnZTC6McJ6j8M70fM4IFT8KNJvA076D0g"
@@ -8547,13 +8557,6 @@ definitions:
         readOnly: true
       _links:
         $ref: "#/definitions/Links"
-      total_records:
-        type: "integer"
-        format: "int32"
-        example: 26
-        description: "Total number of records across all pages."
-        readOnly: true
-    description: "Generic pagination response with cursor-based navigation"
   ContactDto:
     type: "object"
     required:
@@ -9159,11 +9162,6 @@ definitions:
         type: "string"
         example: "2023-12-07T13:18:39.681Z"
         description: "Last modification time of the event."
-      payment_account_id:
-        type: "string"
-        format: "uuid"
-        example: "123e4567-e89b-12d3-a456-426614174000"
-        description: "The unique identifier for the payment account."
       payment_option:
         type: "string"
         example: "WEPAY"
@@ -9187,31 +9185,80 @@ definitions:
           $ref: "#/definitions/Message"
     description: "Base configuration for payment options in an event."
   CheckPaymentOptionConfigurationDto:
-    allOf:
-    - $ref: "#/definitions/PaymentOptionConfigurationDto"
-    - type: "object"
-      properties:
-        payable_to:
-          type: "string"
-          description: "The name to make the check payable too."
+    type: "object"
+    properties:
+      create_time:
+        type: "string"
+        example: "2023-11-17T17:33:21.652Z"
+        description: "Create time of the event."
+      last_update_time:
+        type: "string"
+        example: "2023-12-07T13:18:39.681Z"
+        description: "Last modification time of the event."
+      payment_option:
+        type: "string"
+        example: "WEPAY"
+        description: "The type of payment option."
+      visible:
+        type: "boolean"
+        example: true
+        description: "Specifies if the payment option is visible to users."
+      selected:
+        type: "boolean"
+        example: false
+        description: "Specifies if the payment option is selected by default."
+      additional_accounts:
+        type: "boolean"
+        example: false
+        description: "Specifies if additional accounts are available."
+      error_messages:
+        type: "array"
+        description: "List of error messages associated with the payment option."
+        items:
+          $ref: "#/definitions/Message"
+      payable_to:
+        type: "string"
+        description: "The name to make the check payable too."
+    description: "Base configuration for payment options in an event."
   PayPalPaymentConfigurationDto:
-    allOf:
-    - $ref: "#/definitions/PaymentOptionConfigurationDto"
-    - type: "object"
-      properties:
-        email_address:
-          type: "string"
-        venmo_enabled:
-          type: "boolean"
-        pay_later_enabled:
-          type: "boolean"
-  OnlinePaymentOptionConfigurationDto:
-    allOf:
-    - $ref: "#/definitions/PaymentOptionConfigurationDto"
-    - type: "object"
-      properties:
-        email_address:
-          type: "string"
+    type: "object"
+    properties:
+      create_time:
+        type: "string"
+        example: "2023-11-17T17:33:21.652Z"
+        description: "Create time of the event."
+      last_update_time:
+        type: "string"
+        example: "2023-12-07T13:18:39.681Z"
+        description: "Last modification time of the event."
+      payment_option:
+        type: "string"
+        example: "WEPAY"
+        description: "The type of payment option."
+      visible:
+        type: "boolean"
+        example: true
+        description: "Specifies if the payment option is visible to users."
+      selected:
+        type: "boolean"
+        example: false
+        description: "Specifies if the payment option is selected by default."
+      additional_accounts:
+        type: "boolean"
+        example: false
+        description: "Specifies if additional accounts are available."
+      error_messages:
+        type: "array"
+        description: "List of error messages associated with the payment option."
+        items:
+          $ref: "#/definitions/Message"
+      email_address:
+        type: "string"
+      venmo_enabled:
+        type: "boolean"
+      pay_later_enabled:
+        type: "boolean"
+    description: "Base configuration for payment options in an event."
   AdditionalPaymentOptionConfigurationDto:
     type: "object"
     properties:
@@ -9221,9 +9268,49 @@ definitions:
         description: "Provides an additional form of payment option."
       payment_option_configurations:
         type: "array"
-        example: "./events.yaml#/PaymentOptionConfigurationDto"
         description: "Provides additional payment option configurations."
-        items: {}
+        items:
+          type: "object"
+          description: "Base configuration for payment options in an event."
+          properties:
+            create_time:
+              type: "string"
+              example: "2023-11-17T17:33:21.652Z"
+              description: "Create time of the event."
+            last_update_time:
+              type: "string"
+              example: "2023-12-07T13:18:39.681Z"
+              description: "Last modification time of the event."
+            payment_option:
+              type: "string"
+              example: "WEPAY"
+              description: "The type of payment option."
+            visible:
+              type: "boolean"
+              example: true
+              description: "Specifies if the payment option is visible to users."
+            selected:
+              type: "boolean"
+              example: false
+              description: "Specifies if the payment option is selected by default."
+            additional_accounts:
+              type: "boolean"
+              example: false
+              description: "Specifies if additional accounts are available."
+            error_messages:
+              type: "array"
+              description: "List of error messages associated with the payment option."
+              items:
+                $ref: "#/definitions/Message"
+            payable_to:
+              type: "string"
+              description: "The name to make the check payable too."
+            email_address:
+              type: "string"
+            venmo_enabled:
+              type: "boolean"
+            pay_later_enabled:
+              type: "boolean"
     title: "AdditionalPaymentOptionConfigurationDto"
   EventPlatformFeeConfigurationBaseDto:
     type: "object"
@@ -9666,12 +9753,20 @@ definitions:
         type: "string"
         format: "uuid"
         example: "1618ae62-4752-11e9-9c8a-fa163e6b01c1"
-        description: "The custom_field's unique ID"
+        description: "The custom field's unique ID"
       value:
         type: "string"
         example: "Tesla S 2017"
-        description: "The custom_field value."
+        description: "The custom field value."
         maxLength: 255
+      choice_ids:
+        type: "array"
+        description: "For <code>>multi_select</code> and <code>single_select</code>\
+          \ data types, the ID that uniquely identifies the choice associated with\
+          \ a the custom field."
+        items:
+          type: "string"
+          example: "000001"
     description: "Custom fields allow Constant Contact users to add custom content\
       \ to a contact that can be used to personalize emails in addition to the standard\
       \ set of variables available for email personalization."
@@ -9802,6 +9897,8 @@ definitions:
       consent_type:
         type: "string"
         example: "promotional_sms"
+        description: "Identifies the type of consent provided. Currently, only <code>promotional_sms</code>\
+          \ is supported."
       opt_in_date:
         type: "string"
         format: "date-time"
@@ -10641,7 +10738,86 @@ definitions:
         items:
           $ref: "#/definitions/ContactXref"
         maxItems: 500
-  CustomFieldResource:
+  CustomFieldMetadata:
+    type: "object"
+    properties:
+      display_type:
+        type: "string"
+        example: "radio"
+        description: "Determines how Constant Contact renders a <code>single_select</code>\
+          \ or <code> multi_select</code> field."
+      allow_negative:
+        type: "boolean"
+        example: false
+        description: "For type <code>number</code>, determines if a value can be negative.\
+          \ By default, this value is false for the type <code>number</code>."
+      decimal_places:
+        type: "integer"
+        example: 1
+        description: "For types <code>number</code> and <code>currency</code>, determines\
+          \ the number of decimal places possible in the value."
+      currency_code:
+        type: "string"
+        example: "USD"
+        description: "For type <code>currency</code>, specifies the three-letter currency\
+          \ code to assign."
+      integer:
+        type: "boolean"
+        example: true
+        description: "For types <code>number</code> and <code>currency</code>, determines\
+          \ whether the custom field should store only whole numbers (integers) without\
+          \ decimal values. If the <code>integer</code> is set to <code>false</code>,\
+          \ the <code>decimal_places</code> must be between 1 and 4."
+      display_format:
+        type: "string"
+        example: "MM/DD/YYYY"
+        description: "Specifies the display format for date fields in the user interface.\
+          \ If not specified for a date type field, defaults to <code>YYYY-MM-DD</code>\
+          \ format. Valid only for version 2 type dates (values are stored as actual\
+          \ dates to support date comparisons and validations)."
+    description: "Additional details about a custom field in JSON format."
+  CustomFieldChoice:
+    type: "object"
+    properties:
+      custom_field_id:
+        type: "string"
+        format: "uuid"
+        example: "d0737000-afbf-11ee-874a-eaf5d7a2e15d"
+        description: "The ID that uniquely identifies a custom field."
+      choice_id:
+        type: "integer"
+        example: "9A63BC"
+        description: "The ID that uniquely identifies the choice identifier."
+      choice_label:
+        type: "string"
+        example: "Apple"
+        description: "Label to display for the choice on the user interface."
+        maxLength: 255
+      display_order:
+        type: "integer"
+        example: 1
+        description: "Stores the order for displaying a list of choices."
+      created_at:
+        type: "string"
+        format: "date-time"
+        example: "2024-06-27T10:28:09.000Z"
+        description: "Date and time that the record was created, in ISO-8601 format.\
+          \ System generated."
+      updated_at:
+        type: "string"
+        format: "date-time"
+        example: "2024-06-27T10:28:09.000Z"
+        description: "Date and time that the record was updated, in ISO-8601 format.\
+          \ System generated."
+      deleted_at:
+        type: "string"
+        format: "date"
+        example: "2023-12-18"
+        description: "Date the choice was deleted, in ISO-8601 format. System generated."
+        readOnly: true
+    description: "Custom fields <code>single_select</code> and <code>multi_select</code>\
+      \ settings."
+  CustomField:
     type: "object"
     required:
     - "label"
@@ -10651,26 +10827,41 @@ definitions:
         type: "string"
         format: "uuid"
         example: "1618ae62-4752-11e9-9c8a-fa163e6b01c1"
-        description: "The custom_field's unique ID"
+        description: "The system generated ID that uniquely identifies a <code>custom_field</code>."
         readOnly: true
       label:
         type: "string"
         example: "Vehicle make and model year"
-        description: "The display name for the custom_field shown in the UI as free-form\
-          \ text"
+        description: "The custom field name to display in the UI (free-form text)."
         maxLength: 50
       name:
         type: "string"
         example: "Vehicle_make_and_model_year"
-        description: "Unique name for the custom_field constructed from the label\
-          \ by replacing blanks with underscores."
+        description: "The unique custom field name constructed from the label by replacing\
+          \ blanks with underscores."
         readOnly: true
         maxLength: 50
       type:
         type: "string"
-        example: "string"
-        description: "Specifies the type of value the custom_field field accepts:\
-          \ string or date."
+        example: "date"
+        description: "The data value type the custom field accepts."
+        maxLength: 20
+      metadata:
+        $ref: "#/definitions/CustomFieldMetadata"
+      version:
+        type: "integer"
+        example: 1
+        description: "For <code>datetime</code> data types, this is the version number\
+          \ associated with the custom field."
+      choices:
+        type: "array"
+        description: "Choices available for <code>single_select</code> and <code>multi_select</code>\
+          \ type custom fields. The maximum number of elements for <code>radio</code>\
+          \ or <code>checkbox</code> display types is 20. Maximum number of elements\
+          \ for a <code>dropdown</code> is 100."
+        items:
+          $ref: "#/definitions/CustomFieldChoice"
+        maxItems: 100
       updated_at:
         type: "string"
         format: "date-time"
@@ -10685,38 +10876,97 @@ definitions:
         description: "Date and time that the resource was created, in ISO-8601 format.\
           \ System generated."
         readOnly: true
-    description: "Custom fields allow Constant Contact users to add custom content\
-      \ to a contact that can be used to personalize emails in addition to the standard\
-      \ set of variables available for email personalization."
-  CustomFieldInput:
+    description: "Custom fields details."
+  CustomFieldChoicePutRequest:
     type: "object"
-    required:
-    - "label"
-    - "type"
+    properties:
+      choice_id:
+        type: "integer"
+        example: 111
+        description: "The ID that uniquely identifies the choice."
+      choice_label:
+        type: "string"
+        example: "Apple"
+        description: "Label to display for the choice on the user interface."
+        maxLength: 255
+      display_order:
+        type: "integer"
+        example: 1
+        description: "Stores the order for displaying a list of choices."
+    description: "The <code>single_select</code> and <code>multi_select</code> custom\
+      \ field options."
+  CustomFieldPutRequest:
+    type: "object"
     properties:
       label:
         type: "string"
-        example: "Vehicle make and model year"
-        description: "The display name for the custom_field shown in the UI as free-form\
-          \ text"
+        example: "Favorite color"
+        description: "The custom field name to display in the UI (free-form text)."
         maxLength: 50
-      type:
-        type: "string"
-        example: "string"
-        description: "Specifies the type of value the custom_field field accepts:\
-          \ string or date."
+      choices:
+        type: "array"
+        description: "Array of choices for custom fields of type: <code>single_select</code>\
+          \ or <code>multi_select</code>. Maximum number of elements for <code>checkbox</code>\
+          \ and <code>radio</code> display types is 20. Maximum number of elements\
+          \ for a <code>dropdown</code> is 100."
+        items:
+          $ref: "#/definitions/CustomFieldChoicePutRequest"
+        maxItems: 100
   CustomFields:
     type: "object"
     properties:
       custom_fields:
         type: "array"
         items:
-          $ref: "#/definitions/CustomFieldResource"
+          $ref: "#/definitions/CustomField"
         maxItems: 100
       _links:
         $ref: "#/definitions/PagingLinks"
-    description: "Use this endpoint to retrieve (GET) all custom_fields in the user's\
-      \ account, or to create (POST) a new custom_field."
+  CustomFieldChoiceRequest:
+    type: "object"
+    properties:
+      choice_label:
+        type: "string"
+        example: "Apple"
+        description: "Label to display for the choice on the user interface."
+        maxLength: 255
+      display_order:
+        type: "integer"
+        example: 1
+        description: "Stores the order for displaying a list of choices."
+    description: "The <code>single_select</code> and <code>multi_select</code> custom\
+      \ field options."
+  CustomFieldRequest:
+    type: "object"
+    properties:
+      label:
+        type: "string"
+        example: "Favorite Fruit"
+        description: "The custom field name to display in the UI (free-form text)."
+        maxLength: 50
+      type:
+        type: "string"
+        example: "string"
+        description: "The type of data to store in the custom field."
+        maxLength: 20
+      metadata:
+        $ref: "#/definitions/CustomFieldMetadata"
+      choices:
+        type: "array"
+        description: "Array of choices for custom fields of type: <code>single_select</code>\
+          \ or <code>multi_select</code>. Maximum number of elements for <code>checkbox</code>\
+          \ and <code>radio</code> display types is 20. Maximum number of elements\
+          \ for a <code>dropdown</code> is 100."
+        items:
+          $ref: "#/definitions/CustomFieldChoiceRequest"
+        maxItems: 100
+      version:
+        type: "integer"
+        example: 2
+        description: "Available if data type is <code>data</code>. Displays <code>1</code>\
+          \ if using legacy date fields where values are stored as strings. Displays\
+          \ <code>2</code> if using new date fields where values are stored as actual\
+          \ dates to support date comparisons and validations."
   ContactList:
     type: "object"
     required:
@@ -14148,7 +14398,7 @@ definitions:
         type: "string"
         example: "23378234122161121"
         description: "The unique ID used to identify the client account user to the\
-          \ external authenticator. "
+          \ external authenticator."
         maxLength: 255
       external_provider:
         type: "string"
@@ -14462,8 +14712,6 @@ definitions:
         type: "string"
   reportingsmsLinks:
     type: "object"
-    required:
-    - "next"
     properties:
       next:
         description: "Contains the next link if it is available."
@@ -14489,8 +14737,6 @@ definitions:
         type: "string"
   reportingLinks:
     type: "object"
-    required:
-    - "next"
     properties:
       next:
         description: "Contains the next page link if it is available."

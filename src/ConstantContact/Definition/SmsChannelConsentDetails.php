@@ -6,7 +6,7 @@ namespace PHPFUI\ConstantContact\Definition;
 
 /**
  * @property string $sms_consent_permission Identifies the current permission status for the SMS channel.
- * @property string $consent_type
+ * @property string $consent_type Identifies the type of consent provided. Currently, only <code>promotional_sms</code> is supported.
  * @property \PHPFUI\ConstantContact\DateTime $opt_in_date Date and time, in ISO-8601 format, that the contact subscribed/opted-in to receiving SMS from the account. Displays only if the contact subscribes/opts-in. System generated.
  * @property \PHPFUI\ConstantContact\DateTime $opt_out_date Date and time, in ISO-8601 format, that the contact unsubscribed/opted-out of receiving SMS from the account. Displays only if the contact unsubscribed/opted-out. System generated.
  * @property string $advertised_frequency The numeric used to set how often to send SMS advertisements during a specified time interval (<code>advertised_interval</code>). For example, if the <code>advertised_frequency</code> is set to <code>2</code> and the  <code>advertised_interval</code> is set to <code>monthly</code>, the contact can receive up to two advertisements per month.

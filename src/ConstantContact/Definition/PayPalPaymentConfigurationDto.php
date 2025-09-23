@@ -12,8 +12,11 @@ namespace PHPFUI\ConstantContact\Definition;
  * @property bool $selected Specifies if the payment option is selected by default.
  * @property bool $additional_accounts Specifies if additional accounts are available.
  * @property array<\PHPFUI\ConstantContact\Definition\Message> $error_messages List of error messages associated with the payment option.
+ * @property string $email_address
+ * @property bool $venmo_enabled
+ * @property bool $pay_later_enabled
  */
-class PaymentOptionConfigurationDto extends \PHPFUI\ConstantContact\Definition\Base
+class PayPalPaymentConfigurationDto extends \PHPFUI\ConstantContact\Definition\Base
 	{
 	protected static array $fields = [
 		'create_time' => 'string',
@@ -23,6 +26,9 @@ class PaymentOptionConfigurationDto extends \PHPFUI\ConstantContact\Definition\B
 		'selected' => 'bool',
 		'additional_accounts' => 'bool',
 		'error_messages' => 'array<\PHPFUI\ConstantContact\Definition\Message>',
+		'email_address' => 'string',
+		'venmo_enabled' => 'bool',
+		'pay_later_enabled' => 'bool',
 
 	];
 	}
