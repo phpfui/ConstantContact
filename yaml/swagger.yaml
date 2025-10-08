@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.94"
+  version: "3.0.95"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -6500,6 +6500,12 @@ definitions:
         example: "p07e1l8cdif9dl"
         description: "The readOnly encoded account ID that uniquely identifies the\
           \ account."
+        readOnly: true
+      encoded_partner_id:
+        type: "string"
+        example: "a37cranviy95el"
+        description: "The encoded partner id that identifies which Constant Contact\
+          \ partner provisioned the account."
         readOnly: true
       first_name:
         type: "string"

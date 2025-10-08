@@ -9,6 +9,7 @@ namespace PHPFUI\ConstantContact\Definition;
  * @property string $contact_phone The account owner's contact phone number (up to 25 characters in length).
  * @property string $country_code The uppercase two-letter <a href='https://en.wikipedia.org/wiki/ISO_3166-1' target='_blank'>ISO 3166-1 code</a> representing the organization's country.
  * @property string $encoded_account_id The readOnly encoded account ID that uniquely identifies the account.
+ * @property string $encoded_partner_id The encoded partner id that identifies which Constant Contact partner provisioned the account.
  * @property string $first_name The account owner's first name.
  * @property string $last_name The account owner's last name.
  * @property string $organization_name The name of the organization that is associated with this account.
@@ -26,6 +27,7 @@ class Customer extends \PHPFUI\ConstantContact\Definition\Base
 		'contact_phone' => 'string',
 		'country_code' => 'string',
 		'encoded_account_id' => 'string',
+		'encoded_partner_id' => 'string',
 		'first_name' => 'string',
 		'last_name' => 'string',
 		'organization_name' => 'string',
