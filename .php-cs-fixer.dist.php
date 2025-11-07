@@ -7,6 +7,7 @@
  */
 
 $config = include 'vendor/phpfui/phpunit-syntax-coverage/PhpCsFixer.php';
+$config->setUnsupportedPhpVersionAllowed(true);
 
 return $config->setFinder(PhpCsFixer\Finder::create()
 			->exclude('vendor')
