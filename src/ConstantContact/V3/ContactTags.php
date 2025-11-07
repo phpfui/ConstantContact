@@ -43,6 +43,7 @@ class ContactTags extends \PHPFUI\ConstantContact\Base
 		return $data ? new \PHPFUI\ConstantContact\Definition\Tags($data) : null;
 		}
 
+
 	/**
 	 * POST (Create) a Tag
 	 *
@@ -66,4 +67,5 @@ class ContactTags extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\Tag($data) : null;
 		}
+
 	}
