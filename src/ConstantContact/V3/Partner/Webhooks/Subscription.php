@@ -56,7 +56,6 @@ class Subscription extends \PHPFUI\ConstantContact\Base
 		return $data ? new \PHPFUI\ConstantContact\Definition\WebhooksSubscriptionResponse($data) : null;
 		}
 
-
 	/**
 	 * PUT Webhook Topic Subscription
 	 *
@@ -100,5 +99,4 @@ class Subscription extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\WebhooksSubscriptionPutResp($data) : null;
 		}
-
 	}

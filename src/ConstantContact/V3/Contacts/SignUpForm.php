@@ -73,5 +73,4 @@ class SignUpForm extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\ContactCreateOrUpdateResponse($data) : null;
 		}
-
 	}

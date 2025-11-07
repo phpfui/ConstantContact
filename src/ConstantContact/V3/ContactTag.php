@@ -35,7 +35,6 @@ class ContactTag extends \PHPFUI\ConstantContact\Base
 		return $data ? new \PHPFUI\ConstantContact\Definition\ActivityGeneric($data) : null;
 		}
 
-
 	/**
 	 * GET Tag Details
 	 *
@@ -61,7 +60,6 @@ class ContactTag extends \PHPFUI\ConstantContact\Base
 		return $data ? new \PHPFUI\ConstantContact\Definition\Tag($data) : null;
 		}
 
-
 	/**
 	 * PUT (Update) a Tag
 	 *
@@ -86,5 +84,4 @@ class ContactTag extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\Tag($data) : null;
 		}
-
 	}

@@ -34,7 +34,6 @@ class ContactCustomFields extends \PHPFUI\ConstantContact\Base
 		return $data ? new \PHPFUI\ConstantContact\Definition\CustomFields($data) : null;
 		}
 
-
 	/**
 	 * POST (create) a custom_field
 	 *
@@ -60,5 +59,4 @@ class ContactCustomFields extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\CustomField($data) : null;
 		}
-
 	}

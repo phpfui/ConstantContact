@@ -45,7 +45,6 @@ class Emails extends \PHPFUI\ConstantContact\Base
 		return $data ? new \PHPFUI\ConstantContact\Definition\PagedEmailCampaignResponse($data) : null;
 		}
 
-
 	/**
 	 * POST (Create) a New Email Campaign
 	 *
@@ -77,5 +76,4 @@ class Emails extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\EmailCampaign($data) : null;
 		}
-
 	}

@@ -27,18 +27,21 @@ class Privileges extends \PHPFUI\ConstantContact\Base
 
 		return $this->doGet([]);
 		}
+
 	/**
 	 * @return ?array<\PHPFUI\ConstantContact\Definition\UserPrivilegesResource>
 	 */
 	public function getTyped() : ?array
 		{
 		$data = $this->get();
-		if (is_null($data))
+
+		if (null === $data)
 			{
 			return null;
 			}
 
 		$array = [];
+
 		foreach ($data as $object)
 			{
 			$array[] = new \PHPFUI\ConstantContact\Definition\UserPrivilegesResource($object);
@@ -46,5 +49,4 @@ class Privileges extends \PHPFUI\ConstantContact\Base
 
 		return $array;
 		}
-
 	}
