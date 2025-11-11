@@ -67,10 +67,12 @@ class Schedules extends \PHPFUI\ConstantContact\Base
 	/**
 	 * POST (Create) an Email Campaign Activity Schedule
 	 *
-	 * Use this method to schedule when Constant Contact will send an email
-	 * campaign activity to contacts. Use the `scheduled_date` request body
-	 * property to enter the ISO-8601 format date that you want Constant Contact
-	 * to send the email campaign activity on.
+	 * Use this method to send an email campaign activity to contacts either
+	 * immediately or on a specific date. To send the email campaign activity
+	 * immediately, specify `0` for the `scheduled_date` request property (results
+	 * return an empty array). To send the email campaign activity on a specific
+	 * date, specify the date using the `scheduled_date` request property (results
+	 * return the scheduled date in an array).
 	 *
 	 * Before you schedule an email campaign activity, you must update the
 	 * email campaign activity and specify which contacts you want Constant

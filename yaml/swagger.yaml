@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.95"
+  version: "3.0.105"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -1290,6 +1290,142 @@ paths:
         - "contact_data"
       x-authorization-privileges:
       - "contacts:write"
+  /events:
+    get:
+      tags:
+      - "Events"
+      summary: "GET a collection of events."
+      description: "Retrieve a collection of events with event details."
+      operationId: "findEvents"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "event_status"
+        in: "query"
+        description: "Use to return only events that meet the specified status. Acceptable\
+          \ values include `ACTIVE`,`DRAFT`, `COMPLETE`, `DELETED`,`CANCELLED`, and\
+          \ `ERROR`."
+        required: false
+        type: "string"
+        x-example: "DRAFT"
+      - name: "search_text"
+        in: "query"
+        description: "Use to return only events that include the specified text."
+        required: false
+        type: "string"
+        x-example: "reunion"
+      - name: "sort_by"
+        in: "query"
+        description: "Use to sort resulting events by one of the following properties:\
+          \ `name`, `start_time`, `end_time`, `created_time`, or `updated_time`."
+        required: false
+        type: "string"
+        x-example: "created_time"
+      - name: "sort_order"
+        in: "query"
+        description: "Sort order for the `sort_by parameter`. Accepted values include\
+          \ `ASC` (ascending) or `DESC` (descending). Defaults to `ASC` if `sort_by`\
+          \ is provided."
+        required: false
+        type: "string"
+        x-example: "DESC"
+      - name: "limit"
+        in: "query"
+        description: "Limit the number of results to return per page. Default and\
+          \ maximum is `100`."
+        required: false
+        type: "string"
+        x-example: "5"
+      - name: "prev"
+        in: "query"
+        description: "Cursor for retrieving the previous page of results. This value\
+          \ is obtained from the `prev_cursor` field in a previous response."
+        required: false
+        type: "string"
+        x-example: "7zDEe3DhD5gUiwRFsvWKKZlZO1j6-YihH2hyVWD8GaW7JnzXbHFP8Tou212KoU20mOjvM6pdWwycDWC3X-Hb_xY-RK1eBwYp_pc4X2CvLxo."
+      - name: "next"
+        in: "query"
+        description: "Cursor for retrieving the next page of results. This value is\
+          \ obtained from the `next_cursor` field in a previous response."
+        required: false
+        type: "string"
+        x-example: "7zDEe3DhD5gUiwRFsvWKKZlZO1j6-YihH2hyVWD8GaW7JnzXbHFP8Tou212KoU20mOjvM6pdWwycDWC3X-Hb_xY-RK1eBwYp_pc4X2CvLxo"
+      responses:
+        "200":
+          description: "Request Successful"
+          schema:
+            $ref: "#/definitions/PaginationDtoEventListingDto"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "The requested resource was not found."
+        "500":
+          description: "There was a problem with our internal service."
+        "503":
+          description: "Our internal service is temporarily unavailable."
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      x-authorization-privileges:
+      - "campaign:read"
+  /events/{event_id}:
+    get:
+      tags:
+      - "Events"
+      summary: "GET details for a single event."
+      description: "Specify the `event_id` path parameter to retrieve the event's\
+        \ details."
+      operationId: "getEvent_2"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "event_id"
+        in: "path"
+        description: "The ID that uniquely identifies the event."
+        required: true
+        type: "string"
+        x-example: "1697732a-8664-4675-8415-c4aabaa17dae"
+      - name: "include"
+        in: "query"
+        description: "Use to include (`true`) or exclude (`false`) event setting properties\
+          \ in the results."
+        required: false
+        type: "boolean"
+        x-example: true
+      responses:
+        "200":
+          description: "Request Successful"
+          schema:
+            $ref: "#/definitions/EventDto"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "The requested resource was not found."
+        "500":
+          description: "There was a problem with our internal service."
+        "503":
+          description: "Our internal service is temporarily unavailable."
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      x-authorization-privileges:
+      - "campaign:read"
   /segments:
     get:
       tags:
@@ -2660,6 +2796,22 @@ paths:
         - "active"
         - "deleted"
         x-example: "all"
+      - name: "channel_type"
+        in: "query"
+        description: "Use to return lists by channel type. The default value is `email`."
+        required: false
+        type: "string"
+        enum:
+        - "email"
+        - "sms"
+        x-example: "all"
+      - name: "include_sms_membership_count"
+        in: "query"
+        description: "Set to `true` to return the total number of SMS members in each\
+          \ list. Only applicable when `channel_type` is `sms`. Default is `false`."
+        required: false
+        type: "boolean"
+        x-example: "false"
       responses:
         "200":
           description: "Request successful"
@@ -3725,10 +3877,12 @@ paths:
       tags:
       - "Email Scheduling"
       summary: "POST (Create) an Email Campaign Activity Schedule"
-      description: "Use this method to schedule when Constant Contact will send an\
-        \ email campaign activity to contacts. Use the `scheduled_date` request body\
-        \ property to enter the ISO-8601 format date that you want Constant Contact\
-        \ to send the email campaign activity on. \n\nBefore you schedule an email\
+      description: "Use this method to send an email campaign activity to contacts\
+        \ either immediately or on a specific date. To send the email campaign activity\
+        \ immediately, specify `0` for the `scheduled_date` request property (results\
+        \ return an empty array). To send the email campaign activity on a specific\
+        \ date, specify the date using the `scheduled_date` request property (results\
+        \ return the scheduled date in an array).  \n\nBefore you schedule an email\
         \ campaign activity, you must update the email campaign activity and specify\
         \ which contacts you want Constant Contact to send the email to. When you\
         \ make a PUT call to update an email campaign activity, use the `contact_list_ids`\
