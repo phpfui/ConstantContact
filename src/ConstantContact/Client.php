@@ -470,14 +470,11 @@ class Client
 			$this->accessToken = $data['access_token'] ?? '';
 			$this->refreshToken = $data['refresh_token'] ?? '';
 
-			\curl_close($ch);
-
 			return isset($data['access_token'], $data['refresh_token']);
 			}
 
 		$this->statusCode = \curl_errno($ch);
 		$this->lastError = \curl_error($ch);
-		\curl_close($ch);
 
 		return false;
 		}
