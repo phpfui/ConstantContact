@@ -37,7 +37,6 @@ namespace PHPFUI\ConstantContact\Definition;
  * @property string $location_type Specifies if the event is physical and/or virtual, or to be determined.
  * @property bool $notify_owner_on_reg If `true`, sends an email to the event owner when a registration is made.
  * @property \PHPFUI\ConstantContact\Definition\OnlineMeetingDto $online_meeting The online meeting information for a virtual event.
- * @property \PHPFUI\ConstantContact\Definition\PaymentConfigurationDto $payment_configuration The virtual event's payment configuration information.
  * @property string $registration_url The event registration URL.
  * @property string $status Specifies the event's current status.
  * @property string $time_zone The time zone where the event takes place.
@@ -78,7 +77,6 @@ class EventDto extends \PHPFUI\ConstantContact\Definition\Base
 		'location_type' => 'string',
 		'notify_owner_on_reg' => 'bool',
 		'online_meeting' => '\PHPFUI\ConstantContact\Definition\OnlineMeetingDto',
-		'payment_configuration' => '\PHPFUI\ConstantContact\Definition\PaymentConfigurationDto',
 		'registration_url' => 'string',
 		'status' => 'string',
 		'time_zone' => 'string',

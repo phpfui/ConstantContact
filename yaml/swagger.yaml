@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.105"
+  version: "3.0.124"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -45,6 +45,8 @@ tags:
 - name: "Email Scheduling"
   description: "Use email scheduling endpoints and methods to schedule an email campaign\
     \ activity, unschedule an email campaign activity, and GET schedule information."
+- name: "Events"
+  description: "Endpoints and methods used to create and manage events."
 - name: "Segments"
   description: "Use segments to target a subset of your contacts that are most likely\
     \ to engage with a particular campaign."
@@ -1419,6 +1421,190 @@ paths:
           description: "There was a problem with our internal service."
         "503":
           description: "Our internal service is temporarily unavailable."
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      x-authorization-privileges:
+      - "campaign:read"
+  /events/{event_id}/tracks/{track_id}/registrations/{registration_id}:
+    get:
+      tags:
+      - "Events"
+      summary: "Get registration details for an event."
+      description: "Use the `event_id`, `registration_id`, and `track_id` path parameters\
+        \ to get registration details."
+      operationId: "getRegistrationInfo"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "event_id"
+        in: "path"
+        description: "The ID that uniquely identifies the event."
+        required: true
+        type: "string"
+        x-example: "1697732a-8664-4675-8415-c4aabaa17dae"
+      - name: "track_id"
+        in: "path"
+        description: "The track key that uniquely identifies the event track."
+        required: true
+        type: "string"
+        x-example: "s8zabc"
+      - name: "registration_id"
+        in: "path"
+        description: "The ID that uniquely identifies the registration."
+        required: true
+        type: "string"
+        x-example: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+      responses:
+        "200":
+          description: "Request Successful"
+          schema:
+            $ref: "#/definitions/DetailedRegistrationDto"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "The requested resource was not found."
+        "500":
+          description: "There was a problem with our internal service."
+        "503":
+          description: "Our internal service is temporarily unavailable."
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      x-authorization-privileges:
+      - "campaign:read"
+  /events/{event_id}/tracks/{track_id}/registrations:
+    get:
+      tags:
+      - "Events"
+      summary: "Get a list of registrations for an event."
+      description: "Use the `event_id` and `track_id` path parameters to get a list\
+        \ of registrations for an event. Use optional query parameters to limit the\
+        \ number of results returned per page, the sort order, or to filter results\
+        \ by specific criteria; such as registration `status`."
+      operationId: "findRegistrationsUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "event_id"
+        in: "path"
+        description: "The ID that uniquely identifies the event."
+        required: true
+        type: "string"
+        x-example: "1697732a-8664-4675-8415-c4aabaa17dae"
+      - name: "track_id"
+        in: "path"
+        description: "The track ID that uniquely identifies the event track."
+        required: true
+        type: "string"
+        x-example: "s8zabc"
+      - name: "registration_status"
+        in: "query"
+        description: "Filter registration results by status."
+        required: false
+        type: "string"
+        enum:
+        - "PENDING"
+        - "REGISTERED"
+        - "CANCELED"
+        - "EXPIRED"
+        - "IN_PROGRESS, FAILED"
+        x-example: "REGISTERED"
+      - name: "payment_status"
+        in: "query"
+        description: "Filter registration results by payment status."
+        required: false
+        type: "string"
+        enum:
+        - "PENDING"
+        - "PAID"
+        - "REFUNDED"
+        - "CANCELLED"
+        - "FAILED"
+        - "CHARGED_BACK"
+        x-example: "PAID"
+      - name: "search_text"
+        in: "query"
+        description: "Filter registration results by first name, last name, or email\
+          \ address."
+        required: false
+        type: "string"
+        x-example: "john.doe@example.com"
+      - name: "sort_by"
+        in: "query"
+        description: "Specify the field to use to sort the results."
+        required: false
+        type: "string"
+        enum:
+        - "first_name"
+        - "last_name"
+        - "email_address"
+        - "registration_status"
+        - "payment_status"
+        - "tickets"
+        - "total"
+        x-example: "email_address"
+      - name: "sort_order"
+        in: "query"
+        description: "Use to specify how you want the results sorted."
+        required: false
+        type: "string"
+        enum:
+        - "ASC"
+        - "DESC"
+        x-example: "ASC"
+      - name: "page_size"
+        in: "query"
+        description: "Alternative to the <code>limit</code> parameter to limit the\
+          \ number of results returned per page. If specifying both the <code>limit</code>\
+          \ and <code>page_size</code> query parameters, they must be the same value."
+        required: false
+        type: "string"
+        x-example: "50"
+      - name: "limit"
+        in: "query"
+        description: "Limit the number of results returned per page. If specifying\
+          \ both the <code>limit</code> and <code>page_size</code> query parameters,\
+          \ they must be the same value."
+        required: false
+        type: "string"
+        x-example: "50"
+      - name: "prev"
+        in: "query"
+        description: "Cursor for pagination used to get the previous page of results\
+          \ (mutually exclusive with <code>next</code>)."
+        required: false
+        type: "string"
+        x-example: "bSzsyWkkq95R44vIFEpY62gr8_xSeRXsEQkhnhltPgiT"
+      - name: "next"
+        in: "query"
+        description: "Cursor for pagination used to get the next page of results (mutually\
+          \ exclusive with <code>prev</code>)."
+        required: false
+        type: "string"
+        x-example: "cTk9xLmmr06S55wJGfQ73hs9_yTfSYtFRlimimQhjUj"
+      responses:
+        "200":
+          description: "Successfully retrieved registrations"
+          schema:
+            $ref: "#/definitions/PaginatedRegistrations"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "404":
+          description: "The requested resource was not found."
+        "500":
+          description: "There was a problem with our internal service."
       security:
       - oauth2_implicit:
         - "campaign_data"
@@ -9303,233 +9489,6 @@ definitions:
         example: "https://meet.google.com/abc-defg-hij"
         description: "The URL to use for the online meeting."
     title: "OnlineMeetingDto"
-  Message:
-    type: "object"
-    properties:
-      error_key:
-        type: "string"
-      error_message:
-        type: "string"
-    description: "List of error messages associated with the payment option."
-  PaymentOptionConfigurationDto:
-    type: "object"
-    properties:
-      create_time:
-        type: "string"
-        example: "2023-11-17T17:33:21.652Z"
-        description: "Create time of the event."
-      last_update_time:
-        type: "string"
-        example: "2023-12-07T13:18:39.681Z"
-        description: "Last modification time of the event."
-      payment_option:
-        type: "string"
-        example: "WEPAY"
-        description: "The type of payment option."
-      visible:
-        type: "boolean"
-        example: true
-        description: "Specifies if the payment option is visible to users."
-      selected:
-        type: "boolean"
-        example: false
-        description: "Specifies if the payment option is selected by default."
-      additional_accounts:
-        type: "boolean"
-        example: false
-        description: "Specifies if additional accounts are available."
-      error_messages:
-        type: "array"
-        description: "List of error messages associated with the payment option."
-        items:
-          $ref: "#/definitions/Message"
-    description: "Base configuration for payment options in an event."
-  CheckPaymentOptionConfigurationDto:
-    type: "object"
-    properties:
-      create_time:
-        type: "string"
-        example: "2023-11-17T17:33:21.652Z"
-        description: "Create time of the event."
-      last_update_time:
-        type: "string"
-        example: "2023-12-07T13:18:39.681Z"
-        description: "Last modification time of the event."
-      payment_option:
-        type: "string"
-        example: "WEPAY"
-        description: "The type of payment option."
-      visible:
-        type: "boolean"
-        example: true
-        description: "Specifies if the payment option is visible to users."
-      selected:
-        type: "boolean"
-        example: false
-        description: "Specifies if the payment option is selected by default."
-      additional_accounts:
-        type: "boolean"
-        example: false
-        description: "Specifies if additional accounts are available."
-      error_messages:
-        type: "array"
-        description: "List of error messages associated with the payment option."
-        items:
-          $ref: "#/definitions/Message"
-      payable_to:
-        type: "string"
-        description: "The name to make the check payable too."
-    description: "Base configuration for payment options in an event."
-  PayPalPaymentConfigurationDto:
-    type: "object"
-    properties:
-      create_time:
-        type: "string"
-        example: "2023-11-17T17:33:21.652Z"
-        description: "Create time of the event."
-      last_update_time:
-        type: "string"
-        example: "2023-12-07T13:18:39.681Z"
-        description: "Last modification time of the event."
-      payment_option:
-        type: "string"
-        example: "WEPAY"
-        description: "The type of payment option."
-      visible:
-        type: "boolean"
-        example: true
-        description: "Specifies if the payment option is visible to users."
-      selected:
-        type: "boolean"
-        example: false
-        description: "Specifies if the payment option is selected by default."
-      additional_accounts:
-        type: "boolean"
-        example: false
-        description: "Specifies if additional accounts are available."
-      error_messages:
-        type: "array"
-        description: "List of error messages associated with the payment option."
-        items:
-          $ref: "#/definitions/Message"
-      email_address:
-        type: "string"
-      venmo_enabled:
-        type: "boolean"
-      pay_later_enabled:
-        type: "boolean"
-    description: "Base configuration for payment options in an event."
-  AdditionalPaymentOptionConfigurationDto:
-    type: "object"
-    properties:
-      payment_option:
-        type: "string"
-        example: "STRIPE"
-        description: "Provides an additional form of payment option."
-      payment_option_configurations:
-        type: "array"
-        description: "Provides additional payment option configurations."
-        items:
-          type: "object"
-          description: "Base configuration for payment options in an event."
-          properties:
-            create_time:
-              type: "string"
-              example: "2023-11-17T17:33:21.652Z"
-              description: "Create time of the event."
-            last_update_time:
-              type: "string"
-              example: "2023-12-07T13:18:39.681Z"
-              description: "Last modification time of the event."
-            payment_option:
-              type: "string"
-              example: "WEPAY"
-              description: "The type of payment option."
-            visible:
-              type: "boolean"
-              example: true
-              description: "Specifies if the payment option is visible to users."
-            selected:
-              type: "boolean"
-              example: false
-              description: "Specifies if the payment option is selected by default."
-            additional_accounts:
-              type: "boolean"
-              example: false
-              description: "Specifies if additional accounts are available."
-            error_messages:
-              type: "array"
-              description: "List of error messages associated with the payment option."
-              items:
-                $ref: "#/definitions/Message"
-            payable_to:
-              type: "string"
-              description: "The name to make the check payable too."
-            email_address:
-              type: "string"
-            venmo_enabled:
-              type: "boolean"
-            pay_later_enabled:
-              type: "boolean"
-    title: "AdditionalPaymentOptionConfigurationDto"
-  EventPlatformFeeConfigurationBaseDto:
-    type: "object"
-    properties:
-      currency_type:
-        type: "string"
-        example: "USD"
-        description: "The type of currency to use for the event."
-      exempt:
-        type: "boolean"
-        example: false
-        description: "Specifies if the platform fee is exempt."
-      flat_rate_component:
-        type: "number"
-        example: 1.0
-        description: "Specifies the flat rate component of the platform fee."
-      last_refreshed_time:
-        type: "string"
-        example: "2023-11-17T17:33:21.655Z"
-        description: "The flat rate component of the platform fee"
-      percent_component:
-        type: "number"
-        example: 2.5
-        description: "The percentage component of the platform fee."
-      platform_fee_instruction_keys:
-        type: "array"
-        description: "List of instruction keys for platform fees."
-        items:
-          type: "string"
-          description: "List of instruction keys for platform fees."
-    title: "EventPlatformFeeConfigurationBaseDto"
-  PaymentConfigurationDto:
-    type: "object"
-    properties:
-      currency_type:
-        type: "string"
-        example: "USD"
-        description: "Identifies the currency used for payment."
-      payment_instructions:
-        type: "string"
-        example: "{\"WEPAY\":\"Credit card payment instructions\"}"
-        description: "Payment instructions for each payment option."
-      payment_option_configurations:
-        type: "array"
-        description: "Payment options."
-        items: {}
-        maxItems: 1
-      additional_payment_option_configurations:
-        type: "array"
-        description: "Additional configurations for payment options."
-        items:
-          $ref: "#/definitions/AdditionalPaymentOptionConfigurationDto"
-      platform_fee_configuration:
-        $ref: "#/definitions/EventPlatformFeeConfigurationBaseDto"
-      platform_fee_scope_type:
-        type: "string"
-        example: "REGISTRANT"
-        description: "The scope type for platform fees."
-    title: "PaymentConfigurationDto"
   EventDto:
     type: "object"
     required:
@@ -9691,9 +9650,6 @@ definitions:
       online_meeting:
         description: "The online meeting information for a virtual event."
         $ref: "#/definitions/OnlineMeetingDto"
-      payment_configuration:
-        description: "The virtual event's payment configuration information."
-        $ref: "#/definitions/PaymentConfigurationDto"
       registration_url:
         type: "string"
         example: "https://l1.constantcontactpages.com/ev/reg/scrk2u2"
@@ -9713,6 +9669,267 @@ definitions:
         description: "The abbreviation to use to indicate the time zone where the\
           \ event takes place."
         readOnly: true
+  SimpleFieldDto:
+    type: "object"
+    properties:
+      display_order:
+        type: "integer"
+        format: "int32"
+        example: 1
+        description: "If specified, determines the order in which to return a subset\
+          \ of contact's details. For example, if you want a contact's email address\
+          \ to display first, set the <code>display_order</code> to <code>1</code>\
+          \ within the <code>field_label</code>: <code>CONTACT_EMAIL_ADDRESS</code>\
+          \ details section."
+      field_label:
+        type: "string"
+        example: "Email Address"
+        description: "The label used to identify a field within each contact details\
+          \ section."
+      field_name:
+        type: "string"
+        example: "CONTACT_EMAIL_ADDRESS"
+        description: "The formatted name used to identify a field within each contact\
+          \ details section."
+      field_type:
+        type: "string"
+        example: "TEXT"
+        description: "Identifies the type of field. Acceptable values include; TEXT_AREA,\
+          \ DATE, SINGLE_SELECT,MULTI_SELECT, INFORMATIONAL, TERMS_CONDITIONS, ADDRESS,\
+          \ HEADER, DIVIDER, STATIC_TEXT."
+      label_key:
+        type: "string"
+        example: "registration.field.label.contact_email_address"
+        description: "The label used to identify a contact's registration details."
+    description: "An array of contact details."
+  RegistrationTicketDto:
+    type: "object"
+    properties:
+      checked_in_time:
+        type: "string"
+        format: "date-time"
+        example: "2025-11-20T16:13:02.072Z"
+        description: "The event check in time date, in ISO format."
+      editable:
+        type: "boolean"
+        example: false
+        description: "Set to <code>true</code> to allow or <code>false</code> to not\
+          \ allow registrations to be modified."
+      order_ticket_key:
+        type: "string"
+        example: "a1b2c3"
+        description: "The system generated number used to identify a ticket order."
+      price:
+        type: "number"
+        example: 25.0
+        description: "The price for a ticket."
+      ticket_name:
+        type: "string"
+        example: "General Admission"
+        description: "The name used to identify the ticket."
+      fields:
+        type: "array"
+        items:
+          $ref: "#/definitions/SimpleFieldDto"
+  LineItemDetailsDto:
+    type: "object"
+    properties:
+      amount:
+        type: "string"
+        example: "$25.00"
+        description: "The formatted amount of the line item."
+      amount_unformatted:
+        type: "number"
+        example: 25.0
+        description: "The unformatted amount of the line item."
+      line_item_type:
+        type: "string"
+        example: "TICKET"
+        description: "Type of line item."
+      name:
+        type: "string"
+        example: "General Admission"
+        description: "The name of the line item."
+  OrderDetailsDto:
+    type: "object"
+    properties:
+      details:
+        type: "array"
+        items:
+          $ref: "#/definitions/LineItemDetailsDto"
+      number:
+        type: "string"
+        example: "ZWbsLNGrHT"
+        description: "The system assigned string value used to identify the event\
+          \ order."
+      payment_method:
+        type: "string"
+        example: "STRIPE"
+        description: "The payment method used when the order was placed. Acceptable\
+          \ payment methods include; `STRIPE` and `PAYPAL`."
+      payment_status:
+        type: "string"
+        example: "PENDING"
+        description: "The event registration payment status. Acceptable values include;\
+          \ <code>PENDING</code>, <code>PAID</code>, <code>REFUNDED</code>, <code>CANCELLED</code>,\
+          \ <code>FAILED</code>, <code>CHARGED_BACK</code>, <code>PENDING</code>,\
+          \ <code>UNKNOWN</code."
+      payment_time:
+        type: "string"
+        example: "2025-08-29T14:29:57.712Z"
+        description: "Displays the date and time the payment was made, in ISO format."
+      payment_transaction_id:
+        type: "string"
+        example: "0bbfdf32-0609-4467-ad19-514130f5beaf"
+        description: "The unique ID used to identify a payment transaction."
+      tickets_link:
+        type: "string"
+        example: "https://lp.constantcontactpages.com/ev/reg/holly/registrations/fg84378c-a92e-41c4-87c2-0383986baaf9/tickets"
+        description: "The URL used to access purchased tickets."
+      tickets_text:
+        type: "string"
+        example: "Your tickets for access to the Holiday Festival of Lights."
+        description: "Text that describes the event and ticket information."
+      title:
+        type: "string"
+        example: "Holiday Festival of Lights"
+        description: "The title for the order."
+  DetailedRegistrationDto:
+    type: "object"
+    properties:
+      registration_id:
+        type: "string"
+        example: "4g1ceb43-f858-432e-b287-30a6d20d1250"
+        description: "The unique ID used to identify an event registration."
+      contact_id:
+        type: "string"
+        example: "84afe95a-5866-11ec-8019-fa163e56c9b0"
+        description: "The unique ID used to identify a contact."
+      checkedIn_tickets:
+        type: "integer"
+        format: "int32"
+        example: 0
+        description: "The total number of tickets assigned to a given <code>registration_id</code>."
+      checkin_status:
+        type: "string"
+        example: "NOT_CHECKED_IN"
+        description: "Provides the status of eligible checkin tickets."
+      eligible_checkin_tickets:
+        type: "integer"
+        format: "int32"
+        example: 1
+        description: "The total number of tickets eligible for checkin."
+      registration_date:
+        type: "string"
+        format: "date-time"
+        example: "2025-11-20T16:13:02.072Z"
+        description: "The event registration date, in ISO format."
+      registration_status:
+        type: "string"
+        example: "REGISTERED"
+        description: "Provides the current registration status; <code>REGISTERED</code>,\
+          \ <code>PENDING</code>, <code>CANCELED</code>, <code>EXPIRED</code>, <code>IN_PROGRESS</code>,\
+          \ <code>FAILED</code>."
+      display_physical_tickets:
+        type: "boolean"
+        example: true
+        description: "Determines if the physical tickets should display or not display."
+      contact:
+        type: "array"
+        items:
+          $ref: "#/definitions/SimpleFieldDto"
+      tickets:
+        type: "array"
+        items:
+          $ref: "#/definitions/RegistrationTicketDto"
+      order_summary:
+        $ref: "#/definitions/OrderDetailsDto"
+  RegistrantInformationLiteDto:
+    type: "object"
+    properties:
+      checkedIn_tickets:
+        type: "integer"
+        format: "int32"
+        example: 1
+        description: "The total number of tickets processed to check in for the event."
+      checkin_status:
+        type: "string"
+        example: "CHECKED_IN"
+        description: "The status of the check-in."
+      eligible_checkin_tickets:
+        type: "integer"
+        format: "int32"
+        example: 2
+        description: "The current checkin status."
+      email_address:
+        type: "string"
+        example: "sarah_lang@mymail.com"
+        description: "The email address associated with the registered event user."
+      first_name:
+        type: "string"
+        example: "sarah"
+        description: "The first name of the person that registered for the event."
+      last_name:
+        type: "string"
+        example: "lang"
+        description: "The last name of the person that registered for the event."
+      new_contact:
+        type: "boolean"
+        example: true
+        description: "Set to <code>true</code> to indicate that the contact is new,\
+          \ otherwise set to <code>false</code>."
+      payment_status:
+        type: "string"
+        example: "PAID"
+        description: "The current payment status for a registration."
+      registration_id:
+        type: "string"
+        example: "3f1ceb43-f858-432e-b287-30a6d20d1250"
+        description: "The ID that uniquely identifies a registration."
+      registration_status:
+        type: "string"
+        example: "<code>REGISTERED</code>"
+        description: "The status of a registration. Acceptable values include: <code>PENDING</code>,\
+          \ <code>REGISTERED</code>, <code>CANCELED</code>, <code>EXPIRED</code>,\
+          \ <code>IN_PROGRESS</code>, <code>FAILED</code>."
+      registration_time:
+        type: "string"
+        format: "date-time"
+        example: "2025-11-20T16:13:02.072Z"
+        description: "The time of event registration, in ISO format."
+      tickets:
+        type: "integer"
+        format: "int32"
+        example: 5
+        description: "Total number of tickets associated with a registration."
+      total:
+        type: "number"
+        example: 100.0
+        description: "The total amount paid for a registration."
+      track_key:
+        type: "string"
+        example: "wfhmkz"
+        description: "System generated string used to track a registration."
+  PaginatedRegistrations:
+    type: "object"
+    properties:
+      _links:
+        $ref: "#/definitions/registrationsLinks"
+      next_cursor:
+        type: "string"
+        description: "Use to get the next page of results."
+      prev_cursor:
+        type: "string"
+        description: "Use to get the previous page of results."
+      records:
+        type: "array"
+        items:
+          $ref: "#/definitions/RegistrantInformationLiteDto"
+      total_records:
+        type: "integer"
+        format: "int32"
+        example: 563
+        description: "The total number of resulting records."
   SegmentMaster:
     type: "object"
     properties:
@@ -14568,6 +14785,15 @@ definitions:
           \ contact the Constant Contact Partner Team."
         maxLength: 80
     description: "Specify client account user's details. All fields are required."
+  PartnerUnsubscribeResponse:
+    type: "object"
+    properties:
+      unsubscribed_count:
+        type: "integer"
+        example: 5
+        description: "The number of email addresses that were unsubscribed"
+    description: "Response indicating the number of contacts that were successfully\
+      \ unsubscribed."
   AccountSuspension:
     type: "object"
     required:
@@ -14856,6 +15082,15 @@ definitions:
           href:
             type: "string"
             example: "/v3/activities/04fe9a97-a579-43c5-bb1a-58ed29bf0a6a"
+  registrationsLinks:
+    type: "object"
+    properties:
+      next:
+        $ref: "#/definitions/Href"
+      prev:
+        $ref: "#/definitions/Href"
+      self:
+        $ref: "#/definitions/Href"
   reportingNext:
     type: "object"
     required:
