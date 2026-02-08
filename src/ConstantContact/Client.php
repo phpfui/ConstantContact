@@ -353,7 +353,7 @@ class Client
 		// Set method and to expect response
 		\curl_setopt($ch, CURLOPT_POST, true);
 		\curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-		\curl_setopt($ch, CURLOPT_POSTFIELDS, '');
+		\curl_setopt($ch, CURLOPT_POSTFIELDS, \json_encode($params));
 
 		return $this->exec($ch);
 		}
@@ -543,7 +543,7 @@ class Client
 		// Base64 encode it
 		$credentials = \base64_encode($auth);
 		// Create and set the Authorization header to use the encoded credentials
-		$headers = ['Authorization: Basic ' . $credentials, 'cache-control: no-cache', ];
+		$headers = ['Authorization: Basic ' . $credentials, 'cache-control: no-cache', 'Content-Type: application/x-www-form-urlencoded'];
 		\curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		}
 	}
