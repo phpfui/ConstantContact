@@ -32,6 +32,7 @@ class EmailCampaignActivityInput extends \PHPFUI\ConstantContact\Definition\Base
 		'from_name' => 100,
 		'from_email' => 80,
 		'reply_to_email' => 80,
+		'preheader' => 200,
 		'html_content' => 150000,
 
 	];

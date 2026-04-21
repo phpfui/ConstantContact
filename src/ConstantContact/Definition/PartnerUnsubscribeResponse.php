@@ -5,7 +5,7 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @property int $unsubscribed_count The number of email addresses that were unsubscribed
+ * @property int $unsubscribed_count The number of contacts that were successfully unsubscribed.
  */
 class PartnerUnsubscribeResponse extends \PHPFUI\ConstantContact\Definition\Base
 	{

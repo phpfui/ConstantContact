@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.124"
+  version: "3.0.148"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -235,6 +235,7 @@ paths:
         - "account_read"
       x-authorization-privileges:
       - "account:read"
+      x-ctctmcp-allow: true
       x-sdk-methodName: "getAccountPhysicalAddress"
     post:
       tags:
@@ -289,6 +290,7 @@ paths:
         - "account_update"
       x-authorization-privileges:
       - "account:update"
+      x-ctctmcp-allow: true
     put:
       tags:
       - "Account Services"
@@ -345,6 +347,7 @@ paths:
         - "account_update"
       x-authorization-privileges:
       - "account:update"
+      x-ctctmcp-allow: true
       x-sdk-methodName: "updateAccountPhysicalAddress"
   /account/emails:
     get:
@@ -430,6 +433,7 @@ paths:
       x-authorization-privileges:
       - "account:read"
       x-sdk-methodName: "getAllAccountEmailAddresses"
+      x-ctctmcp-allow: true
     post:
       tags:
       - "Account Services"
@@ -483,6 +487,7 @@ paths:
         - "account_update"
       x-authorization-privileges:
       - "account:update"
+      x-ctctmcp-allow: true
   /activities:
     get:
       tags:
@@ -932,6 +937,7 @@ paths:
         - "contact_data"
       x-authorization-privileges:
       - "contacts:write"
+      x-ctctmcp-allow: true
       x-sdk-methodName: "createImportJSONActivity"
   /activities/remove_list_memberships:
     post:
@@ -1378,6 +1384,69 @@ paths:
         - "campaign_data"
       x-authorization-privileges:
       - "campaign:read"
+  /events/default:
+    post:
+      tags:
+      - "Events"
+      summary: "POST (create) a new event."
+      description: "Creates a new event with default settings, registration form,\
+        \ and landing page. The event will be created in DRAFT status."
+      operationId: "addDefaultEvent"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Name for the new event. If not provided, a default name will\
+          \ be generated."
+        required: false
+        type: "string"
+        x-example: "My Event"
+      - name: "start_time"
+        in: "query"
+        description: "Event start time in ISO 8601 format. If not provided, defaults\
+          \ to a future date."
+        required: false
+        type: "string"
+        x-example: "2024-01-15T10:00:00Z"
+      - name: "end_time"
+        in: "query"
+        description: "Event end time in ISO 8601 format. If not provided, defaults\
+          \ to one hour after start time."
+        required: false
+        type: "string"
+        x-example: "2024-01-15T18:00:00Z"
+      - name: "placeholder_campaign_id"
+        in: "query"
+        description: "Placeholder campaign ID for the event."
+        required: false
+        type: "string"
+        x-example: "campaign-123"
+      responses:
+        "201":
+          description: "Event created successfully"
+          schema:
+            $ref: "#/definitions/EventDto"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "500":
+          description: "There was a problem with our internal service."
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      x-authorization-privileges:
+      - "campaign:write"
+      x-sdk-methodName: "createEvent"
   /events/{event_id}:
     get:
       tags:
@@ -1428,6 +1497,206 @@ paths:
         - "campaign_data"
       x-authorization-privileges:
       - "campaign:read"
+    patch:
+      tags:
+      - "Events"
+      summary: "PATCH (update) an event."
+      description: "Partially updates an event with the provided fields. Only the\
+        \ specified fields will be updated. This endpoint only works for events in\
+        \ DRAFT or ACTIVE status. Events in COMPLETE, CANCELED, or DELETED status\
+        \ cannot be updated."
+      operationId: "patchEvent"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "event_id"
+        in: "path"
+        description: "The ID that uniquely identifies the event to update."
+        required: true
+        type: "string"
+        x-example: "1697732a-8664-4675-8415-c4aabaa17dae"
+      - in: "body"
+        name: "body"
+        description: "A JSON request body containing the event fields to update."
+        required: true
+        schema:
+          $ref: "#/definitions/EventDto"
+      responses:
+        "204":
+          description: "Event updated successfully"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "The requested resource was not found."
+        "500":
+          description: "There was a problem with our internal service."
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      x-authorization-privileges:
+      - "campaign:write"
+      x-sdk-methodName: "updateEvent"
+  /events/{event_id}/copy:
+    post:
+      tags:
+      - "Events"
+      summary: "POST (copy) an existing event."
+      description: "Creates a deep copy of an existing event with all its settings,\
+        \ registration forms, and landing pages. The copied event is created in DRAFT\
+        \ status. Events in DRAFT, ACTIVE, COMPLETE, or CANCELED status can be copied.\
+        \ DELETED events cannot be copied."
+      operationId: "copyEvent"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "event_id"
+        in: "path"
+        description: "The ID of the event to copy."
+        required: true
+        type: "string"
+        x-example: "1697732a-8664-4675-8415-c4aabaa17dae"
+      - in: "body"
+        name: "body"
+        description: "A JSON request body containing the copy options."
+        required: true
+        schema:
+          $ref: "#/definitions/EventCopyRequestDto"
+      responses:
+        "200":
+          description: "Event copied successfully"
+          schema:
+            $ref: "#/definitions/EventDto"
+        "207":
+          description: "Event copied with some failures"
+          schema:
+            $ref: "#/definitions/EventDto"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "The requested resource was not found."
+        "500":
+          description: "There was a problem with our internal service."
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      x-authorization-privileges:
+      - "campaign:write"
+      x-sdk-methodName: "copyEvent"
+  /events/{event_id}/check_in/tickets:
+    post:
+      tags:
+      - "Events"
+      summary: "Check in event tickets."
+      description: "Use this endpoint to mark one or more tickets as checked in. The\
+        \ event must be in `ACTIVE` or `COMPLETE` status. Tickets with `CANCELLED`\
+        \ status cannot be checked in (returns HTTP 400)."
+      operationId: "checkInTickets"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "event_id"
+        in: "path"
+        description: "The ID that uniquely identifies the event."
+        required: true
+        type: "string"
+        x-example: "07216444-4e3b-41ea-a3b8-5a418fce41f4"
+      - in: "body"
+        name: "body"
+        description: "Set of order ticket keys to mark as checked in."
+        required: true
+        schema:
+          $ref: "#/definitions/OrderTicketKeysRequestDto"
+      responses:
+        "204":
+          description: "Successfully checked in order tickets."
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "The requested resource was not found."
+        "500":
+          description: "There was a problem with our internal service."
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      x-authorization-privileges:
+      - "campaign:write"
+  /events/{event_id}/undo_check_in/tickets:
+    post:
+      tags:
+      - "Events"
+      summary: "Undo event ticket check-in."
+      description: "Use this endpoint to undo check-in for one or more tickets, marking\
+        \ them as not checked in. The event must be in `ACTIVE` or `COMPLETE` status."
+      operationId: "undoCheckInTickets"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "event_id"
+        in: "path"
+        description: "The ID that uniquely identifies the event."
+        required: true
+        type: "string"
+        x-example: "07216444-4e3b-41ea-a3b8-5a418fce41f4"
+      - in: "body"
+        name: "body"
+        description: "Set of order ticket keys to mark as not checked in."
+        required: true
+        schema:
+          $ref: "#/definitions/OrderTicketKeysRequestDto"
+      responses:
+        "204":
+          description: "Successfully undone check-in for order tickets."
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "The requested resource was not found."
+        "500":
+          description: "There was a problem with our internal service."
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      x-authorization-privileges:
+      - "campaign:write"
   /events/{event_id}/tracks/{track_id}/registrations/{registration_id}:
     get:
       tags:
@@ -1612,6 +1881,136 @@ paths:
         - "campaign_data"
       x-authorization-privileges:
       - "campaign:read"
+    put:
+      tags:
+      - "Events"
+      summary: "Update status for event registrations."
+      description: "Use this endpoint to update the registration status for one or\
+        \ more registrations within an event track."
+      operationId: "updateRegistrationStatusUsingPUT"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "event_id"
+        in: "path"
+        description: "The ID that uniquely identifies the event."
+        required: true
+        type: "string"
+        x-example: "07216444-4e3b-41ea-a3b8-5a418fce41f4"
+      - name: "track_id"
+        in: "path"
+        description: "The track key that uniquely identifies the event track."
+        required: true
+        type: "string"
+        x-example: "gqz1gb"
+      - name: "increase_count"
+        in: "query"
+        description: "Override count flag."
+        required: false
+        type: "boolean"
+      - name: "increase_item_count"
+        in: "query"
+        description: "Override item count flag."
+        required: false
+        type: "boolean"
+      - name: "return_items_to_inventory"
+        in: "query"
+        description: "Return items to inventory flag. Defaults to `true`."
+        required: false
+        type: "boolean"
+      - in: "body"
+        name: "body"
+        description: "Registration status update request data."
+        required: true
+        schema:
+          $ref: "#/definitions/RegistrationStatusUpdateRequestDto"
+      responses:
+        "200":
+          description: "Successfully updated registration status."
+        "207":
+          description: "Some registrations failed to update."
+          schema:
+            $ref: "#/definitions/RegistrationStatusUpdateResponseDto"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "The requested resource was not found."
+        "500":
+          description: "There was a problem with our internal service."
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      x-authorization-privileges:
+      - "campaign:write"
+  /events/{event_id}/tracks/{track_id}/registrations/payment_status:
+    put:
+      tags:
+      - "Events"
+      summary: "Update payment status for event registrations."
+      description: "Use this endpoint to update the payment status for one or more\
+        \ registrations. This endpoint only processes registrations with a payment\
+        \ method (PAYPAL, WEPAY, STRIPE, DOOR, or CHECK). Free registrations without\
+        \ a payment method are silently excluded."
+      operationId: "updateRegistrationPaymentStatusUsingPUT"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "event_id"
+        in: "path"
+        description: "The ID that uniquely identifies the event."
+        required: true
+        type: "string"
+        x-example: "c5da3665-88f9-4b15-82bc-cd6593c32537"
+      - name: "track_id"
+        in: "path"
+        description: "The track key that uniquely identifies the event track."
+        required: true
+        type: "string"
+        x-example: "2unzqq"
+      - in: "body"
+        name: "body"
+        description: "Payment status update request data."
+        required: true
+        schema:
+          $ref: "#/definitions/PaymentStatusUpdateRequestDto"
+      responses:
+        "200":
+          description: "Successfully updated payment status."
+        "207":
+          description: "Some registrations failed to update."
+          schema:
+            $ref: "#/definitions/RegistrationStatusUpdateResponseDto"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "The requested resource was not found."
+        "500":
+          description: "There was a problem with our internal service."
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      x-authorization-privileges:
+      - "campaign:write"
   /segments:
     get:
       tags:
@@ -2873,6 +3272,7 @@ paths:
         - "contact_data"
       x-authorization-privileges:
       - "contacts:lists:write"
+      x-ctctmcp-allow: true
       x-sdk-methodName: "updateList"
     delete:
       tags:
@@ -3067,6 +3467,7 @@ paths:
         - "contact_data"
       x-authorization-privileges:
       - "contacts:lists:write"
+      x-ctctmcp-allow: true
   /contact_lists/list_id_xrefs:
     get:
       tags:
@@ -3624,16 +4025,18 @@ paths:
       tags:
       - "Email Campaigns"
       summary: "POST (Create) a New Email Campaign"
-      description: "Use this method to create a new email campaign. This method also\
-        \ creates new `primary_email` and `permalink` email campaign activities and\
-        \ associates them with the new email campaign.\n\nThe request body must contain\
-        \ the `name` property and the `email_campaign_activities` array. The `name`\
-        \ must be unique. The `email_campaign_activities` array contains the main\
-        \ content of your email campaign and must include `format_type`, `from_name`,\
-        \ `from_email`, `reply_to_email`, `subject`, and `html_content` properties.\
-        \ The `from_email` address you use must use a verified email address for your\
-        \ account.\nNOTE: If you create an email campaign using a legacy (V7) format,\
-        \ Constant Contact automatically converts it to the newer custom code format.\n"
+      description: "Use this method to create a new email campaign. You must include\
+        \ a tracking image (`[[trackingImage]]`) in the email body in order for Constant\
+        \ Contact to report on the email performance. This method also creates new\
+        \ `primary_email` and `permalink` email campaign activities and associates\
+        \ them with the new email campaign.\nThe request body must contain the `name`\
+        \ property and the `email_campaign_activities` array. The `name` must be unique.\
+        \ The `email_campaign_activities` array contains the main content of your\
+        \ email campaign and must include `format_type`, `from_name`, `from_email`,\
+        \ `reply_to_email`, `subject`, and `html_content` properties. The `from_email`\
+        \ address you use must use a verified email address for your account.\nNOTE:\
+        \ If you create an email campaign using a legacy (V7) format, Constant Contact\
+        \ automatically converts it to the newer custom code format.\n"
       operationId: "createEmailCampaignUsingPOST"
       consumes:
       - "application/json"
@@ -3678,6 +4081,102 @@ paths:
       x-authorization-privileges:
       - "campaign:write"
       x-sdk-methodName: "createEmailCampaign"
+      x-ctctmcp-tool-desc: "Use this tool to create a new email campaign. You must\
+        \ include a tracking image (`[[trackingImage]]`) in the email body in order\
+        \ for Constant Contact to report on the email performance. The request body\
+        \ must contain the `name` property and the `email_campaign_activities` array.\
+        \ The `name` must be unique. The `email_campaign_activities` array contains\
+        \ the main content of your email campaign and must include `format_type`,\
+        \ `from_name`, `from_email`, `reply_to_email`, `subject`, and `html_content`\
+        \ properties. The `from_email` address you use must use a verified email address\
+        \ for the account.\nBefore creating an email campaign, first retrieve the\
+        \ current account physical mailing address using the getPhysicalAddress tool.\
+        \ If the address is missing or incomplete, do not assume values; ask the user\
+        \ for the missing fields or update the address only with user-provided information.\n\
+        Compliance and sender preflight requirements:\n  Before creating an email\
+        \ campaign, the assistant must verify two separate account requirements:\n\
+        \n  1. Physical mailing address requirement\n  - First retrieve the current\
+        \ account physical mailing address using the `getPhysicalAddress` tool.\n\
+        \  - A physical mailing address is required to send emails and displays in\
+        \ the footer of every email sent from the account.\n  - If the address is\
+        \ missing or incomplete, do not assume values.\n  - Ask the user for the missing\
+        \ fields, or update the address only with user-provided information.\n\n \
+        \ 2. Sender email requirement\n  - Then retrieve account email addresses using\
+        \ `retrieveEmailAddresses`.\n  - Do not assume that a confirmed email alone\
+        \ is the best choice for sender headers.\n  - The assistant must verify which\
+        \ confirmed account emails are eligible for campaign headers and should inspect\
+        \ returned email roles.\n  - `from_email` must be a confirmed account email\
+        \ and should prefer an email with the `DEFAULT_FROM` role when available.\n\
+        \  - `reply_to_email` must be a confirmed account email and should prefer\
+        \ an email with the `REPLY_TO` role when available.\n  - If the same confirmed\
+        \ account email has both roles, it is the preferred default for both fields.\n\
+        \  - If no role-qualified email exists, the assistant must clearly say so\
+        \ and either ask the user which confirmed account email to use or use a confirmed\
+        \ fallback only if the API allows it and the user accepts.\n  - The assistant\
+        \ must not present sender details as validated until it has actually checked\
+        \ confirmed account emails.\n\nQuality requirement for default output: when\
+        \ the user asks to create an email campaign and does not explicitly request\
+        \ a plain or minimal draft, default to a polished, production-ready HTML marketing\
+        \ email, not a schema-valid stub. Treat any included HTML example as the minimum\
+        \ visual quality bar, not just a valid payload sample.\nStrong preference:\
+        \ generate professionally styled HTML with substantial inline CSS and a clear\
+        \ design system. Prefer: a background color and constrained content container,\
+        \ strong heading hierarchy and readable body typography, intentional spacing\
+        \ and section padding, card or panel structure where appropriate, styled CTA\
+        \ buttons and links, polished image treatment, responsive-friendly table or\
+        \ hybrid email-safe layout patterns, and a coherent visual layout that looks\
+        \ intentionally designed.\nAvoid as the default: barebones bodies with only\
+        \ one or two inline styles, placeholder-looking copy, or a simple heading-plus-paragraph\
+        \ structure when richer HTML is feasible from the information already available.\n\
+        User-discovery requirement: before creating the campaign, strongly prefer\
+        \ gathering enough context to make the email effective. Ask about the users\
+        \ business goal/campaign objective, audience, brand style, and desired call\
+        \ to action when that information is missing and asking is practical. Frame\
+        \ this as improving performance and relevance, not as a blocker. Examples:\
+        \ What is the business goal of this email? Who is the audience? What action\
+        \ do you want readers to take? Do you want it to feel promotional, editorial,\
+        \ or transactional? Are there brand colors, logo, product images, or offers\
+        \ to include? It is very important to personalize the email. If a business\
+        \ website is provided, use it to infer brand style, tone, colors, and destination\
+        \ links. If a logo or image is provided, incorporate it into the email. If\
+        \ neither is provided, clearly label the output as a best-effort draft. If\
+        \ the user has not supplied this context and immediate creation is still necessary,\
+        \ create the best possible polished draft using reasonable assumptions, but\
+        \ optimize for a credible business-ready layout rather than a minimal example.\n\
+        Behavioral rule: The assistant should assume the user wants a visually designed\
+        \ email that supports a real business objective. Visual polish does not satisfy\
+        \ this requirement on its own. Unless the user explicitly requests a placeholder,\
+        \ starter draft, mockup, or “just make something,” the assistant must collect\
+        \ the minimum campaign brief — goal, audience, CTA — before creating the campaign.\
+        \ If any of these are missing, ask first. Do not use generic filler strategy\
+        \ or copy as a substitute for the brief.\nTool Requirement: After creating\
+        \ an email campaign, always use the html preview tool get_campaign_html_preview\
+        \ inspect the rendered result. Example HTML below is illustrative, but the\
+        \ assistant should generally produce HTML that is at least as polished as\
+        \ this example unless the user requests otherwise: This is an example of the\
+        \ html content `<html><body style=\"margin:0;padding:0;background-color:#f6f3ee;font-family:Arial,Helvetica,sans-serif;color:#2b2118;\"\
+        >[[trackingImage]]<table role=\"presentation\" width=\"100%\" cellpadding=\"\
+        0\" cellspacing=\"0\" border=\"0\" style=\"background-color:#f6f3ee;margin:0;padding:24px\
+        \ 0;\"><tr><td align=\"center\"><table role=\"presentation\" width=\"600\"\
+        \ cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"width:600px;max-width:600px;background-color:#fffaf3;border-collapse:collapse;border:1px\
+        \ solid #eadfce;\"><tr><td style=\"padding:18px 40px 8px 40px;text-align:center;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#8a6d4b;\"\
+        >The crumb report</td></tr><tr><td style=\"padding:0 40px 12px 40px;text-align:center;\"\
+        ><h1 style=\"margin:0;font-size:34px;line-height:42px;color:#3a2817;\">Big\
+        \ bread news</h1></td></tr><tr><td style=\"padding:0 40px 20px 40px;text-align:center;font-size:17px;line-height:26px;color:#5c4735;\"\
+        >A very important update from the world of bread, delivered fresh to the bread\
+        \ enjoyer list.</td></tr><tr><td style=\"padding:0 24px 24px 24px;\"><img\
+        \ src=\"https://files.constantcontact.com/bde0a25f401/845f0a70-3610-448e-a493-0aba03ef9e9d.png\"\
+        \ width=\"552\" style=\"display:block;width:100%;max-width:552px;height:auto;border:0;border-radius:12px;\"\
+        ></td></tr><tr><td style=\"padding:0 40px 10px 40px;font-size:18px;line-height:28px;font-weight:bold;color:#3a2817;\"\
+        >Today’s loaf highlight</td></tr><tr><td style=\"padding:0 40px 12px 40px;font-size:16px;line-height:26px;color:#4c3b2d;\"\
+        >This edition celebrates one excellent loaf and the simple joy of admiring\
+        \ good bread. Crispy crust, strong crumb, no notes.</td></tr><tr><td style=\"\
+        padding:0 40px 32px 40px;\"><table role=\"presentation\" cellpadding=\"0\"\
+        \ cellspacing=\"0\" border=\"0\"><tr><td style=\"border-radius:999px;border:1px\
+        \ solid #3a2817;padding:12px 22px;font-size:15px;\"><a href=\"https://i.imgur.com/pzNV90U.jpeg\"\
+        \ style=\"color:#3a2817;text-decoration:none;font-weight:bold;\">View the\
+        \ bread</a></td></tr></table></td></tr></table></td></tr></table></body></html>`\n"
+      x-ctctmcp-allow: true
   /emails/{campaign_id}:
     get:
       tags:
@@ -3825,6 +4324,7 @@ paths:
         - "campaign_data"
       x-authorization-privileges:
       - "campaign:write"
+      x-ctctmcp-allow: true
       x-sdk-methodName: "patchEmailCampaignName"
   /emails/campaign_id_xrefs:
     get:
@@ -4011,6 +4511,7 @@ paths:
       x-authorization-privileges:
       - "campaign:write"
       x-sdk-methodName: "updateEmailCampaignActivity"
+      x-ctctmcp-allow: true
   /emails/activities/{campaign_activity_id}/schedules:
     get:
       tags:
@@ -6510,6 +7011,94 @@ paths:
         "409":
           description: "Conflict. The resource you are creating or updating conflicts\
             \ with an existing resource."
+        "500":
+          description: "There was a problem with our internal service."
+      security:
+      - ctctPartnerAuthorizer: []
+        api_key: []
+  /partner/accounts/{encoded_account_id}/contacts/unsubscribe:
+    post:
+      tags:
+      - "Technology Partners"
+      summary: "POST Unsubscribe Contacts"
+      description: "Use to unsubscribe contacts from partner client accounts. Identify\
+        \ the contacts to unsubscribe using the `email_address` parameter. To unsubscribe\
+        \ a single contact from all partner client accounts, specify the contacts\
+        \ `email_address` and set the `global_unsubscribe` parameter to `true`."
+      operationId: "partnerUnsubscribeContacts"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "encoded_account_id"
+        in: "path"
+        description: "The encoded account ID that uniquely identifies the partner's\
+          \ client account."
+        required: true
+        type: "string"
+        x-example: "a07e1lxqqqo0"
+      - in: "body"
+        name: "body"
+        description: "The JSON payload."
+        required: true
+        schema:
+          type: "object"
+          required:
+          - "update_source"
+          properties:
+            email_addresses:
+              type: "array"
+              description: "Array of email addresses to unsubscribe."
+              items:
+                type: "string"
+              maxItems: 500
+              x-example: "lang.carry@anymail.com"
+            update_source:
+              type: "string"
+              description: "Required parameter to specify the update source performing\
+                \ the unsubscribe."
+              enum:
+              - "Account"
+              - "Contact"
+              - "System"
+              x-example: "Account"
+            opt_out_reason:
+              type: "string"
+              description: "Optional parameter to specify the reason for the unsubscribe."
+              maxLength: 255
+              x-example: "No longer interested."
+            delete_contacts:
+              type: "boolean"
+              description: "Optional parameter to specify if the contact(s) should\
+                \ be soft-deleted as part of the unsubscribe."
+              default: false
+              x-example: "false"
+            global_unsubscribe:
+              type: "boolean"
+              description: "Optional parameter to specify if the contact's email address\
+                \ should be unsubscribed from all partner child accounts. When specified\
+                \ only a single email address in the `email_addresses` array can be\
+                \ specified."
+              default: false
+              x-example: "true"
+      responses:
+        "200":
+          description: "Contacts were successfully unsubscribed"
+          schema:
+            $ref: "#/definitions/PartnerUnsubscribeResponse"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "The requested resource was not found."
+        "406":
+          description: "Unsupported Media Type."
         "500":
           description: "There was a problem with our internal service."
       security:
@@ -9669,6 +10258,40 @@ definitions:
         description: "The abbreviation to use to indicate the time zone where the\
           \ event takes place."
         readOnly: true
+  EventCopyRequestDto:
+    type: "object"
+    required:
+    - "target_event_name"
+    properties:
+      target_event_name:
+        type: "string"
+        example: "My Copied Event"
+        description: "Name for the copied event. Must be unique for the account."
+      source_campaign_activities:
+        type: "array"
+        example:
+        - "550e8400-e29b-41d4-a716-446655440000"
+        - "304de5ff-6d25-4395-87db-45d10e144659"
+        description: "Optional array of campaign activity UUIDs to copy. If not provided,\
+          \ all activities are copied."
+        items:
+          type: "string"
+          format: "uuid"
+    description: "Request payload for copying an event."
+  OrderTicketKeysRequestDto:
+    type: "object"
+    required:
+    - "order_ticket_keys"
+    properties:
+      order_ticket_keys:
+        type: "array"
+        example:
+        - "a1b2c3"
+        - "d4e5f6"
+        description: "Array of order ticket keys to process."
+        items:
+          type: "string"
+    description: "Request payload for ticket check-in operations."
   SimpleFieldDto:
     type: "object"
     properties:
@@ -9701,6 +10324,22 @@ definitions:
         type: "string"
         example: "registration.field.label.contact_email_address"
         description: "The label used to identify a contact's registration details."
+      field_value:
+        type: "string"
+        example: "john.doe@example.com"
+        description: "The value of the field for this contact. For example, if the\
+          \ field is an email address, the field_value would contain the actual email\
+          \ address."
+      choices:
+        type: "array"
+        example:
+        - "Option 1"
+        - "Option 2"
+        - "Option 3"
+        description: "For SINGLE_SELECT and MULTI_SELECT field types, this array contains\
+          \ the available options the registrant can choose from."
+        items:
+          type: "string"
     description: "An array of contact details."
   RegistrationTicketDto:
     type: "object"
@@ -9930,6 +10569,713 @@ definitions:
         format: "int32"
         example: 563
         description: "The total number of resulting records."
+  RegistrationStatusUpdateRequestDto:
+    type: "object"
+    required:
+    - "registration_ids"
+    - "registration_status"
+    properties:
+      registration_ids:
+        type: "array"
+        example:
+        - "0c6a6ce8-e620-4ffc-92e6-6ffb689eb9d2"
+        - "15cdb4d3-86b9-4b9d-9431-4a5a0de53c4f"
+        description: "List of registration IDs to update."
+        items:
+          type: "string"
+      registration_status:
+        type: "string"
+        example: "CANCELED"
+        description: "New registration status to set."
+    description: "Request payload to update registration status."
+  RegistrationStatusUpdateResponseDto:
+    type: "object"
+    properties:
+      failed_registration_ids:
+        type: "array"
+        example:
+        - "278f74c7-0765-4086-a644-f99fec6817e8"
+        description: "List of registration IDs that failed to update. Empty or omitted\
+          \ means all updates succeeded."
+        items:
+          type: "string"
+    description: "Response payload for bulk status update operations. Contains list\
+      \ of registration IDs that failed to update."
+  PaymentStatusUpdateRequestDto:
+    type: "object"
+    required:
+    - "payment_status"
+    - "registration_ids"
+    properties:
+      registration_ids:
+        type: "array"
+        example:
+        - "4460bdcd-1a8a-434a-a7bf-c72a500743b2"
+        - "2ed7e310-ab71-4e8f-8863-8784e7ee4183"
+        description: "List of registration IDs to update."
+        items:
+          type: "string"
+      payment_status:
+        type: "string"
+        example: "Paid"
+        description: "New payment status to set."
+    description: "Request payload to update payment status."
+  AccountInfoDto:
+    type: "object"
+    properties:
+      account_url:
+        type: "string"
+        description: "The account URL of the connected user's profile. Note: Facebook\
+          \ & Instagram do not support this."
+        readOnly: true
+      display_name:
+        type: "string"
+        example: "John Doe"
+        description: "Display name of the connected user"
+        readOnly: true
+      image_url:
+        type: "string"
+        example: "https://example.com/avatar.jpg"
+        description: "URL of the connected user's avatar or image"
+        readOnly: true
+      network:
+        type: "string"
+        example: "facebook"
+        description: "The social network this account belongs to"
+        readOnly: true
+      network_account_id:
+        type: "string"
+        description: "The user identifier on the given network. Note: this is the\
+          \ network _account_ id not the _profile_ id."
+        readOnly: true
+      username:
+        type: "string"
+        example: "johndoe"
+        description: "Username of the connected user on the social network"
+        readOnly: true
+  ProfileDto:
+    type: "object"
+    required:
+    - "connected"
+    properties:
+      accessible:
+        type: "boolean"
+        example: false
+        description: "Whether the profile is currently accessible for posting. Publishing\
+          \ a post will fail if its profile is not currently accessible. Only populated\
+          \ when the request includes the query parameter include=accessible."
+        readOnly: true
+      account_info:
+        readOnly: true
+        $ref: "#/definitions/AccountInfoDto"
+      connected:
+        type: "boolean"
+        example: true
+        description: "Whether this profile is currently connected. You can only create\
+          \ and publish posts with connected profiles."
+      image_url:
+        type: "string"
+        example: "https://example.com/profile-image.jpg"
+        description: "URL of the profile's image or avatar"
+        readOnly: true
+      name:
+        type: "string"
+        example: "My Business Page"
+        description: "Display name or handle of the profile"
+        readOnly: true
+      network:
+        type: "string"
+        example: "facebook"
+        description: "The social network this profile belongs to"
+        readOnly: true
+      network_profile_id:
+        type: "string"
+        description: "The social network-specific identifier for this profile."
+        readOnly: true
+      network_user_id:
+        type: "string"
+        description: "The social network-specific identifier for the user who owns\
+          \ this profile."
+        readOnly: true
+      profile_id:
+        type: "string"
+        description: "Unique identifier for this profile"
+        readOnly: true
+      settings:
+        type: "object"
+        description: "Network-specific settings for the profile. <p> Only populated\
+          \ when request specifies accessible and settings are available for network.\
+          \ Currently only TikTok has the following available settings: </p><pre>\"\
+          content\": {\n\t\"comment_disabled\": Boolean,\n\t\"duet_disabled\": Boolean,\n\
+          \t\"stitch_disabled\": Boolean,\n\t\"max_video_post_duration_sec\": Integer\n\
+          }</pre>"
+        readOnly: true
+        additionalProperties:
+          type: "object"
+          properties: {}
+      url:
+        type: "string"
+        example: "https://www.facebook.com/mybusinesspage"
+        description: "URL to the profile on the social network"
+        readOnly: true
+    description: "Describes a social network profile (Business Page, Company Page/Organization,\
+      \ etc.)<br><strong>Note:</strong>Due to performance and/or rate-limit issues,\
+      \ some properties <em>may</em> be cached. Where possible, caching will be limited\
+      \ to 15 minutes"
+  Profiles:
+    type: "array"
+    items:
+      $ref: "#/definitions/ProfileDto"
+  ConnectionStatusDto:
+    type: "object"
+    properties:
+      error:
+        type: "string"
+        description: "There was an unexpected error accessing the account."
+      has_token:
+        type: "boolean"
+        example: false
+        description: "True if there is a token for this network type in the token-svc\
+          \ db"
+      is_active_user:
+        type: "boolean"
+        example: false
+        description: "At this time, a user is considered active if the user has any\
+          \ connected Profiles"
+      rate_limited:
+        type: "boolean"
+        example: false
+        description: "Whether this account or our app is currently rate-limited"
+      status:
+        type: "integer"
+        format: "int32"
+        description: "The status returned from the given network's API when retrieving\
+          \ the account. Can also beour own internal error"
+      token_has_scopes:
+        type: "boolean"
+        example: false
+        description: "Whether or not the token associated with this user has the scopes\
+          \ necessary to utilize social-reach-svc"
+      token_is_valid:
+        type: "boolean"
+        example: false
+        description: "True if the token marked valid in token-svc and can be successfully\
+          \ used to fetch basic user data from the network"
+    description: "Data pertaining to the established social network connection"
+  ConnectionV2Dto:
+    type: "object"
+    properties:
+      account_info:
+        description: "DTO containing account info for the connection"
+        $ref: "#/definitions/AccountInfoDto"
+      connection_status:
+        description: "DTO containing connection information for the connection"
+        $ref: "#/definitions/ConnectionStatusDto"
+    description: "A combination of account information and connection information\
+      \ pertaining to the establishedsocial network connection."
+  ConnectionResponseDto:
+    type: "object"
+    properties:
+      connections:
+        type: "array"
+        items:
+          $ref: "#/definitions/ConnectionV2Dto"
+    description: "A wrapper to house the list of established social network connections\
+      \ for a given CTCT user."
+  HashtagGroupDto:
+    type: "object"
+    required:
+    - "hashtag_group_name"
+    - "hashtag_names"
+    properties:
+      hashtag_group_id:
+        type: "string"
+        description: "The database id for this hashtag group.<p>This should always\
+          \ be <code>null</code> when creating a new hashtag group. When updating\
+          \ a hashtag group, this should either be set to <code>null</code>, or be\
+          \ the same value as when the group was retrieved.</p>"
+        readOnly: true
+      hashtag_group_name:
+        type: "string"
+        description: "The human-readable name for this group.<p>This name will be\
+          \ sanitized before saving, which may include trimming whitespace, truncation,\
+          \ and/or removing invalid characters. If the sanitized name results in a\
+          \ blank string, it will not be able to be saved, and any create or update\
+          \ operation will fail.<br>The name is currently limited to a maximum of\
+          \ 150 \"characters\", but the effective length may be shorter, depending\
+          \ on whether some special characters, such as emoji, are used.</p>"
+      hashtag_names:
+        type: "array"
+        description: "The list of hashtag names for this group.<p>Hashtag <em>names</em>\
+          \ do not include any leading '#' character. They cannot consist of any characters\
+          \ other than alphanumeric characters and '_' (underscore). The hashtag name\
+          \ cannot begin or end with an underscore. Hashtag names may begin with a\
+          \ letter or a number, and may consist of only numbers. Hashtag names are\
+          \ currently limited to a maximum of 30 characters.<br>The list will maintain\
+          \ its order when persisted and retrieved. If duplicates exist in the list,\
+          \ they will be removed when saving, and the first of the duplicates will\
+          \ retain its position.</p>"
+        items:
+          type: "string"
+    description: "Represents a named collection of hashtags."
+  EmbeddedResources:
+    type: "object"
+    required:
+    - "hashtag_groups"
+    properties:
+      hashtag_groups:
+        type: "array"
+        readOnly: true
+        items:
+          $ref: "#/definitions/HashtagGroupDto"
+    description: "Resources embedded in this response."
+  ResourcePageLink:
+    type: "object"
+    required:
+    - "href"
+    properties:
+      href:
+        type: "string"
+        description: "The URI of a page of results.<p>This link does not include the\
+          \ scheme or origin of the full URL.</p>"
+        readOnly: true
+    description: "Represents a link to a page of results."
+  ResourcePageLinks:
+    type: "object"
+    properties:
+      next:
+        description: "The URI for the next page of results. If the current page is\
+          \ the last page, this link may not be present."
+        readOnly: true
+        $ref: "#/definitions/ResourcePageLink"
+      previous:
+        description: "The URI for the previous page of results. If the current page\
+          \ is the first page, this link may not be present."
+        readOnly: true
+        $ref: "#/definitions/ResourcePageLink"
+    description: "Pagination links for navigating through pages of results."
+  ResourcePageMetadata:
+    type: "object"
+    required:
+    - "number"
+    - "size"
+    - "totalElements"
+    - "totalPages"
+    properties:
+      number:
+        type: "integer"
+        format: "int32"
+        description: "The number of items included in this response (in <code>_embedded.hashtag_groups</code>).<p>The\
+          \ maximum items that can be returned in a single call is currently limited\
+          \ to the lesser of the <code>limit</code> argument and 5.</p>"
+        readOnly: true
+      size:
+        type: "integer"
+        format: "int32"
+        description: "The size of the page of results requested, either via the <code>limit</code>\
+          \ argument or the default of 5."
+        readOnly: true
+      totalElements:
+        type: "integer"
+        format: "int32"
+        description: "The total number of results available.<p>If the <code>totalElements</code>\
+          \ is greater than <code>size</code>, then it is necessary to make multiple\
+          \ requests for all of the available <em>pages</em> of results.</p>"
+        readOnly: true
+      totalPages:
+        type: "integer"
+        format: "int32"
+        description: "The total number of pages available.<p>The pages can be iterated\
+          \ through using the <code>next</code> and <code>prev</code> links, or by\
+          \ manually calling the endpoint and iterating through the pages using the\
+          \ <code>page</code> argument.</p>"
+        readOnly: true
+    description: "Metadata describing the paging of results.<p>This may be more useful\
+      \ for some user experience implementations. This is not necessarily a standard\
+      \ HAL element, but it <em>is</em> included in the response by default.</p>"
+  PagedResourcesResourceHashtagGroupDto:
+    type: "object"
+    required:
+    - "_embedded"
+    - "_links"
+    - "page"
+    properties:
+      _embedded:
+        description: "The embedded resource(s)."
+        readOnly: true
+        $ref: "#/definitions/EmbeddedResources"
+      _links:
+        description: "The pageable links."
+        readOnly: true
+        $ref: "#/definitions/ResourcePageLinks"
+      page:
+        description: "The page metadata."
+        readOnly: true
+        $ref: "#/definitions/ResourcePageMetadata"
+    description: "A paged response containing a page of HashtagGroupDto objects."
+  ImageDto:
+    type: "object"
+    required:
+    - "url"
+    properties:
+      image_id:
+        type: "string"
+        readOnly: true
+      url:
+        type: "string"
+        description: "The url of the image. Each component of the image url must be\
+          \ appropriately encoded such that it does not include any illegal characters.\
+          \ Example: https://www.host.com/path+with%20space?q=query%20with+space#fragment+with%20space"
+  LinkMetadata:
+    type: "object"
+    properties:
+      createdAt:
+        type: "string"
+        format: "date-time"
+      description:
+        type: "string"
+        description: "Description or summary of the linked page"
+      image:
+        type: "string"
+        description: "URL of the preview image for the link"
+      linkId:
+        type: "string"
+        description: "Identifier of the parent link this metadata belongs to"
+        readOnly: true
+      linkMetaDataId:
+        type: "string"
+        description: "Unique identifier for this link metadata record"
+        readOnly: true
+      network:
+        type: "string"
+        description: "The social network this link metadata is associated with"
+      title:
+        type: "string"
+        description: "Title of the linked page"
+      updatedAt:
+        type: "string"
+        format: "date-time"
+    description: "Metadata for a link preview associated with a post"
+  LinkDto:
+    type: "object"
+    required:
+    - "url"
+    properties:
+      is_preview:
+        type: "boolean"
+        example: false
+        description: "Whether or not the linkMetadata has to be fetched for this particular\
+          \ link "
+      link_id:
+        type: "string"
+        readOnly: true
+      link_metadata:
+        type: "array"
+        description: "Metadata like text, description, image associated with the link.\
+          \ Writing to this stores a placeholder value for link metadata. Supporting\
+          \ networks will store their own link metadata upon publishing the link. "
+        items:
+          $ref: "#/definitions/LinkMetadata"
+      linked_activity_id:
+        type: "string"
+        description: "If the link url is related to another activity (i.e. URL of\
+          \ a sign up landing page, shoppable landing page, email permalink, etc)\
+          \ this is the activity id of the related activity."
+      long_url:
+        type: "string"
+        description: "the long version of the url by the UrlShortener service. Each\
+          \ component of the long link url must be appropriately encoded such that\
+          \ it does not include any illegal characters. Example: https://www.host.com/path+with%20space?q=query%20with+space#fragment+with%20space"
+      short_url:
+        type: "string"
+        description: "the shortened url by the UrlShortener service. Each component\
+          \ of the shortened link url must be appropriately encoded such that it does\
+          \ not include any illegal characters. Example: https://www.host.com/path+with%20space?q=query%20with+space#fragment+with%20space"
+      url:
+        type: "string"
+        description: "The url as entered by the user. May or may not include the protocol:\
+          \ 'google.com', 'www.google.com', 'http://google.com', 'http://google.com/'.\
+          \ Each component of the link url must be appropriately encoded such that\
+          \ it does not include any illegal characters. Example: https://www.host.com/path+with%20space?q=query%20with+space#fragment+with%20space"
+  ProfilePostProfileDto:
+    type: "object"
+    required:
+    - "profile_id"
+    properties:
+      account_username:
+        type: "string"
+        description: "The human-readable name of the account-owner of this profile"
+        readOnly: true
+      campaign_activity_id:
+        type: "string"
+        description: "the post's campaign activity id. This maps both to the activity\
+          \ in campaign-api and the post entity in the social-reach-svc database.\
+          \ Although it is optional, it <em>should</em> be included when updating\
+          \ a post"
+        readOnly: true
+      campaign_activity_status:
+        type: "string"
+        description: "the status of the post activity"
+        readOnly: true
+      campaign_activity_status_date:
+        type: "string"
+        format: "date-time"
+        description: "The activity's date. If the activity is <code>SCHEDULED</code>,\
+          \ this will typically be the same as the scheduled date, if set. Otherwise,\
+          \ it is the last-modified timestamp"
+        readOnly: true
+      campaign_activity_status_message:
+        type: "string"
+        description: "A human-readable message related to the current status of the\
+          \ post activity. This could be a generic message set by social-reach-svc\
+          \ or a specific, detailed message reported by the social network"
+        readOnly: true
+      image_url:
+        type: "string"
+        description: "the url for the profile's image. This image can sometimes become\
+          \ stale, and is only refreshed when getting profiles with <code>include=accessible</code>"
+        readOnly: true
+      network:
+        type: "string"
+        example: "facebook"
+        description: "The social network this profile belongs to"
+        readOnly: true
+      network_post_id:
+        type: "string"
+        description: "the social network's reference for this post. Only set/valid\
+          \ if the status is <code>DONE</code>."
+        readOnly: true
+      post_url:
+        type: "string"
+        description: "the permalink url to the post on the social network. This is\
+          \ only set/valid if the status is <code>DONE</code>."
+        readOnly: true
+      profile_id:
+        type: "string"
+      profile_name:
+        type: "string"
+        readOnly: true
+    description: "Describes the details of a post to a particular profile"
+  MapOfstringAndstring:
+    type: "object"
+    additionalProperties:
+      type: "string"
+  VideoSourceDto:
+    type: "object"
+    required:
+    - "source"
+    properties:
+      profile_id:
+        type: "string"
+        description: "The profile id this source is associated with. This may be <code>null</code>\
+          \ if this source has not been published yet."
+        readOnly: true
+      profile_post_id:
+        type: "string"
+        description: "The profile post id this source is associated with. This may\
+          \ be <code>null</code> if this source has not been published yet."
+        readOnly: true
+      source:
+        type: "string"
+        description: "The source type indicating where the video is hosted. Values\
+          \ include the social network name (e.g. <code>facebook</code>, <code>instagram</code>,\
+          \ <code>linkedin</code>, <code>tiktok</code>) for published videos, <code>s3</code>\
+          \ for pending uploads, or <code>public</code> for publicly accessible URLs."
+      thumbnail_url:
+        type: "string"
+        description: "The URL of a thumbnail image for the video, if available."
+      video_source_id:
+        type: "string"
+        description: "The unique (database) id for this object. It should only ever\
+          \ be <code>null</code> for an un-saved object. It is automatically generated\
+          \ by the database, and should be considered read-only. When re-saving a\
+          \ video post, any <code>VideoSourceDto</code> objects should include their\
+          \ original <code>videoSourceId</code>."
+        readOnly: true
+      video_url:
+        type: "string"
+        description: "The URL of the video source. Unless the <code>source</code>\
+          \ is <code>public</code>, this should only be set by the back-end."
+    description: "Describes where the source for a video is located. A single video\
+      \ can eventually have multiple sources. While a post is in its <code>DRAFT</code>\
+      \ or <code>SCHEDULED</code> phases, there will be a single source, which will\
+      \ typically be either \"local\" (it is still in the browser, and the video is\
+      \ being rendered from a local <code>File</code> object), or \"s3\" (the file\
+      \ has been uploaded to S3, and if not set, the URL for that video can be automatically\
+      \ generated). As the video is uploaded and posted to each social profile, a\
+      \ new source object will be created that includes the appropriate references\
+      \ to the uploaded media and the related post."
+  VideoDto:
+    type: "object"
+    required:
+    - "duration_seconds"
+    - "file_name"
+    - "file_size_bytes"
+    - "object_id"
+    - "upload_elapsed_ms"
+    - "video_sources"
+    properties:
+      duration_seconds:
+        type: "number"
+        format: "double"
+        description: "The duration (or play time) of the video (in seconds). This\
+          \ should be set once by the client, and never change."
+      file_name:
+        type: "string"
+        description: "The original file name of the video file. This should be set\
+          \ once by the client, and never change."
+      file_size_bytes:
+        type: "integer"
+        format: "int64"
+        description: "The original file size of the video file in bytes. This should\
+          \ be set once by the client, and never change."
+      object_id:
+        type: "string"
+        description: "The id of the video \"object\". This should be unique for each\
+          \ video that is uploaded to S3, and should be the same as the <code>object_id</code>\
+          \ returned from the endpoint to retrieve the upload URL. Typically, the\
+          \ URL of the video, when its <code>source</code> is <code>\"s3\"</code>\
+          \ will be a combination of an AWS base URL, the S3 bucket name, and this\
+          \ id. It should only ever be <code>null</code> for an uninitialized <code>VideoDto</code>.\
+          \ Once set, it should never change for a given <code>VideoDto</code>."
+      upload_elapsed_ms:
+        type: "integer"
+        format: "int64"
+        description: "The amount of time it took to upload the video from the front-end\
+          \ app to S3 (in milliseconds). This is included for potential diagnostic\
+          \ and/or analytics purposes. This should be set once by the client, and\
+          \ never change. If {@code source} is set to {@code public}, this should\
+          \ be set to 0."
+      video_id:
+        type: "string"
+        description: "The unique id for this video entry. This is generated automatically\
+          \ by the database and should be considered read-only. It should only ever\
+          \ be <code>null</code> for an un-saved <code>VideoDto</code>."
+        readOnly: true
+      video_sources:
+        type: "array"
+        description: "Data indicating location(s) of the \"source\" of the video,\
+          \ and its \"status\". Initially, there should be a single entry, with the\
+          \ <code>source</code> set to <code>s3</code>. The URL will be generated\
+          \ based on the known bucket name and the S3 object id before persisting.\
+          \ As this video is posted to the target profile(s), additional metadata\
+          \ items will be added, indicating the \"source\" as the target network,\
+          \ and the URLs for the video and thumbnail as the uploaded resource, and\
+          \ then populating the profile id and profile post id. Once all posts have\
+          \ been complete, the \"original\" <code>source: \"s3\"</code> data will\
+          \ be removed, since the S3 object may no longer be available. <strong>The\
+          \ client should initially only set a single source of type <code>\"s3\"\
+          </code> before saving, and this field should be considered read-only after\
+          \ that.</strong>"
+        items:
+          $ref: "#/definitions/VideoSourceDto"
+    description: "Represents a video file that has been uploaded for posting as part\
+      \ of a PostContent entity (text, images, links, videos). Contains information\
+      \ about the original file and its identity in S3, as well as links to video\
+      \ source information that indicate the potential various locations of the video,\
+      \ its thumbnail image, and potential post-related information after upload."
+  ProfilePostDto:
+    type: "object"
+    required:
+    - "profiles"
+    properties:
+      images:
+        type: "array"
+        items:
+          $ref: "#/definitions/ImageDto"
+      links:
+        type: "array"
+        items:
+          $ref: "#/definitions/LinkDto"
+      post_content_id:
+        type: "string"
+        description: "Although this is optional, it <em>should</em> be included when\
+          \ updating a post."
+        readOnly: true
+      profiles:
+        type: "array"
+        description: "This can be an empty list, as long as the post is in DRAFT status."
+        items:
+          $ref: "#/definitions/ProfilePostProfileDto"
+      settings:
+        type: "object"
+        description: "Network-specific post settings. If no settings are provided,\
+          \ this field will be omitted in the JSON response.\n\nAll values will be\
+          \ persisted as <code>string</code>s.\n\nCurrently, only TikTok has the following\
+          \ available settings:\nExample:\n<pre>{\n\t\"settings\": {\n\t\t\"tiktok\"\
+          : {\n\t\t\t\"disable_comment\": \"true\",\n\t\t\t\"disable_duet\": \"false\"\
+          ,\n\t\t\t\"disable_stitch\": \"true\",\n\t\t\t\"auto_add_music\": \"false\"\
+          \n\t\t}\n\t}\n}</pre>"
+        additionalProperties:
+          $ref: "#/definitions/MapOfstringAndstring"
+      text:
+        type: "string"
+        description: "The requirement of text content depends on the network being\
+          \ posted to. In DRAFT status, this is always optional."
+      videos:
+        type: "array"
+        description: "videos to be included in the post. Note that the presence of\
+          \ images, videos, and link previews in a post are mutually exclusive. Also\
+          \ note that currently, only a single video is supported."
+        items:
+          $ref: "#/definitions/VideoDto"
+  PostDto:
+    type: "object"
+    required:
+    - "profile_posts"
+    properties:
+      campaign_id:
+        type: "string"
+        description: "The campaign Id for this post. When creating a post, if this\
+          \ is not specified, a new campaign object will be created. If <code>campaign_id</code>\
+          \ is specified, then it must be the id of an existing campaign for the specified\
+          \ <code>accountId</code>, and that campaign <em>must</em> be in <code>PLACEHOLDER</code>\
+          \ status, and <em>must</em> be of <code>SOCIAL_POSTS</code> type, otherwise\
+          \ the request will fail"
+      campaign_properties:
+        type: "object"
+        description: "Additional campaign properties associated to a social post.This\
+          \ is only honored at post create time and not available to be updated."
+        additionalProperties:
+          type: "string"
+      marketing_plan_id:
+        type: "string"
+        description: "The UUID of the marketing plan that this post is associated\
+          \ with.This is only honored at post create time and not available to be\
+          \ updated."
+      name:
+        type: "string"
+        example: "My Social Post"
+        description: "The name of the post campaign. If not provided during creation,\
+          \ a default campaign name will be used. When creating or updating the post,\
+          \ this value will be sanitized to be appropriate for campaign-api, and the\
+          \ value returned may not match what was sent."
+      profile_posts:
+        type: "array"
+        items:
+          $ref: "#/definitions/ProfilePostDto"
+      scheduled_time:
+        type: "string"
+        example: "2026-03-15T14:30:00.000Z"
+        description: "The date and time to publish the post in ISO-8601 format. For\
+          \ example, 2026-03-15T14:30:00.000Z. If not specified, the publish job is\
+          \ scheduled to execute immediately."
+      shared_campaign_ids:
+        type: "array"
+        description: "The ids of campaigns which this social post is shared from.\
+          \ Expected at this time to be null or list of one. Only honored at post\
+          \ create time and not available to be updated."
+        readOnly: true
+        items:
+          type: "string"
+      status:
+        type: "string"
+        example: "SCHEDULED"
+        description: "The status of the post. For create requests, only DRAFT and\
+          \ SCHEDULED are valid."
+    description: "Represents a social media post campaign, which can include multiple\
+      \ posts to multiple social profiles, with either identical or network-specific\
+      \ content."
   SegmentMaster:
     type: "object"
     properties:
@@ -10124,7 +11470,6 @@ definitions:
     type: "object"
     required:
     - "custom_field_id"
-    - "value"
     properties:
       custom_field_id:
         type: "string"
@@ -12007,6 +13352,7 @@ definitions:
           \ will view your preheader as a short summary that follows the subject line\
           \ in their email client. Only <code>format_type</code> 3, 4, and 5 email\
           \ campaign activities use the preheader property."
+        maxLength: 200
       html_content:
         type: "string"
         example: "<html><body>[[trackingImage]] <a href=\"http://www.constantcontact.com\"\
@@ -12711,6 +14057,243 @@ definitions:
         description: "For scheduled or sent resend to non-opener emails, this property\
           \ is a unique identifier for the resend. For draft email campaign resend\
           \ activities, the value of this property is <code>DRAFT</code>."
+  EmailCampaignAccountInformation:
+    type: "object"
+    properties:
+      first_name:
+        type: "string"
+        example: "John"
+        description: "Account owner's first name"
+      last_name:
+        type: "string"
+        example: "Smith"
+        description: "Account owner's last name"
+      physical_address:
+        type: "object"
+        description: "The physical address associated with the account"
+        properties:
+          org_name:
+            type: "string"
+            example: "InstaPrinz"
+            description: "Organization name"
+          address_line_1:
+            type: "string"
+            example: "123 Maple Street"
+            description: "Primary address line"
+          address_line_2:
+            type: "string"
+            description: "Secondary address line"
+          address_line_3:
+            type: "string"
+            description: "Tertiary address line"
+          city:
+            type: "string"
+            example: "Hagerstown"
+            description: "City name"
+          state_or_prov_code:
+            type: "string"
+            example: "MD"
+            description: "State or province code"
+          state_or_prov:
+            type: "string"
+            description: "State or province full name"
+          state_non_us:
+            type: "string"
+            description: "Non-US state designation"
+          postal_code:
+            type: "string"
+            example: "21740"
+            description: "Postal or ZIP code"
+          country_code:
+            type: "string"
+            example: "US"
+            description: "ISO country code"
+          country:
+            type: "string"
+            description: "Country full name"
+          address_optional:
+            type: "string"
+            description: "Optional address field"
+          place_holder:
+            type: "boolean"
+            example: false
+            description: "Indicates if this is a placeholder address"
+      website:
+        type: "string"
+        example: "www.constantcontact.com"
+        description: "Account website URL"
+      community_screen_name:
+        type: "string"
+        description: "Community screen name for the account"
+      logo_url:
+        type: "string"
+        description: "URL for the account logo"
+      contact_email:
+        type: "string"
+        format: "email"
+        example: "InstaPrinz@gmail.com"
+        description: "Primary contact email address"
+      contact_phone:
+        type: "string"
+        example: "5555555555"
+        description: "Primary contact phone number"
+      verified_emails:
+        type: "array"
+        example:
+        - "InstaPrinz@gmail.com"
+        description: "List of verified email addresses. You must verify an email address\
+          \ before you can use it as the from address in an email."
+        items:
+          type: "string"
+      all_emails:
+        type: "array"
+        example:
+        - "InstaPrinz@gmail.com"
+        description: "List of all email addresses associated with the account"
+        items:
+          type: "string"
+      message_settings:
+        type: "object"
+        description: "Default message settings for the account"
+        properties:
+          from_email:
+            type: "string"
+            format: "email"
+            example: "InstaPrinz@gmail.com"
+            description: "Default from email address"
+          from_name:
+            type: "string"
+            example: "John Smith"
+            description: "Default from name"
+          reply_email:
+            type: "string"
+            format: "email"
+            example: "deepika.aggarwal@constantcontact.com"
+            description: "Default reply-to email address"
+          subject:
+            type: "string"
+            description: "Default subject line"
+          preheader:
+            type: "string"
+            description: "Default preheader text"
+      timezone:
+        type: "string"
+        example: "US/Eastern"
+        description: "Account timezone"
+      phone_prefix:
+        type: "string"
+        example: "555"
+        description: "Phone number prefix"
+      phone_remainder:
+        type: "string"
+        example: "5555555"
+        description: "Phone number remainder"
+      organization_phone:
+        type: "string"
+        example: "123-333-3335"
+        description: "Organization phone number"
+      industry_type:
+        type: "string"
+        example: "education_services"
+        description: "Industry type classification"
+      locale:
+        type: "string"
+        example: "en"
+        description: "Account locale"
+      last_authenticated_email:
+        type: "string"
+        format: "email"
+        example: "InstaPrinz@gmail.com"
+        description: "Last email address used for authentication"
+      use_source_account_images:
+        type: "boolean"
+        example: false
+        description: "Indicates if source account images should be used"
+      default_from_email:
+        type: "string"
+        format: "email"
+        example: "InstaPrinz@gmail.com"
+        description: "Default from email address"
+      reply_to_email:
+        type: "string"
+        format: "email"
+        example: "InstaPrinz@gmail.com"
+        description: "Default reply-to email address"
+  AutomationStructuredTag:
+    type: "object"
+    properties:
+      key:
+        type: "string"
+      value:
+        type: "string"
+      display_value:
+        type: "string"
+  AutomationWorkflowDef:
+    type: "object"
+    properties:
+      tasks:
+        type: "array"
+        items:
+          type: "object"
+          properties: {}
+      status:
+        type: "string"
+      namespace:
+        type: "string"
+      metadata:
+        type: "object"
+        properties: {}
+      timeout:
+        type: "object"
+        properties: {}
+      upgradable:
+        type: "boolean"
+    description: "The workflow definition containing tasks, status, and metadata.\
+      \ Internal fields such as correlationMetadata and parameters are excluded to\
+      \ prevent leaking accountId."
+  AutomationFlow:
+    type: "object"
+    properties:
+      workflow_def:
+        $ref: "#/definitions/AutomationWorkflowDef"
+    description: "The workflow flow definition."
+  AutomationWorkflowDefinition:
+    type: "object"
+    properties:
+      state:
+        type: "string"
+        description: "The current state of the workflow definition (e.g. DRAFT, ACTIVE)."
+      trigger:
+        type: "object"
+        description: "The trigger configuration for the automation workflow."
+        properties: {}
+      workflow:
+        $ref: "#/definitions/AutomationFlow"
+    description: "A workflow definition containing state, trigger, and workflow details."
+  AutomationCampaign:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "The unique identifier for the automation campaign workflow."
+      name:
+        type: "string"
+        description: "The name of the automation campaign."
+      description:
+        type: "string"
+        description: "The description of the automation campaign."
+      structured_tags:
+        type: "array"
+        items:
+          $ref: "#/definitions/AutomationStructuredTag"
+      active_definition:
+        $ref: "#/definitions/AutomationWorkflowDefinition"
+      draft_definition:
+        $ref: "#/definitions/AutomationWorkflowDefinition"
+      is_name_explicitly_set:
+        type: "boolean"
+        description: "Indicates whether the automation campaign name was explicitly\
+          \ set."
   ABTestData:
     type: "object"
     required:
@@ -13416,15 +14999,6 @@ definitions:
         $ref: "#/definitions/reportingLinks"
   UniqueEmailCounts:
     type: "object"
-    required:
-    - "abuse"
-    - "bounces"
-    - "clicks"
-    - "forwards"
-    - "not_opened"
-    - "opens"
-    - "optouts"
-    - "sends"
     properties:
       sends:
         type: "integer"
@@ -13470,9 +15044,6 @@ definitions:
     type: "object"
     required:
     - "campaign_id"
-    - "campaign_type"
-    - "last_sent_date"
-    - "unique_counts"
     properties:
       campaign_id:
         type: "string"
@@ -13517,9 +15088,6 @@ definitions:
           \ page."
   BulkEmailCampaignSummariesPage:
     type: "object"
-    required:
-    - "_links"
-    - "bulk_email_campaign_summaries"
     properties:
       bulk_email_campaign_summaries:
         type: "array"
@@ -14791,7 +16359,7 @@ definitions:
       unsubscribed_count:
         type: "integer"
         example: 5
-        description: "The number of email addresses that were unsubscribed"
+        description: "The number of contacts that were successfully unsubscribed."
     description: "Response indicating the number of contacts that were successfully\
       \ unsubscribed."
   AccountSuspension:
@@ -15093,8 +16661,6 @@ definitions:
         $ref: "#/definitions/Href"
   reportingNext:
     type: "object"
-    required:
-    - "href"
     properties:
       href:
         type: "string"

@@ -5,41 +5,36 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @property string $address_line1 Line 1 of the organization's street address.
- * @property string $address_line2 Line 2 of the organization's street address.
- * @property string $address_line3 Line 3 of the organization's street address.
- * @property string $city The city where the organization is located.
- * @property string $state_code The two letter ISO 3166-1 code for the organization's state and only used if the <code>country_code</code> is <code>US</code> or <code>CA</code>. If not, exclude this property from the request body.
- * @property string $state_name Use if the state where the organization is physically located is not in the United States or Canada. If  <code>country_code</code> is  <code>US</code> or <code>CA</code>, exclude this property from the request body.
- * @property string $postal_code The postal code address (ZIP code) of the organization. This property is required if the <code>state_code</code> is <code>US</code> or <code>CA</code>, otherwise exclude this property from the request body.
- * @property string $country_code The two letter <a href='https://en.wikipedia.org/wiki/ISO_3166-1' target='_blank'>ISO 3166-1 code</a> for the organization's country.
+ * @property string $org_name Organization name
+ * @property string $address_line_1 Primary address line
+ * @property string $address_line_2 Secondary address line
+ * @property string $address_line_3 Tertiary address line
+ * @property string $city City name
+ * @property string $state_or_prov_code State or province code
+ * @property string $state_or_prov State or province full name
+ * @property string $state_non_us Non-US state designation
+ * @property string $postal_code Postal or ZIP code
+ * @property string $country_code ISO country code
+ * @property string $country Country full name
+ * @property string $address_optional Optional address field
+ * @property bool $place_holder Indicates if this is a placeholder address
  */
 class PhysicalAddress extends \PHPFUI\ConstantContact\Definition\Base
 	{
 	protected static array $fields = [
-		'address_line1' => 'string',
-		'address_line2' => 'string',
-		'address_line3' => 'string',
+		'org_name' => 'string',
+		'address_line_1' => 'string',
+		'address_line_2' => 'string',
+		'address_line_3' => 'string',
 		'city' => 'string',
-		'state_code' => 'string',
-		'state_name' => 'string',
+		'state_or_prov_code' => 'string',
+		'state_or_prov' => 'string',
+		'state_non_us' => 'string',
 		'postal_code' => 'string',
 		'country_code' => 'string',
-
-	];
-
-	protected static array $maxLength = [
-		'address_line1' => 80,
-		'address_line2' => 80,
-		'address_line3' => 80,
-		'state_code' => 2,
-
-	];
-
-	protected static array $minLength = [
-		'address_line1' => 1,
-		'address_line2' => 1,
-		'address_line3' => 1,
+		'country' => 'string',
+		'address_optional' => 'string',
+		'place_holder' => 'bool',
 
 	];
 	}

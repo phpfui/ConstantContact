@@ -10,6 +10,8 @@ namespace PHPFUI\ConstantContact\Definition;
  * @property string $field_name The formatted name used to identify a field within each contact details section.
  * @property string $field_type Identifies the type of field. Acceptable values include; TEXT_AREA, DATE, SINGLE_SELECT,MULTI_SELECT, INFORMATIONAL, TERMS_CONDITIONS, ADDRESS, HEADER, DIVIDER, STATIC_TEXT.
  * @property string $label_key The label used to identify a contact's registration details.
+ * @property string $field_value The value of the field for this contact. For example, if the field is an email address, the field_value would contain the actual email address.
+ * @property array $choices For SINGLE_SELECT and MULTI_SELECT field types, this array contains the available options the registrant can choose from.
  */
 class SimpleFieldDto extends \PHPFUI\ConstantContact\Definition\Base
 	{
@@ -19,6 +21,8 @@ class SimpleFieldDto extends \PHPFUI\ConstantContact\Definition\Base
 		'field_name' => 'string',
 		'field_type' => 'string',
 		'label_key' => 'string',
+		'field_value' => 'string',
+		'choices' => 'array',
 
 	];
 	}

@@ -49,10 +49,11 @@ class Emails extends \PHPFUI\ConstantContact\Base
 	/**
 	 * POST (Create) a New Email Campaign
 	 *
-	 * Use this method to create a new email campaign. This method also creates
+	 * Use this method to create a new email campaign. You must include a tracking
+	 * image (`[[trackingImage]]`) in the email body in order for Constant
+	 * Contact to report on the email performance. This method also creates
 	 * new `primary_email` and `permalink` email campaign activities and associates
 	 * them with the new email campaign.
-	 *
 	 * The request body must contain the `name` property and the `email_campaign_activities`
 	 * array. The `name` must be unique. The `email_campaign_activities` array
 	 * contains the main content of your email campaign and must include `format_type`,

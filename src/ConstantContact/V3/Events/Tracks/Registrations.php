@@ -84,4 +84,31 @@ class Registrations extends \PHPFUI\ConstantContact\Base
 		return $data ? new \PHPFUI\ConstantContact\Definition\PaginatedRegistrations($data) : null;
 		}
 
+
+	/**
+	 * Update status for event registrations.
+	 *
+	 * Use this endpoint to update the registration status for one or more
+	 * registrations within an event track.
+	 *
+	 * @param string $event_id The ID that uniquely identifies the event.
+	 * @param string $track_id The track key that uniquely identifies the event track.
+	 * @param bool $increase_count Override count flag.
+	 * @param bool $increase_item_count Override item count flag.
+	 * @param bool $return_items_to_inventory Return items to inventory flag. Defaults to `true`.
+	 * @param \PHPFUI\ConstantContact\Definition\RegistrationStatusUpdateRequestDto $body Registration status update request data.
+	 */
+	public function put(string $event_id, string $track_id, ?bool $increase_count = null, ?bool $increase_item_count = null, ?bool $return_items_to_inventory = null, ?\PHPFUI\ConstantContact\Definition\RegistrationStatusUpdateRequestDto $body = null) : ?array
+		{
+
+		return $this->doPut(['event_id' => $event_id, 'track_id' => $track_id, 'increase_count' => $increase_count, 'increase_item_count' => $increase_item_count, 'return_items_to_inventory' => $return_items_to_inventory, 'body' => $body->getData(), ]);
+		}
+
+	public function putTyped(string $event_id, string $track_id, ?bool $increase_count = null, ?bool $increase_item_count = null, ?bool $return_items_to_inventory = null, ?\PHPFUI\ConstantContact\Definition\RegistrationStatusUpdateRequestDto $body = null) : ?\PHPFUI\ConstantContact\Definition\RegistrationStatusUpdateResponseDto
+		{
+		$data = $this->put($event_id, $track_id, $increase_count, $increase_item_count, $return_items_to_inventory, $body);
+
+		return $data ? new \PHPFUI\ConstantContact\Definition\RegistrationStatusUpdateResponseDto($data) : null;
+		}
+
 	}

@@ -33,4 +33,21 @@ class Event extends \PHPFUI\ConstantContact\Base
 		return $data ? new \PHPFUI\ConstantContact\Definition\EventDto($data) : null;
 		}
 
+
+	/**
+	 * PATCH (update) an event.
+	 *
+	 * Partially updates an event with the provided fields. Only the specified
+	 * fields will be updated. This endpoint only works for events in DRAFT
+	 * or ACTIVE status. Events in COMPLETE, CANCELED, or DELETED status cannot
+	 * be updated.
+	 *
+	 * @param string $event_id The ID that uniquely identifies the event to update.
+	 * @param \PHPFUI\ConstantContact\Definition\EventDto $body A JSON request body containing the event fields to update.
+	 */
+	public function patch(string $event_id, \PHPFUI\ConstantContact\Definition\EventDto $body) : ?array
+		{
+
+		return $this->doPatch(['event_id' => $event_id, 'body' => $body->getData(), ]);
+		}
 	}
