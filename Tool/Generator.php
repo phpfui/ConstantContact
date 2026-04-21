@@ -39,7 +39,7 @@ class Generator
 		$apiPath = $version . $path;
 		$className = $this->getClassName($apiPath);
 		$parts = \explode('\\', $className);
-		$class = \array_pop($parts);
+		$class = $this->fixReservedWord(\array_pop($parts));
 		$namespace = \implode('\\', $parts);
 		$dir = $this->rootPath . \str_replace('\\', '/', $namespace);
 
@@ -58,20 +58,12 @@ class Generator
 		$parts = \explode('\\', $namespacedClass);
 		$class = \array_pop($parts);
 		$namespace = \implode('\\', $parts);
+		$class = \str_replace('_', '', $class);
 
 		if (! isset($properties['type']))
 			{
-			if (\str_contains($namespacedClass, 'ResendToNonOpenersInput'))
-				{
-				$properties['type'] = 'object';
-				}
-			else
-				{
-				echo "{$namespacedClass} has no type\n";
-				}
+			$properties['type'] = 'object';
 			}
-
-		$class = \str_replace('_', '', $class);
 
 		if ('object' === $properties['type'])
 			{
@@ -140,6 +132,89 @@ class Generator
 					}
 				}
 			}
+		}
+
+	private function fixReservedWord(string $token) : string
+		{
+		$compareString = \strtolower($token);
+		$reserved = [
+			'abstract' => true,
+			'and' => true,
+			'array' => true,
+			'as' => true,
+			'break' => true,
+			'callable' => true,
+			'case' => true,
+			'catch' => true,
+			'class' => true,
+			'clone' => true,
+			'const' => true,
+			'continue' => true,
+			'declare' => true,
+			'default' => true,
+			'die' => true,
+			'do' => true,
+			'echo' => true,
+			'else' => true,
+			'elseif' => true,
+			'empty' => true,
+			'enddeclare' => true,
+			'endfor' => true,
+			'endforeach' => true,
+			'endif' => true,
+			'endswitch' => true,
+			'endwhile' => true,
+			'eval' => true,
+			'exit' => true,
+			'extends' => true,
+			'final' => true,
+			'finally' => true,
+			'fn' => true,
+			'for' => true,
+			'foreach' => true,
+			'function' => true,
+			'global' => true,
+			'goto' => true,
+			'if' => true,
+			'implements' => true,
+			'include' => true,
+			'include_once' => true,
+			'instanceof' => true,
+			'insteadof' => true,
+			'interface' => true,
+			'isset' => true,
+			'list' => true,
+			'match' => true,
+			'namespace' => true,
+			'new' => true,
+			'or' => true,
+			'print' => true,
+			'private' => true,
+			'protected' => true,
+			'public' => true,
+			'readonly' => true,
+			'require' => true,
+			'require_once' => true,
+			'return' => true,
+			'static' => true,
+			'switch' => true,
+			'throw' => true,
+			'trait' => true,
+			'try' => true,
+			'unset' => true,
+			'use' => true,
+			'var' => true,
+			'while' => true,
+			'xor' => true,
+			'yield' => true,
+		];
+
+		if (\array_key_exists($compareString, $reserved))
+			{
+			$token .= 'Type';
+			}
+
+		return $token;
 		}
 
 	private function formatDescription(string $description) : string
@@ -418,7 +493,7 @@ class ~class~ extends {$this->definitionNamespace}\Base
 			{
 			$type = 'float';
 			}
-		elseif ('file' == $type)
+		elseif ('file' == $type || 'email' == $type)
 			{
 			$type = 'string';
 			}
@@ -482,6 +557,7 @@ class ~class~ extends {$this->definitionNamespace}\Base
 		{
 		$parts = \explode('\\', $namespacedClass);
 		$class = \array_pop($parts);
+
 		$namespace = \trim(\implode('\\', $parts), '\\');
 
 		$methods = '';
@@ -501,7 +577,19 @@ class ~class~ extends {$this->definitionNamespace}\Base
 				{
 				if (isset($parameter['schema']))
 					{
-					$type = $this->getTypeNameFromRef($parameter['schema']['$ref']);
+					if (isset($parameter['schema']['$ref']))
+						{
+						$type = $this->getTypeNameFromRef($parameter['schema']['$ref']);
+						}
+					else
+						{
+						$type = $namespacedClass;
+						$parts = \explode('\\', $namespacedClass);
+						\array_shift($parts);
+						\array_shift($parts);
+						$type = $this->definitionNamespace . '\\' . \implode('', $parts);
+						$this->generateDefinition($type, $parameter['schema']);
+						}
 					}
 				else
 					{
