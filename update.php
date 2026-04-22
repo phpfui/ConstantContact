@@ -47,7 +47,7 @@ if ('php' == $php)
 	}
 
 // style the code
-exec($php . ' vendor\bin\php-cs-fixer fix -vv --allow-risky=yes');
+exec($php . ' vendor/bin/php-cs-fixer fix -vv --allow-risky=yes');
 
 echo "Cleaned code\n";
 

@@ -53,7 +53,6 @@ class Email extends \PHPFUI\ConstantContact\Base
 		return $data ? new \PHPFUI\ConstantContact\Definition\EmailCampaign($data) : null;
 		}
 
-
 	/**
 	 * PATCH (Update) an Email Campaign Name
 	 *
@@ -76,5 +75,4 @@ class Email extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\EmailCampaign($data) : null;
 		}
-
 	}
