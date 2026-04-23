@@ -33,6 +33,7 @@ class PhysicalAddress extends \PHPFUI\ConstantContact\Base
 		return $data ? new \PHPFUI\ConstantContact\Definition\AccountPhysicalAddress($data) : null;
 		}
 
+
 	/**
 	 * POST the Physical Address for the Account
 	 *
@@ -58,6 +59,7 @@ class PhysicalAddress extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\AccountPhysicalAddress($data) : null;
 		}
+
 
 	/**
 	 * PUT (update) the Physical Address for an Account
@@ -88,4 +90,5 @@ class PhysicalAddress extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\AccountPhysicalAddress($data) : null;
 		}
+
 	}

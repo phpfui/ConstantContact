@@ -49,6 +49,7 @@ class Summary extends \PHPFUI\ConstantContact\Base
 		return $data ? new \PHPFUI\ConstantContact\Definition\Customer($data) : null;
 		}
 
+
 	/**
 	 * PUT (update) Account Details
 	 *
@@ -73,4 +74,5 @@ class Summary extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\CustomerPut($data) : null;
 		}
+
 	}

@@ -24,21 +24,18 @@ class SmsEngagementHistory extends \PHPFUI\ConstantContact\Base
 
 		return $this->doGet(['contact_id' => $contact_id, ]);
 		}
-
 	/**
 	 * @return ?array<\PHPFUI\ConstantContact\Definition\SmsEngagementHistory>
 	 */
 	public function getTyped(string $contact_id) : ?array
 		{
 		$data = $this->get($contact_id);
-
-		if (null === $data)
+		if (is_null($data))
 			{
 			return null;
 			}
 
 		$array = [];
-
 		foreach ($data as $object)
 			{
 			$array[] = new \PHPFUI\ConstantContact\Definition\SmsEngagementHistory($object);
@@ -46,4 +43,5 @@ class SmsEngagementHistory extends \PHPFUI\ConstantContact\Base
 
 		return $array;
 		}
+
 	}

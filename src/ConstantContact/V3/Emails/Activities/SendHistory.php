@@ -37,21 +37,18 @@ class SendHistory extends \PHPFUI\ConstantContact\Base
 
 		return $this->doGet(['campaign_activity_id' => $campaign_activity_id, ]);
 		}
-
 	/**
 	 * @return ?array<\PHPFUI\ConstantContact\Definition\EmailSendHistory>
 	 */
 	public function getTyped(string $campaign_activity_id) : ?array
 		{
 		$data = $this->get($campaign_activity_id);
-
-		if (null === $data)
+		if (is_null($data))
 			{
 			return null;
 			}
 
 		$array = [];
-
 		foreach ($data as $object)
 			{
 			$array[] = new \PHPFUI\ConstantContact\Definition\EmailSendHistory($object);
@@ -59,4 +56,5 @@ class SendHistory extends \PHPFUI\ConstantContact\Base
 
 		return $array;
 		}
+
 	}

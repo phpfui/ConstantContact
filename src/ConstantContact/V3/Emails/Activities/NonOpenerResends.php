@@ -26,21 +26,18 @@ class NonOpenerResends extends \PHPFUI\ConstantContact\Base
 
 		return $this->doGet(['campaign_activity_id' => $campaign_activity_id, ]);
 		}
-
 	/**
 	 * @return ?array<\PHPFUI\ConstantContact\Definition\ResendToNonOpeners>
 	 */
 	public function getTyped(string $campaign_activity_id) : ?array
 		{
 		$data = $this->get($campaign_activity_id);
-
-		if (null === $data)
+		if (is_null($data))
 			{
 			return null;
 			}
 
 		$array = [];
-
 		foreach ($data as $object)
 			{
 			$array[] = new \PHPFUI\ConstantContact\Definition\ResendToNonOpeners($object);
@@ -48,6 +45,7 @@ class NonOpenerResends extends \PHPFUI\ConstantContact\Base
 
 		return $array;
 		}
+
 
 	/**
 	 * POST a Resend to Non-openers Campaign Activity
@@ -82,4 +80,5 @@ class NonOpenerResends extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\ResendToNonOpenersObject($data) : null;
 		}
+
 	}

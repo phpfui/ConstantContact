@@ -71,6 +71,7 @@ class ContactLists extends \PHPFUI\ConstantContact\Base
 		return $data ? new \PHPFUI\ConstantContact\Definition\ContactListArray($data) : null;
 		}
 
+
 	/**
 	 * POST (create) a List
 	 *
@@ -90,4 +91,5 @@ class ContactLists extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\ContactListPutPost($data) : null;
 		}
+
 	}

@@ -41,4 +41,5 @@ class SmsCampaignSummaries extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\SmsCampaignSummariesPage($data) : null;
 		}
+
 	}
