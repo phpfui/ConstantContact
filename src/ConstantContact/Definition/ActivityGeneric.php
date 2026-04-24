@@ -12,7 +12,7 @@ namespace PHPFUI\ConstantContact\Definition;
  * @property int $percent_done The percentage complete for the specified activity.
  * @property array<\PHPFUI\ConstantContact\Definition\ActivityErrors> $activity_errors An array of error messages if errors occurred for a specified activity. The system returns an empty array if no errors occur.
  * @property \PHPFUI\ConstantContact\Definition\ActivityGenericStatus $status
- * @property \PHPFUI\ConstantContact\Definition\ActivityLinks-2 $_links
+ * @property \PHPFUI\ConstantContact\Definition\ActivityLinks2 $_links
  */
 class ActivityGeneric extends \PHPFUI\ConstantContact\Definition\Base
 	{
@@ -24,7 +24,7 @@ class ActivityGeneric extends \PHPFUI\ConstantContact\Definition\Base
 		'percent_done' => 'int',
 		'activity_errors' => 'array<\PHPFUI\ConstantContact\Definition\ActivityErrors>',
 		'status' => '\PHPFUI\ConstantContact\Definition\ActivityGenericStatus',
-		'_links' => '\PHPFUI\ConstantContact\Definition\ActivityLinks-2',
+		'_links' => '\PHPFUI\ConstantContact\Definition\ActivityLinks2',
 
 	];
 	}

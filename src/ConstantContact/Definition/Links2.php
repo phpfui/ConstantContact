@@ -7,14 +7,14 @@ namespace PHPFUI\ConstantContact\Definition;
 /**
  * @property \PHPFUI\ConstantContact\Definition\Href $next
  * @property \PHPFUI\ConstantContact\Definition\Href $prev
- * @property \PHPFUI\ConstantContact\Definition\Href $Links-2
+ * @property \PHPFUI\ConstantContact\Definition\Href $Links2
  */
-class Links-2 extends \PHPFUI\ConstantContact\Definition\Base
+class Links2 extends \PHPFUI\ConstantContact\Definition\Base
 	{
 	protected static array $fields = [
 		'next' => '\PHPFUI\ConstantContact\Definition\Href',
 		'prev' => '\PHPFUI\ConstantContact\Definition\Href',
-		'Links-2' => '\PHPFUI\ConstantContact\Definition\Href',
+		'Links2' => '\PHPFUI\ConstantContact\Definition\Href',
 
 	];
 	}
