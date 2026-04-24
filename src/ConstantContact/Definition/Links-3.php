@@ -7,7 +7,7 @@ namespace PHPFUI\ConstantContact\Definition;
 /**
  * @property \PHPFUI\ConstantContact\Definition\Next $next HAL property that contains next link if applicable.
  */
-class SegmentsLinks extends \PHPFUI\ConstantContact\Definition\Base
+class Links-3 extends \PHPFUI\ConstantContact\Definition\Base
 	{
 	protected static array $fields = [
 		'next' => '\PHPFUI\ConstantContact\Definition\Next',

@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.148"
+  version: "3.0.149"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -10483,6 +10483,15 @@ definitions:
           $ref: "#/definitions/RegistrationTicketDto"
       order_summary:
         $ref: "#/definitions/OrderDetailsDto"
+  Links-2:
+    type: "object"
+    properties:
+      next:
+        $ref: "#/definitions/Href"
+      prev:
+        $ref: "#/definitions/Href"
+      self:
+        $ref: "#/definitions/Href"
   RegistrantInformationLiteDto:
     type: "object"
     properties:
@@ -10553,7 +10562,7 @@ definitions:
     type: "object"
     properties:
       _links:
-        $ref: "#/definitions/registrationsLinks"
+        $ref: "#/definitions/Links-2"
       next_cursor:
         type: "string"
         description: "Use to get the next page of results."
@@ -11312,6 +11321,14 @@ definitions:
         type: "string"
         description: "The next link in the page, or null if there are no additional\
           \ pages."
+  Links-3:
+    type: "object"
+    required:
+    - "next"
+    properties:
+      next:
+        description: "HAL property that contains next link if applicable."
+        $ref: "#/definitions/Next"
   SegmentsDTO:
     type: "object"
     required:
@@ -11324,7 +11341,7 @@ definitions:
           $ref: "#/definitions/SegmentMaster"
       _links:
         description: "HAL property that contains next link if applicable."
-        $ref: "#/definitions/segmentsLinks"
+        $ref: "#/definitions/Links-3"
   SegmentData:
     type: "object"
     required:
@@ -13100,6 +13117,17 @@ definitions:
         example: 89
         description: "The number of tags that this activity has currently deleted."
         readOnly: true
+  ActivityLinks-2:
+    type: "object"
+    properties:
+      self:
+        type: "object"
+        description: "The link returned in the response that you use to retrieve the\
+          \ status for the specified activity."
+        properties:
+          href:
+            type: "string"
+            example: "/v3/activities/04fe9a97-a579-43c5-bb1a-58ed29bf0a6a"
   ActivityGeneric:
     type: "object"
     required:
@@ -13143,7 +13171,28 @@ definitions:
       status:
         $ref: "#/definitions/ActivityGenericStatus"
       _links:
-        $ref: "#/definitions/tagsActivityLinks"
+        $ref: "#/definitions/ActivityLinks-2"
+  Next-2:
+    type: "object"
+    properties:
+      href:
+        type: "string"
+        description: "The next link in the page or null if there are no additional\
+          \ pages."
+  Links-4:
+    type: "object"
+    properties:
+      href:
+        type: "string"
+      next:
+        description: "Contains the next page link, if applicable."
+        $ref: "#/definitions/Next-2"
+  PagingLinks-2:
+    type: "object"
+    properties:
+      next:
+        description: "The link to the next page of results."
+        $ref: "#/definitions/Links-4"
   Tags:
     type: "object"
     properties:
@@ -13154,7 +13203,7 @@ definitions:
           $ref: "#/definitions/Tag"
       _links:
         description: "HAL property that contains next link if applicable."
-        $ref: "#/definitions/tagsPagingLinks"
+        $ref: "#/definitions/PagingLinks-2"
   TagPost:
     type: "object"
     required:
@@ -13171,6 +13220,16 @@ definitions:
         type: "string"
         example: "ESTY"
         description: "The source used to identify the contacts to tag."
+  Link-2:
+    type: "object"
+    properties:
+      href:
+        type: "string"
+  PagingLinks-3:
+    type: "object"
+    properties:
+      next:
+        $ref: "#/definitions/Link-2"
   EmailCampaigns:
     type: "object"
     properties:
@@ -13234,7 +13293,7 @@ definitions:
     type: "object"
     properties:
       _links:
-        $ref: "#/definitions/emailsPagingLinks"
+        $ref: "#/definitions/PagingLinks-3"
       campaigns:
         type: "array"
         items:
@@ -14359,6 +14418,12 @@ definitions:
     description: "The base contact tracking activity representing sends, opt-outs\
       \ and forwards to a friend. The basic information provided includes the campaign\
       \ activity ID, tracking activity type, and time the tracking activity occurred."
+  Links-5:
+    type: "object"
+    properties:
+      next:
+        description: "Contains the next page link if it is available."
+        $ref: "#/definitions/Next-2"
   ContactTrackingActivitiesPage:
     type: "object"
     properties:
@@ -14369,7 +14434,7 @@ definitions:
           $ref: "#/definitions/ContactTrackingActivity"
       _links:
         description: "The next link if more contact tracking activities are available."
-        $ref: "#/definitions/reportingLinks"
+        $ref: "#/definitions/Links-5"
     description: "A page of tracking activities for a contact that can include sends,\
       \ opens, clicks, bounces, opt-outs and forwards to a friend. If it exists, a\
       \ link to the next page of tracking activities is provided."
@@ -14468,7 +14533,7 @@ definitions:
           $ref: "#/definitions/CampaignActivitySummary"
       _links:
         description: "The next link if more summaries of activities are available."
-        $ref: "#/definitions/reportingLinks"
+        $ref: "#/definitions/Links-5"
   EmailLinkClickCount:
     type: "object"
     properties:
@@ -14581,7 +14646,7 @@ definitions:
           $ref: "#/definitions/SendsTrackingActivity"
       _links:
         description: "HAL property that contains the next link, if applicable."
-        $ref: "#/definitions/reportingLinks"
+        $ref: "#/definitions/Links-5"
   OpensTrackingActivity:
     type: "object"
     required:
@@ -14647,7 +14712,7 @@ definitions:
           $ref: "#/definitions/OpensTrackingActivity"
       _links:
         description: "HAL property that contains the next link, if applicable."
-        $ref: "#/definitions/reportingLinks"
+        $ref: "#/definitions/Links-5"
   DidNotOpensTrackingActivity:
     type: "object"
     required:
@@ -14708,7 +14773,7 @@ definitions:
           $ref: "#/definitions/DidNotOpensTrackingActivity"
       _links:
         description: "HAL property that contains the next link, if applicable."
-        $ref: "#/definitions/reportingLinks"
+        $ref: "#/definitions/Links-5"
   ClicksTrackingActivity:
     type: "object"
     required:
@@ -14784,7 +14849,7 @@ definitions:
           $ref: "#/definitions/ClicksTrackingActivity"
       _links:
         description: "HAL property that contains next link if applicable."
-        $ref: "#/definitions/reportingLinks"
+        $ref: "#/definitions/Links-5"
   ForwardsTrackingActivity:
     type: "object"
     required:
@@ -14844,7 +14909,7 @@ definitions:
           $ref: "#/definitions/ForwardsTrackingActivity"
       _links:
         description: "HAL property that contains the next link, if applicable."
-        $ref: "#/definitions/reportingLinks"
+        $ref: "#/definitions/Links-5"
   OptoutsTrackingActivity:
     type: "object"
     required:
@@ -14909,7 +14974,7 @@ definitions:
           $ref: "#/definitions/OptoutsTrackingActivity"
       _links:
         description: "HAL property that contains the next link, if applicable."
-        $ref: "#/definitions/reportingLinks"
+        $ref: "#/definitions/Links-5"
   BouncesTrackingActivity:
     type: "object"
     required:
@@ -14996,7 +15061,7 @@ definitions:
           $ref: "#/definitions/BouncesTrackingActivity"
       _links:
         description: "HAL property that contains next link if applicable"
-        $ref: "#/definitions/reportingLinks"
+        $ref: "#/definitions/Links-5"
   UniqueEmailCounts:
     type: "object"
     properties:
@@ -15102,7 +15167,7 @@ definitions:
         $ref: "#/definitions/BulkEmailCampaignSummariesPercents"
       _links:
         description: "HAL property that contains next link if applicable"
-        $ref: "#/definitions/reportingLinks"
+        $ref: "#/definitions/Links-5"
   StatsError:
     type: "object"
     properties:
@@ -15577,6 +15642,23 @@ definitions:
       sms_channel:
         description: "Sms channel info for this contact"
         $ref: "#/definitions/TrackingActivitySmsChannelDTO"
+  Next-3:
+    type: "object"
+    required:
+    - "href"
+    properties:
+      href:
+        type: "string"
+        description: "The next link in the page or null if there are no additional\
+          \ pages"
+  Links-6:
+    type: "object"
+    required:
+    - "next"
+    properties:
+      next:
+        description: "Contains the next link if it is available."
+        $ref: "#/definitions/Next-3"
   PContactClickTrackingActivitiesPage:
     type: "object"
     required:
@@ -15590,7 +15672,7 @@ definitions:
           $ref: "#/definitions/PContactClickTrackingActivity"
       _links:
         description: "HAL property that contains next link if applicable"
-        $ref: "#/definitions/lpreportingLinks"
+        $ref: "#/definitions/Links-6"
   PContactOpenTrackingActivity:
     type: "object"
     required:
@@ -15656,7 +15738,7 @@ definitions:
           $ref: "#/definitions/PContactOpenTrackingActivity"
       _links:
         description: "HAL property that contains next link if applicable"
-        $ref: "#/definitions/lpreportingLinks"
+        $ref: "#/definitions/Links-6"
   PContactUpdateTrackingActivity:
     type: "object"
     required:
@@ -15718,7 +15800,7 @@ definitions:
           $ref: "#/definitions/PContactUpdateTrackingActivity"
       _links:
         description: "HAL property that contains next link if applicable"
-        $ref: "#/definitions/lpreportingLinks"
+        $ref: "#/definitions/Links-6"
   PContactAddTrackingActivity:
     type: "object"
     required:
@@ -15780,7 +15862,7 @@ definitions:
           $ref: "#/definitions/PContactAddTrackingActivity"
       _links:
         description: "HAL property that contains next link if applicable"
-        $ref: "#/definitions/lpreportingLinks"
+        $ref: "#/definitions/Links-6"
   PContactSMSOptInTrackingActivity:
     type: "object"
     required:
@@ -15842,7 +15924,7 @@ definitions:
           $ref: "#/definitions/PContactSMSOptInTrackingActivity"
       _links:
         description: "HAL property that contains next link if applicable"
-        $ref: "#/definitions/lpreportingLinks"
+        $ref: "#/definitions/Links-6"
   UniqueSmsCounts:
     type: "object"
     required:
@@ -15930,6 +16012,21 @@ definitions:
         example: 0.0
         description: "The aggregated unsubscribe (opt-out) rate for all campaigns\
           \ on the current results page."
+  Next-4:
+    type: "object"
+    required:
+    - "href"
+    properties:
+      href:
+        type: "string"
+        description: "The next link in the page or null if there are no additional\
+          \ pages."
+  Links-7:
+    type: "object"
+    properties:
+      next:
+        description: "Contains the next link if it is available."
+        $ref: "#/definitions/Next-4"
   SmsCampaignSummariesPage:
     type: "object"
     properties:
@@ -15946,13 +16043,13 @@ definitions:
         $ref: "#/definitions/BulkSmsCampaignSummariesPercents"
       _links:
         description: "HAL property that contains next link if applicable"
-        $ref: "#/definitions/reportingsmsLinks"
+        $ref: "#/definitions/Links-7"
   PaginationLinks:
     type: "object"
     properties:
       next:
         description: "Contains the next page link, if applicable."
-        $ref: "#/definitions/partnersLink"
+        $ref: "#/definitions/Link-2"
   PartnerAccount:
     type: "object"
     required:
@@ -16639,108 +16736,6 @@ definitions:
         file_id:
           type: "integer"
           description: "Identifies the file in MyLibrary."
-  tagsActivityLinks:
-    type: "object"
-    properties:
-      self:
-        type: "object"
-        description: "The link returned in the response that you use to retrieve the\
-          \ status for the specified activity."
-        properties:
-          href:
-            type: "string"
-            example: "/v3/activities/04fe9a97-a579-43c5-bb1a-58ed29bf0a6a"
-  registrationsLinks:
-    type: "object"
-    properties:
-      next:
-        $ref: "#/definitions/Href"
-      prev:
-        $ref: "#/definitions/Href"
-      self:
-        $ref: "#/definitions/Href"
-  reportingNext:
-    type: "object"
-    properties:
-      href:
-        type: "string"
-        description: "The next link in the page or null if there are no additional\
-          \ pages."
-  partnersLink:
-    type: "object"
-    properties:
-      href:
-        type: "string"
-  reportingsmsLinks:
-    type: "object"
-    properties:
-      next:
-        description: "Contains the next link if it is available."
-        $ref: "#/definitions/reportingsmsNext"
-  lpreportingLinks:
-    type: "object"
-    required:
-    - "next"
-    properties:
-      next:
-        description: "Contains the next link if it is available."
-        $ref: "#/definitions/lpreportingNext"
-  tagsPagingLinks:
-    type: "object"
-    properties:
-      next:
-        description: "The link to the next page of results."
-        $ref: "#/definitions/tagsLinks"
-  emailsLink:
-    type: "object"
-    properties:
-      href:
-        type: "string"
-  reportingLinks:
-    type: "object"
-    properties:
-      next:
-        description: "Contains the next page link if it is available."
-        $ref: "#/definitions/reportingNext"
-  tagsLinks:
-    type: "object"
-    properties:
-      href:
-        type: "string"
-      next:
-        description: "Contains the next page link, if applicable."
-        $ref: "#/definitions/reportingNext"
-  segmentsLinks:
-    type: "object"
-    required:
-    - "next"
-    properties:
-      next:
-        description: "HAL property that contains next link if applicable."
-        $ref: "#/definitions/Next"
-  emailsPagingLinks:
-    type: "object"
-    properties:
-      next:
-        $ref: "#/definitions/emailsLink"
-  lpreportingNext:
-    type: "object"
-    required:
-    - "href"
-    properties:
-      href:
-        type: "string"
-        description: "The next link in the page or null if there are no additional\
-          \ pages"
-  reportingsmsNext:
-    type: "object"
-    required:
-    - "href"
-    properties:
-      href:
-        type: "string"
-        description: "The next link in the page or null if there are no additional\
-          \ pages."
 responses:
   Standard405ErrorResponse:
     description: "Unsupported method used."

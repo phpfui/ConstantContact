@@ -5,9 +5,9 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @property string $href The next link in the page or null if there are no additional pages.
+ * @property string $href
  */
-class ReportingsmsNext extends \PHPFUI\ConstantContact\Definition\Base
+class Link-2 extends \PHPFUI\ConstantContact\Definition\Base
 	{
 	protected static array $fields = [
 		'href' => 'string',

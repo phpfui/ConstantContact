@@ -5,9 +5,9 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @property \PHPFUI\ConstantContact\Definition\Link-2 $next Contains the next page link, if applicable.
+ * @property \PHPFUI\ConstantContact\Definition\Link-2 $next
  */
-class PaginationLinks extends \PHPFUI\ConstantContact\Definition\Base
+class PagingLinks-3 extends \PHPFUI\ConstantContact\Definition\Base
 	{
 	protected static array $fields = [
 		'next' => '\PHPFUI\ConstantContact\Definition\Link-2',
