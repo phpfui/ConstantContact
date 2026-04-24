@@ -451,7 +451,7 @@ class ~class~ extends {$this->definitionNamespace}\Base
 
 	private function getClassName(string $path) : string
 		{
-		$parts = \explode('/', $path);
+		$parts = \explode('/', \str_replace('-', '', $path));
 		$className = '';
 
 		foreach ($parts as $part)
