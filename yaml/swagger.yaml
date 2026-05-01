@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.149"
+  version: "3.0.152"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -4089,34 +4089,9 @@ paths:
         \ the main content of your email campaign and must include `format_type`,\
         \ `from_name`, `from_email`, `reply_to_email`, `subject`, and `html_content`\
         \ properties. The `from_email` address you use must use a verified email address\
-        \ for the account.\nBefore creating an email campaign, first retrieve the\
-        \ current account physical mailing address using the getPhysicalAddress tool.\
-        \ If the address is missing or incomplete, do not assume values; ask the user\
-        \ for the missing fields or update the address only with user-provided information.\n\
-        Compliance and sender preflight requirements:\n  Before creating an email\
-        \ campaign, the assistant must verify two separate account requirements:\n\
-        \n  1. Physical mailing address requirement\n  - First retrieve the current\
-        \ account physical mailing address using the `getPhysicalAddress` tool.\n\
-        \  - A physical mailing address is required to send emails and displays in\
-        \ the footer of every email sent from the account.\n  - If the address is\
-        \ missing or incomplete, do not assume values.\n  - Ask the user for the missing\
-        \ fields, or update the address only with user-provided information.\n\n \
-        \ 2. Sender email requirement\n  - Then retrieve account email addresses using\
-        \ `retrieveEmailAddresses`.\n  - Do not assume that a confirmed email alone\
-        \ is the best choice for sender headers.\n  - The assistant must verify which\
-        \ confirmed account emails are eligible for campaign headers and should inspect\
-        \ returned email roles.\n  - `from_email` must be a confirmed account email\
-        \ and should prefer an email with the `DEFAULT_FROM` role when available.\n\
-        \  - `reply_to_email` must be a confirmed account email and should prefer\
-        \ an email with the `REPLY_TO` role when available.\n  - If the same confirmed\
-        \ account email has both roles, it is the preferred default for both fields.\n\
-        \  - If no role-qualified email exists, the assistant must clearly say so\
-        \ and either ask the user which confirmed account email to use or use a confirmed\
-        \ fallback only if the API allows it and the user accepts.\n  - The assistant\
-        \ must not present sender details as validated until it has actually checked\
-        \ confirmed account emails.\n\nQuality requirement for default output: when\
-        \ the user asks to create an email campaign and does not explicitly request\
-        \ a plain or minimal draft, default to a polished, production-ready HTML marketing\
+        \ for the account.\nQuality requirement for default output: when the user\
+        \ asks to create an email campaign and does not explicitly request a plain\
+        \ or minimal draft, default to a polished, production-ready HTML marketing\
         \ email, not a schema-valid stub. Treat any included HTML example as the minimum\
         \ visual quality bar, not just a valid payload sample.\nStrong preference:\
         \ generate professionally styled HTML with substantial inline CSS and a clear\
@@ -4151,31 +4126,7 @@ paths:
         \ If any of these are missing, ask first. Do not use generic filler strategy\
         \ or copy as a substitute for the brief.\nTool Requirement: After creating\
         \ an email campaign, always use the html preview tool get_campaign_html_preview\
-        \ inspect the rendered result. Example HTML below is illustrative, but the\
-        \ assistant should generally produce HTML that is at least as polished as\
-        \ this example unless the user requests otherwise: This is an example of the\
-        \ html content `<html><body style=\"margin:0;padding:0;background-color:#f6f3ee;font-family:Arial,Helvetica,sans-serif;color:#2b2118;\"\
-        >[[trackingImage]]<table role=\"presentation\" width=\"100%\" cellpadding=\"\
-        0\" cellspacing=\"0\" border=\"0\" style=\"background-color:#f6f3ee;margin:0;padding:24px\
-        \ 0;\"><tr><td align=\"center\"><table role=\"presentation\" width=\"600\"\
-        \ cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"width:600px;max-width:600px;background-color:#fffaf3;border-collapse:collapse;border:1px\
-        \ solid #eadfce;\"><tr><td style=\"padding:18px 40px 8px 40px;text-align:center;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#8a6d4b;\"\
-        >The crumb report</td></tr><tr><td style=\"padding:0 40px 12px 40px;text-align:center;\"\
-        ><h1 style=\"margin:0;font-size:34px;line-height:42px;color:#3a2817;\">Big\
-        \ bread news</h1></td></tr><tr><td style=\"padding:0 40px 20px 40px;text-align:center;font-size:17px;line-height:26px;color:#5c4735;\"\
-        >A very important update from the world of bread, delivered fresh to the bread\
-        \ enjoyer list.</td></tr><tr><td style=\"padding:0 24px 24px 24px;\"><img\
-        \ src=\"https://files.constantcontact.com/bde0a25f401/845f0a70-3610-448e-a493-0aba03ef9e9d.png\"\
-        \ width=\"552\" style=\"display:block;width:100%;max-width:552px;height:auto;border:0;border-radius:12px;\"\
-        ></td></tr><tr><td style=\"padding:0 40px 10px 40px;font-size:18px;line-height:28px;font-weight:bold;color:#3a2817;\"\
-        >Today’s loaf highlight</td></tr><tr><td style=\"padding:0 40px 12px 40px;font-size:16px;line-height:26px;color:#4c3b2d;\"\
-        >This edition celebrates one excellent loaf and the simple joy of admiring\
-        \ good bread. Crispy crust, strong crumb, no notes.</td></tr><tr><td style=\"\
-        padding:0 40px 32px 40px;\"><table role=\"presentation\" cellpadding=\"0\"\
-        \ cellspacing=\"0\" border=\"0\"><tr><td style=\"border-radius:999px;border:1px\
-        \ solid #3a2817;padding:12px 22px;font-size:15px;\"><a href=\"https://i.imgur.com/pzNV90U.jpeg\"\
-        \ style=\"color:#3a2817;text-decoration:none;font-weight:bold;\">View the\
-        \ bread</a></td></tr></table></td></tr></table></td></tr></table></body></html>`\n"
+        \ inspect the rendered result.\n"
       x-ctctmcp-allow: true
   /emails/{campaign_id}:
     get:
@@ -10483,15 +10434,6 @@ definitions:
           $ref: "#/definitions/RegistrationTicketDto"
       order_summary:
         $ref: "#/definitions/OrderDetailsDto"
-  Links-2:
-    type: "object"
-    properties:
-      next:
-        $ref: "#/definitions/Href"
-      prev:
-        $ref: "#/definitions/Href"
-      self:
-        $ref: "#/definitions/Href"
   RegistrantInformationLiteDto:
     type: "object"
     properties:
@@ -10562,7 +10504,7 @@ definitions:
     type: "object"
     properties:
       _links:
-        $ref: "#/definitions/Links-2"
+        $ref: "#/definitions/registrationsLinks"
       next_cursor:
         type: "string"
         description: "Use to get the next page of results."
@@ -11321,14 +11263,6 @@ definitions:
         type: "string"
         description: "The next link in the page, or null if there are no additional\
           \ pages."
-  Links-3:
-    type: "object"
-    required:
-    - "next"
-    properties:
-      next:
-        description: "HAL property that contains next link if applicable."
-        $ref: "#/definitions/Next"
   SegmentsDTO:
     type: "object"
     required:
@@ -11341,7 +11275,7 @@ definitions:
           $ref: "#/definitions/SegmentMaster"
       _links:
         description: "HAL property that contains next link if applicable."
-        $ref: "#/definitions/Links-3"
+        $ref: "#/definitions/segmentsLinks"
   SegmentData:
     type: "object"
     required:
@@ -13117,17 +13051,6 @@ definitions:
         example: 89
         description: "The number of tags that this activity has currently deleted."
         readOnly: true
-  ActivityLinks-2:
-    type: "object"
-    properties:
-      self:
-        type: "object"
-        description: "The link returned in the response that you use to retrieve the\
-          \ status for the specified activity."
-        properties:
-          href:
-            type: "string"
-            example: "/v3/activities/04fe9a97-a579-43c5-bb1a-58ed29bf0a6a"
   ActivityGeneric:
     type: "object"
     required:
@@ -13171,28 +13094,7 @@ definitions:
       status:
         $ref: "#/definitions/ActivityGenericStatus"
       _links:
-        $ref: "#/definitions/ActivityLinks-2"
-  Next-2:
-    type: "object"
-    properties:
-      href:
-        type: "string"
-        description: "The next link in the page or null if there are no additional\
-          \ pages."
-  Links-4:
-    type: "object"
-    properties:
-      href:
-        type: "string"
-      next:
-        description: "Contains the next page link, if applicable."
-        $ref: "#/definitions/Next-2"
-  PagingLinks-2:
-    type: "object"
-    properties:
-      next:
-        description: "The link to the next page of results."
-        $ref: "#/definitions/Links-4"
+        $ref: "#/definitions/tagsActivityLinks"
   Tags:
     type: "object"
     properties:
@@ -13203,7 +13105,7 @@ definitions:
           $ref: "#/definitions/Tag"
       _links:
         description: "HAL property that contains next link if applicable."
-        $ref: "#/definitions/PagingLinks-2"
+        $ref: "#/definitions/tagsPagingLinks"
   TagPost:
     type: "object"
     required:
@@ -13220,16 +13122,6 @@ definitions:
         type: "string"
         example: "ESTY"
         description: "The source used to identify the contacts to tag."
-  Link-2:
-    type: "object"
-    properties:
-      href:
-        type: "string"
-  PagingLinks-3:
-    type: "object"
-    properties:
-      next:
-        $ref: "#/definitions/Link-2"
   EmailCampaigns:
     type: "object"
     properties:
@@ -13293,7 +13185,7 @@ definitions:
     type: "object"
     properties:
       _links:
-        $ref: "#/definitions/PagingLinks-3"
+        $ref: "#/definitions/emailsPagingLinks"
       campaigns:
         type: "array"
         items:
@@ -14418,12 +14310,6 @@ definitions:
     description: "The base contact tracking activity representing sends, opt-outs\
       \ and forwards to a friend. The basic information provided includes the campaign\
       \ activity ID, tracking activity type, and time the tracking activity occurred."
-  Links-5:
-    type: "object"
-    properties:
-      next:
-        description: "Contains the next page link if it is available."
-        $ref: "#/definitions/Next-2"
   ContactTrackingActivitiesPage:
     type: "object"
     properties:
@@ -14434,7 +14320,7 @@ definitions:
           $ref: "#/definitions/ContactTrackingActivity"
       _links:
         description: "The next link if more contact tracking activities are available."
-        $ref: "#/definitions/Links-5"
+        $ref: "#/definitions/reportingLinks"
     description: "A page of tracking activities for a contact that can include sends,\
       \ opens, clicks, bounces, opt-outs and forwards to a friend. If it exists, a\
       \ link to the next page of tracking activities is provided."
@@ -14533,7 +14419,7 @@ definitions:
           $ref: "#/definitions/CampaignActivitySummary"
       _links:
         description: "The next link if more summaries of activities are available."
-        $ref: "#/definitions/Links-5"
+        $ref: "#/definitions/reportingLinks"
   EmailLinkClickCount:
     type: "object"
     properties:
@@ -14646,7 +14532,7 @@ definitions:
           $ref: "#/definitions/SendsTrackingActivity"
       _links:
         description: "HAL property that contains the next link, if applicable."
-        $ref: "#/definitions/Links-5"
+        $ref: "#/definitions/reportingLinks"
   OpensTrackingActivity:
     type: "object"
     required:
@@ -14712,7 +14598,7 @@ definitions:
           $ref: "#/definitions/OpensTrackingActivity"
       _links:
         description: "HAL property that contains the next link, if applicable."
-        $ref: "#/definitions/Links-5"
+        $ref: "#/definitions/reportingLinks"
   DidNotOpensTrackingActivity:
     type: "object"
     required:
@@ -14773,7 +14659,7 @@ definitions:
           $ref: "#/definitions/DidNotOpensTrackingActivity"
       _links:
         description: "HAL property that contains the next link, if applicable."
-        $ref: "#/definitions/Links-5"
+        $ref: "#/definitions/reportingLinks"
   ClicksTrackingActivity:
     type: "object"
     required:
@@ -14849,7 +14735,7 @@ definitions:
           $ref: "#/definitions/ClicksTrackingActivity"
       _links:
         description: "HAL property that contains next link if applicable."
-        $ref: "#/definitions/Links-5"
+        $ref: "#/definitions/reportingLinks"
   ForwardsTrackingActivity:
     type: "object"
     required:
@@ -14909,7 +14795,7 @@ definitions:
           $ref: "#/definitions/ForwardsTrackingActivity"
       _links:
         description: "HAL property that contains the next link, if applicable."
-        $ref: "#/definitions/Links-5"
+        $ref: "#/definitions/reportingLinks"
   OptoutsTrackingActivity:
     type: "object"
     required:
@@ -14974,7 +14860,7 @@ definitions:
           $ref: "#/definitions/OptoutsTrackingActivity"
       _links:
         description: "HAL property that contains the next link, if applicable."
-        $ref: "#/definitions/Links-5"
+        $ref: "#/definitions/reportingLinks"
   BouncesTrackingActivity:
     type: "object"
     required:
@@ -15061,7 +14947,7 @@ definitions:
           $ref: "#/definitions/BouncesTrackingActivity"
       _links:
         description: "HAL property that contains next link if applicable"
-        $ref: "#/definitions/Links-5"
+        $ref: "#/definitions/reportingLinks"
   UniqueEmailCounts:
     type: "object"
     properties:
@@ -15167,7 +15053,7 @@ definitions:
         $ref: "#/definitions/BulkEmailCampaignSummariesPercents"
       _links:
         description: "HAL property that contains next link if applicable"
-        $ref: "#/definitions/Links-5"
+        $ref: "#/definitions/reportingLinks"
   StatsError:
     type: "object"
     properties:
@@ -15642,23 +15528,6 @@ definitions:
       sms_channel:
         description: "Sms channel info for this contact"
         $ref: "#/definitions/TrackingActivitySmsChannelDTO"
-  Next-3:
-    type: "object"
-    required:
-    - "href"
-    properties:
-      href:
-        type: "string"
-        description: "The next link in the page or null if there are no additional\
-          \ pages"
-  Links-6:
-    type: "object"
-    required:
-    - "next"
-    properties:
-      next:
-        description: "Contains the next link if it is available."
-        $ref: "#/definitions/Next-3"
   PContactClickTrackingActivitiesPage:
     type: "object"
     required:
@@ -15672,7 +15541,7 @@ definitions:
           $ref: "#/definitions/PContactClickTrackingActivity"
       _links:
         description: "HAL property that contains next link if applicable"
-        $ref: "#/definitions/Links-6"
+        $ref: "#/definitions/lpreportingLinks"
   PContactOpenTrackingActivity:
     type: "object"
     required:
@@ -15738,7 +15607,7 @@ definitions:
           $ref: "#/definitions/PContactOpenTrackingActivity"
       _links:
         description: "HAL property that contains next link if applicable"
-        $ref: "#/definitions/Links-6"
+        $ref: "#/definitions/lpreportingLinks"
   PContactUpdateTrackingActivity:
     type: "object"
     required:
@@ -15800,7 +15669,7 @@ definitions:
           $ref: "#/definitions/PContactUpdateTrackingActivity"
       _links:
         description: "HAL property that contains next link if applicable"
-        $ref: "#/definitions/Links-6"
+        $ref: "#/definitions/lpreportingLinks"
   PContactAddTrackingActivity:
     type: "object"
     required:
@@ -15862,7 +15731,7 @@ definitions:
           $ref: "#/definitions/PContactAddTrackingActivity"
       _links:
         description: "HAL property that contains next link if applicable"
-        $ref: "#/definitions/Links-6"
+        $ref: "#/definitions/lpreportingLinks"
   PContactSMSOptInTrackingActivity:
     type: "object"
     required:
@@ -15924,7 +15793,7 @@ definitions:
           $ref: "#/definitions/PContactSMSOptInTrackingActivity"
       _links:
         description: "HAL property that contains next link if applicable"
-        $ref: "#/definitions/Links-6"
+        $ref: "#/definitions/lpreportingLinks"
   UniqueSmsCounts:
     type: "object"
     required:
@@ -16012,21 +15881,6 @@ definitions:
         example: 0.0
         description: "The aggregated unsubscribe (opt-out) rate for all campaigns\
           \ on the current results page."
-  Next-4:
-    type: "object"
-    required:
-    - "href"
-    properties:
-      href:
-        type: "string"
-        description: "The next link in the page or null if there are no additional\
-          \ pages."
-  Links-7:
-    type: "object"
-    properties:
-      next:
-        description: "Contains the next link if it is available."
-        $ref: "#/definitions/Next-4"
   SmsCampaignSummariesPage:
     type: "object"
     properties:
@@ -16043,13 +15897,13 @@ definitions:
         $ref: "#/definitions/BulkSmsCampaignSummariesPercents"
       _links:
         description: "HAL property that contains next link if applicable"
-        $ref: "#/definitions/Links-7"
+        $ref: "#/definitions/reportingsmsLinks"
   PaginationLinks:
     type: "object"
     properties:
       next:
         description: "Contains the next page link, if applicable."
-        $ref: "#/definitions/Link-2"
+        $ref: "#/definitions/partnersLink"
   PartnerAccount:
     type: "object"
     required:
@@ -16736,6 +16590,108 @@ definitions:
         file_id:
           type: "integer"
           description: "Identifies the file in MyLibrary."
+  tagsActivityLinks:
+    type: "object"
+    properties:
+      self:
+        type: "object"
+        description: "The link returned in the response that you use to retrieve the\
+          \ status for the specified activity."
+        properties:
+          href:
+            type: "string"
+            example: "/v3/activities/04fe9a97-a579-43c5-bb1a-58ed29bf0a6a"
+  registrationsLinks:
+    type: "object"
+    properties:
+      next:
+        $ref: "#/definitions/Href"
+      prev:
+        $ref: "#/definitions/Href"
+      self:
+        $ref: "#/definitions/Href"
+  reportingNext:
+    type: "object"
+    properties:
+      href:
+        type: "string"
+        description: "The next link in the page or null if there are no additional\
+          \ pages."
+  partnersLink:
+    type: "object"
+    properties:
+      href:
+        type: "string"
+  reportingsmsLinks:
+    type: "object"
+    properties:
+      next:
+        description: "Contains the next link if it is available."
+        $ref: "#/definitions/reportingsmsNext"
+  lpreportingLinks:
+    type: "object"
+    required:
+    - "next"
+    properties:
+      next:
+        description: "Contains the next link if it is available."
+        $ref: "#/definitions/lpreportingNext"
+  tagsPagingLinks:
+    type: "object"
+    properties:
+      next:
+        description: "The link to the next page of results."
+        $ref: "#/definitions/tagsLinks"
+  emailsLink:
+    type: "object"
+    properties:
+      href:
+        type: "string"
+  reportingLinks:
+    type: "object"
+    properties:
+      next:
+        description: "Contains the next page link if it is available."
+        $ref: "#/definitions/reportingNext"
+  tagsLinks:
+    type: "object"
+    properties:
+      href:
+        type: "string"
+      next:
+        description: "Contains the next page link, if applicable."
+        $ref: "#/definitions/reportingNext"
+  segmentsLinks:
+    type: "object"
+    required:
+    - "next"
+    properties:
+      next:
+        description: "HAL property that contains next link if applicable."
+        $ref: "#/definitions/Next"
+  emailsPagingLinks:
+    type: "object"
+    properties:
+      next:
+        $ref: "#/definitions/emailsLink"
+  lpreportingNext:
+    type: "object"
+    required:
+    - "href"
+    properties:
+      href:
+        type: "string"
+        description: "The next link in the page or null if there are no additional\
+          \ pages"
+  reportingsmsNext:
+    type: "object"
+    required:
+    - "href"
+    properties:
+      href:
+        type: "string"
+        description: "The next link in the page or null if there are no additional\
+          \ pages."
 responses:
   Standard405ErrorResponse:
     description: "Unsupported method used."
