@@ -39,17 +39,17 @@ $generator->makeClasses($yaml['basePath'], $yaml['paths']);
 
 echo "Generated files\n";
 
+// style the code
+exec($php . ' vendor/bin/php-cs-fixer fix -vv --allow-risky=yes');
+
+echo "Cleaned code\n";
+
 // don't update git if running under Windows
 if ('php' == $php)
 	{
 	echo "running under Windows, exiting\n";
 	exit;
 	}
-
-// style the code
-exec($php . ' vendor/bin/php-cs-fixer fix -vv --allow-risky=yes');
-
-echo "Cleaned code\n";
 
 // Stage all changed files
 $repo->run('add', ['.']);
