@@ -139,12 +139,12 @@ class Generator
 
 		if ('object' === $properties['type'])
 			{
-			$this->generateObject($class, $properties['properties'] ?? []);
+			$this->generateObject($class, $properties['properties'] ?? [], $properties['required'] ?? []);
 			}
 		elseif ('array' === $properties['type'])
 			{
 			$this->arrayReturns[$class] = 'array';
-			$this->generateObject($class, $properties['items']['properties'] ?? []);
+			$this->generateObject($class, $properties['items']['properties'] ?? [], $properties['required'] ?? []);
 			}
 		}
 
@@ -338,7 +338,7 @@ class ~class~ extends {$this->definitionNamespace}\Base
 			}
 		}
 
-	private function generateObject(string $class, array $properties) : void
+	private function generateObject(string $class, array $properties, array $required) : void
 		{
 		$originalType = '';
 		$fields = [];
@@ -346,7 +346,6 @@ class ~class~ extends {$this->definitionNamespace}\Base
 		$minLength = [];
 		$maxLength = [];
 		$docBlock = [];
-		$required = [];
 		$dollar = '$';
 
 		foreach ($properties as $name => $details)
