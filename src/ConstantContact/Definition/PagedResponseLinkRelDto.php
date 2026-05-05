@@ -5,9 +5,9 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @property string $href The URI of a page of results.<p>This link does not include the scheme or origin of the full URL.</p>
+ * @property string $href The URI of a page of results.
  */
-class ResourcePageLink extends \PHPFUI\ConstantContact\Definition\Base
+class PagedResponseLinkRelDto extends \PHPFUI\ConstantContact\Definition\Base
 	{
 	protected static array $fields = [
 		'href' => 'string',

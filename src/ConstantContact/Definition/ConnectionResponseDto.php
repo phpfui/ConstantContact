@@ -5,12 +5,12 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @property array<\PHPFUI\ConstantContact\Definition\ConnectionV2Dto> $connections
+ * @property array<\PHPFUI\ConstantContact\Definition\ConnectionDto> $connections List of established social network connections for the account.
  */
 class ConnectionResponseDto extends \PHPFUI\ConstantContact\Definition\Base
 	{
 	protected static array $fields = [
-		'connections' => 'array<\PHPFUI\ConstantContact\Definition\ConnectionV2Dto>',
+		'connections' => 'array<\PHPFUI\ConstantContact\Definition\ConnectionDto>',
 
 	];
 	}

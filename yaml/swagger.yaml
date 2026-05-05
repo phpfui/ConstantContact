@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.152"
+  version: "3.0.153"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -2011,6 +2011,214 @@ paths:
         - "campaign_data"
       x-authorization-privileges:
       - "campaign:write"
+  /social/profiles:
+    get:
+      tags:
+      - "Social"
+      summary: "GET social media profiles"
+      description: "Retrieves all social media profiles connected to the account.\
+        \ A profile represents a single account on a social network (such as a Facebook\
+        \ Business Page, a LinkedIn Company Page, or an Instagram Business account)\
+        \ that the user has connected to Constant Contact.\n\nUse the `include=accessible`\
+        \ query parameter to additionally check whether each profile is currently\
+        \ accessible for posting. Profiles that are not currently accessible will\
+        \ fail if used to publish a post.\n"
+      operationId: "getSocialProfilesUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "include"
+        in: "query"
+        description: "Optional sub-resources to include. Use `accessible` to check\
+          \ if profiles are accessible on the network."
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+        enum:
+        - "accessible"
+        x-example: "accessible"
+      responses:
+        "200":
+          description: "Request successful"
+          schema:
+            $ref: "#/definitions/Profiles"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "The requested resource was not found."
+        "500":
+          description: "There was a problem with our internal service."
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      x-authorization-privileges:
+      - "campaign:read"
+      x-sdk-methodName: "getSocialProfiles"
+  /social/connections:
+    get:
+      tags:
+      - "Social"
+      summary: "GET social network connections"
+      description: "Retrieves all social network accounts connected to the Constant\
+        \ Contact account, with support for multiple accounts per social network.\n\
+        \nA connection represents the authorization link between a Constant Contact\
+        \ account and a single account on a social network (Facebook, Instagram, LinkedIn,\
+        \ TikTok, etc.). Each connection includes account information about the connected\
+        \ user on that network (display name, username, image, etc.) and the current\
+        \ status of the connection (whether it's active, rate-limited, or has any\
+        \ errors).\n\nNote that a single connection may have multiple profiles (pages)\
+        \ associated with it — use `GET /social/profiles` to retrieve the individual\
+        \ profiles.\n"
+      operationId: "getSocialConnectionsUsingGET"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "Request successful"
+          schema:
+            $ref: "#/definitions/ConnectionResponseDto"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "The requested resource was not found."
+        "500":
+          description: "There was a problem with our internal service."
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      x-authorization-privileges:
+      - "campaign:read"
+      x-sdk-methodName: "getSocialConnections"
+  /social/hashtags/groups:
+    get:
+      tags:
+      - "Social"
+      summary: "GET hashtag groups"
+      description: "Retrieves a paginated list of saved hashtag groups for the account.\
+        \ Hashtag groups allow users to save and organize reusable collections of\
+        \ hashtags that can be applied to social posts.\n\nUse the `limit` and `page`\
+        \ query parameters to paginate through results. Navigate to the next page\
+        \ using the `_links.next` link in the response.\n"
+      operationId: "getSocialHashtagGroupsUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "limit"
+        in: "query"
+        description: "Maximum number of hashtag groups to retrieve per page. Default\
+          \ and maximum is `5`."
+        required: false
+        type: "integer"
+        default: 5
+        maximum: 5
+        minimum: 1
+        x-example: "5"
+      - name: "page"
+        in: "query"
+        description: "Page number to retrieve (0-based)."
+        required: false
+        type: "integer"
+        default: 0
+        minimum: 0
+        x-example: "0"
+      responses:
+        "200":
+          description: "Request successful"
+          schema:
+            $ref: "#/definitions/PagedHashtagGroupsDto"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "The requested resource was not found."
+        "500":
+          description: "There was a problem with our internal service."
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      x-authorization-privileges:
+      - "campaign:read"
+      x-sdk-methodName: "getHashtagGroups"
+  /social/posts:
+    post:
+      tags:
+      - "Social"
+      summary: "POST (create) a social media post"
+      description: "Creates a new social media post that can be published immediately\
+        \ or scheduled for later publication. A post can target one or more social\
+        \ profiles, and can include text, images, and network-specific settings.\n\
+        \nSet `status` to `DRAFT` to save without publishing, or `SCHEDULED` to schedule\
+        \ for publication. Scheduled posts require a `scheduled_time` in ISO-8601\
+        \ format.\n\nPost content and settings can vary per profile — each `profile_posts`\
+        \ entry can have its own text, images, and network-specific settings (e.g.,\
+        \ TikTok-specific settings like `disable_comment`).\n"
+      operationId: "createSocialPostUsingPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "The social post content and configuration."
+        required: true
+        schema:
+          $ref: "#/definitions/PostCreateDto"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/PostDto"
+        "201":
+          description: "Post created successfully"
+          schema:
+            $ref: "#/definitions/PostDto"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "The requested resource was not found."
+        "500":
+          description: "There was a problem with our internal service."
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      x-authorization-privileges:
+      - "campaign:write"
+      x-sdk-methodName: "createSocialPost"
   /segments:
     get:
       tags:
@@ -10582,39 +10790,42 @@ definitions:
       display_name:
         type: "string"
         example: "John Doe"
-        description: "Display name of the connected user"
+        description: "Display name of the connected user."
         readOnly: true
       image_url:
         type: "string"
         example: "https://example.com/avatar.jpg"
-        description: "URL of the connected user's avatar or image"
+        description: "URL of the connected user's avatar or image."
         readOnly: true
       network:
         type: "string"
         example: "facebook"
-        description: "The social network this account belongs to"
+        description: "The social network this account belongs to."
         readOnly: true
       network_account_id:
         type: "string"
         description: "The user identifier on the given network. Note: this is the\
-          \ network _account_ id not the _profile_ id."
+          \ network <em>account</em> id, not the <em>profile</em> id."
         readOnly: true
       username:
         type: "string"
         example: "johndoe"
-        description: "Username of the connected user on the social network"
+        description: "Username of the connected user on the social network."
         readOnly: true
+    description: "Account information for a connected social network user."
   ProfileDto:
     type: "object"
     required:
     - "connected"
+    - "network"
+    - "profile_id"
     properties:
       accessible:
         type: "boolean"
         example: false
         description: "Whether the profile is currently accessible for posting. Publishing\
           \ a post will fail if its profile is not currently accessible. Only populated\
-          \ when the request includes the query parameter include=accessible."
+          \ when the GET request includes the query parameter <code>include=accessible</code>."
         readOnly: true
       account_info:
         readOnly: true
@@ -10624,20 +10835,28 @@ definitions:
         example: true
         description: "Whether this profile is currently connected. You can only create\
           \ and publish posts with connected profiles."
+        readOnly: true
+      handle:
+        type: "string"
+        example: "mybusinesspage"
+        description: "The profile's handle on the social network (for example, an\
+          \ Instagram or TikTok username). May be <code>null</code> if the network\
+          \ does not expose a separate handle (for example, Facebook)."
+        readOnly: true
       image_url:
         type: "string"
         example: "https://example.com/profile-image.jpg"
-        description: "URL of the profile's image or avatar"
+        description: "URL of the profile's image or avatar."
         readOnly: true
       name:
         type: "string"
         example: "My Business Page"
-        description: "Display name or handle of the profile"
+        description: "Display name of the profile."
         readOnly: true
       network:
         type: "string"
         example: "facebook"
-        description: "The social network this profile belongs to"
+        description: "The social network this profile belongs to."
         readOnly: true
       network_profile_id:
         type: "string"
@@ -10650,15 +10869,16 @@ definitions:
         readOnly: true
       profile_id:
         type: "string"
-        description: "Unique identifier for this profile"
+        description: "Unique identifier for this profile. Use this value in the <code>profile_id</code>\
+          \ field of a <code>ProfilePost</code> when creating a post."
         readOnly: true
       settings:
         type: "object"
-        description: "Network-specific settings for the profile. <p> Only populated\
-          \ when request specifies accessible and settings are available for network.\
-          \ Currently only TikTok has the following available settings: </p><pre>\"\
-          content\": {\n\t\"comment_disabled\": Boolean,\n\t\"duet_disabled\": Boolean,\n\
-          \t\"stitch_disabled\": Boolean,\n\t\"max_video_post_duration_sec\": Integer\n\
+        description: "Network-specific settings for the profile. Only populated when\
+          \ the request includes <code>include=accessible</code> and settings are\
+          \ available for the network. Currently, only TikTok provides settings: <pre>\"\
+          content\": {\n  \"comment_disabled\": Boolean,\n  \"duet_disabled\": Boolean,\n\
+          \  \"stitch_disabled\": Boolean,\n  \"max_video_post_duration_sec\": Integer\n\
           }</pre>"
         readOnly: true
         additionalProperties:
@@ -10667,12 +10887,12 @@ definitions:
       url:
         type: "string"
         example: "https://www.facebook.com/mybusinesspage"
-        description: "URL to the profile on the social network"
+        description: "URL to the profile on the social network."
         readOnly: true
     description: "Describes a social network profile (Business Page, Company Page/Organization,\
-      \ etc.)<br><strong>Note:</strong>Due to performance and/or rate-limit issues,\
+      \ etc.). <br><strong>Note:</strong> Due to performance and/or rate-limit issues,\
       \ some properties <em>may</em> be cached. Where possible, caching will be limited\
-      \ to 15 minutes"
+      \ to 15 minutes."
   Profiles:
     type: "array"
     items:
@@ -10682,57 +10902,89 @@ definitions:
     properties:
       error:
         type: "string"
-        description: "There was an unexpected error accessing the account."
+        description: "A message indicating that there was an unexpected error accessing\
+          \ the social network account."
+        readOnly: true
       has_token:
         type: "boolean"
-        example: false
-        description: "True if there is a token for this network type in the token-svc\
-          \ db"
+        example: true
+        description: "<code>true</code> if the integration has an authorization token\
+          \ for this social network account."
+        readOnly: true
       is_active_user:
         type: "boolean"
-        example: false
-        description: "At this time, a user is considered active if the user has any\
-          \ connected Profiles"
+        example: true
+        description: "A user is considered active if the user has any connected profiles\
+          \ for the social network account."
+        readOnly: true
       rate_limited:
         type: "boolean"
         example: false
-        description: "Whether this account or our app is currently rate-limited"
+        description: "Whether this social network account or the Constant Contact\
+          \ application is currently rate-limited by the social network provider."
+        readOnly: true
       status:
         type: "integer"
         format: "int32"
         description: "The status returned from the given network's API when retrieving\
-          \ the account. Can also beour own internal error"
+          \ the account. This is typically only set when <code>error</code> is set."
+        readOnly: true
       token_has_scopes:
         type: "boolean"
-        example: false
-        description: "Whether or not the token associated with this user has the scopes\
-          \ necessary to utilize social-reach-svc"
+        example: true
+        description: "Whether the token associated with this user's social account\
+          \ integration has the scopes necessary to use Constant Contact social functionality."
+        readOnly: true
       token_is_valid:
         type: "boolean"
-        example: false
-        description: "True if the token marked valid in token-svc and can be successfully\
-          \ used to fetch basic user data from the network"
-    description: "Data pertaining to the established social network connection"
-  ConnectionV2Dto:
+        example: true
+        description: "<code>true</code> if the token for this social network is currently\
+          \ valid and can be successfully used to fetch data from the network."
+        readOnly: true
+    description: "Data indicating the status of a social network connection's integration."
+  ConnectionDto:
     type: "object"
     properties:
       account_info:
-        description: "DTO containing account info for the connection"
+        description: "Account information for this connection."
+        readOnly: true
         $ref: "#/definitions/AccountInfoDto"
       connection_status:
-        description: "DTO containing connection information for the connection"
+        description: "Status details for this connection."
+        readOnly: true
         $ref: "#/definitions/ConnectionStatusDto"
-    description: "A combination of account information and connection information\
-      \ pertaining to the establishedsocial network connection."
+    description: "A combination of account information and connection status for an\
+      \ established social network connection."
   ConnectionResponseDto:
     type: "object"
     properties:
       connections:
         type: "array"
+        description: "List of established social network connections for the account."
+        readOnly: true
         items:
-          $ref: "#/definitions/ConnectionV2Dto"
-    description: "A wrapper to house the list of established social network connections\
-      \ for a given CTCT user."
+          $ref: "#/definitions/ConnectionDto"
+    description: "A wrapper containing the list of established social network connections\
+      \ for a given Constant Contact account."
+  PagedResponseLinkRelDto:
+    type: "object"
+    required:
+    - "href"
+    properties:
+      href:
+        type: "string"
+        description: "The URI of a page of results."
+        readOnly: true
+    description: "Represents a link to a page of results."
+  PagedResponseLinksDto:
+    type: "object"
+    properties:
+      next:
+        description: "Link to retrieve the next page of results. This will be absent\
+          \ for the last page."
+        readOnly: true
+        $ref: "#/definitions/PagedResponseLinkRelDto"
+    description: "Pagination links for navigating through pages of results."
   HashtagGroupDto:
     type: "object"
     required:
@@ -10741,129 +10993,84 @@ definitions:
     properties:
       hashtag_group_id:
         type: "string"
-        description: "The database id for this hashtag group.<p>This should always\
-          \ be <code>null</code> when creating a new hashtag group. When updating\
-          \ a hashtag group, this should either be set to <code>null</code>, or be\
-          \ the same value as when the group was retrieved.</p>"
+        description: "Unique identifier for this hashtag group. Automatically generated\
+          \ on creation and returned in all responses."
         readOnly: true
       hashtag_group_name:
         type: "string"
-        description: "The human-readable name for this group.<p>This name will be\
+        description: "The human-readable name for this group. <p>This name will be\
           \ sanitized before saving, which may include trimming whitespace, truncation,\
           \ and/or removing invalid characters. If the sanitized name results in a\
           \ blank string, it will not be able to be saved, and any create or update\
-          \ operation will fail.<br>The name is currently limited to a maximum of\
-          \ 150 \"characters\", but the effective length may be shorter, depending\
-          \ on whether some special characters, such as emoji, are used.</p>"
+          \ operation will fail.</p><p>The name is currently limited to a maximum\
+          \ of 150 characters, but the effective length may be shorter, depending\
+          \ on whether special characters (such as emoji) are used.</p>"
       hashtag_names:
         type: "array"
-        description: "The list of hashtag names for this group.<p>Hashtag <em>names</em>\
-          \ do not include any leading '#' character. They cannot consist of any characters\
-          \ other than alphanumeric characters and '_' (underscore). The hashtag name\
-          \ cannot begin or end with an underscore. Hashtag names may begin with a\
-          \ letter or a number, and may consist of only numbers. Hashtag names are\
-          \ currently limited to a maximum of 30 characters.<br>The list will maintain\
-          \ its order when persisted and retrieved. If duplicates exist in the list,\
-          \ they will be removed when saving, and the first of the duplicates will\
+        description: "The list of hashtag names for this group. <p>Hashtag <em>names</em>\
+          \ do not include any leading '#' character. They can only consist of alphanumeric\
+          \ characters and '_' (underscore). The hashtag name cannot begin or end\
+          \ with an underscore. Hashtag names may begin with a letter or a number,\
+          \ and may consist of only numbers. Hashtag names are currently limited to\
+          \ a maximum of 30 characters.</p><p>The list order is preserved. If duplicates\
+          \ exist, they will be removed when saving, and the first occurrence will\
           \ retain its position.</p>"
         items:
           type: "string"
-    description: "Represents a named collection of hashtags."
-  EmbeddedResources:
+    description: "Represents a named collection of hashtags that can be reused when\
+      \ creating social posts."
+  PageMetadataDto:
     type: "object"
     required:
-    - "hashtag_groups"
-    properties:
-      hashtag_groups:
-        type: "array"
-        readOnly: true
-        items:
-          $ref: "#/definitions/HashtagGroupDto"
-    description: "Resources embedded in this response."
-  ResourcePageLink:
-    type: "object"
-    required:
-    - "href"
-    properties:
-      href:
-        type: "string"
-        description: "The URI of a page of results.<p>This link does not include the\
-          \ scheme or origin of the full URL.</p>"
-        readOnly: true
-    description: "Represents a link to a page of results."
-  ResourcePageLinks:
-    type: "object"
-    properties:
-      next:
-        description: "The URI for the next page of results. If the current page is\
-          \ the last page, this link may not be present."
-        readOnly: true
-        $ref: "#/definitions/ResourcePageLink"
-      previous:
-        description: "The URI for the previous page of results. If the current page\
-          \ is the first page, this link may not be present."
-        readOnly: true
-        $ref: "#/definitions/ResourcePageLink"
-    description: "Pagination links for navigating through pages of results."
-  ResourcePageMetadata:
-    type: "object"
-    required:
-    - "number"
+    - "page"
     - "size"
-    - "totalElements"
-    - "totalPages"
+    - "total_elements"
+    - "total_pages"
     properties:
-      number:
+      page:
         type: "integer"
-        format: "int32"
-        description: "The number of items included in this response (in <code>_embedded.hashtag_groups</code>).<p>The\
-          \ maximum items that can be returned in a single call is currently limited\
-          \ to the lesser of the <code>limit</code> argument and 5.</p>"
+        format: "int64"
+        description: "The current 0-based page number."
         readOnly: true
       size:
         type: "integer"
-        format: "int32"
-        description: "The size of the page of results requested, either via the <code>limit</code>\
-          \ argument or the default of 5."
+        format: "int64"
+        description: "The page size (the number of results returned in this response)."
         readOnly: true
-      totalElements:
+      total_elements:
         type: "integer"
-        format: "int32"
-        description: "The total number of results available.<p>If the <code>totalElements</code>\
-          \ is greater than <code>size</code>, then it is necessary to make multiple\
-          \ requests for all of the available <em>pages</em> of results.</p>"
+        format: "int64"
+        description: "The total number of results available across all pages."
         readOnly: true
-      totalPages:
+      total_pages:
         type: "integer"
-        format: "int32"
-        description: "The total number of pages available.<p>The pages can be iterated\
-          \ through using the <code>next</code> and <code>prev</code> links, or by\
-          \ manually calling the endpoint and iterating through the pages using the\
-          \ <code>page</code> argument.</p>"
+        format: "int64"
+        description: "The total number of pages available based on the current page\
+          \ size."
         readOnly: true
-    description: "Metadata describing the paging of results.<p>This may be more useful\
-      \ for some user experience implementations. This is not necessarily a standard\
-      \ HAL element, but it <em>is</em> included in the response by default.</p>"
-  PagedResourcesResourceHashtagGroupDto:
+    description: "Pagination metadata describing the current page of results."
+  PagedHashtagGroupsDto:
     type: "object"
     required:
-    - "_embedded"
     - "_links"
+    - "hashtag_groups"
     - "page"
     properties:
-      _embedded:
-        description: "The embedded resource(s)."
-        readOnly: true
-        $ref: "#/definitions/EmbeddedResources"
       _links:
-        description: "The pageable links."
+        description: "Pagination links for navigating through pages of results."
         readOnly: true
-        $ref: "#/definitions/ResourcePageLinks"
+        $ref: "#/definitions/PagedResponseLinksDto"
+      hashtag_groups:
+        type: "array"
+        description: "The current page of hashtag group results."
+        readOnly: true
+        items:
+          $ref: "#/definitions/HashtagGroupDto"
       page:
-        description: "The page metadata."
+        description: "Pagination metadata for the current response."
         readOnly: true
-        $ref: "#/definitions/ResourcePageMetadata"
-    description: "A paged response containing a page of HashtagGroupDto objects."
+        $ref: "#/definitions/PageMetadataDto"
+    description: "A paginated response containing a page of hashtag groups."
   ImageDto:
     type: "object"
     required:
@@ -10871,83 +11078,15 @@ definitions:
     properties:
       image_id:
         type: "string"
+        description: "Unique identifier for this image. Generated by the server on\
+          \ creation."
         readOnly: true
       url:
         type: "string"
-        description: "The url of the image. Each component of the image url must be\
-          \ appropriately encoded such that it does not include any illegal characters.\
-          \ Example: https://www.host.com/path+with%20space?q=query%20with+space#fragment+with%20space"
-  LinkMetadata:
-    type: "object"
-    properties:
-      createdAt:
-        type: "string"
-        format: "date-time"
-      description:
-        type: "string"
-        description: "Description or summary of the linked page"
-      image:
-        type: "string"
-        description: "URL of the preview image for the link"
-      linkId:
-        type: "string"
-        description: "Identifier of the parent link this metadata belongs to"
-        readOnly: true
-      linkMetaDataId:
-        type: "string"
-        description: "Unique identifier for this link metadata record"
-        readOnly: true
-      network:
-        type: "string"
-        description: "The social network this link metadata is associated with"
-      title:
-        type: "string"
-        description: "Title of the linked page"
-      updatedAt:
-        type: "string"
-        format: "date-time"
-    description: "Metadata for a link preview associated with a post"
-  LinkDto:
-    type: "object"
-    required:
-    - "url"
-    properties:
-      is_preview:
-        type: "boolean"
-        example: false
-        description: "Whether or not the linkMetadata has to be fetched for this particular\
-          \ link "
-      link_id:
-        type: "string"
-        readOnly: true
-      link_metadata:
-        type: "array"
-        description: "Metadata like text, description, image associated with the link.\
-          \ Writing to this stores a placeholder value for link metadata. Supporting\
-          \ networks will store their own link metadata upon publishing the link. "
-        items:
-          $ref: "#/definitions/LinkMetadata"
-      linked_activity_id:
-        type: "string"
-        description: "If the link url is related to another activity (i.e. URL of\
-          \ a sign up landing page, shoppable landing page, email permalink, etc)\
-          \ this is the activity id of the related activity."
-      long_url:
-        type: "string"
-        description: "the long version of the url by the UrlShortener service. Each\
-          \ component of the long link url must be appropriately encoded such that\
-          \ it does not include any illegal characters. Example: https://www.host.com/path+with%20space?q=query%20with+space#fragment+with%20space"
-      short_url:
-        type: "string"
-        description: "the shortened url by the UrlShortener service. Each component\
-          \ of the shortened link url must be appropriately encoded such that it does\
-          \ not include any illegal characters. Example: https://www.host.com/path+with%20space?q=query%20with+space#fragment+with%20space"
-      url:
-        type: "string"
-        description: "The url as entered by the user. May or may not include the protocol:\
-          \ 'google.com', 'www.google.com', 'http://google.com', 'http://google.com/'.\
-          \ Each component of the link url must be appropriately encoded such that\
-          \ it does not include any illegal characters. Example: https://www.host.com/path+with%20space?q=query%20with+space#fragment+with%20space"
+        example: "https://www.host.com/path+with%20space?q=query%20with+space"
+        description: "The URL of the image. Each component of the URL must be appropriately\
+          \ encoded to avoid illegal characters."
+    description: "An image to include in a social post."
   ProfilePostProfileDto:
     type: "object"
     required:
@@ -10955,176 +11094,65 @@ definitions:
     properties:
       account_username:
         type: "string"
-        description: "The human-readable name of the account-owner of this profile"
+        description: "The human-readable username of the account that owns this profile."
         readOnly: true
       campaign_activity_id:
         type: "string"
-        description: "the post's campaign activity id. This maps both to the activity\
-          \ in campaign-api and the post entity in the social-reach-svc database.\
-          \ Although it is optional, it <em>should</em> be included when updating\
-          \ a post"
+        description: "The campaign activity ID for this post on the specified profile.\
+          \ Generated by the server on creation. When updating a post, existing profile\
+          \ entries should include their original <code>campaign_activity_id</code>."
         readOnly: true
       campaign_activity_status:
         type: "string"
-        description: "the status of the post activity"
+        description: "The status of the post activity for this profile."
         readOnly: true
       campaign_activity_status_date:
         type: "string"
         format: "date-time"
-        description: "The activity's date. If the activity is <code>SCHEDULED</code>,\
-          \ this will typically be the same as the scheduled date, if set. Otherwise,\
-          \ it is the last-modified timestamp"
+        description: "The activity's timestamp. For <code>SCHEDULED</code> activities,\
+          \ this is typically the same as the scheduled publish time; otherwise, it\
+          \ is the last-modified timestamp."
         readOnly: true
       campaign_activity_status_message:
         type: "string"
-        description: "A human-readable message related to the current status of the\
-          \ post activity. This could be a generic message set by social-reach-svc\
-          \ or a specific, detailed message reported by the social network"
+        description: "A human-readable message describing the current status of the\
+          \ post activity. Can be a generic Constant Contact message or a specific\
+          \ message reported by the social network."
         readOnly: true
       image_url:
         type: "string"
-        description: "the url for the profile's image. This image can sometimes become\
-          \ stale, and is only refreshed when getting profiles with <code>include=accessible</code>"
+        description: "The URL of the profile's image. This image may become stale\
+          \ and is only refreshed when retrieving profiles with <code>include=accessible</code>."
         readOnly: true
       network:
         type: "string"
         example: "facebook"
-        description: "The social network this profile belongs to"
+        description: "The social network this profile belongs to."
         readOnly: true
       network_post_id:
         type: "string"
-        description: "the social network's reference for this post. Only set/valid\
-          \ if the status is <code>DONE</code>."
+        description: "The social network's reference for this post. Only set when\
+          \ the status is <code>DONE</code>."
         readOnly: true
       post_url:
         type: "string"
-        description: "the permalink url to the post on the social network. This is\
-          \ only set/valid if the status is <code>DONE</code>."
+        description: "The permalink URL to the published post on the social network.\
+          \ Only set when the status is <code>DONE</code>."
         readOnly: true
       profile_id:
         type: "string"
+        description: "The unique identifier for the profile to post to. Use the <code>profile_id</code>\
+          \ from <code>GET /social/profiles</code>."
       profile_name:
         type: "string"
+        description: "The display name of the profile."
         readOnly: true
-    description: "Describes the details of a post to a particular profile"
+    description: "Describes a post to a single social profile, including the target\
+      \ profile and its current status on that network."
   MapOfstringAndstring:
     type: "object"
     additionalProperties:
       type: "string"
-  VideoSourceDto:
-    type: "object"
-    required:
-    - "source"
-    properties:
-      profile_id:
-        type: "string"
-        description: "The profile id this source is associated with. This may be <code>null</code>\
-          \ if this source has not been published yet."
-        readOnly: true
-      profile_post_id:
-        type: "string"
-        description: "The profile post id this source is associated with. This may\
-          \ be <code>null</code> if this source has not been published yet."
-        readOnly: true
-      source:
-        type: "string"
-        description: "The source type indicating where the video is hosted. Values\
-          \ include the social network name (e.g. <code>facebook</code>, <code>instagram</code>,\
-          \ <code>linkedin</code>, <code>tiktok</code>) for published videos, <code>s3</code>\
-          \ for pending uploads, or <code>public</code> for publicly accessible URLs."
-      thumbnail_url:
-        type: "string"
-        description: "The URL of a thumbnail image for the video, if available."
-      video_source_id:
-        type: "string"
-        description: "The unique (database) id for this object. It should only ever\
-          \ be <code>null</code> for an un-saved object. It is automatically generated\
-          \ by the database, and should be considered read-only. When re-saving a\
-          \ video post, any <code>VideoSourceDto</code> objects should include their\
-          \ original <code>videoSourceId</code>."
-        readOnly: true
-      video_url:
-        type: "string"
-        description: "The URL of the video source. Unless the <code>source</code>\
-          \ is <code>public</code>, this should only be set by the back-end."
-    description: "Describes where the source for a video is located. A single video\
-      \ can eventually have multiple sources. While a post is in its <code>DRAFT</code>\
-      \ or <code>SCHEDULED</code> phases, there will be a single source, which will\
-      \ typically be either \"local\" (it is still in the browser, and the video is\
-      \ being rendered from a local <code>File</code> object), or \"s3\" (the file\
-      \ has been uploaded to S3, and if not set, the URL for that video can be automatically\
-      \ generated). As the video is uploaded and posted to each social profile, a\
-      \ new source object will be created that includes the appropriate references\
-      \ to the uploaded media and the related post."
-  VideoDto:
-    type: "object"
-    required:
-    - "duration_seconds"
-    - "file_name"
-    - "file_size_bytes"
-    - "object_id"
-    - "upload_elapsed_ms"
-    - "video_sources"
-    properties:
-      duration_seconds:
-        type: "number"
-        format: "double"
-        description: "The duration (or play time) of the video (in seconds). This\
-          \ should be set once by the client, and never change."
-      file_name:
-        type: "string"
-        description: "The original file name of the video file. This should be set\
-          \ once by the client, and never change."
-      file_size_bytes:
-        type: "integer"
-        format: "int64"
-        description: "The original file size of the video file in bytes. This should\
-          \ be set once by the client, and never change."
-      object_id:
-        type: "string"
-        description: "The id of the video \"object\". This should be unique for each\
-          \ video that is uploaded to S3, and should be the same as the <code>object_id</code>\
-          \ returned from the endpoint to retrieve the upload URL. Typically, the\
-          \ URL of the video, when its <code>source</code> is <code>\"s3\"</code>\
-          \ will be a combination of an AWS base URL, the S3 bucket name, and this\
-          \ id. It should only ever be <code>null</code> for an uninitialized <code>VideoDto</code>.\
-          \ Once set, it should never change for a given <code>VideoDto</code>."
-      upload_elapsed_ms:
-        type: "integer"
-        format: "int64"
-        description: "The amount of time it took to upload the video from the front-end\
-          \ app to S3 (in milliseconds). This is included for potential diagnostic\
-          \ and/or analytics purposes. This should be set once by the client, and\
-          \ never change. If {@code source} is set to {@code public}, this should\
-          \ be set to 0."
-      video_id:
-        type: "string"
-        description: "The unique id for this video entry. This is generated automatically\
-          \ by the database and should be considered read-only. It should only ever\
-          \ be <code>null</code> for an un-saved <code>VideoDto</code>."
-        readOnly: true
-      video_sources:
-        type: "array"
-        description: "Data indicating location(s) of the \"source\" of the video,\
-          \ and its \"status\". Initially, there should be a single entry, with the\
-          \ <code>source</code> set to <code>s3</code>. The URL will be generated\
-          \ based on the known bucket name and the S3 object id before persisting.\
-          \ As this video is posted to the target profile(s), additional metadata\
-          \ items will be added, indicating the \"source\" as the target network,\
-          \ and the URLs for the video and thumbnail as the uploaded resource, and\
-          \ then populating the profile id and profile post id. Once all posts have\
-          \ been complete, the \"original\" <code>source: \"s3\"</code> data will\
-          \ be removed, since the S3 object may no longer be available. <strong>The\
-          \ client should initially only set a single source of type <code>\"s3\"\
-          </code> before saving, and this field should be considered read-only after\
-          \ that.</strong>"
-        items:
-          $ref: "#/definitions/VideoSourceDto"
-    description: "Represents a video file that has been uploaded for posting as part\
-      \ of a PostContent entity (text, images, links, videos). Contains information\
-      \ about the original file and its identity in S3, as well as links to video\
-      \ source information that indicate the potential various locations of the video,\
-      \ its thumbnail image, and potential post-related information after upload."
   ProfilePostDto:
     type: "object"
     required:
@@ -11132,99 +11160,111 @@ definitions:
     properties:
       images:
         type: "array"
+        description: "Images to include in the post. Each image must be accessible\
+          \ via a public URL."
         items:
           $ref: "#/definitions/ImageDto"
-      links:
-        type: "array"
-        items:
-          $ref: "#/definitions/LinkDto"
       post_content_id:
         type: "string"
-        description: "Although this is optional, it <em>should</em> be included when\
-          \ updating a post."
+        description: "Identifier for this post content. Generated by the server on\
+          \ creation. When updating a post, existing profile posts must include their\
+          \ original <code>post_content_id</code> unchanged."
         readOnly: true
       profiles:
         type: "array"
-        description: "This can be an empty list, as long as the post is in DRAFT status."
+        description: "The list of profiles to post to. Can be an empty list only when\
+          \ the post is in <code>DRAFT</code> status."
         items:
           $ref: "#/definitions/ProfilePostProfileDto"
       settings:
         type: "object"
         description: "Network-specific post settings. If no settings are provided,\
-          \ this field will be omitted in the JSON response.\n\nAll values will be\
-          \ persisted as <code>string</code>s.\n\nCurrently, only TikTok has the following\
-          \ available settings:\nExample:\n<pre>{\n\t\"settings\": {\n\t\t\"tiktok\"\
-          : {\n\t\t\t\"disable_comment\": \"true\",\n\t\t\t\"disable_duet\": \"false\"\
-          ,\n\t\t\t\"disable_stitch\": \"true\",\n\t\t\t\"auto_add_music\": \"false\"\
-          \n\t\t}\n\t}\n}</pre>"
+          \ this field will be omitted in the JSON response. All values are persisted\
+          \ as strings.\nCurrently, only TikTok has available settings:\n<pre>{\n\
+          \  \"settings\": {\n    \"tiktok\": {\n      \"disable_comment\": \"true\"\
+          ,\n      \"disable_duet\": \"false\",\n      \"disable_stitch\": \"true\"\
+          ,\n      \"auto_add_music\": \"false\"\n    }\n  }\n}</pre>\n"
         additionalProperties:
           $ref: "#/definitions/MapOfstringAndstring"
       text:
         type: "string"
-        description: "The requirement of text content depends on the network being\
-          \ posted to. In DRAFT status, this is always optional."
-      videos:
-        type: "array"
-        description: "videos to be included in the post. Note that the presence of\
-          \ images, videos, and link previews in a post are mutually exclusive. Also\
-          \ note that currently, only a single video is supported."
-        items:
-          $ref: "#/definitions/VideoDto"
-  PostDto:
+        description: "The text/caption content for the post. Whether text is required\
+          \ depends on the target social network. In <code>DRAFT</code> status, this\
+          \ is always optional."
+    description: "The content to post to one or more social profiles as part of a\
+      \ social post campaign."
+  PostCreateDto:
     type: "object"
     required:
     - "profile_posts"
+    - "status"
     properties:
-      campaign_id:
-        type: "string"
-        description: "The campaign Id for this post. When creating a post, if this\
-          \ is not specified, a new campaign object will be created. If <code>campaign_id</code>\
-          \ is specified, then it must be the id of an existing campaign for the specified\
-          \ <code>accountId</code>, and that campaign <em>must</em> be in <code>PLACEHOLDER</code>\
-          \ status, and <em>must</em> be of <code>SOCIAL_POSTS</code> type, otherwise\
-          \ the request will fail"
-      campaign_properties:
-        type: "object"
-        description: "Additional campaign properties associated to a social post.This\
-          \ is only honored at post create time and not available to be updated."
-        additionalProperties:
-          type: "string"
-      marketing_plan_id:
-        type: "string"
-        description: "The UUID of the marketing plan that this post is associated\
-          \ with.This is only honored at post create time and not available to be\
-          \ updated."
       name:
         type: "string"
         example: "My Social Post"
-        description: "The name of the post campaign. If not provided during creation,\
-          \ a default campaign name will be used. When creating or updating the post,\
-          \ this value will be sanitized to be appropriate for campaign-api, and the\
-          \ value returned may not match what was sent."
+        description: "Campaign name for this post. Optional on creation. If not provided,\
+          \ a default name will be generated. The value provided will be sanitized\
+          \ before saving, so the value returned may not exactly match what was sent."
       profile_posts:
         type: "array"
+        description: "The list of per-profile posts that make up this campaign. Each\
+          \ entry specifies the content to post and the profiles to post it to."
         items:
           $ref: "#/definitions/ProfilePostDto"
       scheduled_time:
         type: "string"
         example: "2026-03-15T14:30:00.000Z"
-        description: "The date and time to publish the post in ISO-8601 format. For\
-          \ example, 2026-03-15T14:30:00.000Z. If not specified, the publish job is\
-          \ scheduled to execute immediately."
-      shared_campaign_ids:
-        type: "array"
-        description: "The ids of campaigns which this social post is shared from.\
-          \ Expected at this time to be null or list of one. Only honored at post\
-          \ create time and not available to be updated."
-        readOnly: true
-        items:
-          type: "string"
+        description: "The date and time to publish the post, in ISO-8601 format. Only\
+          \ applies when <code>status</code> is <code>SCHEDULED</code>. If not specified\
+          \ for a scheduled post, the publish job is scheduled to execute immediately."
       status:
         type: "string"
         example: "SCHEDULED"
-        description: "The status of the post. For create requests, only DRAFT and\
-          \ SCHEDULED are valid."
-    description: "Represents a social media post campaign, which can include multiple\
+        description: "The status of the post on creation. Valid values are <code>DRAFT</code>\
+          \ (save without publishing) or <code>SCHEDULED</code> (schedule for publication)."
+    description: "Request body for creating a social media post campaign that can\
+      \ include multiple posts to multiple social profiles."
+  PostDto:
+    type: "object"
+    required:
+    - "profile_posts"
+    - "status"
+    properties:
+      campaign_id:
+        type: "string"
+        description: "Unique identifier for the post campaign. Generated by the server\
+          \ on creation. Use this value to reference the post in subsequent requests."
+        readOnly: true
+      name:
+        type: "string"
+        example: "My Social Post"
+        description: "Campaign name for this post. The value provided on creation\
+          \ is sanitized before saving, so the returned value may not exactly match\
+          \ what was sent."
+      profile_posts:
+        type: "array"
+        description: "The list of per-profile posts that make up this campaign."
+        items:
+          $ref: "#/definitions/ProfilePostDto"
+      scheduled_time:
+        type: "string"
+        example: "2026-03-15T14:30:00.000Z"
+        description: "The date and time to publish the post, in ISO-8601 format. Only\
+          \ set when <code>status</code> is <code>SCHEDULED</code>."
+      status:
+        type: "string"
+        example: "SCHEDULED"
+        description: "The current status of the post. Possible values include:\n<ul>\n\
+          \  <li><code>DRAFT</code> — saved without being scheduled for publication</li>\n\
+          \  <li><code>SCHEDULED</code> — scheduled for future publication at <code>scheduled_time</code></li>\n\
+          \  <li><code>EXECUTING</code> — currently being published</li>\n  <li><code>ACTIVE</code>\
+          \ — the post has been published and is active on the social network</li>\n\
+          \  <li><code>PAUSED</code> — publication has been paused</li>\n  <li><code>SUSPENDED</code>\
+          \ — publication has been suspended</li>\n  <li><code>REMOVED</code> — the\
+          \ post has been removed</li>\n  <li><code>DONE</code> — publication has\
+          \ completed</li>\n  <li><code>ERROR</code> — publication encountered an\
+          \ error</li>\n</ul>\n"
+    description: "Represents a social media post campaign that can include multiple\
       \ posts to multiple social profiles, with either identical or network-specific\
       \ content."
   SegmentMaster:
