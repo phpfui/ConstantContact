@@ -15,4 +15,9 @@ class DidNotOpensTrackingActivitiesPage extends \PHPFUI\ConstantContact\Definiti
 		'_links' => '\PHPFUI\ConstantContact\Definition\ReportingLinks',
 
 	];
+
+	protected static array $requiredFields = [
+		'tracking_activities',
+
+	];
 	}

@@ -20,4 +20,9 @@ class EmailAddressPost extends \PHPFUI\ConstantContact\Definition\Base
 		'address' => 80,
 
 	];
+
+	protected static array $requiredFields = [
+		'address',
+
+	];
 	}

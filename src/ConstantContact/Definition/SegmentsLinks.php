@@ -13,4 +13,9 @@ class SegmentsLinks extends \PHPFUI\ConstantContact\Definition\Base
 		'next' => '\PHPFUI\ConstantContact\Definition\Next',
 
 	];
+
+	protected static array $requiredFields = [
+		'next',
+
+	];
 	}

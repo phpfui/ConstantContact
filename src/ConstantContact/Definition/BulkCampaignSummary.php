@@ -21,4 +21,13 @@ class BulkCampaignSummary extends \PHPFUI\ConstantContact\Definition\Base
 		'campaign_type' => 'string',
 
 	];
+
+	protected static array $requiredFields = [
+		'campaign_id',
+		'campaign_name',
+		'campaign_type',
+		'last_sent_date',
+		'unique_counts',
+
+	];
 	}

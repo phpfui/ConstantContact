@@ -36,4 +36,14 @@ class EmailCampaignActivityInput extends \PHPFUI\ConstantContact\Definition\Base
 		'html_content' => 150000,
 
 	];
+
+	protected static array $requiredFields = [
+		'format_type',
+		'from_email',
+		'from_name',
+		'html_content',
+		'reply_to_email',
+		'subject',
+
+	];
 	}

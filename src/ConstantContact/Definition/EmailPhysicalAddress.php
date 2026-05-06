@@ -35,4 +35,11 @@ class EmailPhysicalAddress extends \PHPFUI\ConstantContact\Definition\Base
 		'state_non_us_name' => 'string',
 
 	];
+
+	protected static array $requiredFields = [
+		'address_line1',
+		'country_code',
+		'organization_name',
+
+	];
 	}

@@ -19,4 +19,12 @@ class PageMetadataDto extends \PHPFUI\ConstantContact\Definition\Base
 		'total_pages' => 'int',
 
 	];
+
+	protected static array $requiredFields = [
+		'page',
+		'size',
+		'total_elements',
+		'total_pages',
+
+	];
 	}

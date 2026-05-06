@@ -13,4 +13,9 @@ class LpreportingLinks extends \PHPFUI\ConstantContact\Definition\Base
 		'next' => '\PHPFUI\ConstantContact\Definition\LpreportingNext',
 
 	];
+
+	protected static array $requiredFields = [
+		'next',
+
+	];
 	}

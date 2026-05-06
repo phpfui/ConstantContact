@@ -15,4 +15,10 @@ class OptoutsTrackingActivitiesPage extends \PHPFUI\ConstantContact\Definition\B
 		'_links' => '\PHPFUI\ConstantContact\Definition\ReportingLinks',
 
 	];
+
+	protected static array $requiredFields = [
+		'_links',
+		'tracking_activities',
+
+	];
 	}

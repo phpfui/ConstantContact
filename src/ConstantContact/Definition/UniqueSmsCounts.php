@@ -21,4 +21,12 @@ class UniqueSmsCounts extends \PHPFUI\ConstantContact\Definition\Base
 		'optouts' => 'int',
 
 	];
+
+	protected static array $requiredFields = [
+		'clicks',
+		'delivers',
+		'optouts',
+		'sends',
+
+	];
 	}

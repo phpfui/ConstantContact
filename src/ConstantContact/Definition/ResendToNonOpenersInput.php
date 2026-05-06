@@ -17,4 +17,9 @@ class ResendToNonOpenersInput extends \PHPFUI\ConstantContact\Definition\Base
 		'delay_minutes' => 'int',
 
 	];
+
+	protected static array $requiredFields = [
+		'resend_subject',
+
+	];
 	}

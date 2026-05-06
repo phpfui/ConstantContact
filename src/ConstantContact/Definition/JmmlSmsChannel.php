@@ -19,4 +19,12 @@ class JmmlSmsChannel extends \PHPFUI\ConstantContact\Definition\Base
 		'sms_channel_consents' => 'array<\PHPFUI\ConstantContact\Definition\JmmlSmsChannelConsents>',
 
 	];
+
+	protected static array $requiredFields = [
+		'country_code',
+		'dial_code',
+		'sms_address',
+		'sms_channel_consents',
+
+	];
 	}

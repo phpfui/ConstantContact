@@ -27,4 +27,10 @@ class ContactsJsonImport extends \PHPFUI\ConstantContact\Definition\Base
 		'list_ids' => 1,
 
 	];
+
+	protected static array $requiredFields = [
+		'import_data',
+		'list_ids',
+
+	];
 	}

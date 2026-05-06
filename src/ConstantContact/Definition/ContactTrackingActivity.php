@@ -21,4 +21,10 @@ class ContactTrackingActivity extends \PHPFUI\ConstantContact\Definition\Base
 		'campaign_activity_name' => 'string',
 
 	];
+
+	protected static array $requiredFields = [
+		'campaign_activity_id',
+		'contact_id',
+
+	];
 	}

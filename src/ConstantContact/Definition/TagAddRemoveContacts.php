@@ -22,4 +22,10 @@ class TagAddRemoveContacts extends \PHPFUI\ConstantContact\Definition\Base
 		'tag_ids' => 50,
 
 	];
+
+	protected static array $requiredFields = [
+		'source',
+		'tag_ids',
+
+	];
 	}

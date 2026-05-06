@@ -18,4 +18,9 @@ class EmailCampaignName extends \PHPFUI\ConstantContact\Definition\Base
 		'name' => 80,
 
 	];
+
+	protected static array $requiredFields = [
+		'name',
+
+	];
 	}

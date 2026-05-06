@@ -17,4 +17,11 @@ class ABTestData extends \PHPFUI\ConstantContact\Definition\Base
 		'winner_wait_duration' => 'int',
 
 	];
+
+	protected static array $requiredFields = [
+		'alternative_subject',
+		'test_size',
+		'winner_wait_duration',
+
+	];
 	}

@@ -13,4 +13,9 @@ class OrderTicketKeysRequestDto extends \PHPFUI\ConstantContact\Definition\Base
 		'order_ticket_keys' => 'array',
 
 	];
+
+	protected static array $requiredFields = [
+		'order_ticket_keys',
+
+	];
 	}

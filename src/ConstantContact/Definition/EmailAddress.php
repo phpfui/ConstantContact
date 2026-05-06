@@ -37,4 +37,9 @@ class EmailAddress extends \PHPFUI\ConstantContact\Definition\Base
 		'opt_out_reason' => 255,
 
 	];
+
+	protected static array $requiredFields = [
+		'address',
+
+	];
 	}

@@ -21,4 +21,9 @@ class ItemSummaryDto extends \PHPFUI\ConstantContact\Definition\Base
 		'name' => 'string',
 
 	];
+
+	protected static array $requiredFields = [
+		'name',
+
+	];
 	}

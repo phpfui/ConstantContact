@@ -43,4 +43,9 @@ class TrackDto extends \PHPFUI\ConstantContact\Definition\Base
 		'items' => 'array<\PHPFUI\ConstantContact\Definition\ItemDto>',
 
 	];
+
+	protected static array $requiredFields = [
+		'campaign_activity_id',
+
+	];
 	}

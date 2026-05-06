@@ -35,4 +35,14 @@ class PContactClickTrackingActivity extends \PHPFUI\ConstantContact\Definition\B
 		'sms_channel' => '\PHPFUI\ConstantContact\Definition\TrackingActivitySmsChannelDTO',
 
 	];
+
+	protected static array $requiredFields = [
+		'campaign_activity_id',
+		'contact_id',
+		'created_time',
+		'email_address',
+		'link_url',
+		'tracking_activity_type',
+
+	];
 	}

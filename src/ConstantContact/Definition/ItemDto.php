@@ -57,4 +57,9 @@ class ItemDto extends \PHPFUI\ConstantContact\Definition\Base
 		'attributes' => 'array<\PHPFUI\ConstantContact\Definition\AttributeDto>',
 
 	];
+
+	protected static array $requiredFields = [
+		'name',
+
+	];
 	}

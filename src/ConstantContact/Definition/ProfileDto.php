@@ -40,4 +40,11 @@ class ProfileDto extends \PHPFUI\ConstantContact\Definition\Base
 		'url' => 'string',
 
 	];
+
+	protected static array $requiredFields = [
+		'connected',
+		'network',
+		'profile_id',
+
+	];
 	}

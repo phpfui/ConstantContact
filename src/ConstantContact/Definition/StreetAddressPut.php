@@ -32,4 +32,9 @@ class StreetAddressPut extends \PHPFUI\ConstantContact\Definition\Base
 		'country' => 50,
 
 	];
+
+	protected static array $requiredFields = [
+		'kind',
+
+	];
 	}

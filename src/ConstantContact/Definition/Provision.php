@@ -77,4 +77,12 @@ class Provision extends \PHPFUI\ConstantContact\Definition\Base
 		'last_name' => 2,
 
 	];
+
+	protected static array $requiredFields = [
+		'contact_email',
+		'country_code',
+		'login_name',
+		'state_code',
+
+	];
 	}

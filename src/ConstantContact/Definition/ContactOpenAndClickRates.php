@@ -19,4 +19,12 @@ class ContactOpenAndClickRates extends \PHPFUI\ConstantContact\Definition\Base
 		'average_click_rate' => 'float',
 
 	];
+
+	protected static array $requiredFields = [
+		'average_click_rate',
+		'average_open_rate',
+		'contact_id',
+		'included_activities_count',
+
+	];
 	}

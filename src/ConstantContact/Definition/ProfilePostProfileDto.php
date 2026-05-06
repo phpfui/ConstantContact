@@ -33,4 +33,9 @@ class ProfilePostProfileDto extends \PHPFUI\ConstantContact\Definition\Base
 		'profile_name' => 'string',
 
 	];
+
+	protected static array $requiredFields = [
+		'profile_id',
+
+	];
 	}

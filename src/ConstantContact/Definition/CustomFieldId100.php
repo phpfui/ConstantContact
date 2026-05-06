@@ -13,4 +13,9 @@ class CustomFieldId100 extends \PHPFUI\ConstantContact\Definition\Base
 		'custom_field_ids' => 'array<\PHPFUI\ConstantContact\UUID>',
 
 	];
+
+	protected static array $requiredFields = [
+		'custom_field_ids',
+
+	];
 	}

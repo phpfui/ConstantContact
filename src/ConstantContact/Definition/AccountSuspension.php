@@ -25,4 +25,10 @@ class AccountSuspension extends \PHPFUI\ConstantContact\Definition\Base
 		'suspend_estimated_reactivation_date' => '\PHPFUI\ConstantContact\DateTime',
 
 	];
+
+	protected static array $requiredFields = [
+		'suspend_plan_group_id',
+		'suspend_plan_id',
+
+	];
 	}

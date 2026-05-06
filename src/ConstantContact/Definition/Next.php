@@ -13,4 +13,9 @@ class Next extends \PHPFUI\ConstantContact\Definition\Base
 		'href' => 'string',
 
 	];
+
+	protected static array $requiredFields = [
+		'href',
+
+	];
 	}

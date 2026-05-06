@@ -22,4 +22,10 @@ class ListActivityAddContacts extends \PHPFUI\ConstantContact\Definition\Base
 		'list_ids' => 50,
 
 	];
+
+	protected static array $requiredFields = [
+		'list_ids',
+		'source',
+
+	];
 	}

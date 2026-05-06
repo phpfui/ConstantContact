@@ -20,4 +20,10 @@ class SegmentData extends \PHPFUI\ConstantContact\Definition\Base
 		'segment_criteria' => 20000,
 
 	];
+
+	protected static array $requiredFields = [
+		'name',
+		'segment_criteria',
+
+	];
 	}

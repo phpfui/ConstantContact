@@ -27,4 +27,10 @@ class ContactList extends \PHPFUI\ConstantContact\Definition\Base
 		'membership_count' => 'int',
 
 	];
+
+	protected static array $requiredFields = [
+		'list_id',
+		'name',
+
+	];
 	}

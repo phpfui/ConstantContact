@@ -25,4 +25,13 @@ class JmmlSmsChannelConsents extends \PHPFUI\ConstantContact\Definition\Base
 		'advertised_interval' => 'string',
 
 	];
+
+	protected static array $requiredFields = [
+		'consent_medium_details',
+		'consent_medium_type',
+		'consent_medium_url',
+		'consent_type',
+		'sms_consent_permission',
+
+	];
 	}

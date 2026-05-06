@@ -18,4 +18,9 @@ class ListIdList100 extends \PHPFUI\ConstantContact\Definition\Base
 		'list_ids' => 100,
 
 	];
+
+	protected static array $requiredFields = [
+		'list_ids',
+
+	];
 	}

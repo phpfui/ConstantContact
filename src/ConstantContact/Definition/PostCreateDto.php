@@ -19,4 +19,10 @@ class PostCreateDto extends \PHPFUI\ConstantContact\Definition\Base
 		'status' => 'string',
 
 	];
+
+	protected static array $requiredFields = [
+		'profile_posts',
+		'status',
+
+	];
 	}

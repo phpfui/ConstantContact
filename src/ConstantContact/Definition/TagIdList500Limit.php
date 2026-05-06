@@ -18,4 +18,9 @@ class TagIdList500Limit extends \PHPFUI\ConstantContact\Definition\Base
 		'tag_ids' => 500,
 
 	];
+
+	protected static array $requiredFields = [
+		'tag_ids',
+
+	];
 	}

@@ -23,4 +23,10 @@ class TicketSummaryDto extends \PHPFUI\ConstantContact\Definition\Base
 		'hidden_flag' => 'bool',
 
 	];
+
+	protected static array $requiredFields = [
+		'name',
+		'ticket_type',
+
+	];
 	}

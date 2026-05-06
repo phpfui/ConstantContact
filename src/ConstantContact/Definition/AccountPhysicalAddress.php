@@ -42,4 +42,11 @@ class AccountPhysicalAddress extends \PHPFUI\ConstantContact\Definition\Base
 		'address_line3' => 1,
 
 	];
+
+	protected static array $requiredFields = [
+		'address_line1',
+		'city',
+		'country_code',
+
+	];
 	}

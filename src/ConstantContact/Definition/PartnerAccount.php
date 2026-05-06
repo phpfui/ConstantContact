@@ -15,4 +15,9 @@ class PartnerAccount extends \PHPFUI\ConstantContact\Definition\Base
 		'_links' => '\PHPFUI\ConstantContact\Definition\PaginationLinks',
 
 	];
+
+	protected static array $requiredFields = [
+		'site_owner_list',
+
+	];
 	}

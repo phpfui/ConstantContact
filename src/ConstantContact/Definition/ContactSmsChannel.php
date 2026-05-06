@@ -15,4 +15,10 @@ class ContactSmsChannel extends \PHPFUI\ConstantContact\Definition\Base
 		'sms_channel_consents' => 'array<\PHPFUI\ConstantContact\Definition\ContactSmsChannelConsents>',
 
 	];
+
+	protected static array $requiredFields = [
+		'full_sms_address',
+		'sms_channel_consents',
+
+	];
 	}

@@ -15,4 +15,10 @@ class RegistrationStatusUpdateRequestDto extends \PHPFUI\ConstantContact\Definit
 		'registration_status' => 'string',
 
 	];
+
+	protected static array $requiredFields = [
+		'registration_ids',
+		'registration_status',
+
+	];
 	}

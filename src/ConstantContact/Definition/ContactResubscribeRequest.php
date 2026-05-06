@@ -13,4 +13,9 @@ class ContactResubscribeRequest extends \PHPFUI\ConstantContact\Definition\Base
 		'list_ids' => 'array<\PHPFUI\ConstantContact\UUID>',
 
 	];
+
+	protected static array $requiredFields = [
+		'list_ids',
+
+	];
 	}

@@ -23,4 +23,10 @@ class PartnerAccountOperationsRequest extends \PHPFUI\ConstantContact\Definition
 		'account_operation_headers' => 'array<\PHPFUI\ConstantContact\Definition\HeadersObject>',
 
 	];
+
+	protected static array $requiredFields = [
+		'account_operation_method',
+		'account_operation_url',
+
+	];
 	}

@@ -25,4 +25,10 @@ class ContactListPutPost extends \PHPFUI\ConstantContact\Definition\Base
 		'deleted_at' => '\PHPFUI\ConstantContact\DateTime',
 
 	];
+
+	protected static array $requiredFields = [
+		'list_id',
+		'name',
+
+	];
 	}

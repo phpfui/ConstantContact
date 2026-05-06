@@ -13,4 +13,9 @@ class EmailScheduleInput extends \PHPFUI\ConstantContact\Definition\Base
 		'scheduled_date' => '\PHPFUI\ConstantContact\DateTime',
 
 	];
+
+	protected static array $requiredFields = [
+		'scheduled_date',
+
+	];
 	}

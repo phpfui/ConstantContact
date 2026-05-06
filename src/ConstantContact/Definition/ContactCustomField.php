@@ -22,4 +22,9 @@ class ContactCustomField extends \PHPFUI\ConstantContact\Definition\Base
 		'value' => 255,
 
 	];
+
+	protected static array $requiredFields = [
+		'custom_field_id',
+
+	];
 	}

@@ -17,4 +17,10 @@ class ContactCampaignActivitiesSummary extends \PHPFUI\ConstantContact\Definitio
 		'_links' => '\PHPFUI\ConstantContact\Definition\ReportingLinks',
 
 	];
+
+	protected static array $requiredFields = [
+		'campaign_activities',
+		'contact_id',
+
+	];
 	}

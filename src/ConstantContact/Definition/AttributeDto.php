@@ -33,4 +33,9 @@ class AttributeDto extends \PHPFUI\ConstantContact\Definition\Base
 		'status_labels' => 'array<\PHPFUI\ConstantContact\Definition\StatusDisplayLabelDto>',
 
 	];
+
+	protected static array $requiredFields = [
+		'name',
+
+	];
 	}

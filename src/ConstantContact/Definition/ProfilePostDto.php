@@ -32,4 +32,9 @@ class ProfilePostDto extends \PHPFUI\ConstantContact\Definition\Base
 		'text' => 'string',
 
 	];
+
+	protected static array $requiredFields = [
+		'profiles',
+
+	];
 	}

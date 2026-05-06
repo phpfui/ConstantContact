@@ -27,4 +27,16 @@ class CampaignActivitySummary extends \PHPFUI\ConstantContact\Definition\Base
 		'em_unsubscribes' => 'int',
 
 	];
+
+	protected static array $requiredFields = [
+		'campaign_activity_id',
+		'em_bounces',
+		'em_clicks',
+		'em_forwards',
+		'em_opens',
+		'em_sends',
+		'em_unsubscribes',
+		'start_on',
+
+	];
 	}

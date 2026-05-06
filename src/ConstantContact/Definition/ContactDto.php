@@ -43,4 +43,10 @@ class ContactDto extends \PHPFUI\ConstantContact\Definition\Base
 		'phone_number' => 1,
 
 	];
+
+	protected static array $requiredFields = [
+		'name',
+		'organization_name',
+
+	];
 	}

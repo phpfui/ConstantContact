@@ -27,4 +27,10 @@ class ActivityGeneric extends \PHPFUI\ConstantContact\Definition\Base
 		'_links' => '\PHPFUI\ConstantContact\Definition\TagsActivityLinks',
 
 	];
+
+	protected static array $requiredFields = [
+		'activity_id',
+		'state',
+
+	];
 	}

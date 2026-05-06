@@ -15,4 +15,10 @@ class PaymentStatusUpdateRequestDto extends \PHPFUI\ConstantContact\Definition\B
 		'payment_status' => 'string',
 
 	];
+
+	protected static array $requiredFields = [
+		'payment_status',
+		'registration_ids',
+
+	];
 	}

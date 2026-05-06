@@ -58,4 +58,9 @@ class ContactPutRequest extends \PHPFUI\ConstantContact\Definition\Base
 		'notes' => 150,
 
 	];
+
+	protected static array $requiredFields = [
+		'update_source',
+
+	];
 	}

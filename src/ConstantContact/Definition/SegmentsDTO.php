@@ -15,4 +15,9 @@ class SegmentsDTO extends \PHPFUI\ConstantContact\Definition\Base
 		'_links' => '\PHPFUI\ConstantContact\Definition\SegmentsLinks',
 
 	];
+
+	protected static array $requiredFields = [
+		'segments',
+
+	];
 	}

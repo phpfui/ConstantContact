@@ -15,4 +15,9 @@ class EventCopyRequestDto extends \PHPFUI\ConstantContact\Definition\Base
 		'source_campaign_activities' => 'array<\PHPFUI\ConstantContact\UUID>',
 
 	];
+
+	protected static array $requiredFields = [
+		'target_event_name',
+
+	];
 	}

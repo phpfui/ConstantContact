@@ -65,4 +65,9 @@ class AddressDto extends \PHPFUI\ConstantContact\Definition\Base
 		'state_code' => 0,
 
 	];
+
+	protected static array $requiredFields = [
+		'address_type',
+
+	];
 	}

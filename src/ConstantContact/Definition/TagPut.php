@@ -23,4 +23,9 @@ class TagPut extends \PHPFUI\ConstantContact\Definition\Base
 		'name' => 1,
 
 	];
+
+	protected static array $requiredFields = [
+		'name',
+
+	];
 	}

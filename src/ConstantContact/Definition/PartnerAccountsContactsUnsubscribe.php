@@ -26,4 +26,9 @@ class PartnerAccountsContactsUnsubscribe extends \PHPFUI\ConstantContact\Definit
 		'opt_out_reason' => 255,
 
 	];
+
+	protected static array $requiredFields = [
+		'update_source',
+
+	];
 	}

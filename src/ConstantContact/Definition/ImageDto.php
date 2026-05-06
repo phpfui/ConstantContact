@@ -15,4 +15,9 @@ class ImageDto extends \PHPFUI\ConstantContact\Definition\Base
 		'url' => 'string',
 
 	];
+
+	protected static array $requiredFields = [
+		'url',
+
+	];
 	}

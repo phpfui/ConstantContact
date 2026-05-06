@@ -37,4 +37,10 @@ class CustomField extends \PHPFUI\ConstantContact\Definition\Base
 		'choices' => 100,
 
 	];
+
+	protected static array $requiredFields = [
+		'label',
+		'type',
+
+	];
 	}

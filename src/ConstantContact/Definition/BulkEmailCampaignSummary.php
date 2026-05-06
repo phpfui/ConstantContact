@@ -19,4 +19,9 @@ class BulkEmailCampaignSummary extends \PHPFUI\ConstantContact\Definition\Base
 		'unique_counts' => '\PHPFUI\ConstantContact\Definition\UniqueEmailCounts',
 
 	];
+
+	protected static array $requiredFields = [
+		'campaign_id',
+
+	];
 	}

@@ -15,4 +15,10 @@ class PContactSMSOptInTrackingActivitiesPage extends \PHPFUI\ConstantContact\Def
 		'_links' => '\PHPFUI\ConstantContact\Definition\LpreportingLinks',
 
 	];
+
+	protected static array $requiredFields = [
+		'_links',
+		'tracking_activities',
+
+	];
 	}

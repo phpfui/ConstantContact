@@ -17,4 +17,10 @@ class HashtagGroupDto extends \PHPFUI\ConstantContact\Definition\Base
 		'hashtag_names' => 'array',
 
 	];
+
+	protected static array $requiredFields = [
+		'hashtag_group_name',
+		'hashtag_names',
+
+	];
 	}

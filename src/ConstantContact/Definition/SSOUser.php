@@ -35,4 +35,15 @@ class SSOUser extends \PHPFUI\ConstantContact\Definition\Base
 		'external_provider' => 80,
 
 	];
+
+	protected static array $requiredFields = [
+		'contact_email',
+		'external_id',
+		'external_provider',
+		'first_name',
+		'last_name',
+		'login_name',
+		'role_name',
+
+	];
 	}

@@ -29,4 +29,13 @@ class OptoutsTrackingActivity extends \PHPFUI\ConstantContact\Definition\Base
 		'deleted_at' => '\PHPFUI\ConstantContact\Date',
 
 	];
+
+	protected static array $requiredFields = [
+		'campaign_activity_id',
+		'contact_id',
+		'created_time',
+		'email_address',
+		'tracking_activity_type',
+
+	];
 	}

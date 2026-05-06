@@ -31,4 +31,10 @@ class ActivityTagging extends \PHPFUI\ConstantContact\Definition\Base
 		'_links' => '\PHPFUI\ConstantContact\Definition\ActivityLinks',
 
 	];
+
+	protected static array $requiredFields = [
+		'activity_id',
+		'state',
+
+	];
 	}

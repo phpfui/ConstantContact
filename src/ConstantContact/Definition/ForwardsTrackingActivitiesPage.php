@@ -15,4 +15,9 @@ class ForwardsTrackingActivitiesPage extends \PHPFUI\ConstantContact\Definition\
 		'_links' => '\PHPFUI\ConstantContact\Definition\ReportingLinks',
 
 	];
+
+	protected static array $requiredFields = [
+		'tracking_activities',
+
+	];
 	}

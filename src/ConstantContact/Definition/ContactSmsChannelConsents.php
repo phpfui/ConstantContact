@@ -17,4 +17,10 @@ class ContactSmsChannelConsents extends \PHPFUI\ConstantContact\Definition\Base
 		'consent_medium_details' => 'string',
 
 	];
+
+	protected static array $requiredFields = [
+		'consent_type',
+		'sms_consent_permission',
+
+	];
 	}

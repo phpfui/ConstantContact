@@ -49,4 +49,9 @@ class PromoCodeDto extends \PHPFUI\ConstantContact\Definition\Base
 		'time_limit_flag' => 'bool',
 
 	];
+
+	protected static array $requiredFields = [
+		'name',
+
+	];
 	}

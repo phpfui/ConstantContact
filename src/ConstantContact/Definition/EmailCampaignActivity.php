@@ -59,4 +59,12 @@ class EmailCampaignActivity extends \PHPFUI\ConstantContact\Definition\Base
 		'document_properties' => '\PHPFUI\ConstantContact\Definition\DocumentProperties',
 
 	];
+
+	protected static array $requiredFields = [
+		'from_email',
+		'from_name',
+		'reply_to_email',
+		'subject',
+
+	];
 	}

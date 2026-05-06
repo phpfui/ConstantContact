@@ -17,4 +17,11 @@ class PagedHashtagGroupsDto extends \PHPFUI\ConstantContact\Definition\Base
 		'page' => '\PHPFUI\ConstantContact\Definition\PageMetadataDto',
 
 	];
+
+	protected static array $requiredFields = [
+		'_links',
+		'hashtag_groups',
+		'page',
+
+	];
 	}

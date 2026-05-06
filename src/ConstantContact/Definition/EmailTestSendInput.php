@@ -15,4 +15,9 @@ class EmailTestSendInput extends \PHPFUI\ConstantContact\Definition\Base
 		'personal_message' => 'string',
 
 	];
+
+	protected static array $requiredFields = [
+		'email_addresses',
+
+	];
 	}
