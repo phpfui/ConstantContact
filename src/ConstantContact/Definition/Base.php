@@ -257,7 +257,7 @@ abstract class Base implements \JsonSerializable
 
 		foreach (static::$requiredFields as $field)
 			{
-			if (! empty($this->setFields[$field]))
+			if (empty($this->setFields[$field]))
 				{
 				throw new \PHPFUI\ConstantContact\Exception\RequiredField(static::class . "::{$field} is required but not set.");
 				}

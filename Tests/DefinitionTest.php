@@ -186,6 +186,7 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
 		$address = [];
 		$address['created_at'] = (string)new \PHPFUI\ConstantContact\DateTime();
 		$address['permission_to_send'] = 'explicit';
+		$address['address'] = 'test@test.com';
 
 		$email_address = new \PHPFUI\ConstantContact\Definition\EmailAddressPut($address);
 		$contact = ['email_address' => $email_address];
