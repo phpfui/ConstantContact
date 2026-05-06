@@ -65,7 +65,6 @@ class Contact extends \PHPFUI\ConstantContact\Base
 		return $data ? new \PHPFUI\ConstantContact\Definition\ContactResource($data) : null;
 		}
 
-
 	/**
 	 * PUT (update) a Contact
 	 *
@@ -109,5 +108,4 @@ class Contact extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\ContactResource($data) : null;
 		}
-
 	}

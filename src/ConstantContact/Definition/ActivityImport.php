@@ -7,8 +7,8 @@ namespace PHPFUI\ConstantContact\Definition;
 /**
  * @property \PHPFUI\ConstantContact\UUID $activity_id Unique ID for the activity.
  * @property string $state The state of the request:
- <p><ul>
-  * <li>initialized - request has been received</li>
+ * <p><ul>
+ * <li>initialized - request has been received</li>
  * <li>processing - request is being processed</li>
  * <li>completed - job completed</li>
  * <li>cancelled - request was cancelled</li>

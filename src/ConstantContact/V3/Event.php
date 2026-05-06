@@ -33,7 +33,6 @@ class Event extends \PHPFUI\ConstantContact\Base
 		return $data ? new \PHPFUI\ConstantContact\Definition\EventDto($data) : null;
 		}
 
-
 	/**
 	 * PATCH (update) an event.
 	 *
