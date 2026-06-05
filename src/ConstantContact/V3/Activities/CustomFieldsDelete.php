@@ -31,4 +31,5 @@ class CustomFieldsDelete extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\ActivityDeleteCustomFields($data) : null;
 		}
+
 	}

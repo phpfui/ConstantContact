@@ -34,6 +34,7 @@ class ContactList extends \PHPFUI\ConstantContact\Base
 		return $data ? new \PHPFUI\ConstantContact\Definition\ActivityDeleteListResponse($data) : null;
 		}
 
+
 	/**
 	 * GET a List
 	 *
@@ -66,6 +67,7 @@ class ContactList extends \PHPFUI\ConstantContact\Base
 		return $data ? new \PHPFUI\ConstantContact\Definition\ContactList($data) : null;
 		}
 
+
 	/**
 	 * PUT (update) a List
 	 *
@@ -86,4 +88,5 @@ class ContactList extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\ContactListPutPost($data) : null;
 		}
+
 	}

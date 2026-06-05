@@ -4,5 +4,7 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
+/**
+ */
 class Profiles extends \PHPFUI\ConstantContact\Definition\Base
 	{	}

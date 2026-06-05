@@ -35,4 +35,5 @@ class ContactExports extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\ActivityExportStatus($data) : null;
 		}
+
 	}

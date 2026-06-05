@@ -4,5 +4,7 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
+/**
+ */
 class Settings extends \PHPFUI\ConstantContact\Definition\Base
 	{	}

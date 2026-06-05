@@ -40,6 +40,7 @@ class Plan extends \PHPFUI\ConstantContact\Base
 		return $data ? new \PHPFUI\ConstantContact\Definition\PlanTiersObject($data) : null;
 		}
 
+
 	/**
 	 * PUT (update) Billing Plan Details for a Client Account
 	 *
@@ -74,15 +75,15 @@ class Plan extends \PHPFUI\ConstantContact\Base
 	 * in the API guide.
 	 *
 	 * @param string $encoded_account_id Specify the client's unique `encoded_account_id`.
-	 * @param \PHPFUI\ConstantContact\Definition\PlanInfo $body `plan_type`: Updates the billing plan assigned to a client account to a different `plan_type`.
-	 *
-	 * `plan_group_id`: To update an older `plan_type` to a current a `plan_type`, use the `plan_group_id` parameter to specify the older billing `plan_type` number.
-	 *
-	 * - If the specified `plan_group_id` does not exist under the account's current plan group, the default partner plan group is used.
-	 * - If the specified `plan_group_id` exists but does not match the account's current plan group, an error is returned.
-	 * - If the `plan_group_id` parameter is not included in the request, the accounts current plan group is used.
-	 *
-	 * `billing_day_of _month`:   Updates the day of month in which to bill the client account. This property is required if a client account is not set up to use single billing.
+	 * @param \PHPFUI\ConstantContact\Definition\PlanInfo $body `plan_type`: Updates the billing plan assigned to a client account to a different `plan_type`.   
+
+`plan_group_id`: To update an older `plan_type` to a current a `plan_type`, use the `plan_group_id` parameter to specify the older billing `plan_type` number. 
+
+- If the specified `plan_group_id` does not exist under the account's current plan group, the default partner plan group is used.
+- If the specified `plan_group_id` exists but does not match the account's current plan group, an error is returned.
+- If the `plan_group_id` parameter is not included in the request, the accounts current plan group is used.
+
+`billing_day_of _month`:   Updates the day of month in which to bill the client account. This property is required if a client account is not set up to use single billing.      
 	 */
 	public function put(string $encoded_account_id, ?\PHPFUI\ConstantContact\Definition\PlanInfo $body = null) : ?array
 		{
@@ -96,4 +97,5 @@ class Plan extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\PlanTiersObject($data) : null;
 		}
+
 	}
