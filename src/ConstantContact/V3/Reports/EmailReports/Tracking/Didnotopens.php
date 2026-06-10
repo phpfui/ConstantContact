@@ -37,5 +37,4 @@ class Didnotopens extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\DidNotOpensTrackingActivitiesPage($data) : null;
 		}
-
 	}

@@ -35,5 +35,4 @@ class PUniqueContactUpdates extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\PContactUpdateTrackingActivitiesPage($data) : null;
 		}
-
 	}

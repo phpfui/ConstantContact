@@ -38,5 +38,4 @@ class Forwards extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\ForwardsTrackingActivitiesPage($data) : null;
 		}
-
 	}

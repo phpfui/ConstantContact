@@ -16,11 +16,11 @@ namespace PHPFUI\ConstantContact\Definition;
  * @property string $network_user_id The social network-specific identifier for the user who owns this profile.
  * @property string $profile_id Unique identifier for this profile. Use this value in the <code>profile_id</code> field of a <code>ProfilePost</code> when creating a post.
  * @property \PHPFUI\ConstantContact\Definition\Settings $settings Network-specific settings for the profile. Only populated when the request includes <code>include=accessible</code> and settings are available for the network. Currently, only TikTok provides settings: <pre>"content": {
-  "comment_disabled": Boolean,
-  "duet_disabled": Boolean,
-  "stitch_disabled": Boolean,
-  "max_video_post_duration_sec": Integer
-}</pre>
+ * "comment_disabled": Boolean,
+ * "duet_disabled": Boolean,
+ * "stitch_disabled": Boolean,
+ * "max_video_post_duration_sec": Integer
+ * }</pre>
  * @property string $url URL to the profile on the social network.
  */
 class ProfileDto extends \PHPFUI\ConstantContact\Definition\Base

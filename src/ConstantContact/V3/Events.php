@@ -36,5 +36,4 @@ class Events extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\PaginationDtoEventListingDto($data) : null;
 		}
-
 	}

@@ -36,5 +36,4 @@ class RemoveListMemberships extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\ActivityListsMembership($data) : null;
 		}
-
 	}

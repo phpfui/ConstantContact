@@ -38,5 +38,4 @@ class Groups extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\PagedHashtagGroupsDto($data) : null;
 		}
-
 	}

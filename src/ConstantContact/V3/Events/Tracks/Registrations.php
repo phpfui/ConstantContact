@@ -84,7 +84,6 @@ class Registrations extends \PHPFUI\ConstantContact\Base
 		return $data ? new \PHPFUI\ConstantContact\Definition\PaginatedRegistrations($data) : null;
 		}
 
-
 	/**
 	 * Update status for event registrations.
 	 *
@@ -110,5 +109,4 @@ class Registrations extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\RegistrationStatusUpdateResponseDto($data) : null;
 		}
-
 	}

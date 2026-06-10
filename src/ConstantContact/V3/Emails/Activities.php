@@ -53,7 +53,6 @@ class Activities extends \PHPFUI\ConstantContact\Base
 		return $data ? new \PHPFUI\ConstantContact\Definition\EmailCampaignActivity($data) : null;
 		}
 
-
 	/**
 	 * PUT (Update) An Email Campaign Activity
 	 *
@@ -87,5 +86,4 @@ class Activities extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\EmailCampaignActivity($data) : null;
 		}
-
 	}

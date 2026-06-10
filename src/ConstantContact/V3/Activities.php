@@ -45,5 +45,4 @@ class Activities extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\Activities($data) : null;
 		}
-
 	}

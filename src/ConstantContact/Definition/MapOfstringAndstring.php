@@ -4,7 +4,5 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-/**
- */
 class MapOfstringAndstring extends \PHPFUI\ConstantContact\Definition\Base
 	{	}

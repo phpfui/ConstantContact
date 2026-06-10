@@ -41,18 +41,21 @@ class Profiles extends \PHPFUI\ConstantContact\Base
 
 		return $this->doGet(['include' => $include, ]);
 		}
+
 	/**
 	 * @return ?array<\PHPFUI\ConstantContact\Definition\Profiles>
 	 */
 	public function getTyped(?array $include = null) : ?array
 		{
 		$data = $this->get($include);
-		if (is_null($data))
+
+		if (null === $data)
 			{
 			return null;
 			}
 
 		$array = [];
+
 		foreach ($data as $object)
 			{
 			$array[] = new \PHPFUI\ConstantContact\Definition\Profiles($object);
@@ -60,5 +63,4 @@ class Profiles extends \PHPFUI\ConstantContact\Base
 
 		return $array;
 		}
-
 	}

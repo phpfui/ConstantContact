@@ -37,5 +37,4 @@ class Opens extends \PHPFUI\ConstantContact\Base
 
 		return $data ? new \PHPFUI\ConstantContact\Definition\OpensTrackingActivitiesPage($data) : null;
 		}
-
 	}

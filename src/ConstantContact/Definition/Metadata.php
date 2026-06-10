@@ -4,7 +4,5 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-/**
- */
 class Metadata extends \PHPFUI\ConstantContact\Definition\Base
 	{	}
