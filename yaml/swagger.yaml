@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.160"
+  version: "3.0.161"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -1304,6 +1304,8 @@ paths:
   /billing/add-ons/{service_id}/cancel: {}
   /billing/plan: {}
   /billing/add-ons: {}
+  /billing/prepayment-invoice/email: {}
+  /billing/next-payment: {}
   /events:
     get:
       tags:
