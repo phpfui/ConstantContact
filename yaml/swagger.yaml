@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.161"
+  version: "3.0.172"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -15,6 +15,8 @@ basePath: "/v3"
 tags:
 - name: "Account Services"
   description: "Use the account endpoints and methods to get account information."
+- name: "Automations"
+  description: "Use the automation endpoints and methods to manage automation campaigns"
 - name: "Bulk Activities"
   description: "Bulk activities endpoints are used to manage large numbers of contacts,\
     \ lists, and tags."
@@ -5170,6 +5172,210 @@ paths:
       x-authorization-privileges:
       - "campaign:send"
       x-sdk-methodName: "deleteResendEmailCampaign"
+  /automations/workflows:
+    get:
+      tags:
+      - "Automations"
+      summary: "List All Automations"
+      description: "Use this method to list all available automation workflows.\n"
+      operationId: "listAutomations"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "channel"
+        in: "query"
+        description: "Filter by channel"
+        required: false
+        type: "string"
+        x-example: "email"
+      - name: "sort_direction"
+        in: "query"
+        description: "Sort direction, ASC or DESC. Defaults to DESC"
+        required: false
+        type: "string"
+        enum:
+        - "ASC"
+        - "DESC"
+        x-example: "DESC"
+      - name: "created_from"
+        in: "query"
+        description: "Filter by how the workflow was created"
+        required: false
+        type: "string"
+        enum:
+        - "SCRATCH"
+        - "TEMPLATE"
+      - name: "goals"
+        in: "query"
+        description: "Filter by goal tags (e.g. post_purchase_followup, up_sell_and_cross_sell)"
+        required: false
+        type: "string"
+        x-example: "post_purchase_followup"
+      - name: "name"
+        in: "query"
+        description: "Find by workflow name (exact match)"
+        required: false
+        type: "string"
+        x-example: "My Workflow 123"
+      responses:
+        "209":
+          description: "Request successful"
+          schema:
+            $ref: "#/definitions/ListAutomationFlowsResponseDto"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "500":
+          description: "There was a problem with our internal service."
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      x-authorization-privileges:
+      - "customer-journey:read"
+    post:
+      tags:
+      - "Automations"
+      summary: "Create an Automation"
+      description: "Use this method to create a new automation campaign workflow from\
+        \ scratch by providing trigger information. For example, an automation that\
+        \ triggers when contacts join a list or an automation that triggers for a\
+        \ contact birthday.\n\nSome common automation examples are included in the\
+        \ request body example dropdown menu.\n"
+      operationId: "createAutomationCampaignUsingPost"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "workflowName"
+        in: "query"
+        description: "Use this query parameter to provide a workflow name and override\
+          \ the default name."
+        required: false
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Automation trigger definition (type, action_name, parameters,\
+          \ optional trigger_date and bounds)."
+        required: true
+        schema:
+          $ref: "#/definitions/TriggerDefDto"
+      responses:
+        "201":
+          description: "Request successful"
+          schema:
+            $ref: "#/definitions/AutomationCampaign"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "500":
+          description: "There was a problem with our internal service."
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      x-authorization-privileges:
+      - "customer-journey:create"
+  /automations/workflows/{automation_flow_id}:
+    get:
+      tags:
+      - "Automations"
+      summary: "Retrieve an Automation"
+      description: "Use this endpoint to retrieve an automation workflow by its workflow\
+        \ id."
+      operationId: "retrieveAutomationCampaignUsingGet"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "automation_flow_id"
+        in: "path"
+        description: "Automation workflow identifier."
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Request successful"
+          schema:
+            $ref: "#/definitions/AutomationCampaign"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "500":
+          description: "There was a problem with our internal service."
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      x-authorization-privileges:
+      - "customer-journey:read"
+    put:
+      tags:
+      - "Automations"
+      summary: "Update an Automation"
+      description: "Use this method to update an automation workflow."
+      operationId: "updateAutomationCampaignUsingPut"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "automation_flow_id"
+        in: "path"
+        description: "Automation workflow identifier."
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Automation trigger definition (type, action_name, parameters,\
+          \ optional trigger_date and bounds)."
+        required: true
+        schema:
+          $ref: "#/definitions/AutomationCampaignUpdate"
+      responses:
+        "200":
+          description: "Request successful"
+          schema:
+            $ref: "#/definitions/AutomationCampaign"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "500":
+          description: "There was a problem with our internal service."
+      security:
+      - oauth2_implicit:
+        - "campaign_data"
+      - oauth2_access_code:
+        - "campaign_data"
+      x-authorization-privileges:
+      - "customer-journey:update"
   /emails/activities/{campaign_activity_id}/abtest:
     get:
       tags:
@@ -14220,38 +14426,423 @@ definitions:
         format: "email"
         example: "InstaPrinz@gmail.com"
         description: "Default reply-to email address"
+  StructuredTagDto:
+    type: "object"
+    properties:
+      display_value:
+        type: "string"
+        example: "All from-scratch paths"
+        description: "Human-readable display value"
+      key:
+        type: "string"
+        example: "GOAL"
+        description: "Tag key"
+      value:
+        type: "string"
+        example: "goal_undefined"
+        description: "Tag value"
+    description: "A structured tag with key, value, and display value"
+  AutomationFlowSummaryDto:
+    type: "object"
+    properties:
+      active_state:
+        type: "string"
+        example: "ACTIVE"
+        description: "State of the active definition"
+      created_by_id:
+        type: "string"
+        example: "123456789"
+        description: "User ID who created the flow"
+      created_date:
+        type: "string"
+        example: "2025-09-25T20:06:50.020+00:00"
+        description: "Date the flow was created"
+      description:
+        type: "string"
+        example: "Automation flow for contact signups"
+        description: "Description of the automation flow"
+      draft_state:
+        type: "string"
+        example: "PROMOTED"
+        description: "State of the draft definition"
+      id:
+        type: "string"
+        example: "83345850-144a-4dcf-b4dc-88aa1287cffe"
+        description: "Automation flow ID"
+      name:
+        type: "string"
+        example: "Welcome series"
+        description: "Display name of the automation flow"
+      promoted_by_id:
+        type: "string"
+        example: "123456789"
+        description: "User ID who promoted the flow"
+      promoted_date:
+        type: "string"
+        example: "2025-09-25T20:06:50.970+00:00"
+        description: "Date the flow was promoted"
+      status:
+        type: "string"
+        example: "ACTIVE"
+        description: "Computed display status of the workflow"
+      structured_tags:
+        type: "array"
+        description: "Structured tags associated with the automation flow"
+        items:
+          $ref: "#/definitions/StructuredTagDto"
+      template_id:
+        type: "string"
+        example: "17f58023-559a-41e5-84b7-0e9e213f7aef"
+        description: "Template ID the flow was created from"
+      update_date:
+        type: "string"
+        example: "2025-09-25T20:06:50.970+00:00"
+        description: "Date the flow was last updated"
+    description: "Summary of an automation flow"
+  ListAutomationFlowsResponseDto:
+    type: "object"
+    properties:
+      flow_summaries:
+        type: "array"
+        description: "List of automation flow summaries for the current page"
+        items:
+          $ref: "#/definitions/AutomationFlowSummaryDto"
+    description: "Paginated list of automation flow summaries"
+  ParameterDto:
+    type: "object"
+    properties:
+      operator:
+        type: "string"
+        description: "Comparison operator for the parameter (e.g. EQUALS, CONTAINS,\
+          \ NOT_EQUALS)."
+      parameter_name:
+        type: "string"
+        description: "Name of the parameter (e.g., list_ids, create_source, url)."
+      parameter_list_value:
+        type: "array"
+        description: "[DEPRECATED] List of string values for the parameter when type\
+          \ is LIST. Supported for backwards compatibility; prefer parameter_value."
+        items:
+          type: "string"
+        x-deprecated: true
+      parameter_string_value:
+        type: "string"
+        description: "[DEPRECATED] String value for the parameter when type is STRING.\
+          \ Supported for backwards compatibility; prefer parameter_value."
+        x-deprecated: true
+      parameter_value:
+        type: "object"
+        description: "The parameter value: a string or array of strings depending\
+          \ on type (e.g., STRING → single value, LIST → array of list IDs). Use this\
+          \ instead of parameter_string_value / parameter_list_value moving forward."
+        properties: {}
+      rule:
+        type: "object"
+        description: "Rule structure for RULE-type parameters (e.g., engagement level\
+          \ triggers)."
+        properties: {}
+      type:
+        type: "string"
+        description: "Parameter type. Common trigger types: STRING (single value),\
+          \ LIST (array), WEB_TRACKING (page visit)."
+    description: "A single trigger parameter used to filter or configure the trigger\
+      \ (e.g., list IDs). Use parameter_value (preferred); parameter_string_value\
+      \ and parameter_list_value are supported for backwards compatibility."
+  TriggerDefDto:
+    type: "object"
+    properties:
+      parameters:
+        type: "array"
+        description: "List of parameters that filter or configure the trigger (e.g.,\
+          \ list IDs for list_join)."
+        items:
+          $ref: "#/definitions/ParameterDto"
+      action_name:
+        type: "string"
+        example: "list_join"
+        description: "Action name. Required for type Action or Date. Identifies the\
+          \ specific trigger (e.g., list_join, calendar_date, visits_page)."
+      bounds:
+        type: "object"
+        description: "Time window for Date-type triggers. Sets when the trigger runs\
+          \ relative to\nthe contact's date. Uses ISO 8601 period format (e.g., P0D,\
+          \ P7D, P-7D).\n| Example Scenario | after  | before |\n|----------|--------|--------|\n\
+          | On the day | `P0D`  | `P1D` |\n| 7 days before | `P-7D` | `P-6D` |\n|\
+          \ 7 days after | `P7D`  | `P8D` |\n"
+        properties:
+          after:
+            type: "string"
+            description: "Start of the window relative to the contact date in ISO\
+              \ 8601 period format (e.g., P0D = on the day, P-7D = 7 days before)."
+          before:
+            type: "string"
+            description: "End of the window relative to the contact date in ISO 8601\
+              \ period format (e.g., P1D = 1 day after, P0D = on the day)."
+      engagement_level:
+        type: "string"
+        example: "SOMEWHAT"
+        description: "Engagement level for engagement_level triggers (e.g., SOMEWHAT,\
+          \ LEAST)."
+      segment_id:
+        type: "string"
+        description: "Segment ID for segment_join triggers."
+      trigger_date:
+        type: "object"
+        description: "Date configuration for Date-type triggers (e.g., birthday, anniversary).\
+          \ Specifies which contact fields supply the date."
+        properties:
+          date_field:
+            type: "string"
+            description: "Contact field that contains the full date. Must include\
+              \ 'record.' prefix (e.g., record.anniversary)."
+          day_field:
+            type: "string"
+            description: "Contact field that contains the day-of-month value. Must\
+              \ include 'record.' prefix (e.g., record.birthday_day)."
+          month_field:
+            type: "string"
+            description: "Contact field that contains the month value. Must include\
+              \ 'record.' prefix (e.g., record.birthday_month)."
+          type:
+            type: "string"
+            description: "Where the date is represented (e.g., Profile)."
+      type:
+        type: "string"
+        example: "Action"
+        description: "Trigger type. Determines how the trigger is evaluated (e.g.,\
+          \ Action, Date, segment_join)."
+      unique_by:
+        type: "string"
+        example: "list_ids"
+        description: "Deduplication key: run the workflow at most once per contact\
+          \ per this value (e.g., list_ids, contact_id)."
+    description: "Defines when the workflow starts (e.g., list join, date-based)."
   AutomationStructuredTag:
     type: "object"
     properties:
-      key:
-        type: "string"
-      value:
-        type: "string"
       display_value:
         type: "string"
+        example: "All from-scratch paths"
+        description: "Human-readable display value"
+      key:
+        type: "string"
+        example: "GOAL"
+        description: "Tag key"
+      value:
+        type: "string"
+        example: "goal_undefined"
+        description: "Tag value"
+    description: "A structured tag with key, value, and display value"
+  TriggerFilterRuleDto:
+    type: "object"
+    properties:
+      compound_rule_type:
+        type: "string"
+      left:
+        $ref: "#/definitions/TriggerFilterRuleDto"
+      property_comparison:
+        $ref: "#/definitions/PropertyComparisonDto"
+      right:
+        $ref: "#/definitions/TriggerFilterRuleDto"
+      rule:
+        $ref: "#/definitions/TriggerFilterRuleDto"
+      target:
+        type: "string"
+      target_type:
+        type: "string"
+      type:
+        type: "string"
+  PropertyComparisonDto:
+    type: "object"
+    properties:
+      argument:
+        type: "string"
+      array_argument:
+        type: "array"
+        items:
+          type: "string"
+      operator:
+        type: "string"
+      property_name:
+        type: "string"
+      string_map_argument:
+        type: "object"
+        properties:
+          custom_field_Id:
+            type: "string"
+          value:
+            type: "string"
+      type:
+        type: "string"
+  TriggerFilterDto:
+    type: "object"
+    properties:
+      rule:
+        $ref: "#/definitions/TriggerFilterRuleDto"
+      version:
+        type: "string"
+        description: "Version number for the trigger filter."
+  TriggerDto:
+    type: "object"
+    properties:
+      trigger_def:
+        $ref: "#/definitions/TriggerDefDto"
+      trigger_filter:
+        $ref: "#/definitions/TriggerFilterDto"
+      trigger_version:
+        type: "string"
+        example: "1.0.0"
+      workflow_filter:
+        type: "string"
+  WorkflowParametersDto:
+    type: "object"
+    properties:
+      automation_flow_id:
+        type: "string"
+        example: "9a5982f0-26d8-4e74-b2f5-f415af434fa4"
+        description: "Automation flow identifier"
+      automation_flow_name:
+        type: "string"
+        example: "Autogenerated Birthday: Basic"
+        description: "Automation flow name"
+      campaign_id:
+        type: "string"
+        example: "861dd493-540a-4e3e-b457-44cfde28a5f0"
+        description: "Automation campaign identifier"
+      discount_code:
+        type: "string"
+        description: "Discount code used in discount block"
+  CorrelationMetadataDto:
+    type: "object"
+    properties:
+      automation_flow_id:
+        type: "string"
+        example: "9a5982f0-26d8-4e74-b2f5-f415af434fa4"
+        description: "Automation flow identifier"
+      automation_template_id:
+        type: "string"
+        example: "17f58023-559a-41e5-84b7-0e9e213f7aef"
+        description: "Automation template identifier"
+      campaign_id:
+        type: "string"
+        example: "861dd493-540a-4e3e-b457-44cfde28a5f0"
+        description: "Automation campaign identifier"
+  TaskDto:
+    type: "object"
+    properties:
+      child_tasks:
+        type: "array"
+        items:
+          $ref: "#/definitions/TaskDto"
+      correlation_metadata:
+        $ref: "#/definitions/TaskCorrelationMetadataDto"
+      else:
+        type: "array"
+        items:
+          $ref: "#/definitions/TaskDto"
+      event_condition:
+        type: "string"
+      id:
+        type: "string"
+        example: "79bydf92-rr48-4765-83cb-0e8a8f63ay0"
+      input:
+        type: "object"
+        description: "Task input object"
+        additionalProperties:
+          type: "string"
+      json_condition:
+        type: "object"
+        properties: {}
+      kind:
+        type: "string"
+        description: "Task type."
+      metadata:
+        type: "object"
+        description: "Task metadata object."
+        properties:
+          action:
+            type: "string"
+          create_from_scratch:
+            type: "boolean"
+          kind:
+            type: "string"
+          list:
+            type: "string"
+      name:
+        type: "string"
+        description: "Task name."
+      output:
+        type: "object"
+        properties: {}
+      queue_name:
+        type: "string"
+      retry_options:
+        type: "object"
+        properties:
+          backoff_coefficient:
+            type: "integer"
+            format: "int32"
+          initial_interval:
+            type: "integer"
+            format: "int32"
+          maximum_attempts:
+            type: "integer"
+            format: "int32"
+      script:
+        type: "string"
+      task_provider_reference_key:
+        type: "string"
+      task_skip_condition:
+        type: "string"
+      then:
+        type: "array"
+        items:
+          $ref: "#/definitions/TaskDto"
+      timeout:
+        $ref: "#/definitions/TimeoutDto"
+  TaskCorrelationMetadataDto:
+    properties:
+      campaign_activity_id:
+        type: "string"
+        example: "0434c0ee-bdd2-47ee-8634-fa163e6b01c1"
+        description: "Campaign activity identifier"
+  TimeoutDto:
+    type: "object"
+    properties:
+      amount:
+        type: "number"
+        format: "float"
+        example: 10.0
+        description: "Amount of time for startup timeout."
+      time_unit:
+        type: "string"
+        example: "HOURS"
+        description: "Unit of time for startup timeout."
   AutomationWorkflowDef:
     type: "object"
     properties:
+      parameters:
+        $ref: "#/definitions/WorkflowParametersDto"
+      correlation_metadata:
+        $ref: "#/definitions/CorrelationMetadataDto"
       tasks:
         type: "array"
         items:
-          type: "object"
-          properties: {}
+          $ref: "#/definitions/TaskDto"
       status:
         type: "string"
-      namespace:
-        type: "string"
+        example: "SCHEDULED"
+        description: "Workflow definition status."
       metadata:
         type: "object"
+        description: "Workflow metadata."
         properties: {}
       timeout:
-        type: "object"
-        properties: {}
+        $ref: "#/definitions/TimeoutDto"
       upgradable:
         type: "boolean"
-    description: "The workflow definition containing tasks, status, and metadata.\
-      \ Internal fields such as correlationMetadata and parameters are excluded to\
-      \ prevent leaking accountId."
+        description: "Indicates if the workflow can be upgraded after it is activated."
+    description: "The workflow definition containing tasks, status, and metadata."
   AutomationFlow:
     type: "object"
     properties:
@@ -14263,14 +14854,13 @@ definitions:
     properties:
       state:
         type: "string"
+        example: "DRAFT"
         description: "The current state of the workflow definition (e.g. DRAFT, ACTIVE)."
       trigger:
-        type: "object"
-        description: "The trigger configuration for the automation workflow."
-        properties: {}
+        $ref: "#/definitions/TriggerDto"
       workflow:
         $ref: "#/definitions/AutomationFlow"
-    description: "A workflow definition containing state, trigger, and workflow details."
+    description: "A workflow definition containing state, trigger, and workflow structure."
   AutomationCampaign:
     type: "object"
     properties:
@@ -14279,22 +14869,33 @@ definitions:
         description: "The unique identifier for the automation campaign workflow."
       name:
         type: "string"
+        example: "Autogenerated Birthday: Basic"
         description: "The name of the automation campaign."
       description:
         type: "string"
+        example: "Send a greeting or special offer to your contacts on or before their\
+          \ birthday"
         description: "The description of the automation campaign."
       structured_tags:
         type: "array"
         items:
           $ref: "#/definitions/AutomationStructuredTag"
+      status:
+        type: "string"
+        description: "Computed display status of the workflow"
       active_definition:
         $ref: "#/definitions/AutomationWorkflowDefinition"
       draft_definition:
         $ref: "#/definitions/AutomationWorkflowDefinition"
-      is_name_explicitly_set:
+      name_explicitly_set:
         type: "boolean"
         description: "Indicates whether the automation campaign name was explicitly\
           \ set."
+  AutomationCampaignUpdate:
+    type: "object"
+    properties:
+      automation_flow:
+        $ref: "#/definitions/AutomationCampaign"
   ABTestData:
     type: "object"
     required:

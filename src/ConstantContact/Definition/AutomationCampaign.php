@@ -9,9 +9,10 @@ namespace PHPFUI\ConstantContact\Definition;
  * @property string $name The name of the automation campaign.
  * @property string $description The description of the automation campaign.
  * @property array<\PHPFUI\ConstantContact\Definition\AutomationStructuredTag> $structured_tags
+ * @property string $status Computed display status of the workflow
  * @property \PHPFUI\ConstantContact\Definition\AutomationWorkflowDefinition $active_definition
  * @property \PHPFUI\ConstantContact\Definition\AutomationWorkflowDefinition $draft_definition
- * @property bool $is_name_explicitly_set Indicates whether the automation campaign name was explicitly set.
+ * @property bool $name_explicitly_set Indicates whether the automation campaign name was explicitly set.
  */
 class AutomationCampaign extends \PHPFUI\ConstantContact\Definition\Base
 	{
@@ -20,9 +21,10 @@ class AutomationCampaign extends \PHPFUI\ConstantContact\Definition\Base
 		'name' => 'string',
 		'description' => 'string',
 		'structured_tags' => 'array<\PHPFUI\ConstantContact\Definition\AutomationStructuredTag>',
+		'status' => 'string',
 		'active_definition' => '\PHPFUI\ConstantContact\Definition\AutomationWorkflowDefinition',
 		'draft_definition' => '\PHPFUI\ConstantContact\Definition\AutomationWorkflowDefinition',
-		'is_name_explicitly_set' => 'bool',
+		'name_explicitly_set' => 'bool',
 
 	];
 	}

@@ -4,5 +4,5 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class Trigger extends \PHPFUI\ConstantContact\Definition\Base
+class Rule extends \PHPFUI\ConstantContact\Definition\Base
 	{	}

@@ -5,21 +5,23 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @property array $tasks
- * @property string $status
- * @property string $namespace
- * @property \PHPFUI\ConstantContact\Definition\Metadata $metadata
- * @property \PHPFUI\ConstantContact\Definition\Timeout $timeout
- * @property bool $upgradable
+ * @property \PHPFUI\ConstantContact\Definition\WorkflowParametersDto $parameters
+ * @property \PHPFUI\ConstantContact\Definition\CorrelationMetadataDto $correlation_metadata
+ * @property array<\PHPFUI\ConstantContact\Definition\TaskDto> $tasks
+ * @property string $status Workflow definition status.
+ * @property \PHPFUI\ConstantContact\Definition\Metadata $metadata Workflow metadata.
+ * @property \PHPFUI\ConstantContact\Definition\TimeoutDto $timeout
+ * @property bool $upgradable Indicates if the workflow can be upgraded after it is activated.
  */
 class AutomationWorkflowDef extends \PHPFUI\ConstantContact\Definition\Base
 	{
 	protected static array $fields = [
-		'tasks' => 'array',
+		'parameters' => '\PHPFUI\ConstantContact\Definition\WorkflowParametersDto',
+		'correlation_metadata' => '\PHPFUI\ConstantContact\Definition\CorrelationMetadataDto',
+		'tasks' => 'array<\PHPFUI\ConstantContact\Definition\TaskDto>',
 		'status' => 'string',
-		'namespace' => 'string',
 		'metadata' => '\PHPFUI\ConstantContact\Definition\Metadata',
-		'timeout' => '\PHPFUI\ConstantContact\Definition\Timeout',
+		'timeout' => '\PHPFUI\ConstantContact\Definition\TimeoutDto',
 		'upgradable' => 'bool',
 
 	];

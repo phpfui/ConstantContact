@@ -4,5 +4,5 @@
 
 namespace PHPFUI\ConstantContact\Definition;
 
-class Timeout extends \PHPFUI\ConstantContact\Definition\Base
+class ParameterValue extends \PHPFUI\ConstantContact\Definition\Base
 	{	}

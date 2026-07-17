@@ -9,7 +9,7 @@ namespace PHPFUI\ConstantContact\Definition;
  * @property string $key Tag key
  * @property string $value Tag value
  */
-class AutomationStructuredTag extends \PHPFUI\ConstantContact\Definition\Base
+class StructuredTagDto extends \PHPFUI\ConstantContact\Definition\Base
 	{
 	protected static array $fields = [
 		'display_value' => 'string',
