@@ -5,7 +5,7 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @property int $format_type The email format you are using to create the email campaign activity. The V3 API supports creating emails using <code>format_type</code> 5 (custom code emails).
+ * @property int $format_type The email format you are using to create the email campaign activity. The V3 API supports creating emails using <code>format_type</code> 4 (email editor) and 5 (custom code emails).
  * @property string $from_name The email sender's name to display for the email campaign activity.
  * @property string $from_email The sender's email address to use for the email campaign activity. You must use a confirmed Constant Contact account email address. Make a GET call to <code>/account/emails</code> to return a collection of account emails and their confirmation status.
  * @property string $reply_to_email The sender's email address to use if the contact replies to the email campaign activity. You must use a confirmed Constant Contact account email address. Make a GET call to <code>/account/emails</code> to return a collection of account emails and their confirmation status.

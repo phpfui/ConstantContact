@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.172"
+  version: "3.0.178"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -4243,18 +4243,15 @@ paths:
       tags:
       - "Email Campaigns"
       summary: "POST (Create) a New Email Campaign"
-      description: "Use this method to create a new email campaign. You must include\
-        \ a tracking image (`[[trackingImage]]`) in the email body in order for Constant\
-        \ Contact to report on the email performance. This method also creates new\
-        \ `primary_email` and `permalink` email campaign activities and associates\
-        \ them with the new email campaign.\nThe request body must contain the `name`\
+      description: "Use this method to create a new email campaign. The API supports\
+        \ custom HTML campaigns (format type 5). Custom HTML must include a tracking\
+        \ image (`[[trackingImage]]`) in the email body in order for Constant Contact\
+        \ to report on the email performance.\nThe request body must contain the `name`\
         \ property and the `email_campaign_activities` array. The `name` must be unique.\
         \ The `email_campaign_activities` array contains the main content of your\
         \ email campaign and must include `format_type`, `from_name`, `from_email`,\
         \ `reply_to_email`, `subject`, and `html_content` properties. The `from_email`\
-        \ address you use must use a verified email address for your account.\nNOTE:\
-        \ If you create an email campaign using a legacy (V7) format, Constant Contact\
-        \ automatically converts it to the newer custom code format.\n"
+        \ address you use must use a verified email address for your account.\n"
       operationId: "createEmailCampaignUsingPOST"
       consumes:
       - "application/json"
@@ -7725,6 +7722,565 @@ securityDefinitions:
     name: "x-api-key"
     in: "header"
 definitions:
+  EditorBlock:
+    type: "object"
+    properties:
+      background:
+        type: "object"
+        properties:
+          color:
+            type: "string"
+            example: "#FFFFFF"
+            description: "Background color hex code or block."
+      margin:
+        $ref: "#/definitions/EditorMarginProperties"
+      border:
+        $ref: "#/definitions/EditorBorderProperties"
+      corner_radius:
+        $ref: "#/definitions/EditorRadiusProperties"
+  EditorText:
+    type: "object"
+    properties:
+      component:
+        type: "string"
+        example: "text"
+        description: "Name of component (`text`)."
+      cpeid:
+        type: "string"
+        example: "w-001"
+        description: "Component id."
+      modifier:
+        type: "string"
+        description: "Optional role descriptor for component."
+      align:
+        type: "string"
+        example: "center"
+        description: "Text alignment."
+      valign:
+        type: "string"
+        description: "Text vertical alignment."
+      content:
+        type: "string"
+        example: "<p>Hello World</p>"
+        description: "HTML content of the text block."
+      line_height:
+        type: "number"
+        description: "Text line height."
+      font_family:
+        type: "string"
+        description: "Text font family."
+      color:
+        type: "string"
+        description: "Text color hex code."
+      font_size:
+        type: "integer"
+        description: "Text font size."
+      font_weight:
+        type: "string"
+        description: "Text font weight."
+      font_style:
+        type: "string"
+        description: "Text font style."
+      text_decoration:
+        type: "string"
+        description: "Text decoration. Used to underline the text."
+      padding:
+        $ref: "#/definitions/EditorPaddingProperties"
+      block:
+        $ref: "#/definitions/EditorBlock"
+  EditorImage:
+    type: "object"
+    properties:
+      component:
+        type: "string"
+        example: "image"
+        description: "Name of component."
+      cpeid:
+        type: "string"
+        example: "w-001"
+        description: "Component id."
+      modifier:
+        type: "string"
+        description: "Optional role descriptor for component."
+      src:
+        type: "string"
+        example: "https://example.com/image.png"
+        description: "URL of the image."
+      alt:
+        type: "string"
+        description: "Image alternate text"
+      width:
+        type: "integer"
+        example: 650
+        description: "Display width in pixels."
+      height:
+        type: "integer"
+        description: "Display height in pixels."
+      width_unit:
+        type: "string"
+        description: "Unit for width (e.g., px, %)."
+      align:
+        type: "string"
+        example: "center"
+        description: "Image alignment."
+      valign:
+        type: "string"
+        description: "Image vertical alignment."
+      link:
+        $ref: "#/definitions/EditorLink"
+      padding:
+        $ref: "#/definitions/EditorPaddingProperties"
+      corner_radius:
+        $ref: "#/definitions/EditorRadiusProperties"
+      border:
+        $ref: "#/definitions/EditorBorderProperties"
+      block:
+        $ref: "#/definitions/EditorBlock"
+  EditorSpacer:
+    type: "object"
+    properties:
+      component:
+        type: "string"
+        example: "spacer"
+        description: "Name of component (`spacer`)."
+      cpeid:
+        type: "string"
+        example: "w-001"
+        description: "Component id."
+      modifier:
+        type: "string"
+      height:
+        type: "integer"
+        example: 15
+        description: "Height of the spacer in pixels."
+      block:
+        $ref: "#/definitions/EditorBlock"
+  EditorColumn:
+    type: "object"
+    properties:
+      component:
+        type: "string"
+        example: "column"
+        description: "Name of component (`column`)."
+      cpeid:
+        type: "string"
+        example: "w-001"
+        description: "Component id."
+      modifier:
+        type: "string"
+        description: "Optional role descriptor for component."
+      children:
+        type: "array"
+        items:
+          $ref: "#/definitions/EditorDocumentChildrenDocument"
+      position:
+        type: "integer"
+        example: 1
+        description: "1-based position of this column within a multi-column layout."
+      width:
+        type: "integer"
+        example: 50
+        description: "Percentage width of this column within its layout."
+      columns:
+        type: "integer"
+        description: "Number of columns in parent layout."
+      divided:
+        type: "boolean"
+        description: "Whether a divider is rendered between columns."
+      divider:
+        type: "object"
+        properties:
+          modifier:
+            type: "string"
+            example: "verticalDivider"
+            description: "Optional modifier for divider."
+          width:
+            type: "integer"
+            description: "Width for column divider."
+          color:
+            type: "string"
+            description: "Color hex code for divider."
+      border:
+        type: "object"
+        properties:
+          color:
+            type: "string"
+            description: "Color hex code for border"
+          width:
+            type: "integer"
+            description: "Border width"
+          style:
+            type: "string"
+            description: "Column border line style."
+          corner_radius:
+            type: "integer"
+            description: "Column border corner radius"
+      align:
+        type: "string"
+        description: "Column alignment."
+      valign:
+        type: "string"
+        description: "Column vertical alignment."
+      background:
+        type: "object"
+        properties:
+          color:
+            type: "string"
+            description: "Column background color."
+      corner_radius:
+        $ref: "#/definitions/EditorRadiusProperties"
+  EditorLayout:
+    type: "object"
+    properties:
+      component:
+        type: "string"
+        example: "layout"
+        description: "Name of component (`layout`)."
+      cpeid:
+        type: "string"
+        example: "w-001"
+        description: "Component id."
+      modifier:
+        type: "string"
+        description: "Optional role descriptor for component."
+      children:
+        type: "array"
+        items:
+          $ref: "#/definitions/EditorColumn"
+      columns:
+        type: "integer"
+        example: 1
+        description: "Number of columns in this layout block."
+      reverse_stack:
+        type: "boolean"
+        description: "Whether columns stack in reverse order."
+      divided:
+        type: "boolean"
+        description: "Indicates if a divider is rendered in the column."
+      background:
+        type: "object"
+        properties:
+          color:
+            type: "string"
+            description: "Background color hex code."
+          image:
+            type: "object"
+            properties:
+              src:
+                type: "string"
+              display:
+                type: "object"
+                properties:
+                  tile:
+                    type: "string"
+                  center:
+                    type: "string"
+                  cover:
+                    type: "string"
+      corner_radius:
+        $ref: "#/definitions/EditorRadiusProperties"
+      block:
+        $ref: "#/definitions/EditorBlock"
+  EditorShellPanel:
+    type: "object"
+    properties:
+      component:
+        type: "string"
+        example: "shellPanel"
+        description: "Name of component (`shellPanel`)."
+      cpeid:
+        type: "string"
+        example: "w-001"
+        description: "Component id."
+      modifier:
+        type: "string"
+        example: "footer"
+        description: "Optional role descriptor for this panel (e.g. footer)."
+      children:
+        type: "array"
+        items:
+          $ref: "#/definitions/EditorLayout"
+      render:
+        type: "boolean"
+        description: "Whether panel is rendered."
+      width:
+        type: "object"
+        properties:
+          unit:
+            type: "string"
+            description: "Width unit of measurement. Can be % or px."
+          value:
+            type: "integer"
+            description: "Width value."
+      padding:
+        $ref: "#/definitions/EditorPaddingProperties"
+      background:
+        type: "object"
+        properties:
+          outer:
+            type: "string"
+            description: "Outer background color"
+          inner:
+            type: "string"
+            description: "Inner background color"
+      border:
+        type: "object"
+        properties:
+          style:
+            type: "string"
+          color:
+            type: "string"
+            description: "Border color hex code."
+          top:
+            type: "integer"
+            description: "Border top width."
+          right:
+            type: "integer"
+            description: "Border right width."
+          bottom:
+            type: "integer"
+            description: "Border bottom width."
+          left:
+            type: "integer"
+            description: "Border left width."
+      corner_radius:
+        type: "integer"
+        description: "Corner radius property for the shell panel. Controls if the\
+          \ component renders with rounded corners."
+  EditorShell:
+    type: "object"
+    properties:
+      component:
+        type: "string"
+        example: "shell"
+        description: "Name of component (`shell`)."
+      children:
+        type: "array"
+        items:
+          $ref: "#/definitions/EditorShellPanel"
+      cpeid:
+        type: "string"
+        example: "w-001"
+        description: "Component id."
+  EditorBody:
+    type: "object"
+    properties:
+      component:
+        type: "string"
+        example: "body"
+        description: "Name of component (`body`)."
+      cpeid:
+        type: "string"
+        example: "w-001"
+        description: "Component id."
+      purpose:
+        type: "string"
+        description: "Email body purpose/type."
+      children:
+        type: "array"
+        items:
+          $ref: "#/definitions/EditorShell"
+  EditorPaddingProperties:
+    type: "object"
+    properties:
+      top:
+        type: "integer"
+        description: "Top padding in px."
+      bottom:
+        type: "integer"
+        description: "Bottom padding in px."
+      left:
+        type: "integer"
+        description: "Left padding in px."
+      right:
+        type: "integer"
+        description: "Right padding in px."
+  EditorLink:
+    type: "object"
+    properties:
+      type:
+        type: "string"
+        description: "Describes how the link is used inside its component."
+      uri:
+        type: "string"
+        description: "Link uri."
+      text:
+        type: "string"
+        description: "Link text."
+      trackable:
+        type: "boolean"
+  EditorButton:
+    type: "object"
+    properties:
+      component:
+        type: "string"
+        example: "button"
+        description: "Name of component (`button`)."
+      cpeid:
+        type: "string"
+        example: "w-001"
+        description: "Component id."
+      modifier:
+        type: "string"
+        description: "Optional role descriptor for component."
+      content:
+        type: "string"
+        description: "Button label text."
+      link:
+        $ref: "#/definitions/EditorLink"
+      color:
+        type: "string"
+        description: "Text color."
+      font_size:
+        type: "integer"
+        description: "Button font size."
+      font_family:
+        type: "string"
+        description: "Button font family."
+      font_weight:
+        type: "string"
+        description: "Button font weight."
+      font_style:
+        type: "string"
+        description: "Button font style."
+      text_decoration:
+        type: "string"
+        description: "Button text decoration. Used to underline the button text."
+      background:
+        type: "string"
+        description: "Button background color."
+      corner_radius:
+        type: "integer"
+        description: "Button corner radius. Controls how rounded the buttons appears."
+      align:
+        type: "string"
+        description: "Button alignment. Can be left, center, or right."
+      width:
+        type: "object"
+        properties:
+          value:
+            type: "string"
+            description: "Width value or 'auto'."
+          unit:
+            type: "string"
+            description: "Unit of measurement for button width. Can be % or px."
+      border:
+        $ref: "#/definitions/EditorBorderProperties"
+      inner_padding:
+        type: "object"
+        properties:
+          horizontal:
+            type: "integer"
+          vertical:
+            type: "integer"
+      padding:
+        $ref: "#/definitions/EditorPaddingProperties"
+      block:
+        $ref: "#/definitions/EditorBlock"
+  EditorDivider:
+    type: "object"
+    properties:
+      component:
+        type: "string"
+        example: "divider"
+        description: "Name of component (`divider`)."
+      cpeid:
+        type: "string"
+        example: "w-001"
+        description: "Component id."
+      modifier:
+        type: "string"
+        description: "Optional role descriptor for component."
+      height:
+        type: "object"
+        properties:
+          solid:
+            type: "integer"
+            description: "Divider height for solid divider style."
+          bordered:
+            type: "integer"
+            description: "Divider height for bordered divider style."
+      width:
+        type: "integer"
+        description: "Width as percentage."
+      color:
+        type: "string"
+        description: "Color hex code."
+      format:
+        type: "object"
+        properties:
+          solid:
+            type: "boolean"
+            description: "Boolean indicating that the divider uses a solid line."
+          bordered:
+            type: "object"
+            properties:
+              dashed:
+                type: "boolean"
+                description: "Boolean indicating that the divider uses a dashed line."
+              dotted:
+                type: "boolean"
+                description: "Boolean indicating that the divider uses a dotted line."
+      padding:
+        $ref: "#/definitions/EditorPaddingProperties"
+      align:
+        type: "string"
+      block:
+        $ref: "#/definitions/EditorBlock"
+  EditorSocialFollow:
+    type: "object"
+    properties:
+      component:
+        type: "string"
+        example: "socialFollow"
+        description: "Name of component (`socialFollow`)."
+      cpeid:
+        type: "string"
+        example: "w-001"
+        description: "Component id."
+      modifier:
+        type: "string"
+        description: "Optional role descriptor for component."
+      icon:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "facebook"
+              description: "Identifies a social media platform in the social follow\
+                \ block."
+            name:
+              type: "string"
+              example: "Facebook"
+              description: "Name of social media platform. Rendered in the editor\
+                \ UI."
+            src:
+              type: "string"
+              description: "Image source for social media platform icon."
+            link:
+              $ref: "#/definitions/EditorLink"
+            width:
+              type: "integer"
+              description: "Social media block width"
+      icon_style:
+        type: "object"
+        properties:
+          shape:
+            type: "string"
+            description: "Social media icon shape."
+          color:
+            type: "string"
+      align:
+        type: "string"
+        description: "Alignment of social link component."
+      width:
+        type: "integer"
+      padding:
+        $ref: "#/definitions/EditorPaddingProperties"
+      block:
+        $ref: "#/definitions/EditorBlock"
   UserPrivilegesResource:
     type: "array"
     items:
@@ -13525,7 +14081,7 @@ definitions:
         example: 5
         description: "The email format you are using to create the email campaign\
           \ activity. The V3 API supports creating emails using <code>format_type</code>\
-          \ 5 (custom code emails).\n"
+          \ 4 (email editor) and 5 (custom code emails).\n"
       from_name:
         type: "string"
         example: "Jake Dodge"
@@ -13616,6 +14172,11 @@ definitions:
           \ to contacts that did not open the email campaign.</li>\n</ul> Constant\
           \ Contact creates a <code>primary_email</code> and a <code>permalink</code>\
           \ role campaign activity when you create an email campaign.\n"
+      document_id:
+        type: "string"
+        example: "21babb03-8385-4739-b9cc-n6cce44633a7"
+        description: "Identifies the email document used in an email editor (format_type\
+          \ 4) email campaign."
   EmailCampaign:
     type: "object"
     properties:
@@ -13835,12 +14396,6 @@ definitions:
         description: "The HTML or XHTML content for the email campaign activity. Only\
           \ <code>format_type</code> 1 and 5 (legacy custom code emails or modern\
           \ custom code emails) can contain <code>html_content</code>."
-      template_id:
-        type: "string"
-        example: "1000755366001"
-        description: "Identifies the email layout and design template that the email\
-          \ campaign activity is using as a base."
-        readOnly: true
       permalink_url:
         type: "string"
         example: "https://conta.cc/2GaQ8AY"
@@ -13858,6 +14413,11 @@ definitions:
           \ email campaign. Constant Contact displays this information to contacts\
           \ in the email message footer."
         $ref: "#/definitions/EmailPhysicalAddress"
+      document_id:
+        type: "string"
+        example: "21babb03-8385-4739-b9cc-n6cce44633a7"
+        description: "Identifies the email document used in an email editor (format_type\
+          \ 4) email campaign."
       document_properties:
         type: "object"
         description: "An object that contains optional properties for legacy format\
@@ -17241,6 +17801,81 @@ definitions:
         file_id:
           type: "integer"
           description: "Identifies the file in MyLibrary."
+  EditorMarginProperties:
+    type: "object"
+    properties:
+      display:
+        type: "boolean"
+        description: "Boolean indicating if the margin is rendered"
+      top:
+        type: "integer"
+        description: "Top margin in px."
+      right:
+        type: "integer"
+        description: "Right margin in px."
+      bottom:
+        type: "integer"
+        description: "Bottom margin in px."
+      left:
+        type: "integer"
+        description: "Left margin in px."
+  EditorPadding:
+    type: "object"
+    properties:
+      top:
+        type: "integer"
+        description: "Top padding in px."
+      bottom:
+        type: "integer"
+        description: "Bottom padding in px."
+      left:
+        type: "integer"
+        description: "Left padding in px."
+      right:
+        type: "integer"
+        description: "Right padding in px."
+    description: "Object containing padding information for a component."
+  EditorBorderProperties:
+    type: "object"
+    properties:
+      display:
+        type: "boolean"
+        description: "Boolean indicating if the border is rendered"
+      width:
+        type: "integer"
+        description: "Border width in px as an integer"
+      color:
+        type: "string"
+        example: "#000000"
+        description: "Border color hex code"
+      padding:
+        $ref: "#/definitions/EditorPadding"
+      corner_radius:
+        type: "integer"
+        description: "Corner radius of border. Applies to button components."
+      style:
+        type: "string"
+  EditorRadiusProperties:
+    type: "object"
+    properties:
+      top_left:
+        type: "integer"
+      top_right:
+        type: "integer"
+      bottom_right:
+        type: "integer"
+      bottom_left:
+        type: "integer"
+  EditorDocumentChildrenDocument:
+    type: "object"
+    properties:
+      children:
+        type: "array"
+        items:
+          $ref: "#/definitions/EditorDocumentChildrenDocument"
+    additionalProperties:
+      description: "Each email editor child document can contain additional properties\
+        \ corresponding to its type."
   tagsActivityLinks:
     type: "object"
     properties:

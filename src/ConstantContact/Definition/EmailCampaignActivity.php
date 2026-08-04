@@ -31,10 +31,10 @@ namespace PHPFUI\ConstantContact\Definition;
  * @property string $reply_to_email The email "Reply To Email" field for the email campaign activity. You must use a confirmed Constant Contact account email address. Make a GET call to <code>/account/emails</code> to return a collection of account emails and their confirmation status.
  * @property string $subject The email "Subject" field for the email campaign activity.
  * @property string $html_content The HTML or XHTML content for the email campaign activity. Only <code>format_type</code> 1 and 5 (legacy custom code emails or modern custom code emails) can contain <code>html_content</code>.
- * @property string $template_id Identifies the email layout and design template that the email campaign activity is using as a base.
  * @property string $permalink_url The permanent link to a web accessible version of the email campaign content without any personalized email information. The permalink URL becomes accessible after you send an email campaign to contacts.
  * @property string $preheader The email preheader for the email campaign activity. Only <code>format_type</code> 3, 4, and 5 email campaign activities use the preheader property.
  * @property \PHPFUI\ConstantContact\Definition\EmailPhysicalAddress $physical_address_in_footer The physical address of the organization that is sending the email campaign. Constant Contact displays this information to contacts in the email message footer.
+ * @property string $document_id Identifies the email document used in an email editor (format_type 4) email campaign.
  * @property \PHPFUI\ConstantContact\Definition\DocumentProperties $document_properties An object that contains optional properties for legacy format type emails (<code>format_type</code> 1 and 2). If you attempt to add a property that does apply to the email <code>format_type</code>, the API will ignore the property.
  */
 class EmailCampaignActivity extends \PHPFUI\ConstantContact\Definition\Base
@@ -52,10 +52,10 @@ class EmailCampaignActivity extends \PHPFUI\ConstantContact\Definition\Base
 		'reply_to_email' => 'string',
 		'subject' => 'string',
 		'html_content' => 'string',
-		'template_id' => 'string',
 		'permalink_url' => 'string',
 		'preheader' => 'string',
 		'physical_address_in_footer' => '\PHPFUI\ConstantContact\Definition\EmailPhysicalAddress',
+		'document_id' => 'string',
 		'document_properties' => '\PHPFUI\ConstantContact\Definition\DocumentProperties',
 
 	];
