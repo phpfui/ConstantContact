@@ -27,7 +27,6 @@ class FactoryTest extends \PHPUnit\Framework\TestCase
 		$this->assertArrayHasKey('header1', $config);
 		$this->assertContains('HEADER1', $config);
 		$this->assertArrayHasKey('Cache-Control', $config);
-		$client->setGuzzleFactory($callable);
 		$guzzle = $client->getGuzzleClient('body2', ['header2' => 'HEADER2']);
 		$this->assertTrue($guzzle instanceof \GuzzleHttp\Client);
 		$config = $guzzle->getConfig('body');
