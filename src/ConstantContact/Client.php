@@ -317,7 +317,7 @@ class Client
 					'Accept' => '*/*'
 				]
 			);
-			$response = $guzzle->request($method, $url);
+			$response = $guzzle->request(\strtoupper($method), $url);
 
 			return $this->process($response);
 			}
