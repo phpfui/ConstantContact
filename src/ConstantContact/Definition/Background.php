@@ -5,14 +5,14 @@
 namespace PHPFUI\ConstantContact\Definition;
 
 /**
- * @property string $outer Outer background color
- * @property string $inner Inner background color
+ * @property string $src
+ * @property \PHPFUI\ConstantContact\Definition\Display $display
  */
 class Background extends \PHPFUI\ConstantContact\Definition\Base
 	{
 	protected static array $fields = [
-		'outer' => 'string',
-		'inner' => 'string',
+		'src' => 'string',
+		'display' => '\PHPFUI\ConstantContact\Definition\Display',
 
 	];
 	}

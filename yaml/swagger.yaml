@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.178"
+  version: "3.0.185"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -5169,6 +5169,7 @@ paths:
       x-authorization-privileges:
       - "campaign:send"
       x-sdk-methodName: "deleteResendEmailCampaign"
+  /emails/experiments/html-to-cpe: {}
   /automations/workflows:
     get:
       tags:
@@ -14986,6 +14987,143 @@ definitions:
         format: "email"
         example: "InstaPrinz@gmail.com"
         description: "Default reply-to email address"
+  EditorThemeColorPalette:
+    type: "object"
+    properties:
+      background:
+        type: "string"
+        description: "Background color for theme. Effects the background behind the\
+          \ email."
+      foreground:
+        type: "string"
+        description: "Foreground color for theme. Effects the email body."
+  EditorThemeFont:
+    type: "object"
+    properties:
+      family:
+        type: "string"
+        description: "Font family."
+      size:
+        type: "number"
+        description: "Font size."
+      color:
+        type: "string"
+        description: "Font color."
+      bold:
+        type: "string"
+        description: "String enum indicating font boldness"
+      italic:
+        type: "string"
+        description: "String enum indicating if the font is italic or normal."
+      underline:
+        type: "string"
+        description: "String enum indicating if the font is underline or normal"
+  EditorDocument:
+    type: "object"
+    properties:
+      structure:
+        type: "object"
+        description: "The root block of the email document. The conventional nesting\
+          \ order is:\n```\nbody\n└── shell\n    └── shellPanel  (one or more — header,\
+          \ content, footer)\n        └── layout  (controls column arrangement)\n\
+          \            └── column  (1–5 per layout)\n                └── text | image\
+          \ | button | spacer | divider | socialFollow\n```\n"
+        properties: {}
+        x-one-of:
+        - "EditorBody"
+        - "EditorShell"
+        - "EditorShellPanel"
+        - "EditorLayout"
+        - "EditorColumn"
+        - "EditorText"
+        - "EditorImage"
+        - "EditorSpacer"
+        - "EditorButton"
+        - "EditorDivider"
+        - "EditorSocialFollow"
+      theme:
+        type: "object"
+        description: "Object containing styling information applied to the entire\
+          \ email. For example, the basic colors, fonts, and background image for\
+          \ the email."
+        properties:
+          colors:
+            type: "object"
+            description: "Contains styling information for email colors."
+            properties:
+              primary:
+                $ref: "#/definitions/EditorThemeColorPalette"
+              secondary:
+                $ref: "#/definitions/EditorThemeColorPalette"
+          fonts:
+            type: "object"
+            description: "Contains styling information for email fonts."
+            properties:
+              primary:
+                type: "object"
+                properties:
+                  body:
+                    $ref: "#/definitions/EditorThemeFont"
+                  article:
+                    $ref: "#/definitions/EditorThemeFont"
+                  button:
+                    $ref: "#/definitions/EditorThemeFont"
+                  link:
+                    $ref: "#/definitions/EditorThemeFont"
+                  h1:
+                    $ref: "#/definitions/EditorThemeFont"
+                  h2:
+                    $ref: "#/definitions/EditorThemeFont"
+                  h3:
+                    $ref: "#/definitions/EditorThemeFont"
+          images:
+            type: "object"
+            description: "Contains styling information for the email background image."
+            properties:
+              primary:
+                type: "object"
+                properties:
+                  background:
+                    type: "object"
+                    properties:
+                      src:
+                        type: "string"
+                        description: ""
+                      display:
+                        type: "object"
+                        properties:
+                          tile:
+                            type: "string"
+                          center:
+                            type: "string"
+                          cover:
+                            type: "string"
+    description: "Contains the structure (email content and layout) and the theme\
+      \ (styling) for the email."
+  EditorEmailDocument:
+    type: "object"
+    properties:
+      content:
+        $ref: "#/definitions/EditorDocument"
+  EmailImportJob:
+    type: "object"
+    properties:
+      import_job_id:
+        type: "string"
+        example: "a64a67c1-ccdd-4f1b-961e-df9e47f0fc17"
+        description: "Identifies the import job."
+      status:
+        type: "string"
+        example: "COMPLETE"
+        description: "Status of the import job"
+      created_at:
+        type: "integer"
+        description: "Timestamp of when the import job was created."
+      result:
+        $ref: "#/definitions/EmailCampaign"
+      error:
+        type: "string"
+        description: "Error string describing what caused the import job to fail."
   StructuredTagDto:
     type: "object"
     properties:
