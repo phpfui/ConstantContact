@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.185"
+  version: "3.0.189"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -351,6 +351,93 @@ paths:
       - "account:update"
       x-ctctmcp-allow: true
       x-sdk-methodName: "updateAccountPhysicalAddress"
+  /account/summary/company_logo:
+    get:
+      tags:
+      - "Account Services"
+      summary: "GET the Company Logo for the Account"
+      description: "Use this method to get the company logo associated with a Constant\
+        \ Contact account. A company logo can reference either an image hosted in\
+        \ your account's MyLibrary (`internal_id`) or an image hosted externally (`external_url`)."
+      operationId: "getCompanyLogo"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "Request successful"
+          schema:
+            $ref: "#/definitions/CompanyLogo"
+        "204":
+          description: "No company logo is set for this account."
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "The requested resource was not found."
+        "500":
+          description: "There was a problem with our internal service."
+        "503":
+          description: "Our internal service is temporarily unavailable."
+      security:
+      - oauth2_implicit:
+        - "account_read"
+      - oauth2_access_code:
+        - "account_read"
+      x-authorization-privileges:
+      - "account:read"
+      x-sdk-methodName: "getAccountCompanyLogo"
+    put:
+      tags:
+      - "Account Services"
+      summary: "PUT (update) the Company Logo for the Account"
+      description: "Use this method to set or replace the company logo for a Constant\
+        \ Contact account. Specify either `internal_id` (an image already hosted in\
+        \ your account's MyLibrary, e.g. `ACCOUNT.IMAGE.5`) or `external_url` (an\
+        \ image hosted on an external website)."
+      operationId: "updateCompanyLogo"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Specify the company logo by including either `internal_id` or\
+          \ `external_url`."
+        required: true
+        schema:
+          $ref: "#/definitions/CompanyLogo"
+      responses:
+        "200":
+          description: "Request successful"
+          schema:
+            $ref: "#/definitions/CompanyLogo"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "500":
+          description: "There was a problem with our internal service."
+        "503":
+          description: "Our internal service is temporarily unavailable."
+      security:
+      - oauth2_implicit:
+        - "account_update"
+      - oauth2_access_code:
+        - "account_update"
+      x-authorization-privileges:
+      - "account:update"
+      x-sdk-methodName: "updateAccountCompanyLogo"
   /account/emails:
     get:
       tags:
@@ -15124,6 +15211,88 @@ definitions:
       error:
         type: "string"
         description: "Error string describing what caused the import job to fail."
+  SubjectPreheaderRecOption:
+    type: "object"
+    properties:
+      model:
+        type: "string"
+        description: "Text generation model tier to use for recommendations."
+        default: "advanced"
+      type_recommendation:
+        type: "string"
+        description: "Type of recommendations to generate."
+        default: "subjectline"
+      num_recommendations:
+        type: "integer"
+        description: "Number of recommendations to return."
+      tone:
+        type: "string"
+        description: "Desired tone for the generated recommendations."
+        default: "different"
+      temperature:
+        type: "number"
+        description: "Sampling temperature between 0 and 1."
+        minimum: 0
+        maximum: 1
+      max_token:
+        type: "integer"
+        description: "Maximum number of tokens to generate."
+        maximum: 2048
+      top_p:
+        type: "integer"
+        description: "Nucleus sampling top_p value."
+        maximum: 10
+      frequency_penalty:
+        type: "number"
+        description: "Frequency penalty between -2 and 2."
+        minimum: -2
+        maximum: 2
+      presence_penalty:
+        type: "number"
+        description: "Presence penalty between -2 and 2."
+        minimum: -2
+        maximum: 2
+      choice_count:
+        type: "integer"
+        description: "Number of completion choices to generate."
+        minimum: 1
+        maximum: 8
+    description: "Options that control AI subject line and preheader recommendations."
+  SubjectPreheaderRecRequest:
+    type: "object"
+    required:
+    - "text"
+    properties:
+      text:
+        type: "string"
+        example: "Join us this weekend for 20% off everything in store."
+        description: "Source email content used to generate subject line and/or preheader\
+          \ recommendations."
+        minLength: 1
+      option:
+        $ref: "#/definitions/SubjectPreheaderRecOption"
+    description: "Request body for AI subject line and preheader recommendations."
+  SubjectPreheaderRecResponse:
+    type: "object"
+    required:
+    - "recommendations"
+    properties:
+      recommendations:
+        type: "array"
+        example:
+        - "Don't miss 20% off this weekend"
+        - "Your weekend savings start now"
+        description: "Recommended subject lines and/or preheaders."
+        items:
+          type: "string"
+      token_count:
+        type: "integer"
+        description: "Number of tokens used to generate the recommendations."
+      message:
+        type: "string"
+        description: "Optional status or informational message from the recommendation\
+          \ service."
+    description: "AI-generated subject line and/or preheader recommendations."
   StructuredTagDto:
     type: "object"
     properties:
