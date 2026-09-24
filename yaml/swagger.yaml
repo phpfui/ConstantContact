@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.189"
+  version: "3.0.193"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -6429,6 +6429,70 @@ paths:
       x-authorization-privileges:
       - "ui:campaign:metrics"
       x-sdk-methodName: "getBouncesReport"
+  /reports/email_reports/campaign_performance:
+    get:
+      tags:
+      - "Contacts Reporting"
+      summary: "GET Campaign Performance Statistics"
+      description: "Retrieves campaign performance stats for one or more campaigns\
+        \ for a given date range."
+      operationId: "getCampaignPerformanceStats"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "start_at"
+        in: "query"
+        description: "The date range start in ISO 8601 format (e.g. '2016-01-27T21:56:37.011Z')"
+        required: false
+        type: "string"
+      - name: "end_at"
+        in: "query"
+        description: "The date range end in ISO 8601 format (e.g. '2016-01-27T21:56:37.011Z')"
+        required: false
+        type: "string"
+      - name: "count"
+        in: "query"
+        description: "Number of campaign stats to return in a single request."
+        required: false
+        type: "string"
+      - name: "filter"
+        in: "query"
+        description: "Filter campaigns by adjusted_timestamp (default) or start_at."
+        required: false
+        type: "string"
+        default: "adjusted_timestamp"
+      responses:
+        "200":
+          description: "Request was successful"
+          schema:
+            $ref: "#/definitions/CampaignPerformanceStatsQueryResult"
+        "400":
+          description: "Bad request. Either the JSON was malformed or there was a\
+            \ data validation error."
+        "401":
+          description: "The Access Token used is invalid."
+        "403":
+          description: "Forbidden request. You lack the necessary scopes, you lack\
+            \ the necessary user privileges, or the application is deactivated."
+        "404":
+          description: "The requested resource was not found."
+        "415":
+          description: "Unsupported Media Type."
+        "500":
+          description: "There was a problem with our internal service."
+      security:
+      - oauth2_implicit:
+        - "contact_data"
+      - oauth2_access_code:
+        - "contact_data"
+      x-authorization-privileges:
+      - "ui:campaign:metrics"
+  /reports/email_reports/insights: {}
+  /reports/email_reports/suggested_send_times: {}
+  /reports/email_reports/{campaign_activity_id}/email_link_stats: {}
+  /reports/email_reports/{campaign_activity_id}/email_link_tag_stats: {}
   /reports/summary_reports/email_campaign_summaries:
     get:
       tags:
@@ -13536,7 +13600,7 @@ definitions:
       version:
         type: "integer"
         example: 2
-        description: "Available if data type is <code>data</code>. Displays <code>1</code>\
+        description: "Available if data type is <code>date</code>. Displays <code>1</code>\
           \ if using legacy date fields where values are stored as strings. Displays\
           \ <code>2</code> if using new date fields where values are stored as actual\
           \ dates to support date comparisons and validations."
@@ -14673,6 +14737,17 @@ definitions:
         example: "This is a test send of the email campaign activity."
         description: "A personal message for the recipients of the test email. Constant\
           \ Contact displays this message before the email campaign activity content."
+  EmailThumbnailResponse:
+    type: "object"
+    properties:
+      status:
+        type: "string"
+        description: "Status indicating if the thumbnail is still generating or if\
+          \ it has already been generated."
+      thumbnail_url:
+        type: "string"
+        description: "URL of thumbnail. Returned even if the thumbnail is still generating."
+    description: "Email campaign thumbnail"
   EmailCampaignActivityPreview:
     type: "object"
     properties:
@@ -16466,6 +16541,115 @@ definitions:
       _links:
         description: "HAL property that contains next link if applicable"
         $ref: "#/definitions/reportingLinks"
+  StatsError:
+    type: "object"
+    properties:
+      error_key:
+        type: "string"
+        example: "reportingsvc.not_found.invalid_path_param.campaign_ids."
+        description: "The unique error key."
+      error_message:
+        type: "string"
+        example: "Could not find any campaign stats for all requested campaigns."
+        description: "A error description."
+  CampaignPerformanceStats:
+    type: "object"
+    properties:
+      campaign_id:
+        type: "string"
+        description: "The campaign UUID"
+      campaign_name:
+        type: "string"
+        description: "The campaign name"
+      last_send_date:
+        type: "string"
+        description: "The last sent date-time of the campaign in ISO 8601 format (e.g.\
+          \ '2019-11-26T10:30:00.000Z')"
+      open_rate:
+        type: "number"
+        description: "Total email opens divided by (total sends - total bounces)"
+      open_rate_precision_one:
+        type: "number"
+        description: "Total email opens divided by (total sends - total bounces) with\
+          \ one decimal precision"
+      opens:
+        type: "integer"
+        format: "int32"
+        description: "Total unique email opens count"
+      click_rate:
+        type: "number"
+        description: "Total email clicks divided by (total sends - total bounces)"
+      click_rate_precision_one:
+        type: "number"
+        description: "Total clicks opens divided by (total sends - total bounces)\
+          \ with one decimal precision"
+      clicks:
+        type: "integer"
+        format: "int32"
+        description: "Total unique email clicks count"
+  CampaignPerformanceStatsResult:
+    type: "object"
+    properties:
+      open_rate:
+        type: "array"
+        description: "Array of results containing open rates sorted by highest to\
+          \ lowest or by lowest to highest for requested account id"
+        items:
+          $ref: "#/definitions/CampaignPerformanceStats"
+      opens:
+        type: "array"
+        description: "Array of results containing sorted unique opens count for each\
+          \ requested account id"
+        items:
+          $ref: "#/definitions/CampaignPerformanceStats"
+      click_rate:
+        type: "array"
+        description: "Array of results containing click rates sorted by highest to\
+          \ lowest or by lowest to highest for requested account id"
+        items:
+          $ref: "#/definitions/CampaignPerformanceStats"
+      clicks:
+        type: "array"
+        description: "Array of results containing sorted unique opens count for each\
+          \ requested account id"
+        items:
+          $ref: "#/definitions/CampaignPerformanceStats"
+  CampaignPerformanceStatsQueryResult:
+    type: "object"
+    properties:
+      errors:
+        type: "array"
+        description: "Array of errors indicating any partial failures in the query"
+        items:
+          $ref: "#/definitions/StatsError"
+      top:
+        description: "List of top performed campaigns"
+        $ref: "#/definitions/CampaignPerformanceStatsResult"
+      bottom:
+        description: "List of low performed campaigns"
+        $ref: "#/definitions/CampaignPerformanceStatsResult"
+  SendTimeItem:
+    type: "object"
+    properties:
+      time:
+        type: "string"
+  SuggestedSendTimes:
+    type: "object"
+    properties:
+      recommended_times:
+        type: "array"
+        description: "List of 3 recommended send times"
+        items:
+          $ref: "#/definitions/SendTimeItem"
+      locale:
+        type: "string"
+        description: "Locale/timezone identifier"
+      data_source:
+        type: "string"
+        description: "Data source, either account, industry, or platform"
+      cached:
+        type: "boolean"
+        description: "Indicates if the server served the response from cache."
   UniqueEmailCounts:
     type: "object"
     properties:
@@ -16572,17 +16756,6 @@ definitions:
       _links:
         description: "HAL property that contains next link if applicable"
         $ref: "#/definitions/reportingLinks"
-  StatsError:
-    type: "object"
-    properties:
-      error_key:
-        type: "string"
-        example: "reportingsvc.not_found.invalid_path_param.campaign_ids."
-        description: "The unique error key."
-      error_message:
-        type: "string"
-        example: "Could not find any campaign stats for all requested campaigns."
-        description: "A error description."
   StatsEmail:
     type: "object"
     properties:
