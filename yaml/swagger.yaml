@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.197"
+  version: "3.0.199"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -14278,6 +14278,15 @@ definitions:
           \ <code>[[trackingImage]]</code> in the <code>&lt;body&gt;</code> element\
           \ of your HTML.\n"
         maxLength: 150000
+      external_source_type:
+        type: "string"
+        example: "Canva"
+        description: "Identifies the source of the campaign if it was created by a\
+          \ platform external to Constant Contact."
+      external_source_url:
+        type: "string"
+        example: "https://www.canva.com/design/abc123/view"
+        description: "URL of the source asset in the external platform."
       physical_address_in_footer:
         description: "The physical address for the organization that is sending the\
           \ email campaign. Constant Contact displays this information to contacts\
@@ -14570,6 +14579,15 @@ definitions:
         example: "21babb03-8385-4739-b9cc-n6cce44633a7"
         description: "Identifies the email document used in an email editor (format_type\
           \ 4) email campaign."
+      external_source_type:
+        type: "string"
+        example: "Canva"
+        description: "Identifies the source of the campaign if it was created by a\
+          \ platform external to Constant Contact."
+      external_source_url:
+        type: "string"
+        example: "https://www.canva.com/design/abc123/view"
+        description: "URL of the source asset in the external platform."
       document_properties:
         type: "object"
         description: "An object that contains optional properties for legacy format\
