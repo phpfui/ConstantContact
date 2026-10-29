@@ -98,16 +98,8 @@ class EventDto extends \PHPFUI\ConstantContact\Definition\Base
 	];
 
 	protected static array $requiredFields = [
-		'campaign_id',
-		'default_track',
-		'description',
 		'event_end',
 		'event_start',
-		'event_type',
-		'location_type',
-		'name',
-		'time_zone',
-		'title',
 
 	];
 	}

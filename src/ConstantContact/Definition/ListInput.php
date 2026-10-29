@@ -24,6 +24,7 @@ class ListInput extends \PHPFUI\ConstantContact\Definition\Base
 	];
 
 	protected static array $requiredFields = [
+		'favorite',
 		'name',
 
 	];

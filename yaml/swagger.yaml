@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "The Constant Contact, Inc. V3 public API, for building integrations\
     \ with Constant Contact, the leading small-business email marketing platform."
-  version: "3.0.199"
+  version: "3.0.210"
   title: "AppConnect V3"
   contact:
     name: "webservices@constantcontact.com"
@@ -1551,7 +1551,7 @@ paths:
       summary: "GET details for a single event."
       description: "Specify the `event_id` path parameter to retrieve the event's\
         \ details."
-      operationId: "getEvent_2"
+      operationId: "retrieveEvent"
       produces:
       - "application/json"
       parameters:
@@ -4326,6 +4326,7 @@ paths:
       x-authorization-privileges:
       - "campaign:read"
       x-sdk-methodName: "getAllEmailCampaigns"
+      x-mcp-toolName: "getAllEmails"
     post:
       tags:
       - "Email Campaigns"
@@ -4478,6 +4479,7 @@ paths:
       x-authorization-privileges:
       - "campaign:read"
       x-sdk-methodName: "getEmailCampaignById"
+      x-mcp-toolName: "getEmailById"
     delete:
       tags:
       - "Email Campaigns"
@@ -4521,6 +4523,7 @@ paths:
       x-authorization-privileges:
       - "campaign:delete"
       x-sdk-methodName: "deleteEmailCampaign"
+      x-mcp-toolName: "deleteEmail"
     patch:
       tags:
       - "Email Campaigns"
@@ -4579,6 +4582,7 @@ paths:
       - "campaign:write"
       x-ctctmcp-allow: true
       x-sdk-methodName: "patchEmailCampaignName"
+      x-mcp-toolName: "patchEmailName"
   /emails/campaign_id_xrefs:
     get:
       tags:
@@ -4637,6 +4641,7 @@ paths:
       x-authorization-privileges:
       - "campaign:read"
       x-sdk-methodName: "getEmailCampaignXrefs"
+      x-mcp-toolName: "getEmailXrefs"
   /emails/activities/{campaign_activity_id}:
     get:
       tags:
@@ -4701,6 +4706,7 @@ paths:
       x-authorization-privileges:
       - "campaign:read"
       x-sdk-methodName: "getEmailCampaignActivity"
+      x-mcp-toolName: "getEmailActivity"
     put:
       tags:
       - "Email Campaigns"
@@ -4813,6 +4819,7 @@ paths:
       x-authorization-privileges:
       - "campaign:read"
       x-sdk-methodName: "getEmailCampaignActivitySchedule"
+      x-mcp-toolName: "getEmailActivitySchedule"
     post:
       tags:
       - "Email Scheduling"
@@ -4880,6 +4887,7 @@ paths:
       x-authorization-privileges:
       - "campaign:send"
       x-sdk-methodName: "scheduleEmailCampaignActivity"
+      x-mcp-toolName: "scheduleEmailActivity"
     delete:
       tags:
       - "Email Scheduling"
@@ -4927,6 +4935,7 @@ paths:
       x-authorization-privileges:
       - "campaign:send"
       x-sdk-methodName: "unscheduleEmailCampaignActivity"
+      x-mcp-toolName: "unscheduleEmailActivity"
   /emails/activities/{campaign_activity_id}/tests:
     post:
       tags:
@@ -4986,6 +4995,7 @@ paths:
       x-authorization-privileges:
       - "campaign:send"
       x-sdk-methodName: "testSendEmailCampaignActivity"
+      x-mcp-toolName: "testSendEmailActivity"
   /emails/activities/{campaign_activity_id}/previews:
     get:
       tags:
@@ -5036,6 +5046,7 @@ paths:
       x-authorization-privileges:
       - "campaign:read"
       x-sdk-methodName: "getEmailCampaignActivityPreview"
+      x-mcp-toolName: "getEmailActivityPreview"
   /emails/activities/{campaign_activity_id}/send_history:
     get:
       tags:
@@ -5090,6 +5101,7 @@ paths:
       x-authorization-privileges:
       - "campaign:read"
       x-sdk-methodName: "getEmailCampaignActivitySendHistory"
+      x-mcp-toolName: "getEmailSendHistory"
   /emails/activities/{campaign_activity_id}/non_opener_resends:
     get:
       tags:
@@ -5138,6 +5150,7 @@ paths:
       x-authorization-privileges:
       - "campaign:read"
       x-sdk-methodName: "getResendEmailCampaign"
+      x-mcp-toolName: "getResendEmail"
     post:
       tags:
       - "Email Campaigns"
@@ -5201,6 +5214,7 @@ paths:
       x-authorization-privileges:
       - "campaign:send"
       x-sdk-methodName: "createResendEmailCampaign"
+      x-mcp-toolName: "createResendEmail"
   /emails/activities/{campaign_activity_id}/non_opener_resends/{resend_request_id}:
     delete:
       tags:
@@ -5256,6 +5270,7 @@ paths:
       x-authorization-privileges:
       - "campaign:send"
       x-sdk-methodName: "deleteResendEmailCampaign"
+      x-mcp-toolName: "deleteResendEmail"
   /emails/experiments/html-to-cpe: {}
   /automations/workflows:
     get:
@@ -5376,6 +5391,7 @@ paths:
         - "campaign_data"
       x-authorization-privileges:
       - "customer-journey:create"
+      x-mcp-toolName: "createAutomation"
   /automations/workflows/{automation_flow_id}:
     get:
       tags:
@@ -5416,6 +5432,7 @@ paths:
         - "campaign_data"
       x-authorization-privileges:
       - "customer-journey:read"
+      x-mcp-toolName: "retrieveAutomation"
     put:
       tags:
       - "Automations"
@@ -5461,6 +5478,7 @@ paths:
         - "campaign_data"
       x-authorization-privileges:
       - "customer-journey:update"
+      x-mcp-toolName: "updateAutomation"
   /emails/activities/{campaign_activity_id}/abtest:
     get:
       tags:
@@ -5512,6 +5530,7 @@ paths:
       x-authorization-privileges:
       - "campaign:read"
       x-sdk-methodName: "getABTestEmailCampaign"
+      x-mcp-toolName: "retrieveABTestEmail"
     post:
       tags:
       - "Email Campaigns AB Tests"
@@ -5573,6 +5592,7 @@ paths:
       x-authorization-privileges:
       - "campaign:write"
       x-sdk-methodName: "createABTestEmailCampaign"
+      x-mcp-toolName: "createABTestEmail"
     delete:
       tags:
       - "Email Campaigns AB Tests"
@@ -5623,6 +5643,7 @@ paths:
       x-authorization-privileges:
       - "campaign:write"
       x-sdk-methodName: "deleteABTestEmailCampaign"
+      x-mcp-toolName: "deleteABtestEmail"
   /reports/contact_reports/{contact_id}/activity_details:
     get:
       tags:
@@ -5919,6 +5940,7 @@ paths:
       x-authorization-privileges:
       - "ui:campaign:metrics"
       x-sdk-methodName: "getCampaignActivityLinkReport"
+      x-mcp-toolName: "getEmailActivityLinkReport"
   /reports/email_reports/{campaign_activity_id}/tracking/sends:
     get:
       tags:
@@ -6489,6 +6511,7 @@ paths:
         - "contact_data"
       x-authorization-privileges:
       - "ui:campaign:metrics"
+      x-mcp-toolName: "getEmailPerformanceStats"
   /reports/email_reports/insights: {}
   /reports/email_reports/suggested_send_times: {}
   /reports/email_reports/{campaign_activity_id}/email_link_stats: {}
@@ -6545,6 +6568,7 @@ paths:
         - "campaign_data"
       x-authorization-privileges:
       - "ui:campaign:metrics"
+      x-mcp-toolName: "getBulkEmailSummaryReport"
       x-sdk-methodName: "getEmailCampaignReport"
   /reports/stats/email_campaigns/{campaign_ids}:
     get:
@@ -6651,6 +6675,7 @@ paths:
       x-authorization-privileges:
       - "ui:campaign:metrics"
       x-sdk-methodName: "getEmailCampaignActivityReport"
+      x-mcp-toolName: "getEmailActivityReport"
   /reports/landing_pages/campaign_details/{campaign_activity_id}/p_unique_contact_clicks:
     get:
       tags:
@@ -7110,6 +7135,7 @@ paths:
         - "campaign_data"
       x-authorization-privileges:
       - "ui:campaign:metrics"
+      x-mcp-toolName: "getBulkSMSSummaryReport"
   /partner/accounts:
     get:
       tags:
@@ -11164,16 +11190,8 @@ definitions:
   EventDto:
     type: "object"
     required:
-    - "campaign_id"
-    - "default_track"
-    - "description"
     - "event_end"
     - "event_start"
-    - "event_type"
-    - "location_type"
-    - "name"
-    - "time_zone"
-    - "title"
     properties:
       description:
         type: "string"
@@ -12276,6 +12294,10 @@ definitions:
         description: "The segment's contact selection criteria formatted as single-string\
           \ escaped JSON."
         maxLength: 20000
+      criteria:
+        type: "object"
+        description: "The evaluated segment criteria."
+        properties: {}
       segment_id:
         type: "integer"
         format: "int32"
@@ -13659,6 +13681,7 @@ definitions:
   ListInput:
     type: "object"
     required:
+    - "favorite"
     - "name"
     properties:
       name:
@@ -15494,7 +15517,8 @@ definitions:
         type: "object"
         description: "The parameter value: a string or array of strings depending\
           \ on type (e.g., STRING → single value, LIST → array of list IDs). Use this\
-          \ instead of parameter_string_value / parameter_list_value moving forward."
+          \ rather than the deprecated of parameter_string_value / parameter_list_value\
+          \ parameters."
         properties: {}
       rule:
         type: "object"
@@ -15506,8 +15530,7 @@ definitions:
         description: "Parameter type. Common trigger types: STRING (single value),\
           \ LIST (array), WEB_TRACKING (page visit)."
     description: "A single trigger parameter used to filter or configure the trigger\
-      \ (e.g., list IDs). Use parameter_value (preferred); parameter_string_value\
-      \ and parameter_list_value are supported for backwards compatibility."
+      \ (e.g., list IDs). Use parameter_value to provide a parameter value."
   TriggerDefDto:
     type: "object"
     properties:
